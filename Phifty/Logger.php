@@ -1,0 +1,41 @@
+<?php
+namespace Phifty;
+
+class Logger 
+{
+    public $logDir;
+    public $logFile;
+    private $fp;
+
+    function __construct($logDir,$prefix = '')
+    {
+        $this->logDir = $logDir;
+
+        if( ! file_exists( $this->logDir ) )
+            mkdir( $this->logDir , 0755 , true );
+
+        // $this->logFile = $logDir . DIRECTORY_SEPARATOR . $prefix . date('Y.m.d-Hi') . '.log';
+        $this->logFile = $logDir . DIRECTORY_SEPARATOR . $prefix . date('Y.m.d') . '_' . time() . '.log';
+        $this->fp = fopen( $this->logFile , 'a+' )
+            or die("Can not open log file.");
+    }
+
+    function info( $msg )
+    {
+        fwrite( $this->fp , $msg . "\n" );
+    }
+
+    function close()
+    {
+        fclose( $this->fp );
+        $this->fp = null;
+    }
+
+    function __destruct()
+    {
+        if( $this->fp !== null )
+            $this->close();
+    }
+}
+
+
