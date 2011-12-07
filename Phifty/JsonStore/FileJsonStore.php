@@ -10,64 +10,128 @@
  */
 namespace Phifty\JsonStore;
 
+
 /**
- * Store Json in File.
+ * $store = new FileJsonStore('ModelName');
  *
- * $store = new FileJsonStore;
- * $store->setRootDir( 'path/to/dir' );
+ * $store->add(array( .... ));
+ * $store->add(array( .... ));
+ * $store->add(array( .... ));
  *
- * save object in path/to/dir/1.json
+ * $store->insert(0,array( .... ));
  *
- *      $store->store( $id , array( ...  ) );
+ * $model = $store->get(1);
  *
- * load object
+ * $store->remove($id);
+ * $store->remove($model);
  *
- *      $store->load( $id );
- * 
- * update object
+ * $store->save();
  *
- *      $store->update( $id , array( ... ) );
+ * $list = $store->load();
  *
  */
-class FileJsonStore 
+
+use Phifty\JsonStore\FileJsonModel;
+
+class FileJsonStore
 {
+    public $name;
     public $rootDir;
+    public $items;
 
-    function setRootDir($dir)
+    function __construct($name,$rootDir)
     {
-        $this->rootDir = $dir;
+        $this->name = $name;
+        $this->rootDir = $rootDir;
+        $this->items = array();
+        if( ! file_exists($this->rootDir ) )
+            mkdir( $this->rootDir , 0755 , true ); // recursive
     }
 
-    function getFilePath($id)
+    function getStoreFile()
     {
-        return $this->rootDir . DIRECTORY_SEPARATOR . $id
+        $path = $this->rootDir . DIRECTORY_SEPARATOR . $this->name . '.json';
+        return $path;
     }
 
-    function store($data)
+    function load()
     {
-        $id = $data['id'];
-        $file = $this->getFilePath($id);
-        if( file_put_contents( $file , json_encode($data) ) === false )
+        $file = $this->getStoreFile();
+        if( file_exists($file) ) {
+            $data = json_decode(file_get_contents($file),true);
+            if( isset($data['items']) ) {
+                $this->items = $data['items'];
+                return count($this->items);
+            }
+        }
+    }
+
+    function save()
+    {
+        $file = $this->getStoreFile();
+        $string = json_encode( array( 'items' => $this->items ) );
+        if( file_put_contents( $file, $string ) === false )
             return false;
         return true;
     }
 
-    function load($id)
+    function add($record)
     {
-        $file = $this->getFilePath($id);
-        if( file_exists($file) ) {
-            return json_decode($file);
+        $keys = array_keys($this->items);
+        sort($keys);
+        $last_key = (int) end($keys);
+        $last_key++;
+        $record->id = $last_key;
+        $this->items[$last_key] = $record->getData();
+        return $last_key;
+    }
+
+    function update($record)
+    {
+        $id = $record->id;
+        $data = get_object_vars($record);
+        if( isset($this->items[$id]) ) {
+            $this->items[$id] = $record;
+            return true;
         }
         return false;
     }
 
-    function update($data)
+    function get($id)
     {
-        $id = $data['id'];
-        $orig_data = $this->load($id);
-        if( $orig_data ) {
-            $data = array_merge( $orig_data, $data );
-            $this->store($data);
+        if( isset($this->items[$id]) ) 
+            return $this->items[$id];
+    }
+
+    function items()
+    {
+        $that = $this;
+        return array_map( function($e) use ($that) {
+            return new FileJsonModel( $that->name, $that, $e );
+        }, array_values($this->items) );
+    }
+
+    function remove($id)
+    {
+        unset($this->items[$id]);
+    }
+
+    function destroy()
+    {
+        $file = $this->getStoreFile();
+        if( file_exists($file) ) {
+            unlink( $file );
+            $this->items = null;
+            return true;
         }
     }
+
+    function __destruct()
+    {
+        if( $this->items )
+            $this->save();
+    }
 }
+
+
+
