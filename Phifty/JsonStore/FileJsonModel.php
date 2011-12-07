@@ -68,7 +68,7 @@ class FileJsonModel
     function save($data = null)
     {
 		if( $data )
-			$this->data = array_merge($this->data,$data);
+			$this->data = $data;
 
 		if( $this->hasId() )
 			return $this->store->update($this);

@@ -77,11 +77,16 @@ class FileJsonStore
 
     function add($record)
     {
-        $keys = array_keys($this->items);
-        sort($keys);
-        $last_key = (int) end($keys);
-        $last_key++;
-        $record->id = $last_key;
+        if( $this->items ) {
+            $keys = array_keys($this->items);
+            sort($keys);
+            $last_key = (int) end($keys);
+            $last_key++;
+            $record->id = $last_key;
+        } else {
+            $this->items = array();
+            $last_key = 1;
+        }
         $this->items[$last_key] = $record->getData();
         return $last_key;
     }
@@ -89,18 +94,20 @@ class FileJsonStore
     function update($record)
     {
         $id = $record->id;
-        $data = get_object_vars($record);
-        if( isset($this->items[$id]) ) {
-            $this->items[$id] = $record;
-            return true;
-        }
-        return false;
+        $data = $record->getData();
+        $this->items[$id] = $data;
+        return true;
     }
 
     function get($id)
     {
         if( isset($this->items[$id]) ) 
             return $this->items[$id];
+    }
+
+    function newModel()
+    {
+        return new FileJsonModel( $this->name , $this );
     }
 
     function items()
@@ -125,6 +132,7 @@ class FileJsonStore
             return true;
         }
     }
+
 
     function __destruct()
     {
