@@ -27,11 +27,13 @@ class ControllerRoute extends Route
 		$controller = new $class( $this );
 		$controller->before();
 
-        if( ! $method ) {
+        if( ! $method || ! method_exists($controller,$method) ) {
             if( $action = $this->get('action') )
                 $method = $action . 'Action';
-            if( ! $method )
+            elseif( method_exists($controller,'run') )
                 $method = 'run';
+            elseif ( method_exists($controller,'indexAction') )
+                $method = 'indexAction';
         }
 
         if( method_exists($controller,$method) ) {
@@ -50,7 +52,7 @@ class ControllerRoute extends Route
             $content = call_user_func_array( array($controller,$method) , $arguments );
         } else {
             header('HTTP/1.0 403');
-            throw new Exception( "Controller action method $method not found." );
+            throw new Exception( "Controller action method $method of $class not found." );
         }
 
 		$controller->after();

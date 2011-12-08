@@ -44,6 +44,11 @@ class FileJsonModel
 			$this->data = $data ? $data : array();
     }
 
+	function __isset($name)
+	{
+		return isset($this->data[$name]);
+	}
+
 	function __get($name)
 	{
 		if( isset($this->data[$name] ) )

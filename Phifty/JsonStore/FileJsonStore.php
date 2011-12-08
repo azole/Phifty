@@ -102,7 +102,7 @@ class FileJsonStore
     function get($id)
     {
         if( isset($this->items[$id]) ) 
-            return $this->items[$id];
+            return new FileJsonModel( $this->name, $this, $this->items[$id] );
     }
 
     function newModel()
