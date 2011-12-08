@@ -38,11 +38,13 @@ class FileJsonStore
     public $name;
     public $rootDir;
     public $items;
+    public $setname;
 
     function __construct($name,$rootDir)
     {
         $this->name = $name;
         $this->rootDir = $rootDir;
+        $this->setname = 'global';
         $this->items = array();
         if( ! file_exists($this->rootDir ) )
             mkdir( $this->rootDir , 0755 , true ); // recursive
@@ -50,8 +52,7 @@ class FileJsonStore
 
     function getStoreFile()
     {
-        $path = $this->rootDir . DIRECTORY_SEPARATOR . $this->name . '.json';
-        return $path;
+        return $this->rootDir . DIRECTORY_SEPARATOR . $this->name . '_' . $this->setname . '.json';
     }
 
     function load()
@@ -93,9 +94,11 @@ class FileJsonStore
 
     function update($record)
     {
-        $id = $record->id;
-        $data = $record->getData();
-        $this->items[$id] = $data;
+        if( is_object($record) ) {
+            $id = $record->id;
+            $data = $record->getData();
+            $this->items[$id] = $data;
+        }
         return true;
     }
 
@@ -105,9 +108,9 @@ class FileJsonStore
             return new FileJsonModel( $this->name, $this, $this->items[$id] );
     }
 
-    function newModel()
+    function newModel($data = null)
     {
-        return new FileJsonModel( $this->name , $this );
+        return new FileJsonModel( $this->name , $this , $data );
     }
 
     function items()
