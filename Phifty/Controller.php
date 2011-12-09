@@ -152,6 +152,11 @@ class Controller
         return json_encode($data);
     }
 
+	public function toJson($data)
+	{
+		return $this->renderJson($data);
+	}
+
     /* 
      * Render yaml
      *
@@ -162,6 +167,11 @@ class Controller
             header('Content-type: application/yaml; charset=UTF-8;');
         return YAML::dump( $data );
     }
+
+	public function toYaml($data)
+	{
+		return $this->renderYaml( $data );
+	}
 
 
     /**
