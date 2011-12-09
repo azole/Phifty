@@ -29,6 +29,12 @@ namespace Phifty\JsonStore;
  *
  * $list = $store->load();
  *
+    // use JsonStore to save schema
+    $store = new FileJsonStore('SpecSchema', FileUtils::path_join( PH_APP_ROOT , 'webroot', 'spec' , 'schema' ) );
+    $store->load();
+    $record = $store->newModel();
+    $record->save( array( 'id' => $product_id, 'fields' => $spec_data ) );
+ *
  */
 
 use Phifty\JsonStore\FileJsonModel;
