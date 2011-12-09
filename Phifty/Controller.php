@@ -35,6 +35,16 @@ class Controller
 
     }
 
+	public function getMethod()
+	{
+		return $_SERVER['REQUEST_METHOD'];
+	}
+
+	public function getInputContent()
+	{
+		return file_get_contents('php://input');
+	}
+
     public function getCurrentUser()
     {
         return webapp()->currentUser;
