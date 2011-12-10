@@ -206,6 +206,9 @@ class Email
         //
         $subject = $this->encode($subject);
 
+
+
+
         $debug = false;
 		if( $debug ) {
 			$fh = fopen( PH_APP_ROOT . '/mail.log' , 'a+');
