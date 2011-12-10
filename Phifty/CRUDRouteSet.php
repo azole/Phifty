@@ -25,6 +25,7 @@ abstract class CRUDRouteSet extends RouteSet
     {
         $this->vars['CRUD'] = array( 'object' => $this );
         $model = $this->getModel(); // init model column
+
 		if( $model->getColumn('updated_on') )
 			$this->defaultOrder = array('updated_on', 'desc');
 		elseif( $model->getColumn('created_on') )
@@ -84,7 +85,6 @@ abstract class CRUDRouteSet extends RouteSet
 
         if( $this->defaultOrder )
             $collection->order( $this->defaultOrder[0] , $this->defaultOrder[1] );
-
         return $collection;
     }
 

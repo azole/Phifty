@@ -24,6 +24,7 @@ abstract class FormWidget
 
     public function setup() 
     {
+
     }
 
 	public function setValue( $value )

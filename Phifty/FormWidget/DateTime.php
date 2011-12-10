@@ -11,10 +11,18 @@ class DateTime extends FormWidget
         $this->format = $format;
     }
 
+	public function getValue()
+	{
+		$value = $this->column->value;
+		if( $value == null || substr($value,0,4) === '0000' )
+			return '';
+		return $value;
+	}
+
     public function template()
     {
         return <<<'CODE'
-        <input type="text" name="{{ column.name }}" value="{{ column.value }}" 
+        <input type="text" name="{{ column.name }}" value="{{ widget.value }}" 
             {% for attr_name,attr_value in attrs %} {{attr_name}}="{{attr_value}}" {% endfor %}/>
         <script type="text/javascript">
         $(function() {
