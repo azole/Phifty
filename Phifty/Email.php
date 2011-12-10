@@ -14,6 +14,8 @@ $email->send();
 
 namespace Phifty;
 
+use Phifty\View;
+
 class Email
 {
     var $to = array();
@@ -120,8 +122,7 @@ class Email
     }
 
     private function renderTemplate() {
-        $engine = \Phifty\View\Engine::createEngine( 'twig' , $this->templateEngineOpts );
-        $view = new \Phifty\View( $engine );
+        $view = new View;
         if( $this->templateVars ) {
             $view->setArgs( $this->templateVars );
         }
