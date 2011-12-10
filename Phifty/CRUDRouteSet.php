@@ -24,7 +24,11 @@ abstract class CRUDRouteSet extends RouteSet
     function init()
     {
         $this->vars['CRUD'] = array( 'object' => $this );
-        $this->getModel(); // init model column
+        $model = $this->getModel(); // init model column
+		if( $model->getColumn('updated_on') )
+			$this->defaultOrder = array('updated_on', 'desc');
+		elseif( $model->getColumn('created_on') )
+			$this->defaultOrder = array('created_on', 'desc');
     }
 
     function assign( $name , $value )
