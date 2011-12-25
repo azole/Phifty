@@ -2,6 +2,12 @@
 namespace Phifty\Asset;
 use DirectoryIterator;
 
+
+/**
+ * AssetFinder
+ *
+ * to export asset links
+ */
 class AssetFinder 
 {
 
