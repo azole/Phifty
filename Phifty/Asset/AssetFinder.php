@@ -2,7 +2,6 @@
 namespace Phifty\Asset;
 use DirectoryIterator;
 
-
 /**
  * AssetFinder
  *
