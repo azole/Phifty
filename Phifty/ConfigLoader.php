@@ -52,6 +52,7 @@ class ConfigLoader
 
     function __construct($app)
     {
+
         // TODO: Try to merge a cached version config data.
 
         $appConfigFile = $app->rootDir . DIRECTORY_SEPARATOR . 'config' 
@@ -97,11 +98,17 @@ class ConfigLoader
 
         // merge back to app config
         $appConfig = array_merge( $appConfig , (array) $envConfig );
-
         $this->appConfigFile     = $appConfigFile;
         $this->appSiteConfigFile = $appSiteConfigFile;
         $this->envConfigFile     = $envConfigFile;
         $this->config            = $appConfig;
+
+
+        // not in development
+        if( ! $this->isDevelopment() ) {
+            // cache it
+
+        }
     }
 
     function getEnvironment()
