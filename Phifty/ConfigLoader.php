@@ -53,14 +53,16 @@ class ConfigLoader
     function __construct($app)
     { 
         $environment = getenv('PHIFTY_ENV');
-        $this->environment = $environment = $environment ?: 'dev';
+        $this->environment = $environment = ($environment ?: 'dev');
+
         switch( $environment ) {
             case 'test':
             case 'dev':
                 $this->config = $this->loadEnvironmentConfig( $app,$environment );
                 break;
             case 'prod':
-                $configKey = 'config_' . $app->appName;
+                $configKey = $app->appName;
+
                 // check cache
                 if(( $config = $app->cache->get( $configKey )) != null ) {
                     $this->config = $config;
@@ -75,7 +77,6 @@ class ConfigLoader
                 break;
         }
     }
-
 
     function loadEnvironmentConfig($app,$environment)
     {
@@ -103,6 +104,9 @@ class ConfigLoader
                 . DIRECTORY_SEPARATOR . $environment . '.yml';
         $envSiteConfigFile = $app->rootDir . DIRECTORY_SEPARATOR . 'config'
                 . DIRECTORY_SEPARATOR . $environment . '_site.yml';
+
+        if( ! file_exists( $envConfigFile ) )
+            throw new Exception( "$envConfigFile not found." );
 
         $envConfig = YAML::loadFile( $envConfigFile );
 

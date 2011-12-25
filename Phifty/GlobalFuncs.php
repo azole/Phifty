@@ -53,11 +53,20 @@ function croak_log($message)
     array_shift( $stacks );
     $return = $message . "\n\n" . print_r(  $stacks , true );
     error_log( $return , 1 , join("\n",array('cornelius.howl@gmail.com','Subject: PHP Error')) );
+
 }
+
+
+function trydefine( $name , $value )
+{
+    if( defined( $name ) )
+        return;
+    define( $name , $value );
+}
+
 
 /* 
     croak_log(); 
  * */
 }
 
-?>
