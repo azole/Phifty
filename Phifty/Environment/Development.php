@@ -26,6 +26,7 @@ class Development
          **/
         if( ! $app->isCLI ) {
             require PH_ROOT . '/dists/firephp/lib/FirePHPCore/fb.php';
+        }
 
 
         /* check configs */
@@ -38,5 +39,6 @@ class Development
             }
         }
 
+        // when exception found, forward output to exception render controller.
     }
 }

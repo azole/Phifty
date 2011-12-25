@@ -10,6 +10,7 @@ use Phifty\FileUtils;
  * $codegen->render( 'app.php' , array( ... ) );
  *
  *
+ * xxx: use twig instead.
  */
 
 class CodeTemplate 

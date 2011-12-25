@@ -8,6 +8,9 @@ use Phifty\Singleton;
 class AppClassLoader extends Singleton
 {
     public $nsPaths = array( );
+
+    // xxx: Move Collection loader out, remove this redundant classloader
+
     public $supportedTypes = array( 
         'Model' => 1,
         'Controller' => 1,
@@ -25,7 +28,8 @@ class AppClassLoader extends Singleton
         $this->nsPaths[ $ns ] = $path;
     }
 
-    /*
+    /**
+     *
      * To load core app class, app class, and plugins
      *
      * Core/Core.php             <= use Core\Core;
@@ -52,9 +56,9 @@ class AppClassLoader extends Singleton
     //      PH_ROOT/{ns}/{type}/{rest}.php
     //
     // if not,
-    // use root path + 'lib' + ns path
+    // use root path + 'src' + ns path
     //
-    //      PH_ROOT/{ns}/lib/{ns}/class.php
+    //      PH_ROOT/{ns}/src/{ns}/class.php
     function load( $class )
     {
         // get first part of ns name
@@ -107,4 +111,3 @@ class AppClassLoader extends Singleton
 
 }
 
-?>
