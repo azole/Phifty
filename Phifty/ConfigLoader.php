@@ -32,7 +32,7 @@ $loader->get( $key );
 	$loader->get('i18n');
 
 */
-use Phifty\Cache\YAML;
+use Phifty\YAML;
 
 class ConfigLoader
 {
@@ -51,65 +51,76 @@ class ConfigLoader
     public $yCache;
 
     function __construct($app)
+    { 
+        $environment = getenv('PHIFTY_ENV');
+        $this->environment = $environment = $environment ?: 'dev';
+        switch( $environment ) {
+            case 'test':
+            case 'dev':
+                $this->config = $this->loadEnvironmentConfig( $app,$environment );
+                break;
+            case 'prod':
+                $configKey = 'config_' . $app->appName;
+                // check cache
+                if(( $config = $app->cache->get( $configKey )) != null ) {
+                    $this->config = $config;
+                }
+                else {
+                    $this->config = $this->loadEnvironmentConfig( $app,$environment );
+                    $app->cache->set( $configKey , $this->config );
+                }
+                break;
+            default:
+                throw new Exception("Unsupported environment mode: $environment.");
+                break;
+        }
+    }
+
+
+    function loadEnvironmentConfig($app,$environment)
     {
-
-        // TODO: Try to merge a cached version config data.
-
+        // load config by env
         $appConfigFile = $app->rootDir . DIRECTORY_SEPARATOR . 'config' 
                 . DIRECTORY_SEPARATOR . 'app.yml';
         $appSiteConfigFile = $app->rootDir . DIRECTORY_SEPARATOR . 'config'
                 . DIRECTORY_SEPARATOR . 'app_site.yml';
-
-        $yCache = null;
-        $yCache = $this->yCache = new YAML( array( 
-            'cache_dir'  => $app->rootDir . DIRECTORY_SEPARATOR . 'cache/config' 
-        ));
-
         $appConfig = null;
         if ( file_exists( $appSiteConfigFile ) ) {
-            $appConfig = $yCache->loadFile( $appSiteConfigFile );
+            $appConfig = YAML::loadFile( $appSiteConfigFile );
         }
-        if ( ! $appConfig && file_exists( $appConfigFile ) ) {
-            $appConfig = $yCache->loadFile( $appConfigFile );
+        elseif ( ! $appConfig && file_exists( $appConfigFile ) ) {
+            $appConfig = YAML::loadFile( $appConfigFile );
         }
 
         if( ! $appConfig )
-            throw new Exception( "Application config is so empty.. Can not load $appSiteConfigFile and $appConfigFile" );
+            throw new Exception( "Application config is empty.. Can not load $appSiteConfigFile and $appConfigFile" );
 
         // environment name, will be 'dev', 'testing', 'prod' ...
-        $environment = $this->environment = $appConfig['environment']; 
-
+        // $environment = $this->environment = $appConfig['environment']; 
 
         // load environment config 
         $envConfigFile = $app->rootDir . DIRECTORY_SEPARATOR . 'config'
                 . DIRECTORY_SEPARATOR . $environment . '.yml';
-
         $envSiteConfigFile = $app->rootDir . DIRECTORY_SEPARATOR . 'config'
                 . DIRECTORY_SEPARATOR . $environment . '_site.yml';
 
-        $envConfig = $yCache->loadFile( $envConfigFile );
+        $envConfig = YAML::loadFile( $envConfigFile );
 
         // it site environment config file is defined, merge it!
         if( file_exists( $envSiteConfigFile ) ) {
-            $envSiteConfig = $yCache->loadFile( $envSiteConfigFile );
+            $envSiteConfig = YAML::loadFile( $envSiteConfigFile );
             $envConfig = array_merge( $envConfig , $envSiteConfig );
         }
 
+        // merge environment config to app config
+        return array_merge( $appConfig , (array) $envConfig );
 
-        // merge back to app config
-        $appConfig = array_merge( $appConfig , (array) $envConfig );
-        $this->appConfigFile     = $appConfigFile;
-        $this->appSiteConfigFile = $appSiteConfigFile;
-        $this->envConfigFile     = $envConfigFile;
-        $this->config            = $appConfig;
-
-
-        // not in development
-        if( ! $this->isDevelopment() ) {
-            // cache it
-
-        }
+        // not used currently
+        // $this->appConfigFile     = $appConfigFile;
+        // $this->appSiteConfigFile = $appSiteConfigFile;
+        // $this->envConfigFile     = $envConfigFile;
     }
+
 
     function getEnvironment()
     {
