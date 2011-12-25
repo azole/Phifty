@@ -4,7 +4,6 @@ use Phifty\FileUtils;
 use Phifty\Web;
 use Phifty\WebPath;
 use Phifty\WebUtils;
-use Core\Core;
 
 class Compress extends \Phifty\Command
 {
@@ -44,7 +43,7 @@ class Compress extends \Phifty\Command
 
     function run()
     {
-        $core = Core::one();
+        $core = \Core\Application::one();
         $this->compressApp( $core );
 
         $plugins = \Phifty\PluginPool::one()->getPlugins();
