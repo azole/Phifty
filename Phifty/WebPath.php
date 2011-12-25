@@ -19,9 +19,9 @@ class WebPath
         return '/ph/plugins';
     }
 
-	static function widgetBase()
+	static function assetBase()
 	{
-		return '/ph/widgets';
+		return '/ph/assets';
 	}
 
     static function minifiedBase()

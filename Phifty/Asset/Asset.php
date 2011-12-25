@@ -1,11 +1,10 @@
 <?php
-
-namespace Phifty;
+namespace Phifty\Asset;
 
 use Phifty\View\TwigLight;
 use ReflectionObject;
 
-abstract class Widget 
+abstract class Asset 
 {
 	public $template;
 
@@ -31,7 +30,7 @@ abstract class Widget
 
     function baseUrl()
     {
-        return '/ph/widgets/' . $this->name();
+        return '/ph/assets/' . $this->name();
     }
 
     // return minified js content.
@@ -69,7 +68,7 @@ abstract class Widget
         $twig = TwigLight::getEngine();
         $template_content = $this->getTemplate();
         $template = $twig->loadTemplate( $template_content );
-        return $template->render(array( 'Widget' => $this ));
+        return $template->render(array( 'Asset' => $this ));
     }
 
     function css() { return array(); }

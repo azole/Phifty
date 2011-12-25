@@ -4,7 +4,7 @@ namespace Phifty\Web;
 
 use Phifty\Singleton;
 use Phifty\Action\ActionRunner;
-use Phifty\WidgetLoader;
+use Phifty\AssetLoader;
 
 class Exporter
 {
@@ -29,7 +29,7 @@ class Exporter
         $this->vars['Kernel']      = \AppKernel::one();
         $this->vars['CurrentUser'] = new \Phifty\CurrentUser;
         $this->vars['Web']         = new \Phifty\Web;
-		// $this->WidgetLoader = WidgetLoader;
+		// $this->AssetLoader = AssetLoader;
     }
 
     public function add( $name , $value ) 

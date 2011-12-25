@@ -1,16 +1,21 @@
 <?php
 
-namespace Phifty;
+namespace Phifty\Asset;
 use Phifty\WebUtils;
 use Exception;
 
-class WidgetLoader 
-{
-    static $widgets = array();
 
-    static function newWidget($name)
+/**
+ * AssetLoader
+ *
+ */
+class AssetLoader 
+{
+    static $assets = array();
+
+    static function newAsset($name)
     {
-        $class = '\Phifty\Widgets\\' . $name;
+        $class = '\Phifty\Assets\\' . $name;
         $widget = new $class;
         $widget->init();
         static::register( $widget );
@@ -19,12 +24,12 @@ class WidgetLoader
 
     static function register($widget)
     {
-        static::$widgets[] = $widget;
+        static::$assets[] = $widget;
     }
 
-    static function getWidget( $name )
+    static function getAsset( $name )
     {
-        foreach( static::$widgets as $widget ) {
+        foreach( static::$assets as $widget ) {
             if( is_a( $widget , $name ) ) 
                 return $widget;
         }
@@ -32,10 +37,10 @@ class WidgetLoader
 
     static function includeJsFiles()
     {
-        $basedir = webapp()->getWebWidgetDir();
-        $baseurl = '/ph/widgets';
+        $basedir = webapp()->getWebAssetDir();
+        $baseurl = '/ph/assets';
         $jsFiles = array();
-        foreach( static::$widgets as $widget ) {
+        foreach( static::$assets as $widget ) {
             $files = $widget->js();
             foreach( $files as $file ) {
                 $path = $basedir    . DIRECTORY_SEPARATOR . $widget->name() . DIRECTORY_SEPARATOR . $file;
@@ -48,10 +53,10 @@ class WidgetLoader
 
     static function includeCssFiles()
     {
-        $basedir = webapp()->getWebWidgetDir();
-        $baseurl = '/ph/widgets';
+        $basedir = webapp()->getWebAssetDir();
+        $baseurl = '/ph/assets';
         $cssFiles = array();
-        foreach( static::$widgets as $widget ) {
+        foreach( static::$assets as $widget ) {
             $files = $widget->css();
             foreach( $files as $file ) {
                 $path = $basedir    . DIRECTORY_SEPARATOR . $widget->name() . DIRECTORY_SEPARATOR . $file;
@@ -64,20 +69,20 @@ class WidgetLoader
 
     static function load( $name )
     {
-        $paths[] = PH_APP_ROOT . DIRECTORY_SEPARATOR . 'widgets' 
+        $paths[] = PH_APP_ROOT . DIRECTORY_SEPARATOR . 'assets' 
                     . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . $name . '.php';
 
-        $paths[] = PH_ROOT . DIRECTORY_SEPARATOR . 'widgets' 
+        $paths[] = PH_ROOT . DIRECTORY_SEPARATOR . 'assets' 
                     . DIRECTORY_SEPARATOR . $name . DIRECTORY_SEPARATOR . $name . '.php';
 
         foreach( $paths as $path ) {
             if( file_exists($path) ) {
                 require_once $path;
-                return static::newWidget( $name );
+                return static::newAsset( $name );
             } 
         }
 
-        throw new Exception("Widget $name can not be loaded. $path not found.");
+        throw new Exception("Asset $name can not be loaded. $path not found.");
     }
 
 

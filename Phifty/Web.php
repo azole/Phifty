@@ -2,11 +2,11 @@
 namespace Phifty;
 
 use Phifty\View;
-use Phifty\WidgetLoader;
 use Phifty\WebUtils;
 use Phifty\WebPath;
 use Core\Application as CoreApplication;
 use Phifty\Action\ActionRunner;
+use Phifty\Asset\AssetLoader;
 
 class Web
 {
@@ -190,11 +190,11 @@ class Web
         return $html;
     }
 
-	public function include_widgets()
+	public function include_assets()
 	{
         return 
-            WidgetLoader::includeJsFiles() .
-            WidgetLoader::includeCssFiles();
+            AssetLoader::includeJsFiles() .
+            AssetLoader::includeCssFiles();
 	}
 
     public function render_all_results()

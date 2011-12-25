@@ -1,16 +1,13 @@
 <?php
-
-namespace Phifty;
-
-
+namespace Phifty\Asset;
 use DirectoryIterator;
 
-class WidgetFinder 
+class AssetFinder 
 {
 
-    static function scanWidget( $dir )
+    static function scanAsset( $dir )
     {
-        $widgets = array();
+        $assets = array();
         $iterator = new DirectoryIterator($dir);
         foreach ($iterator as $fileInfo) {
             if( $fileInfo->isDot() )
@@ -18,35 +15,35 @@ class WidgetFinder
             if( $fileInfo->isDir() ) {
                 $name  = $fileInfo->getFilename();
                 $path = $fileInfo->getPathname();
-                $widgets[ $name ] = (object) array( 
+                $assets[ $name ] = (object) array( 
                     'name' => $name,
                     'web'  => $path . DIRECTORY_SEPARATOR . 'web',
                     'path' => $path,
                 );
             }
         }
-        return $widgets;
+        return $assets;
     }
 
     static function findAll()
     {
-        $widgets = array();
-        $coreWidgetDir = PH_ROOT . DIRECTORY_SEPARATOR . 'widgets';
-        if( is_dir( $coreWidgetDir ) ) {
-            $widgets = array_merge( $widgets , self::scanWidget( $coreWidgetDir ) );
+        $assets = array();
+        $coreAssetDir = PH_ROOT . DIRECTORY_SEPARATOR . 'assets';
+        if( is_dir( $coreAssetDir ) ) {
+            $assets = array_merge( $assets , self::scanAsset( $coreAssetDir ) );
         }
-        $appWidgetDir = PH_APP_ROOT . DIRECTORY_SEPARATOR . 'widgets';
-        if( is_dir( $appWidgetDir ) ) {
-            $widgets = array_merge( $widgets , self::scanWidget( $appWidgetDir ) );
+        $appAssetDir = PH_APP_ROOT . DIRECTORY_SEPARATOR . 'assets';
+        if( is_dir( $appAssetDir ) ) {
+            $assets = array_merge( $assets , self::scanAsset( $appAssetDir ) );
         }
-        return $widgets;
+        return $assets;
     }
 
     static function locate( $name )
     {
-        $appWidgetDir = PH_APP_ROOT . DIRECTORY_SEPARATOR . 'widgets';
+        $appAssetDir = PH_APP_ROOT . DIRECTORY_SEPARATOR . 'assets';
 
-        $dir = $appWidgetDir . DIRECTORY_SEPARATOR . $name ;
+        $dir = $appAssetDir . DIRECTORY_SEPARATOR . $name ;
         if( file_exists($dir) ) 
             return (object) array(
                 'name' => $name,
@@ -54,8 +51,8 @@ class WidgetFinder
                 'web'  => $dir . DIRECTORY_SEPARATOR . 'web',
             );
 
-        $coreWidgetDir = PH_ROOT . DIRECTORY_SEPARATOR . 'widgets';
-        $dir = $coreWidgetDir . DIRECTORY_SEPARATOR . $name ;
+        $coreAssetDir = PH_ROOT . DIRECTORY_SEPARATOR . 'assets';
+        $dir = $coreAssetDir . DIRECTORY_SEPARATOR . $name ;
         if( file_exists($dir) ) 
             return (object) array(
                 'name' => $name,
