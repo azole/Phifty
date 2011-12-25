@@ -1,5 +1,4 @@
 <?php
-
 namespace Phifty\Asset;
 use Phifty\WebUtils;
 use Exception;
@@ -16,35 +15,35 @@ class AssetLoader
     static function newAsset($name)
     {
         $class = '\Phifty\Assets\\' . $name;
-        $widget = new $class;
-        $widget->init();
-        static::register( $widget );
-        return $widget;
+        $asset = new $class;
+        $asset->init();
+        static::register( $asset );
+        return $asset;
     }
 
-    static function register($widget)
+    static function register($asset)
     {
-        static::$assets[] = $widget;
+        static::$assets[] = $asset;
     }
 
     static function getAsset( $name )
     {
-        foreach( static::$assets as $widget ) {
-            if( is_a( $widget , $name ) ) 
-                return $widget;
+        foreach( static::$assets as $asset ) {
+            if( is_a( $asset , $name ) ) 
+                return $asset;
         }
     }
 
     static function includeJsFiles()
     {
-        $basedir = webapp()->getWebAssetDir();
+        // $basedir = webapp()->getWebAssetDir();
         $baseurl = '/ph/assets';
         $jsFiles = array();
-        foreach( static::$assets as $widget ) {
-            $files = $widget->js();
+        foreach( static::$assets as $asset ) {
+            $files = $asset->js();
             foreach( $files as $file ) {
-                $path = $basedir    . DIRECTORY_SEPARATOR . $widget->name() . DIRECTORY_SEPARATOR . $file;
-                $url = $baseurl . '/' . $widget->name() . '/' . $file;
+                // $path = $basedir    . DIRECTORY_SEPARATOR . $asset->name() . DIRECTORY_SEPARATOR . $file;
+                $url = $baseurl . '/' . $asset->name() . '/' . $file;
                 $jsFiles[] = $url;
             }
         }
@@ -53,14 +52,14 @@ class AssetLoader
 
     static function includeCssFiles()
     {
-        $basedir = webapp()->getWebAssetDir();
+        // $basedir = webapp()->getWebAssetDir();
         $baseurl = '/ph/assets';
         $cssFiles = array();
-        foreach( static::$assets as $widget ) {
-            $files = $widget->css();
+        foreach( static::$assets as $asset ) {
+            $files = $asset->css();
             foreach( $files as $file ) {
-                $path = $basedir    . DIRECTORY_SEPARATOR . $widget->name() . DIRECTORY_SEPARATOR . $file;
-                $url = $baseurl . DIRECTORY_SEPARATOR . $widget->name() . DIRECTORY_SEPARATOR . $file;
+                // $path = $basedir    . DIRECTORY_SEPARATOR . $asset->name() . DIRECTORY_SEPARATOR . $file;
+                $url = $baseurl . DIRECTORY_SEPARATOR . $asset->name() . DIRECTORY_SEPARATOR . $file;
                 $cssFiles[] = $url;
             }
         }
@@ -81,12 +80,6 @@ class AssetLoader
                 return static::newAsset( $name );
             } 
         }
-
         throw new Exception("Asset $name can not be loaded. $path not found.");
     }
-
-
 }
-
-
-
