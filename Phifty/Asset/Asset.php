@@ -1,7 +1,5 @@
 <?php
 namespace Phifty\Asset;
-
-use Phifty\View\TwigLight;
 use ReflectionObject;
 
 abstract class Asset 
@@ -30,6 +28,7 @@ abstract class Asset
 
     function baseUrl()
     {
+        // xxx: use from WebPath
         return '/ph/assets/' . $this->name();
     }
 
@@ -43,32 +42,6 @@ abstract class Asset
     function minified_css()
     {
 
-    }
-
-
-    function getTemplate() 
-    {
-        if( $this->template )
-            return $this->template;
-        return $this->template();
-    }
-
-    function setTemplate( $template )
-    {
-        $this->template = $template;
-    }
-
-    function template() 
-    {
-
-    }
-
-    function render() 
-    {
-        $twig = TwigLight::getEngine();
-        $template_content = $this->getTemplate();
-        $template = $twig->loadTemplate( $template_content );
-        return $template->render(array( 'Asset' => $this ));
     }
 
     function css() { return array(); }
