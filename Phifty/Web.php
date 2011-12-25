@@ -210,7 +210,7 @@ class Web
 
     public function langs()
     {
-        return webapp()->l10n->getLangList();
+        return webapp()->locale->getLangList();
     }
 
 
