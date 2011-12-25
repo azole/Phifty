@@ -2,7 +2,7 @@
 namespace Phifty\Command;
 use Phifty\FileUtils;
 use Phifty\PluginPool;
-use Phifty\WidgetFinder;
+use Phifty\Asset\AssetFinder;
 
 /*
  * Export plugin web dirs to app webroot.
@@ -19,7 +19,7 @@ class Export extends \Phifty\Command
         $app          = \AppKernel::one();
         $webroot      = $app->getWebRootDir();
         $webPluginDir = $app->getWebPluginDir();
-        $webWidgetDir = $app->getWebWidgetDir();
+        $webAssetDir = $app->getWebAssetDir();
         $appWebDir    = $app->getAppWebDir();
         $coreWebDir   = $app->getCoreWebDir();
 
@@ -42,7 +42,7 @@ class Export extends \Phifty\Command
 		$dirs = array();
 		$dirs[] = $webroot;
 		$dirs[] = $webPluginDir;
-        $dirs[] = $webWidgetDir;
+        $dirs[] = $webAssetDir;
         $dirs[] = $appWebDir;
         $dirs[] = $coreWebDir;
         $dirs[] = $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload';
@@ -95,16 +95,16 @@ class Export extends \Phifty\Command
 
 
         /*
-         * Export widget web dirs 
+         * Export asset web dirs 
          *
-         * Export widgets/Galleria/web to PH_APP_ROOT/webroot/ph/widgets/Galleria
+         * Export assets/Galleria/web to PH_APP_ROOT/webroot/ph/assets/Galleria
          */
-        $widgets = WidgetFinder::findAll();
-        // $webWidgetDir;
-        $this->log("Creating links for widgets");
-        foreach( $widgets as $name => $widgetInfo ) {
-            $source = $widgetInfo->web;
-            $target = FileUtils::path_join( $webWidgetDir , $widgetInfo->name );
+        $assets = AssetFinder::findAll();
+        // $webAssetDir;
+        $this->log("Creating links for assets");
+        foreach( $assets as $name => $assetInfo ) {
+            $source = $assetInfo->web;
+            $target = FileUtils::path_join( $webAssetDir , $assetInfo->name );
 
             if( file_exists( $target ) )
                 unlink( $target );
