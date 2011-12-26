@@ -18,6 +18,5 @@ class Console extends \CLIFramework\Application
             return $instance;
         return $instance = new static;
     }
-
 }
 
