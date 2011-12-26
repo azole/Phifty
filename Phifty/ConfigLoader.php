@@ -52,7 +52,7 @@ class ConfigLoader
 
     function __construct($app)
     { 
-        $environment = getenv('PHIFTY_ENV');
+        $environment = getenv('PHIFTY_ENV') ?: $_REQUEST['PHIFTY_ENV'];
         $this->environment = $environment = ($environment ?: 'dev');
 
         switch( $environment ) {
@@ -133,7 +133,7 @@ class ConfigLoader
 
     function isDevelopment()
     {
-        return @$this->config['development'];
+        return $this->environment === 'dev';
     }
 
 
