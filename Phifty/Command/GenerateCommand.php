@@ -3,6 +3,8 @@ namespace Phifty\Command;
 use Phifty\FileUtils;
 use Phifty\CodeTemplate;
 
+// xxx:
+
 class GenerateCommand extends \CLIFramework\Command
 {
     public $longOpts = array( 
