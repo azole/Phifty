@@ -11,6 +11,14 @@ namespace Phifty;
 
 class Console extends \CLIFramework\Application
 {
+
+    function init()
+    {
+        parent::init();
+        $this->registerCommand( 'schema' );
+    }
+
+
     static function getInstance()
     {
         static $instance;
