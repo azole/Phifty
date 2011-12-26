@@ -158,7 +158,7 @@ class Web
     public function include_plugins()
     {
         $html = '';
-        $plugins = \Phifty\PluginPool::one()->getPlugins();
+        $plugins = webapp()->plugin->getPlugins();
         if( $plugins ) {
             foreach( $plugins as $plugin ) {
                 $html .= $this->includeMicroAppJs( $plugin , 

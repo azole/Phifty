@@ -1,7 +1,6 @@
 <?php
 namespace Phifty\Command;
 use Phifty\FileUtils;
-use Phifty\PluginPool;
 use Symfony\Component\Finder\Finder;
 /*
  * Export Locale

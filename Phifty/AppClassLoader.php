@@ -1,7 +1,6 @@
 <?php
 namespace Phifty;
 use Phifty\AbstractClassLoader;
-use Phifty\PluginPool;
 use Phifty\FileUtils;
 use Phifty\Singleton;
 

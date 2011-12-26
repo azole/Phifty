@@ -46,7 +46,7 @@ class Compress extends \Phifty\Command
         $core = \Core\Application::one();
         $this->compressApp( $core );
 
-        $plugins = \Phifty\PluginPool::one()->getPlugins();
+        $plugins = webapp()->plugin->getPlugins();
         if( $plugins ) {
             $this->log( "Compressing plugins ..." );
             foreach( $plugins as $plugin ) {

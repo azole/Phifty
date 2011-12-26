@@ -1,15 +1,25 @@
 <?php
+/*
+ * This file is part of the {{ }} package.
+ *
+ * (c) Yo-An Lin <cornelius.howl@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ */
 namespace Phifty;
+
 use Exception;
 use Phifty\FileUtils;
 use Phifty\Singleton;
 
-class PluginPool extends Singleton
+class PluginManager extends Singleton
 {
-    // config hash contains all plugins.
-    // public $pluginConfig;
 
-    // plugin object stack
+    /**
+     * plugin object stack
+     */
     public $plugins = array();
     
     function __construct()
@@ -41,7 +51,10 @@ class PluginPool extends Singleton
         return false;
     }
 
-    function loadAll( $pluginList )
+    /**
+     * load from plugin list
+     */
+    function loadFromList( $pluginList )
     {
         try {
             foreach( $pluginList as $name => $config ) {
@@ -56,17 +69,29 @@ class PluginPool extends Singleton
         }
     }
 
+
+    /**
+     * has plugin 
+     */
 	function hasPlugin( $name )
 	{
 		return isset($this->plugins[ $name ]);
 	}
 
+
+    /**
+     * get plugin object
+     */
     function getPlugin( $name )
     {
         if( isset( $this->plugins[ $name ] ) )
             return $this->plugins[ $name ];
     }
 
+
+    /**
+     * load plugin
+     */
     function load( $name , $config = array() )
     {
         # $name = '\\' . ltrim( $name , '\\' );
@@ -79,4 +104,3 @@ class PluginPool extends Singleton
 
 }
 
-?>

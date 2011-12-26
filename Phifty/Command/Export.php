@@ -1,7 +1,6 @@
 <?php
 namespace Phifty\Command;
 use Phifty\FileUtils;
-use Phifty\PluginPool;
 use Phifty\Asset\AssetFinder;
 
 /*
@@ -70,8 +69,7 @@ class Export extends \Phifty\Command
 		 * and link the plugin web directory to web/
 		 *
 		 * */
-        $pool = \Phifty\PluginPool::one();
-        foreach( $pool->getPlugins() as $plugin ) 
+        foreach( webapp()->plugin->getPlugins() as $plugin ) 
         {
             // create links
             // var_dump( $plugin->getName() ); 
