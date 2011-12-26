@@ -16,6 +16,7 @@ class Console extends \CLIFramework\Application
     {
         parent::init();
         $this->registerCommand( 'schema' );
+        $this->registerCommand( 'cache' );
     }
 
 
