@@ -12,9 +12,10 @@ class ClearCommand extends Command
 
         $logger->info( 'Cleaning up cache...' );
 
-        $cache = webapp()->cache;
-        $cache->clear();
-
+        $bs = webapp()->cache->getBackends();
+        foreach( $bs as $b ) {
+            $b->clear();
+        }
         $logger->info( 'Done' );
     }
 }
