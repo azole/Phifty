@@ -15,26 +15,27 @@ class SchemaCommand extends Command
     function init()
     {
         $this->registerCommand( 'init' );
+        $this->registerCOmmand( 'create-user' );
     }
 
     function options($opts)
     {
         $longOpts = array(
-            'drop',
-            'init',
-            'rebuild',
-            'u|user:',
-            'p|pass:',
-            'g|grant:',
-            'M|model:',
-            'grant-on:',
-            'drop-user:',
-            'list-user'
+#              'drop',
+#              'init',
+#              'rebuild',
+#              'u|user:',
+#              'p|pass:',
+#              'g|grant:',
+#              'M|model:',
+#              'drop-user:',
+#              'list-user'
         );
     }
 
     function execute($arguments)
     {
+
     }
 
 }

@@ -29,3 +29,4 @@ class Console extends \CLIFramework\Application
     }
 }
 
+
