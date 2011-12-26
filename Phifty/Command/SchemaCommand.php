@@ -15,7 +15,7 @@ class SchemaCommand extends Command
     function init()
     {
         $this->registerCommand( 'init' );
-        $this->registerCOmmand( 'create-user' );
+        // $this->registerCOmmand( 'create-user' );
     }
 
     function options($opts)
