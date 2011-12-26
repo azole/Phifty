@@ -2,6 +2,7 @@
 namespace Phifty\Routing;
 use Exception;
 use Phifty\Routing\RouteCompiler;
+use Phifty\Routing\ApcRouteCompiler;
 use Phifty\Routing\Route;
 
 /* RouteDispatcher
@@ -25,7 +26,8 @@ class RouteDispatcher
 	{
         if( strlen($pattern) > 1 )
             $pattern  = rtrim( $pattern , '/' );
-        $compiler = new RouteCompiler;
+
+        $compiler = webapp()->isDev ? new RouteCompiler : new ApcRouteCompiler;
 
         // expand routerset to routes
         if( is_object($route) && is_a( $route, '\Phifty\Routing\RouteSet' ) ) 

@@ -1,10 +1,6 @@
 <?php
 namespace Phifty\Routing;
 
-interface RouteCompilerInterface { 
-    public function compile( Array $route );
-}
-
 class RouteCompiler implements RouteCompilerInterface
 {
     /**
@@ -86,7 +82,10 @@ class RouteCompiler implements RouteCompilerInterface
             $regex .= str_repeat(' ', $indent * 4).")?\n";
         }
 
+        // save variables
         $route['variables'] = $variables;
+
+        // save compiled pattern
         $route['compiled'] = sprintf("#^\n%s$#xs", $regex);
         return $route;
 
