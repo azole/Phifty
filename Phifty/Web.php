@@ -47,20 +47,6 @@ class Web
         return $paths;
     }
 
-
-    private function getjQueryVersion()
-    {
-        return webapp()->config('web.jquery');
-    }
-
-
-    /* web path */
-    private function getjQueryPath()
-    {
-        $version = $this->getjQueryVersion();
-        return 'js/jquery/jquery-' . $version . '.js';
-    }
-
     private function getAppWebBaseUrl()
     {
 		return WebPath::appBase();
@@ -104,10 +90,6 @@ class Web
         $fileList = $app->js();
         if( count($fileList) === 0 ) 
             return '';
-
-        /* XXX: prepend jQuery */
-#          $jqueryPath = $this->getjQueryPath();
-#          array_unshift( $fileList , $jqueryPath );
 
         /* get absolute paths */
         $filePaths = $this->globPaths( $webDir , $fileList );
