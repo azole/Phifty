@@ -19,9 +19,10 @@ class ApcRouteCompiler
     public function compile(Array $route )
     {
         $pattern = $route['pattern'];
-        if( ($compiled = webapp()->apc->get( $pattern ) ) !== null ) {
+        if( ($compiled = webapp()->apc->get( $pattern ) ) !== false ) {
             return $compiled;
         }
+
         $compiled = parent::compile( $route );
         webapp()->apc->set( $pattern , $compiled );
         return $compiled;

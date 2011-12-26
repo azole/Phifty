@@ -75,11 +75,11 @@ class Web
     {
         $isDev = webapp()->isDev;
         /*
-         * FIXME:
+         * xxx:
          *   Currently css can not be minified because:
          *       1. related image paths (image not found)
          */
-        if( $isDev ) {
+        if( 1 || $isDev ) {
             // relative file paths
             $fileList = $app->css();
 
@@ -102,7 +102,7 @@ class Web
     {
         $isDev = webapp()->isDev;
         $fileList = $app->js();
-        if( count($fileList) == 0 ) 
+        if( count($fileList) === 0 ) 
             return '';
 
         /* XXX: prepend jQuery */
@@ -114,7 +114,9 @@ class Web
 
         /* convert to web urls */
         $webPaths = array();
-        if( $isDev ) {
+
+        // disable minified js for now.
+        if( 1 || $isDev ) {
             $webPaths = $this->buildUrls( $filePaths , $webDir , $webBaseUrl );
             return $this->buildScriptTags( $webPaths );
         }
@@ -228,105 +230,4 @@ class Web
         $view->result = $result;
         return $view->render('Core/template/phifty/action_result_box.html');
     }
-
 }
-
-
-/*
-class Web {
-
-	public $loader;
-	public $kernel;
-
-	function __construct( $kernel ) {
-		$this->kernel = $kernel;
-
-		// XXX: get config config here
-		$loader = new Loader(array( 
-			'root_dir' => PH_APP_ROOT,
-			'web_dir'  => "web",
-			'cache_dir' => PH_APP_ROOT . '/web/cache',
-
-			# "base_url" => "/git/lart/..../web",
-			'minify'  => false
-		));
-
-		$loader->import( array(
-            'name' => 'phifty.core',
-			'minify' => true,
-			'mapping' => array( PH_APP_ROOT . '/phifty/web','ph'), // replace phifty/web to ph (or base path from config)
-			'js' => array( 
-				PH_APP_ROOT . '/phifty/web/js/jquery-1.5.2.min.js', // path based on PH_APP_ROOT
-				PH_APP_ROOT . '/phifty/web/js/jquery.history.js',
-				PH_APP_ROOT . '/phifty/web/js/jquery.oembed.js',
-				PH_APP_ROOT . '/phifty/web/js/jquery.scrollTo-min.js',
-				PH_APP_ROOT . '/phifty/web/js/webtoolkit.aim.js',
-			),
-			'css' => array( 
-				PH_APP_ROOT . '/phifty/web/css/custom-jgrowl.css',
-				PH_APP_ROOT . '/phifty/web/css/pager.css',
-			)
-		));
-
-        $loader->import( array(
-            'name' => 'blueprint',
-            'minify' => false,
-			'mapping' => array( PH_APP_ROOT . '/phifty/web','ph'),
-            'css' => PH_APP_ROOT . '/phifty/web/css/blueprint/compressed/screen.css'
-        ));
-
-        $loader->import( array( 
-			'minify' => false,
-			'mapping' => array( PH_APP_ROOT . '/phifty/web','ph'), // replace phifty/web to ph (or base path from config)
-			'js' => array( 
-				PH_APP_ROOT . '/phifty/web/js/minilocale.js',
-				PH_APP_ROOT . '/phifty/web/js/region.js',
-				PH_APP_ROOT . '/phifty/web/js/action.js',
-            ),
-            'css' => array(
-				PH_APP_ROOT . '/phifty/web/css/jquery-region/themes/basic.css',
-				PH_APP_ROOT . '/phifty/web/css/action.css',
-				PH_APP_ROOT . '/phifty/web/css/main.css'
-            )
-        ));
-
-        $loader->import( array( 
-			'minify' => false,
-            'name' => 'jquery-ev',
-			'mapping' => array( PH_APP_ROOT . '/phifty/web','ph'), // replace phifty/web to ph (or base path from config)
-			'js' => array( PH_APP_ROOT . '/phifty/web/js/jquery.ev.js' )
-        ));
-
-		// jQuery UI
-		$loader->import( array( 
-			'minify'  => false,
-			'mapping' => array( PH_APP_ROOT . '/phifty/web' , 'ph'),
-			'js'      => PH_APP_ROOT . '/phifty/web/js/jqueryui/js/jquery-ui-1.8.6.custom.min.js',
-			'css'     => PH_APP_ROOT . '/phifty/web/js/jqueryui/css/flick/jquery-ui-1.8.6.custom.css'
-		));
-
-		// jQuery Growl
-		$loader->import( array(
-			'mapping' => array( PH_APP_ROOT . '/phifty/web' , 'ph'),
-			'js' =>  PH_APP_ROOT . '/phifty/web/js/jgrowl/jquery.jgrowl.js',
-			'css' => PH_APP_ROOT . '/phifty/web/js/jgrowl/jquery.jgrowl.css'
-		));
-
-        # . " lightbox/js/jquery.lightbox-0.5.min.js" 
-        # . ' js/lightbox/css/jquery.lightbox-0.5.css'
-		# $css_files = 'js/jgrowl/jquery.jgrowl.css'
-		# . ' css/action.css'
-		# . ' css/pager.css'
-		# . ' css/admin.css'
-		# . ' css/blueprint/screen.css'
-		# . ' css/jquery-region/themes/basic.css';
-		$this->loader = $loader;
-	}
-
-	function getLoader() {
-		return $this->loader;
-	}
-}
- */
-
-?>
