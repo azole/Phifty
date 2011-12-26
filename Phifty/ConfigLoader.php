@@ -16,7 +16,6 @@ $loader->get('i18n.setup.blah'); // better way
 
 */
 namespace Phifty;
-use Spyc;
 use Exception;
 
 
