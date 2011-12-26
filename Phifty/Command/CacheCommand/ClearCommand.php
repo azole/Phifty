@@ -8,7 +8,14 @@ class ClearCommand extends Command
 
     function execute($args)
     {
+        $logger = $this->getLogger();
 
+        $logger->info( 'Cleaning up cache...' );
+
+        $cache = webapp()->cache;
+        $cache->clear();
+
+        $logger->info( 'Done' );
     }
 }
 
