@@ -52,13 +52,20 @@ class ConfigLoader
 
     function __construct($app)
     { 
-        $environment = getenv('PHIFTY_ENV') ?: $_REQUEST['PHIFTY_ENV'];
-        $this->environment = $environment = ($environment ?: 'dev');
+        $this->environment = getenv('PHIFTY_ENV');
+        if( $this->environment == null ) {
+            if( isset($_REQUEST['PHIFTY_ENV']) ) {
+                $this->environment = $_REQUEST['PHIFTY_ENV'];
+            }
+        }
+        if( $this->environment == null ) {
+            $this->environment = 'dev';
+        }
 
-        switch( $environment ) {
+        switch( $this->environment ) {
             case 'test':
             case 'dev':
-                $this->config = $this->loadEnvironmentConfig( $app,$environment );
+                $this->config = $this->loadEnvironmentConfig( $app,$this->environment );
                 break;
             case 'prod':
                 $configKey = $app->appName;
@@ -68,12 +75,12 @@ class ConfigLoader
                     $this->config = $config;
                 }
                 else {
-                    $this->config = $this->loadEnvironmentConfig( $app,$environment );
+                    $this->config = $this->loadEnvironmentConfig( $app,$this->environment );
                     $app->cache->set( $configKey , $this->config );
                 }
                 break;
             default:
-                throw new Exception("Unsupported environment mode: $environment.");
+                throw new Exception("Unsupported environment mode: {$this->environment}.");
                 break;
         }
     }
