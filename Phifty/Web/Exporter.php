@@ -25,8 +25,8 @@ class Exporter
         );
 
         /* register action result */
-        $this->vars['Action']      = array( 'results' => ActionRunner::one()->results );
-        $this->vars['Kernel']      = \AppKernel::one();
+        $this->vars['Action']      = array( 'results' => ActionRunner::getInstance()->results );
+        $this->vars['Kernel']      = \AppKernel::getInstance();
         $this->vars['CurrentUser'] = new \Phifty\CurrentUser;
         $this->vars['Web']         = new \Phifty\Web;
 		// $this->AssetLoader = AssetLoader;

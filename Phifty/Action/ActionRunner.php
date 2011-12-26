@@ -18,7 +18,7 @@ use Phifty\StringUtils;
         {App}::Action::Signup
 
 
-    $runner = Phifty\Action\ActionRunner::one();
+    $runner = Phifty\Action\ActionRunner::getInstance();
     $result = $runner->run();
     if( $result ) {
         if( $runner->isAjax() ) {

@@ -145,13 +145,13 @@ class Web
 
     public function include_core_css()
     {
-        $core = CoreApplication::one();
+        $core = CoreApplication::getInstance();
         return $this->includeMicroAppCss( $core , webapp()->getCoreWebDir() , WebPath::coreBase() );
     }
 
     public function include_core_js()
     {
-        $core = CoreApplication::one();
+        $core = CoreApplication::getInstance();
         return $this->includeMicroAppJs( $core , webapp()->getCoreWebDir() , WebPath::coreBase() );
     }
 
@@ -183,7 +183,7 @@ class Web
 
     public function render_all_results()
     {
-        $runner = ActionRunner::one();
+        $runner = ActionRunner::getInstance();
         $results = $runner->getResults();
         $html = '';
         foreach( $results as $key => $value ) {
@@ -200,13 +200,13 @@ class Web
 
     public function get_result( $resultName )
     {
-        $runner = ActionRunner::one();
+        $runner = ActionRunner::getInstance();
         return $runner->getResult( $resultName );
     }
 
     public function render_result( $resultName )
     {
-        $runner = ActionRunner::one();
+        $runner = ActionRunner::getInstance();
         $result = $runner->getResult( $resultName );
         $view = new \Phifty\View;
         $view->result = $result;

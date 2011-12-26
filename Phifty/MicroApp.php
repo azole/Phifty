@@ -137,7 +137,7 @@ class MicroApp extends \Phifty\Singleton
     /* register CRUD actions */
     function withCRUDAction( $model , $types )
     {
-        $runner = ActionRunner::one();
+        $runner = ActionRunner::getInstance();
         $runner->addCRUD( $this->baseClass() , $model , (array) $types );
     }
 }

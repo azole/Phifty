@@ -96,7 +96,7 @@ class PluginManager extends Singleton
     {
         # $name = '\\' . ltrim( $name , '\\' );
         $class = "\\$name\\$name";
-        $plugin = $class::one();
+        $plugin = $class::getInstance();
         $plugin->setConfig( $config );
         $plugin->init();
         return $this->plugins[ $name ] = $plugin;

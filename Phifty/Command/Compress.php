@@ -43,7 +43,7 @@ class Compress extends \Phifty\Command
 
     function run()
     {
-        $core = \Core\Application::one();
+        $core = \Core\Application::getInstance();
         $this->compressApp( $core );
 
         $plugins = webapp()->plugin->getPlugins();

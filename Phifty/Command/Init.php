@@ -8,7 +8,7 @@ class Init extends \Phifty\Command
 {
     function run()
     {
-        $kernel = \AppKernel::one();
+        $kernel = \AppKernel::getInstance();
 
 		$this->log( "Initializing phifty dirs..." );
 

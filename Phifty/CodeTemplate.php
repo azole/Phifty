@@ -20,7 +20,7 @@ class CodeTemplate
 
     public function __construct()
     {
-        $this->kernel = \AppKernel::one();
+        $this->kernel = \AppKernel::getInstance();
         $this->smarty = $this->getSmarty();
     }
 
