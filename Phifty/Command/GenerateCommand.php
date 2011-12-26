@@ -1,30 +1,19 @@
 <?php
 namespace Phifty\Command;
-
 use Phifty\FileUtils;
 use Phifty\CodeTemplate;
 
-class Generate extends \Phifty\Command
+class GenerateCommand extends \CLIFramework\Command
 {
     public $longOpts = array( 
         "C|core",
         "f|force",
     );
 
-    function help()
+    function brief()
     {
-        echo <<<EOF
-
-phifty.php generate [type] [name]
-    
-    controller
-    action
-    view
-
-EOF;
-        exit(0);
+        return 'generate files';
     }
-
 
     function run()
     {
