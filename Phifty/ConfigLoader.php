@@ -32,7 +32,7 @@ $loader->get( $key );
 	$loader->get('i18n');
 
 */
-use Phifty\YAML;
+use YAMLKit\YAML;
 
 class ConfigLoader
 {

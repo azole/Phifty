@@ -1,5 +1,5 @@
 <?php
-namespace Phifty;
+namespace YamlKit;
 use Spyc;
 
 /* Integrate differnet yaml backend */
@@ -48,7 +48,4 @@ class YAML
         $yaml = Spyc::YAMLDump( $config );
         return file_put_contents( $file , $yaml );
     }
-
 }
-
-

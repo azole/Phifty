@@ -1,7 +1,7 @@
 <?php
 namespace Phifty;
 use Phifty\Web\Request;
-use Phifty\YAML;
+use YAMLKit\YAML;
 use Exception;
 
 interface ControllerInterface 
