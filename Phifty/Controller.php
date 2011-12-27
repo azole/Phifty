@@ -184,13 +184,29 @@ class Controller
         return $view->render( $template );
     }
 
+
+    /**
+     * Return parent route
+     *
+     * from: Route to Controller
+     *
+     * @return \Phifty\Routing\Route
+     */
     public function getRoute()
     {
         return $this->route;
     }
 
+
+    /**
+     * run after
+     */
     public function after() { }
 
+
+    /**
+     * run before
+     */
     public function before() { }
 
     public function forbidden($msg = null)

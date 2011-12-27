@@ -14,6 +14,10 @@ abstract class CRUDRouteSet extends RouteSet
     public $crudId;
     public $currentRecord;
 
+    public $canCreate = true;
+    public $canUpdate = true;
+    public $canDelete = true;
+
     /* vars to be export to template */
     public $vars = array();
 
@@ -92,7 +96,6 @@ abstract class CRUDRouteSet extends RouteSet
         return $this->currentRecord = $record;
     }
 
-
     function render( $template , $args = array() , $engineOpts = array() )
     {
         // merge export vars
@@ -101,7 +104,6 @@ abstract class CRUDRouteSet extends RouteSet
         // var_dump( $args['CRUD']['Edit']['record']->data ); 
         return parent::render( $template , $args , $engineOpts );
     }
-
 
     /* renderer helpers */
     function renderCrudIndexTiles()
