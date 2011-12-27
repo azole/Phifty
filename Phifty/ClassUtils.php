@@ -4,7 +4,6 @@ use ReflectionClass;
 
 class ClassUtils 
 {
-
     static function new_class( $class , $args = null )
     {
         $rc = new ReflectionClass( $class );

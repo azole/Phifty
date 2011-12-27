@@ -6,10 +6,17 @@ use Phifty\Singleton;
 
 class AppClassLoader extends Singleton
 {
+
+    /**
+     * nsPath
+     * 
+     * @var array
+     */
     public $nsPaths = array( );
 
-    // xxx: Move Collection loader out, remove this redundant classloader
-
+    // xxx: 
+    // Move Collection loader out, remove this redundant classloader
+    // Use General classloader
     public $supportedTypes = array( 
         'Model' => 1,
         'Controller' => 1,
@@ -17,67 +24,46 @@ class AppClassLoader extends Singleton
         'View' => 1
     );
 
-    function __construct() 
-    {
-
-    }
-
     function add( $ns, $path )
     {
         $this->nsPaths[ $ns ] = $path;
     }
 
     /**
-     *
      * To load core app class, app class, and plugins
-     *
-     * Core/Core.php             <= use Core\Core;
-     * Core/Controller/ ...      <= use Core\Controller\...;
-     * Core/Action/ ...          <= use Core\Action\Create....;
-     *
-     * App/App.php               <= use App\App;
-     * App/Controller/Index.php  <= use App\Controller\Index;
-     *
-     * plugins/AdminUI/AdminUI.php
-     * plugins/AdminUI/Controller/Login.php
-     *
      *
      * Register paths:
      *
-     *      'Core' => PH_ROOT ,
-     *      'App'  => PH_APP_ROOT,
-     *      'AdminUI' => 'plugins/AdminUI',  # \AdminUI
+     *  'Core' => PH_ROOT ,
+     *  'App'  => PH_APP_ROOT,
+     *  'AdminUI' => 'plugins/AdminUI',  # \AdminUI
      *
+     *  @param string $class
      */
-
-    // if class name contains 'model','collection','template' ... etc
-    // use ns root path   
-    //      PH_ROOT/{ns}/{type}/{rest}.php
-    //
-    // if not,
-    // use root path + 'src' + ns path
-    //
-    //      PH_ROOT/{ns}/src/{ns}/class.php
     function load( $class )
     {
         // get first part of ns name
         $parts = explode('\\', $class,3);
         $ns = $parts[0];
 
+        /**
+         * check if the namespace is registered.
+         */
         if( isset($this->nsPaths[ $ns ] ) ) {
-            $paths = $this->nsPaths[ $ns ];
-            
-            foreach( $paths as $path ) {
+            foreach( $this->nsPaths[ $ns ] as $path ) {
                 $classPath = $path . '/' . str_replace( array('\\') , DIRECTORY_SEPARATOR , $class ) . '.php';
-
                 if( file_exists($classPath) ) {
                     require $classPath;
                     return true;
                 }
 
-                /* If it's supported types, the class name should have 3 parts. */
+                /** 
+                 * If it's supported types, the class name should have 3 parts. 
+                 */
                 if( count($parts) > 2 ) {
-                    // special case for collection class.
+                    /**
+                     * special case for collection class (with Collection suffix)
+                     */
                     if( substr( $class , -10 ) == 'Collection' ) {
 
                         // if so, load model first.
@@ -92,6 +78,10 @@ class AppClassLoader extends Singleton
                                 $this->load( $modelClass );
                         }
 
+
+                        /**
+                         * improve performance for this case
+                         */
                         if( class_exists( $modelClass ) )
                             return $modelClass::produceCollectionClass();
                     }
@@ -109,4 +99,3 @@ class AppClassLoader extends Singleton
     }
 
 }
-
