@@ -83,10 +83,16 @@ class Controller
     */
 
     /* web utils functions */
-    function redirect($path)
+    function redirect($url)
     {
-        header( 'Location: ' . $path );
+        header( 'Location: ' . $url );
     }
+
+    function redirectLater($url,$seconds = 1 )
+    {
+        header( "refresh: $seconds; url=" . $url );
+    }
+
 
     /* handle post data */
     function post($env)
