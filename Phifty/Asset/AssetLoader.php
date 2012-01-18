@@ -12,7 +12,7 @@ class AssetLoader
 {
     static $assets = array();
 
-    static function newAsset($name)
+    static function createAsset($name)
     {
         $class = '\Phifty\Assets\\' . $name;
         $asset = new $class;
@@ -77,7 +77,7 @@ class AssetLoader
         foreach( $paths as $path ) {
             if( file_exists($path) ) {
                 require_once $path;
-                return static::newAsset( $name );
+                return static::createAsset( $name );
             } 
         }
         throw new Exception("Asset $name can not be loaded. $path not found.");
