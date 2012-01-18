@@ -35,8 +35,9 @@ class InitCommand extends Command
         );
     }
 
-    function execute($args)
+    function execute()
     {
+        $args = func_get_args();
         $opts = $this->getOptions();
 
         $logger = $this->getLogger();

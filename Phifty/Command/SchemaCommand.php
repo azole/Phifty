@@ -33,9 +33,4 @@ class SchemaCommand extends Command
         );
     }
 
-    function execute($arguments)
-    {
-
-    }
-
 }
