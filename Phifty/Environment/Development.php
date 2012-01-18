@@ -14,8 +14,14 @@ class Development
 {
     static function init($app)
     {
+        // use Universal\Requirement\Requirement checker
+
+
         if( ! class_exists( 'ReflectionObject' ) )
             throw new Exception('ReflectionObject class is not defined. Seems you are running an oooold php.');
+
+
+
         error_reporting(E_ALL | E_STRICT | E_ERROR | E_NOTICE | E_WARNING | E_PARSE);
 
         /**
