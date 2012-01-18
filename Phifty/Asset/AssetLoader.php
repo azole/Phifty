@@ -3,7 +3,6 @@ namespace Phifty\Asset;
 use Phifty\WebUtils;
 use Exception;
 
-
 /**
  * AssetLoader
  *
