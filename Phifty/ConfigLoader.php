@@ -67,7 +67,7 @@ class ConfigLoader
                 $this->config = $this->loadEnvironmentConfig( $app,$this->environment );
                 break;
             case 'prod':
-                $configKey = $app->appName;
+                $configKey = 'config_' . __FILE__;
 
                 // check cache
                 if(( $config = $app->cache->get( $configKey )) != null ) {
