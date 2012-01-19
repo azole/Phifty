@@ -306,13 +306,13 @@ class Controller
             if( isset( $vars[ $param->getName() ] ) ) {
                 $arguments[] = $vars[ $param->getName() ];
             } else {
-                $arguments[] = $this->getDefault( $param->getName() );
+                $arguments[] = $this->route->getDefault( $param->getName() );
             }
         }
 
         // XXX: check parameter numbers here
 
-        $content = call_user_func_array( array( $this, $action . 'Action' ) , $arguments );
+        $content = call_user_func_array( array( $this, $method ) , $arguments );
         $this->after();
         return $content;
     }

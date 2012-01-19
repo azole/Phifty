@@ -21,12 +21,11 @@ class ControllerRoute extends Route
 
     function evaluate()
     {
-		$class  = $this->get('controller');
-		// $method = $this->get('method'); // dispatch to method directly.
+		$controllerClass  = $this->get('controller');
+		$method = $this->get('method'); // dispatch to method directly.
         $action = $this->get('action'); // controller action name
-		$controller = new $class( $this );
-        $content = $controller->runAction( $action );
-		return $content;
+		$controller = new $controllerClass( $this );
+        return $controller->runAction( $action );
     }
 }
 
