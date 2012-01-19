@@ -16,12 +16,14 @@ interface ControllerInterface
 }
 
 /*
-    $controller = new $class( $this );
-    $controller->before();
-    $controller->indexAction();
-    $controller->after();
-*/
+    Synopsis
 
+    $controller = new $class( $this );
+    $controller->runAction( 'indexAction' , array(
+        'vars' => array( name => $value ),
+        'default' => array( ... ),
+    ) );
+*/
 
 class Controller 
     implements ControllerInterface
@@ -256,13 +258,13 @@ class Controller
     /**
      * dispatch and run controller action method
      *
-     * $c->dispatchAction('index');  => indexAction method
-     * $c->dispatchAction('post');   => postAction method
+     * $c->dispatchAction('index', $route );  => indexAction method
+     * $c->dispatchAction('post',  $route );  => postAction method
      * 
      * @param string $action action name
      *
      */
-    public function runAction($action,$route)
+    public function runAction($action,$parameters)
     {
         $method = $this->hasAction($action);
         if( ! $method )
@@ -277,7 +279,7 @@ class Controller
         $this->before();
 
         // validation action method prototype
-        $vars = $route->getVars();
+        $vars = $parameters['vars'];
 
         // get relection method parameter prototype for checking...
         $ro = new ReflectionObject( $this );
@@ -288,8 +290,10 @@ class Controller
         foreach( $parameters as $param ) {
             if( isset( $vars[ $param->getName() ] ) ) {
                 $arguments[] = $vars[ $param->getName() ];
+            } else if( isset($parameters['default'][ $param->getName() ] ) ) {
+                $arguments[] = $parameters['default'][ $param->getName() ];
             } else {
-                $arguments[] = $route->getDefault( $param->getName() );
+                throw new Exception( 'controller parameter error' );
             }
         }
 

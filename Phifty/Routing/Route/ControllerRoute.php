@@ -24,7 +24,10 @@ class ControllerRoute extends Route
         $controllerClass  = $this->get('controller');
         $action = $this->get('action'); // controller action name
         $controller = new $controllerClass();
-        return $controller->runAction( $action , $this );
+        return $controller->runAction( $action , array(
+            'vars' => $this->getVars(),
+            'default' => $this->getDefault(),
+        ) );
     }
 
 }

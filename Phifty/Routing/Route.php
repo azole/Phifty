@@ -1,9 +1,22 @@
 <?php
 namespace Phifty\Routing;
 
+
+/**
+ * Route hash structure:
+ *
+ * array( 
+ *     'pattern' => string
+ *     'default' =>  [ key => value ],
+ *     'vars' => [ key => value ],
+ *     'requirement' => [ 
+ *          // require patterns
+ *     ]
+ * );
+ */
 class Route
 {
-    public $hash;
+    public $hash = array();
 
     function __construct( $hash )
     {
@@ -35,20 +48,16 @@ class Route
         return @$this->hash['requirement'][ $key ];
     }
 
-    function getDefault( $name )
+    function getDefault()
     {
-        if( isset($this->hash['default'][$name] ) ) 
-            return $this->hash['default'][$name];
+        if( isset($this->hash['default'] ) ) 
+            return $this->hash['default'];
+        return array();
     }
 
     function getData()
     {
         return $this->hash;
-    }
-
-    function hasDefault( $name )
-    {
-        return isset($this->hash['default'][ $name ]);
     }
 
     function getVars()
