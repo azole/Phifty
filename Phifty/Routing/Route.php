@@ -43,9 +43,9 @@ class Route
         return $this->hash['prefix'];
     }
 
-    function getRequirement($key)
+    function getRequirement()
     {
-        return @$this->hash['requirement'][ $key ];
+        return @$this->hash['requirement'];
     }
 
     function getDefault()
