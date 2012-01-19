@@ -224,9 +224,11 @@ class Controller
         exit(0);
     }
 
-    public function forward()
-    {
 
+    public function forward($class,$action,$parameters = array())
+    {
+        $controller = new $class;
+        return $controller->runAction( $action , $parameters );
     }
 
 
@@ -285,7 +287,7 @@ class Controller
         $this->before();
 
         // validation action method prototype
-        $vars = $parameters['vars'];
+        $vars = isset($parameters['vars']) ? $parameters['vars'] : array();
 
         // get relection method parameter prototype for checking...
         $ro = new ReflectionObject( $this );
@@ -294,11 +296,17 @@ class Controller
         $parameters = $rm->getParameters();
         $arguments = array();
         foreach( $parameters as $param ) {
-            if( isset( $vars[ $param->getName() ] ) ) {
+            if( isset( $vars[ $param->getName() ] ) ) 
+            {
                 $arguments[] = $vars[ $param->getName() ];
-            } else if( isset($parameters['default'][ $param->getName() ] ) ) {
-                $arguments[] = $parameters['default'][ $param->getName() ];
-            } else {
+            } 
+            else if( isset($parameters['default'][ $param->getName() ]
+                            && $default = $parameters['default'][ $param->getName() ]
+                        ) )
+            {
+                $arguments[] = $default;
+            }
+            else {
                 throw new Exception( 'controller parameter error' );
             }
         }
