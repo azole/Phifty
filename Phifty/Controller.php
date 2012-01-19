@@ -225,6 +225,16 @@ class Controller
     }
 
 
+    /**
+     * forward to another controller
+     *
+     *
+     *  return $this->forward( '\OAuthPlugin\Controller\AuthenticationErrorPage','index',array(
+     *      'vars' => array(
+     *          'message' => $e->lastResponse
+     *      )
+     *  ));
+     */
     public function forward($class, $action = 'index' , $parameters = array())
     {
         $controller = new $class;
@@ -306,7 +316,7 @@ class Controller
                 $arguments[] = $default;
             }
             else {
-                throw new Exception('controller parameter error');
+                // throw new Exception("controller parameter error: ");
             }
         }
 
