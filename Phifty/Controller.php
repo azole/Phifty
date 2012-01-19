@@ -300,9 +300,9 @@ class Controller
             {
                 $arguments[] = $vars[ $param->getName() ];
             } 
-            else if( isset($parameters['default'][ $param->getName() ]
+            else if( isset($parameters['default'][ $param->getName() ] )
                             && $default = $parameters['default'][ $param->getName() ]
-                        ) )
+                        )
             {
                 $arguments[] = $default;
             }
