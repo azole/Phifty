@@ -147,8 +147,8 @@ abstract class CRUDRouteSet extends RouteSet
     {
         $collection = $this->getCollection();
         $env = $this->env;
-        $order_column = $env->request->_order_column;
-        $order_by     = $env->request->_order_by;
+        $order_column = $this->request->param('_order_column');
+        $order_by     = $this->request->param('_order_by');
 
         if( ! $order_column )
             $order_column = 'id';

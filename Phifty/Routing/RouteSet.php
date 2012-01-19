@@ -5,11 +5,18 @@ use Phifty\Controller;
 abstract class RouteSet extends Controller
 {
     public $routes = array();
+    public $route;
 
     function __construct( $route = null )
     {
-        parent::__construct( $route );
+        parent::__construct();
+        $this->route = $route; // parent route
         $this->table();
+    }
+
+    function getRoute()
+    {
+        return $this->route;
     }
 
     function before() {  }

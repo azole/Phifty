@@ -23,7 +23,10 @@ class ControllerRoute extends Route
     {
         $controllerClass  = $this->get('controller');
         $action = $this->get('action') ?: $this->get('method'); // controller action name, method name (backward-compatible)
-        $controller = new $controllerClass();
+
+        // controller doesn't need $route, 
+        // routeset need $route
+        $controller = new $controllerClass( $this ); 
         return $controller->runAction( $action , array(
             'vars' => $this->getVars(),
             'default' => $this->getDefault(),
