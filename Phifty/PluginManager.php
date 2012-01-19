@@ -22,11 +22,6 @@ class PluginManager extends Singleton
      */
     public $plugins = array();
     
-    function __construct()
-    {
-
-    }
-
     function isLoaded( $name )
     {
         return isset( $this->plugins[ $name ] );
@@ -97,7 +92,7 @@ class PluginManager extends Singleton
         # $name = '\\' . ltrim( $name , '\\' );
         $class = "\\$name\\$name";
         $plugin = $class::getInstance();
-        $plugin->setConfig( $config );
+        $plugin->mergeWithDefaultConfig( $config );
         $plugin->init();
         return $this->plugins[ $name ] = $plugin;
     }

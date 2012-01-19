@@ -9,17 +9,14 @@ class Plugin extends MicroApp
     public $basePath;
     private $getterCache = array();
 
-    /* XXX: view mapping should be global ? */
-    public $viewMapping  = array();
-
-    function __construct()
-    {
-
-    }
-
-    function setConfig( $config )
+    public function setConfig( $config )
     {
         $this->config = $config;
+    }
+
+    public function mergeWithDefaultConfig( $config = array() )
+    {
+        $this->config = array_merge( $this->defaultConfig() , $config ?: array() );
     }
 
     /*
@@ -138,21 +135,6 @@ class Plugin extends MicroApp
         # return FileUtils::path_join( webapp()->getWebPluginDir() , $name );
     }
 
-
-    /* 
-        
-    Export template file path to virtual template path
-
-    use case:
-
-        webapp()->view()->render( '/sb/product/view/' );
-
-
-     * */
-    protected function exportView( $virtualPath , $templateName )
-    {
-        $this->viewMapping[ $virtualPath ] = $templateName;
-    }
 
     /*
     
