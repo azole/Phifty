@@ -27,6 +27,7 @@ class ControllerRoute extends Route
         return $controller->runAction( $action , array(
             'vars' => $this->getVars(),
             'default' => $this->getDefault(),
+            'requirement' => $this->getRequirement(),
         ) );
     }
 
