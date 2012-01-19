@@ -31,7 +31,20 @@ class Plugin extends MicroApp
     }
      */
 
-    function config( $key ) 
+    public function defaultConfig()
+    {
+        return array();
+    }
+
+
+    /**
+     * get config:
+     *
+     * @param string $key config key
+     *
+     * @return mixed
+     */
+    public function config( $key ) 
     {
         if( isset( $this->getterCache[ $key ] ) ) 
             return $this->getterCache[ $key ];
@@ -57,8 +70,7 @@ class Plugin extends MicroApp
 	}
 
 
-
-    function configHash()
+    public function getConfig()
     {
         return $this->config;
     }
