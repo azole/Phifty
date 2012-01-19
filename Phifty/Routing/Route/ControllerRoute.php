@@ -22,7 +22,7 @@ class ControllerRoute extends Route
     function evaluate()
     {
         $controllerClass  = $this->get('controller');
-        $action = $this->get('action'); // controller action name
+        $action = $this->get('action') ?: $this->get('method'); // controller action name, method name (backward-compatible)
         $controller = new $controllerClass();
         return $controller->runAction( $action , array(
             'vars' => $this->getVars(),

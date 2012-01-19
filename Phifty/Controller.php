@@ -285,6 +285,11 @@ class Controller
     public function runAction($action,$parameters)
     {
         $method = $this->hasAction($action);
+
+        /* is method ? backward-compatible support */
+        if( method_exists($this,$action) )
+            $method = $action;
+
         if( ! $method )
             $method = $this->getDefaultActionMethod();
 
