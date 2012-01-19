@@ -225,7 +225,7 @@ class Controller
     }
 
 
-    public function forward($class,$action,$parameters = array())
+    public function forward($class, $action, $parameters = array())
     {
         $controller = new $class;
         return $controller->runAction( $action , $parameters );
@@ -293,21 +293,20 @@ class Controller
         $ro = new ReflectionObject( $this );
         $rm = $ro->getMethod($method);
 
-        $parameters = $rm->getParameters();
+        $rfParameters = $rm->getParameters();
         $arguments = array();
-        foreach( $parameters as $param ) {
-            if( isset( $vars[ $param->getName() ] ) ) 
+        foreach( $rfParameters as $rfParam ) {
+            if( isset( $vars[ $rfParam->getName() ] ) ) 
             {
-                $arguments[] = $vars[ $param->getName() ];
+                $arguments[] = $vars[ $rfParam->getName() ];
             } 
-            else if( isset($parameters['default'][ $param->getName() ] )
-                            && $default = $parameters['default'][ $param->getName() ]
-                        )
+            else if( isset($parameters['default'][ $rfParam->getName() ] )
+                            && $default = $parameters['default'][ $rfParam->getName() ] )
             {
                 $arguments[] = $default;
             }
             else {
-                throw new Exception( 'controller parameter error' );
+                throw new Exception('controller parameter error');
             }
         }
 
