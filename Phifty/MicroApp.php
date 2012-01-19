@@ -114,14 +114,13 @@ class MicroApp extends \Phifty\Singleton
                 $class = '\\' .  $this->baseClass() . "\\Controller\\$class";
 
             /* extract action method name out, and set default to run method. */
-            $method = 'run';
+            $action = 'index';
             if( ($pos = strrpos($class,':')) !== false ) {
                 list($class,$action) = explode(':',$class);
-                $method = $action . 'Action';
             }
             $route = array(
                 'controller' => $class,
-                'method'     => $method,
+                'action'     => $action,
             );
             webapp()->dispatcher->add( $pattern, $route , $extra );
         }
