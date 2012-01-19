@@ -33,4 +33,5 @@ class SchemaCommand extends Command
         );
     }
 
+    public function execute() {  }
 }
