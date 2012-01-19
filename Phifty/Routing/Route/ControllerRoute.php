@@ -22,38 +22,10 @@ class ControllerRoute extends Route
     function evaluate()
     {
 		$class  = $this->get('controller');
-		$method = $this->get('method');
-
+		// $method = $this->get('method'); // dispatch to method directly.
+        $action = $this->get('action'); // controller action name
 		$controller = new $class( $this );
-		$controller->before();
-
-        if( ! $method ) {
-            if( $action = $this->get('action') )
-                $method = $action . 'Action';
-            if( ! $method )
-                $method = 'run';
-        }
-
-        if( method_exists($controller,$method) ) {
-            $vars = $this->getVars();
-            $ro = new ReflectionObject( $controller );
-            $rm = $ro->getMethod($method);
-            $parameters = $rm->getParameters();
-            $arguments = array();
-            foreach( $parameters as $param ) {
-                if( isset( $vars[ $param->getName() ] ) ) {
-                    $arguments[] = $vars[ $param->getName() ];
-                } else {
-                    $arguments[] = $this->getDefault( $param->getName() );
-                }
-            }
-            $content = call_user_func_array( array($controller,$method) , $arguments );
-        } else {
-            header('HTTP/1.0 403');
-            throw new Exception( "Controller action method $method not found." );
-        }
-
-		$controller->after();
+        $content = $controller->runAction( $action );
 		return $content;
     }
 }

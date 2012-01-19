@@ -1,6 +1,8 @@
 <?php
 namespace Phifty;
 use Phifty\Web\Request;
+use Universal\Http\HttpRequest;
+use ReflectionObject;
 use YAMLKit\YAML;
 use Exception;
 
@@ -13,6 +15,14 @@ interface ControllerInterface
     function get( $env );
 }
 
+/*
+    $controller = new $class( $this );
+    $controller->before();
+    $controller->indexAction();
+    $controller->after();
+*/
+
+
 class Controller 
     implements ControllerInterface
 {
@@ -23,11 +33,15 @@ class Controller
     /* route data */
     public $route;
 
+    public $request;
+
     function __construct( $route = null )
     {
         $this->route = $route;
-        $this->env   = new Request;
         $this->init();
+        // old: XXX
+        $this->env   = new Request;
+        $this->request = new HttpRequest;
     }
 
     public function init()
@@ -219,6 +233,89 @@ class Controller
         exit(0);
     }
 
+    public function forward()
+    {
+
+    }
+
+
+    /**
+     * check if the controller action exists
+     *
+     * @param string $action action name
+     * @return boolean
+     */
+    public function hasAction($action)
+    {
+        if( method_exists($this,$action . 'Action') )
+            return $action . 'Action';
+        return false;
+    }
+
+    public function getDefaultActionMethod()
+    {
+        if( $this->hasAction('index') ) {
+            return 'indexAction';
+        }
+
+        if( method_exists( $this, 'run' ) ) {
+            return 'run';
+        }
+    }
+
+    protected function checkActionParameters($refParameters,$arguments)
+    {
+        // XXX: 
+
+    }
+
+
+    /**
+     * dispatch and run controller action method
+     *
+     * $c->dispatchAction('index');  => indexAction method
+     * $c->dispatchAction('post');   => postAction method
+     * 
+     * @param string $action action name
+     *
+     */
+    public function runAction($action)
+    {
+        $method = $this->hasAction($action);
+        if( ! $method )
+            $method = $this->getDefaultActionMethod();
+
+        if( ! $method ) {
+            // XXX: show exception
+            header('HTTP/1.1 403');
+            throw new Exception( "Controller action method $method not found." );
+        }
+            
+        $this->before();
+
+        // validation action method prototype
+        $vars = $this->route->getVars();
+
+        // get relection method parameter prototype for checking...
+        $ro = new ReflectionObject( $this );
+        $rm = $ro->getMethod($method);
+
+        $parameters = $rm->getParameters();
+        $arguments = array();
+        foreach( $parameters as $param ) {
+            if( isset( $vars[ $param->getName() ] ) ) {
+                $arguments[] = $vars[ $param->getName() ];
+            } else {
+                $arguments[] = $this->getDefault( $param->getName() );
+            }
+        }
+
+        // XXX: check parameter numbers here
+
+        $content = call_user_func_array( array( $this, $action . 'Action' ) , $arguments );
+        $this->after();
+        return $content;
+    }
 
 }
 
