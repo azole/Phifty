@@ -225,7 +225,7 @@ class Controller
     }
 
 
-    public function forward($class, $action, $parameters = array())
+    public function forward($class, $action = 'index' , $parameters = array())
     {
         $controller = new $class;
         return $controller->runAction( $action , $parameters );
