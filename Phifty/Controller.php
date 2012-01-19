@@ -30,14 +30,10 @@ class Controller
     /* env request object, handles post, get, request objects */
     public $env;
 
-    /* route data */
-    public $route;
-
     public $request;
 
-    function __construct( $route = null )
+    function __construct()
     {
-        $this->route = $route;
         $this->init();
         // old: XXX
         $this->env   = new Request;
@@ -200,19 +196,6 @@ class Controller
 
 
     /**
-     * Return parent route
-     *
-     * from: Route to Controller
-     *
-     * @return \Phifty\Routing\Route
-     */
-    public function getRoute()
-    {
-        return $this->route;
-    }
-
-
-    /**
      * run after
      */
     public function after() { }
@@ -279,7 +262,7 @@ class Controller
      * @param string $action action name
      *
      */
-    public function runAction($action)
+    public function runAction($action,$route)
     {
         $method = $this->hasAction($action);
         if( ! $method )
@@ -294,7 +277,7 @@ class Controller
         $this->before();
 
         // validation action method prototype
-        $vars = $this->route->getVars();
+        $vars = $route->getVars();
 
         // get relection method parameter prototype for checking...
         $ro = new ReflectionObject( $this );
@@ -306,7 +289,7 @@ class Controller
             if( isset( $vars[ $param->getName() ] ) ) {
                 $arguments[] = $vars[ $param->getName() ];
             } else {
-                $arguments[] = $this->route->getDefault( $param->getName() );
+                $arguments[] = $route->getDefault( $param->getName() );
             }
         }
 
