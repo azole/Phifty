@@ -69,18 +69,28 @@ class Manager
         if( ! class_exists( $class ) )
             spl_autoload_call( $class );
 
-        if( ! is_a( $class , 'Phifty\Model' ) )
+        if( ! class_exists($class) ) {
+            echo "Class $class does not exist.\n";
             return;
+        }
+
+        if( ! is_subclass_of( $class , '\Phifty\Model' ) ) {
+            echo "$class is not a Phifty\\Model\n";
+            return;
+        }
 
         $model = new $class;
 
         /* should we export model to database ? */
-        if( ! $model->export )
+        if( ! $model->export ) {
+            echo "Model $class is not exported.\n";
             return '';
+        }
 
         $sql = $model->getSchema();
 
         /* Insert SQL */
+        echo "Inserting SQL...\n";
         if( $this->conn->query( $sql ) === false ) {
             throw new \Exception( "SQL Error" );
         }
@@ -123,6 +133,9 @@ class Manager
 
             $schemaSQL = '';
             $classes = AppClassKit::modelClasses();
+
+            print_r( $classes );
+
             foreach( $classes as $class ) {
                 $schemaSQL .= $this->initModelFromClass( $class );
             }
