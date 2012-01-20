@@ -84,6 +84,21 @@ class Controller
         return $view = new $viewClass( $engine );  // pass 'Smarty' or 'Twig'
     }
 
+
+	/**
+	 * create view object with custom view class
+	 */
+	public function createView($class,$options = null)
+	{
+        $templateEngine = webapp()->config('view.backend');
+        $viewClass      = webapp()->config('view.class');
+        if( ! $viewClass )
+            throw new Exception('view.class config is not defined.');
+
+        $engine         = \Phifty\View\Engine::createEngine( $templateEngine , $options );
+        return new $class( $engine );  // pass 'Smarty' or 'Twig'
+	}
+
     /*
     function run()
     {
