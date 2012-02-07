@@ -12,7 +12,6 @@ class Checkbox extends FormWidget
         name="{{ column.name }}"
         value="{{ column.value }}"
     />
-
     <input type="checkbox" 
             {% for attr_name,attr_value in attrs %} {{attr_name}}="{{attr_value}}" {% endfor %}
             {% if column.value %} checked {% endif %}
