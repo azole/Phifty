@@ -2,6 +2,7 @@
 
 namespace Phifty;
 use Phifty\FileUtils;
+use ReflectionClass;
 
 /* a way to locate app model,controller,view ..etc class */
 class AppClassKit
@@ -74,7 +75,8 @@ class AppClassKit
     {
         $classes = get_declared_classes();
         $classes = array_filter( $classes , function($c) {
-            return preg_match( '/\Model\\\/' , $c );
+            $rf = new ReflectionClass($c);
+            return is_a( $c, '\Lazy\Schema\SchemaDeclare' ) && ! $ref->isAbstract();
         });
         return $classes;
     }
