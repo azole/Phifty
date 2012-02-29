@@ -14,18 +14,38 @@ class RouteCompiler implements RouteCompilerInterface
     {
         $pattern = $route['pattern'];
         $len = strlen($pattern);
+
+
+        /**
+         * contains:
+         *   
+         *   array( 'text', $text ),
+         *   array( 'variable', $match[0][0][0], $regexp, $var);
+         *
+         */
         $tokens = array();
         $variables = array();
         $pos = 0;
         preg_match_all('#.\{([\w\d_]+)\}#', $pattern, $matches, PREG_OFFSET_CAPTURE | PREG_SET_ORDER);
         foreach ($matches as $match) {
+
+            /*
+             * Split tokens from abstract pattern
+             * to rebuild regexp pattern.
+             */
             if ($text = substr($pattern, $pos, $match[0][1] - $pos)) {
                 $tokens[] = array('text', $text);
             }
+
+            // the first char from pattern (seperater)
             $seps = array($pattern[$pos]);
             $pos = $match[0][1] + strlen($match[0][0]);
+
+            // field name
             $var = $match[1][0];
 
+
+            /* build field pattern from requirement */
             if ( isset( $route['requirement'][$var] ) && $req = $route['requirement'][$var]) {
                 $regexp = $req;
             } else {
@@ -60,10 +80,14 @@ class RouteCompiler implements RouteCompilerInterface
         // compute the matching regexp
         $regex = '';
         $indent = 1;
+
+        // first optional token and only one token.
         if (1 === count($tokens) && 0 === $firstOptional) {
             $token = $tokens[0];
             ++$indent;
             $regex .= str_repeat(' ', $indent * 4).sprintf("%s(?:\n", preg_quote($token[1], '#'));
+
+            // regular expression with place holder name. ( [3] => name , [2] => pattern
             $regex .= str_repeat(' ', $indent * 4).sprintf("(?P<%s>%s)\n", $token[3], $token[2]);
         } else {
             foreach ($tokens as $i => $token) {
@@ -74,7 +98,9 @@ class RouteCompiler implements RouteCompilerInterface
                         $regex .= str_repeat(' ', $indent * 4)."(?:\n";
                         ++$indent;
                     }
-                    $regex .= str_repeat(' ', $indent * 4).sprintf("%s(?P<%s>%s)\n", preg_quote($token[1], '#'), $token[3], $token[2]);
+                    $regex .= str_repeat(' ', $indent * 4).
+                        sprintf("%s(?P<%s>%s)\n", 
+                        preg_quote($token[1], '#'), $token[3], $token[2]);
                 }
             }
         }
