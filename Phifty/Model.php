@@ -5,11 +5,6 @@ use Lazy\BaseModel;
 
 class Model extends BaseModel 
 {
-    function bootstrap($record)
-    {
-
-    }
-
     public function asCreateAction()
     {
         return $this->_newAction( 'Create' );
