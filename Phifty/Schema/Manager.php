@@ -86,7 +86,7 @@ class Manager
         }
 
         $model->preinit();
-        $model->initBaseData();
+        $model->bootstrap();
         return $sql;
     }
 
