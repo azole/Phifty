@@ -155,10 +155,9 @@ abstract class CRUDRouteSet extends RouteSet
         if( ! $order_by )
             $order_by = 'desc';
         $collection->order( $order_column , $order_by );
-        $collection->fetch();
 
-        $pager = $collection->pager( $env->request->page , $env->request->pagenum, 10);
-        $pagerDisplay = new RegionPagerDisplay($pager);
+        $pager = $collection->pager( $env->request->page ?: 1 , $env->request->pagenum ?: 10 );
+        $pagerDisplay = new RegionPagerDisplay( $pager );
 
         $this->vars['CRUD']['List'] = array(
             'items' => $pager->items(),
