@@ -60,7 +60,7 @@ abstract class RecordAction extends \Phifty\Action
     function initRecordColumn()
     {
         if( $this->record ) {
-            foreach( $this->record->columns as $name => $column ) {
+            foreach( $this->record->getColumns() as $name => $column ) {
                 if( ! isset( $this->params[ $name ] ) )
                     $this->params[ $name ] = \Phifty\Action\ColumnConvert::toParam( $column , $this->record );
             }
