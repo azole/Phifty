@@ -8,7 +8,7 @@ class Model extends ModelBase
 	/* export schema to database ?  */
 	public $export = true;
 
-    function bootstrap()
+    function bootstrap($record)
     {
 
     }
