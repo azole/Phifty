@@ -1,16 +1,6 @@
 <?php
 namespace Phifty;
 
-use LazyRecord\UserInterface;
-
-/*
-	XXX: Take off model's user interface into Phifty\Model class.
-	like currentUserCan, or getCurrentUser
-*/
-interface CurrentUserInterface extends \LazyRecord\UserInterface 
-{
-
-}
 
 /*
 	For users that needs to be remembered,
@@ -21,7 +11,6 @@ interface CurrentUserInterface extends \LazyRecord\UserInterface
 	if matched to a user, then do the login
 */
 class CurrentUser 
-    implements CurrentUserInterface
 {
     /* User model class */
 	public $userModelClass;
