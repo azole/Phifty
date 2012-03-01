@@ -1,10 +1,10 @@
 <?php
 namespace Phifty\Model;
+use Lazy\Schema\SchemaDeclare\Column as DeclareColumn;
 
-class Column extends \LazyRecord\Column
+class Column extends DeclareColumn
 {
     public $widgetClass;
-
     public $widgetAttrs = array(); /* TODO: */
 
     public function renderAs( $type ) {
