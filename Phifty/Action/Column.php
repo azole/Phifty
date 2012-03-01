@@ -133,7 +133,7 @@ class Column extends \CascadingAttribute
 
     public function renderAs( $type ) 
     {
-        $this->widgetClass = $widgetClass = 
+        $this->widgetClass = 
             ( $type[0] == '\\' ) ? $type : '\Phifty\FormWidget\\' . $type;
     }
 
@@ -163,4 +163,3 @@ class Column extends \CascadingAttribute
     }
 }
 
-?>
