@@ -29,7 +29,7 @@ class Column extends \CascadingAttribute
     public $validPairs;
 
     /* default value */
-    public $defaultValue;
+    public $default;
 
     /* is immutable ? */
     public $immutable;
@@ -103,7 +103,7 @@ class Column extends \CascadingAttribute
             if( $this->required && ! @$_FILES[ $this->name ]['tmp_name'] )
                 return array(false, __('Field %1 is required.' , $this->getLabel()  ) );
         } else {
-            if( $this->required && ! @$_REQUEST[ $this->name ] && ! $this->defaultValue )
+            if( $this->required && ! @$_REQUEST[ $this->name ] && ! $this->default )
                 return array(false, __('Field %1 is required.' , $this->getLabel()  ) );
         }
 

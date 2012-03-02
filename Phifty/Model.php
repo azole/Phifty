@@ -5,6 +5,7 @@ use Lazy\BaseModel;
 
 class Model extends BaseModel 
 {
+
     public function asCreateAction()
     {
         return $this->_newAction( 'Create' );
