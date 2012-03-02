@@ -103,15 +103,13 @@ abstract class RecordAction extends \Phifty\Action
     }
 
     function convertRecordValidation( $ret ) {
-
         foreach( $ret->validations as $vld ) {
-            var_dump( $vld ); 
+            if( $vld->success ) {
+                $this->result->addValidation( $vld->field , array( "valid" => $vld->message )); 
+            } else {
+                $this->result->addValidation( $vld->field , array( "invalid" => $vld->message ));
+            }
         }
-
-#          foreach( $ret as $rs ) {
-#              if( $rs->ok ) $this->result->addValidation( $rs->field , array( "valid" => $rs->msg )); 
-#              else          $this->result->addValidation( $rs->field , array( "invalid" => $rs->msg ));
-#          }
     }
 
 
@@ -124,7 +122,7 @@ abstract class RecordAction extends \Phifty\Action
         $error = false;
         foreach( $this->args as $key => $value ) {
             /* skip action column */
-            if( $key == "action" || $key == "__ajax_request" )
+            if( $key === 'action' || $key === '__ajax_request' )
                 continue;
 
             $hasError = $this->validateparam( $key );
