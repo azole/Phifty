@@ -2,7 +2,8 @@
 namespace Phifty\Action;
 
 /**
- * Convert LazyORM column to Action column
+ * Convert LazyORM column to Action column, 
+ * so that we can render with widget (currently).
  */
 class ColumnConvert 
 {

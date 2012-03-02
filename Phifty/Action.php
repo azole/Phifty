@@ -85,7 +85,7 @@ abstract class Action
             return;
 
         if( ! isset($this->params[ $name ] ) ) {
-            $this->result->addValidation( $name, array( "invalid" => "Contains invalid arguments: $name" ));
+            $this->result->addValidation( $name, array( 'invalid' => "Contains invalid arguments: $name" ));
             return true;
         }
 
@@ -95,7 +95,7 @@ abstract class Action
             if( $ret[0] ) {
                 # $this->result->addValidation( $name, array( "valid" => $ret[1] ));
             } else {
-                $this->result->addValidation( $name, array( "invalid" => @$ret[1] ));
+                $this->result->addValidation( $name, array( 'invalid' => @$ret[1] ));
                 return true;
             }
         } else {

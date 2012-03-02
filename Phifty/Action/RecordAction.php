@@ -50,6 +50,10 @@ abstract class RecordAction extends \Phifty\Action
         $this->initRecordColumn();
     }
 
+
+    /**
+     * load record
+     */
     function initRecord() 
     {
         if( isset( $this->args['id'] ) && ! $this->record->id ) {
@@ -57,6 +61,9 @@ abstract class RecordAction extends \Phifty\Action
         }
     }
 
+    /**
+     * Convert model columns to action columns 
+     */
     function initRecordColumn()
     {
         if( $this->record ) {
@@ -103,7 +110,9 @@ abstract class RecordAction extends \Phifty\Action
     }
 
 
-    /* TODO: seperate this to CRUD actions */
+    /**
+     * TODO: seperate this to CRUD actions 
+     */
     function runUpdateValidate()
     {
         // validate from args 
