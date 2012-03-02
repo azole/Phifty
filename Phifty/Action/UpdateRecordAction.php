@@ -19,12 +19,12 @@ class UpdateRecordAction
             return $this->recordNotFound();
 
         $ret = $record->update( $args );
-        if( $ret ) {
+        if( false === $ret->success ) {
             $this->convertRecordValidation( $ret );
-            return $this->updateError();
+            return $this->updateError( $ret );
         }
 
-        return $this->updateSuccess();
+        return $this->updateSuccess($ret);
     }
 
     function run() 
@@ -37,12 +37,12 @@ class UpdateRecordAction
         return $this->error( __("%1 not found, can not update.", $this->record->getLabel()  ) );
     }
 
-    function updateSuccess()
+    function updateSuccess($ret)
     {
         return $this->success( __('%1 updated.', $this->record->getLabel() ) , array( 'id' => $this->record->id ) );
     }
 
-    function updateError()
+    function updateError($ret)
     {
         return $this->error(  __('%1 update failed.') , $this->record->getLabel() );
     }

@@ -6,19 +6,16 @@ use Phifty\Action\RecordAction;
 class CreateRecordAction 
     extends RecordAction
 {
-
     function create($args)
     {
         $ret = $this->record->create( $args );
 
         /* error checking */
-        if( is_array($ret) )
+        if( false === $ret->success ) {
             $this->convertRecordValidation( $ret );
-        if( $ret ) 
-            return $this->createError();
-        if( $this->record->id )
-            return $this->createSuccess();
-        return $this->createError();
+            return $this->createError( $ret );
+        }
+        return $this->createSuccess( $ret );
     }
 
     function run()
@@ -27,16 +24,16 @@ class CreateRecordAction
         return $this->create( $this->args );
     }
 
-    function createSuccess() 
+    function createSuccess($ret) 
     {
         return $this->success( __("%1 Record has been created." , $this->record->getLabel() ) , array( 
             'id' => $this->record->id
         ));
     }
 
-    function createError() 
+    function createError($ret) 
     {
-        return $this->error( __('Can not create %1 record.' , $this->record->getLabel() ) );
+        return $this->error( __('Can not create %1 record' , $this->record->getLabel() ) );
     }
 
 }
