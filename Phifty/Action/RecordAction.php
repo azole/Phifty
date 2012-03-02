@@ -34,13 +34,13 @@ abstract class RecordAction extends \Phifty\Action
         $class = $this->recordClass;
         $this->record = $record ? $record : new $class;
 
-        if( is_a( $this , '\Phifty\Action\CreateRecordAction' ) ) {
+        if( is_a( $this , 'Phifty\Action\CreateRecordAction' ) ) {
             $this->type = 'create';
         }
-        elseif( is_a( $this, '\Phifty\Action\UpdateRecordAction' ) ) {
+        elseif( is_a( $this, 'Phifty\Action\UpdateRecordAction' ) ) {
             $this->type = 'update';
         }
-        elseif( is_a( $this, '\Phifty\Action\DeleteRecordAction' ) ) {
+        elseif( is_a( $this, 'Phifty\Action\DeleteRecordAction' ) ) {
             $this->type = 'delete';
         } else {
             throw new Exception( sprintf('Unknown Record Action Type: %s' , get_class($this) ));
