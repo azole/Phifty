@@ -1,5 +1,6 @@
 <?php
 namespace Phifty;
+use Exception;
 
 // vim:fdm=marker:
 // Action {{{
@@ -339,8 +340,11 @@ abstract class Action
     public function render( $name = null , $attrs = array() ) 
     {
         if( $name ) {
-            $param = $this->getParam( $name );
-            return $param->render( $attrs );
+            if( $param = $this->getParam( $name ) )
+                return $param->render( $attrs );
+            else {
+                throw new Exception("parameter $name is not defined.");
+            }
         }
         else {
             /* render all */

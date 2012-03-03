@@ -138,7 +138,12 @@ class MicroApp extends \Phifty\Singleton
         else {
             throw new Exception( "Unkown route argument." );
         }
-        
+    }
+
+    public function routeToSet($path,$class)
+    {
+        $routes = $class::expand();
+        webapp()->router->mount( $path , $routes );
     }
 
     function js() { return array(); }

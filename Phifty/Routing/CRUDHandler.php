@@ -236,7 +236,7 @@ abstract class CRUDHandler extends Controller
 
     /* crud_edit_{{ id }} template must be declare */
     // TODO: Support create with pre-defined value 
-    function crud_edit()
+    public function crud_edit()
     {
         $this->crud_edit_prepare();
         return $this->renderCrudEdit();
@@ -244,24 +244,25 @@ abstract class CRUDHandler extends Controller
 
 
     // XXX: let admin page could be pushed by tiles.
-    function create()
+    public function create()
     {
         $tiles = array();
         $tiles[] = $this->crud_edit();
         return $this->renderCrudPage(array( 'tiles' => $tiles ));
     }
 
-    function edit()
+    public function edit()
     {
         $tiles = array();
         $tiles[] = $this->crud_edit();
         return $this->renderCrudPage(array( 'tiles' => $tiles ));
     }
+
 
 
     /* crud_index is a tiled page,
      * you can use tile to push template blocks into it. */
-    function crud_index()
+    public function crud_index()
     {
         $tiles = $this->renderCrudIndexTiles();
         return $this->renderCrudPage(array( 'tiles' => $tiles ));
