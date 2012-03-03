@@ -2,7 +2,7 @@
 namespace Phifty;
 use Phifty\Web\RegionPagerDisplay;
 use Phifty\Region;
-use Roller\Controller;
+use Phifty\Controller;
 
 abstract class CRUDRouteSet extends Controller
 {
@@ -27,9 +27,9 @@ abstract class CRUDRouteSet extends Controller
     static function expand()
     {
         $class = get_called_class();
-        $routeset = new Roller\RouteSet;
+        $routeset = new \Roller\RouteSet;
         $routeset->add( '/' , "$class:crud_index" );
-        $routeset->add('/crud/list' , "$class:crud_list" );
+        $routeset->add( '/crud/list' , "$class:crud_list" );
         $routeset->add( '/crud/edit' , "$class:crud_edit" );
         $routeset->add( '/crud/create' , "$class:crud_create" );
         $routeset->add( '/edit' , "$class:edit" );

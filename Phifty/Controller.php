@@ -8,33 +8,19 @@ use Exception;
 
 /*
     Synopsis
-
     $controller = new $class( $this );
-    $controller->runAction( 'indexAction' , array(
-        'vars' => array( name => $value ),
-        'default' => array( ... ),
-    ) );
 */
 
-class Controller 
+class Controller extends \Roller\Controller
 {
-
     /* env request object, handles post, get, request objects */
     public $env;
-
     public $request;
-
-    function __construct()
-    {
-        $this->init();
-        // old: XXX
-        $this->env   = new Request;
-        $this->request = new HttpRequest;
-    }
 
     public function init()
     {
-
+        $this->env   = new Request;
+        $this->request = new HttpRequest;
     }
 
     public function getCurrentUser()
@@ -70,19 +56,9 @@ class Controller
         if( ! $viewClass )
             throw new Exception('view.class config is not defined.');
 
-        $engine         = \Phifty\View\Engine::createEngine( $templateEngine , $options );
+        $engine = \Phifty\View\Engine::createEngine( $templateEngine , $options );
         return $view = new $viewClass( $engine );  // pass 'Smarty' or 'Twig'
     }
-
-    /*
-    function run()
-    {
-        if( @$_POST )
-            return $this->post( $this->env );
-        else
-            return $this->get( $this->env );
-    }
-    */
 
     /* web utils functions */
     function redirect($url)
@@ -105,7 +81,6 @@ class Controller
     /* handle get data */
     function get($env)
     {
-
 
     }
 
@@ -192,18 +167,6 @@ class Controller
         return $view->render( $template );
     }
 
-
-    /**
-     * run after
-     */
-    public function after() { }
-
-
-    /**
-     * run before
-     */
-    public function before() { }
-
     public function forbidden($msg = null)
     {
         /* XXX: dirty hack this for phpunit testing */
@@ -227,8 +190,9 @@ class Controller
      */
     public function forward($class, $action = 'index' , $parameters = array())
     {
-        $controller = new $class;
-        return $controller->runAction( $action , $parameters );
+        // $controller = new $class;
+        // xxx: implement this
+        // return $controller->runAction( $action , $parameters );
     }
 
 
@@ -256,71 +220,4 @@ class Controller
         }
     }
 
-    protected function checkActionParameters($refParameters,$arguments)
-    {
-        // XXX: 
-
-    }
-
-
-    /**
-     * dispatch and run controller action method
-     *
-     * $c->dispatchAction('index', $route );  => indexAction method
-     * $c->dispatchAction('post',  $route );  => postAction method
-     * 
-     * @param string $action action name
-     *
-     */
-    public function runAction($action,$parameters)
-    {
-        $method = $this->hasAction($action);
-
-        /* is method ? backward-compatible support */
-        if( method_exists($this,$action) )
-            $method = $action;
-
-        if( ! $method )
-            $method = $this->getDefaultActionMethod();
-
-        if( ! $method ) {
-            // XXX: show exception
-            header('HTTP/1.1 403');
-            throw new Exception( "Controller action method $method not found." );
-        }
-            
-        $this->before();
-
-        // validation action method prototype
-        $vars = isset($parameters['vars']) ? $parameters['vars'] : array();
-
-        // get relection method parameter prototype for checking...
-        $ro = new ReflectionObject( $this );
-        $rm = $ro->getMethod($method);
-
-        $rfParameters = $rm->getParameters();
-        $arguments = array();
-        foreach( $rfParameters as $rfParam ) {
-            if( isset( $vars[ $rfParam->getName() ] ) ) 
-            {
-                $arguments[] = $vars[ $rfParam->getName() ];
-            } 
-            else if( isset($parameters['default'][ $rfParam->getName() ] )
-                            && $default = $parameters['default'][ $rfParam->getName() ] )
-            {
-                $arguments[] = $default;
-            }
-            else {
-                // throw new Exception("controller parameter error: ");
-            }
-        }
-
-        // XXX: check parameter numbers here
-
-        $content = call_user_func_array( array( $this, $method ) , $arguments );
-        $this->after();
-        return $content;
-    }
-
 }
-

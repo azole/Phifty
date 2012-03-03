@@ -44,12 +44,12 @@ class MicroApp extends \Phifty\Singleton
     }
 
     /* helper method */
-    function page( $pattern , $template  )
+    function page( $path , $template  )
     {
-        $args = array();
-        $args['template'] = $template;
-        $args['args'] = array();
-        webapp()->dispatcher->add( $pattern , $args );
+        $this->add( $path , array( 
+            'template' => $template,
+            'args' => array() ,
+        ));
     }
 
     /* 
@@ -118,13 +118,25 @@ class MicroApp extends \Phifty\Singleton
                 if( false === strpos( $action , 'Action' ) )
                     $action .= 'Action';
             }
+            else {
+                $class = $args;
+            }
+
 
             /* If it's not full-qualified classname, we should prepend our base namespace. */
-            if( strpos( $class , '\\' ) !== 0 ) 
-                $class = '\\' .  $this->baseClass() . "\\Controller\\$class";
+            if( 0 !== strpos( $class , '\\' ) )  {
+                $class = $this->baseClass() . "\\Controller\\$class";
+            }
+
+            if( ! method_exists($class,$action) ) {
+                $action = 'run';
+            }
 
             $args = $class . ':' . $action;
             $router->add( $path , $args , $options );
+        }
+        else {
+            throw new Exception( "Unkown route argument." );
         }
         
     }
