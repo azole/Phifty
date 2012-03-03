@@ -1,6 +1,8 @@
 <?php
 namespace Phifty;
 use Phifty\Action\ActionRunner;
+use ReflectionClass;
+use ReflectionObject;
 
 /*
     MicroApp is the base class of App, Core, {Plugin} class.
@@ -44,9 +46,8 @@ class MicroApp extends \Phifty\Singleton
     {
         if( class_exists('ReflectionClass') ) 
         {
-            $object = new \ReflectionObject($this);
-            $ns = $object->getNamespaceName();
-            return $ns;
+            $object = new ReflectionObject($this);
+            return $object->getNamespaceName();
         } 
         else 
         {
@@ -71,63 +72,74 @@ class MicroApp extends \Phifty\Singleton
      * */
     function locate()
     {
-        $object = new \ReflectionObject($this);
+        $object = new ReflectionObject($this);
         return dirname($object->getFilename());
     }
 
     /* get the model in the namespace of current microapp */
     public function getModel( $name )
     {
-        $object = new \ReflectionObject($this);
+        $object = new ReflectionObject($this);
         $ns = $object->getNamespaceName();
         $modelClass = $ns . "\\Model\\" . $name;
         return new $modelClass;
     }
 
-    /* mount a routerSet at somewhere */
-    public function routeToSet( $pattern , $routerSetClass )
-    {
-        // this will expand router set to routers
-        webapp()->dispatcher->add( $pattern, new $routerSetClass );
-    }
 
-
-    /*
+    /**
      * in route method, we can do route with:
      *
-     * $this->route('/path/to', array( 'controller' => 'ControllerClass' ))
-     * $this->route('/path/to', 'ControllerClass' )
-     * $this->route('/path/to', 'ControllerClass:actionName' )  # mapping to actionNameAction method.
+     * $this->route('/path/to', array( 
+     *          'controller' => 'ControllerClass'
+     *  ))
+     * $this->route('/path/to', 'ControllerClass' );
      *
-     * $this->route('/path/to', array( 'template' => 'template_file.html', 'args' => array( ... ) ) )
+     * Mapping to actionNameAction method.
      *
+     * $this->route('/path/to', 'ControllerClass:actionName' )  
+     *
+     * $this->route('/path/to', array( 
+     *          'template' => 'template_file.html', 
+     *          'args' => array( ... ) )
+     * )
      */
-    public function route( $pattern, $args, $extra = null)
+    public function route( $path, $args, $options = array() )
     {
+        $router = webapp()->router;
+
         /* if args is string, it's a controller class */
-        if( is_string($args)  ) 
+        if( is_array($args) ) 
         {
-            $class = $args;
+            // call template controller
+            if( isset($args['template']) ) {
+                $options[':args'] = array( 
+                    'template' => $args['template'],
+                    'args' => @$args['args'],
+                );
+                $router->add( $path , 'Phifty\Routing\Route\TemplateRoute' , $options );
+            }
+            elseif( isset($args['controller']) ) {
+                $router->add( $path , $args['controller'], $options );
+            }
+        }
+        elseif( is_string($args)  ) 
+        {
+            /* extract action method name out, and set default to run method. */
+            $action = 'indexAction';
+            if( false !== ($pos = strrpos($args,':')) ) {
+                list($class,$action) = explode(':',$args);
+                if( false === strpos( $action , 'Action' ) )
+                    $action .= 'Action';
+            }
 
             /* If it's not full-qualified classname, we should prepend our base namespace. */
             if( strpos( $class , '\\' ) !== 0 ) 
                 $class = '\\' .  $this->baseClass() . "\\Controller\\$class";
 
-            /* extract action method name out, and set default to run method. */
-            $action = 'index';
-            if( ($pos = strrpos($class,':')) !== false ) {
-                list($class,$action) = explode(':',$class);
-            }
-            $route = array(
-                'controller' => $class,
-                'action'     => $action,
-            );
-            webapp()->dispatcher->add( $pattern, $route , $extra );
+            $args = $class . ':' . $action;
+            $router->add( $path , $args , $options );
         }
-        elseif ( is_array($args) )      /* is a raw route data array */
-        {
-            webapp()->dispatcher->add( $pattern, $args , $extra );
-        }
+        
     }
 
     function js() { return array(); }

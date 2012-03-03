@@ -1,6 +1,6 @@
 <?php
 namespace Phifty\Routing;
-
+use Roller\MatchedRoute;
 
 /**
  * Route hash structure:
@@ -14,7 +14,7 @@ namespace Phifty\Routing;
  *     ]
  * );
  */
-class Route
+class Route extends MatchedRoute
 {
     public $hash = array();
 

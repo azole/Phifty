@@ -1,24 +1,32 @@
 <?php
 namespace Phifty\Routing\Route;
 use Phifty\View\Engine;
-use Phifty\Routing\Route;
+use Roller\Controller;
 
-class TemplateRoute extends Route
+class TemplateRoute extends Controller
 {
-    function evaluate() 
-    {
-        $template   = $this->get('template');
-        $args       = $this->get('args');
-        $engineType = $this->get('engine');
 
-        if( ! $engineType )
-            $engineType = webapp()->config('view.backend');
+    public $template;
+    public $args;
+
+    public function __construct($args) 
+    {
+        $this->template = $args['template'];
+        $this->args = @$args['args'];
+    }
+
+    function run()
+    {
+        $template   = $this->template;
+        $args       = $this->args;
+        $engineType = webapp()->config('view.backend');
 
         /* get template engine */
         $engine = Engine::createEngine( $engineType );
         $viewClass = webapp()->config('view.class');
         if( ! $viewClass )
             $viewClass = '\Phifty\View';
+
         $view = new $viewClass( $engine );
         if( $args )
             $view->assign( $args );
