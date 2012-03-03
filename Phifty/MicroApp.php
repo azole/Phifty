@@ -125,6 +125,7 @@ class MicroApp extends \Phifty\Singleton
         elseif( is_string($args)  ) 
         {
             /* extract action method name out, and set default to run method. */
+            $class = null;
             $action = 'indexAction';
             if( false !== ($pos = strrpos($args,':')) ) {
                 list($class,$action) = explode(':',$args);

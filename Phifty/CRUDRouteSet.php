@@ -1,11 +1,10 @@
 <?php
 namespace Phifty;
-use Phifty\Routing\RouteSet;
 use Phifty\Web\RegionPagerDisplay;
 use Phifty\Region;
+use Roller\Controller;
 
-// XXX: Extract plugin, AdminUI stuff to AdminUICRUDSet
-abstract class CRUDRouteSet extends RouteSet 
+abstract class CRUDRouteSet extends Controller
 {
     public $namespace; /* like News\... */
     public $modelClass; /* full-qualified model class */
@@ -24,6 +23,19 @@ abstract class CRUDRouteSet extends RouteSet
     /* collection order */
     public $defaultOrder = array('id', 'desc');
     public $listColumns;
+
+    static function expand()
+    {
+        $class = get_called_class();
+        $routeset = new Roller\RouteSet;
+        $routeset->add( '/' , "$class:crud_index" );
+        $routeset->add('/crud/list' , "$class:crud_list" );
+        $routeset->add( '/crud/edit' , "$class:crud_edit" );
+        $routeset->add( '/crud/create' , "$class:crud_create" );
+        $routeset->add( '/edit' , "$class:edit" );
+        $routeset->add( '/create' , "$class:create" );
+        return $routeset;
+    }
 
     function init()
     {
@@ -128,6 +140,9 @@ abstract class CRUDRouteSet extends RouteSet
     {
         return $this->render( 'Core/template/crud.html' , $args );
     }
+
+
+
 
     /* **************** Router methods ****************** */
     function table()

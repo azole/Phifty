@@ -6,15 +6,6 @@ use ReflectionObject;
 use YAMLKit\YAML;
 use Exception;
 
-interface ControllerInterface 
-{
-    public function after();
-    public function before();
-
-    function post( $env );
-    function get( $env );
-}
-
 /*
     Synopsis
 
@@ -26,7 +17,6 @@ interface ControllerInterface
 */
 
 class Controller 
-    implements ControllerInterface
 {
 
     /* env request object, handles post, get, request objects */
