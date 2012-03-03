@@ -142,19 +142,6 @@ abstract class CRUDRouteSet extends Controller
     }
 
 
-
-
-    /* **************** Router methods ****************** */
-    function table()
-    {
-        $this->route( '/' , 'crud_index' );
-        $this->route( '/crud/list' , 'crud_list' );
-        $this->route( '/crud/edit' , 'crud_edit' );
-        $this->route( '/crud/create' , 'crud_create' );
-        $this->route( '/edit' , 'edit' );
-        $this->route( '/create' , 'create' );
-    }
-
     /*
      * CRUD List Prepare Data
      */

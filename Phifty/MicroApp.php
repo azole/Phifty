@@ -8,21 +8,7 @@ use ReflectionObject;
     MicroApp is the base class of App, Core, {Plugin} class.
 */
 
-interface MicroAppInterface
-{
-
-    function page( $path, $template );
-
-    function route( $path , $args );
-
-    function js();
-
-    function css();
-
-}
-
 class MicroApp extends \Phifty\Singleton
-    implements MicroAppInterface
 {
     public $basePath = '';
 
