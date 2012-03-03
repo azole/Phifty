@@ -1,11 +1,10 @@
 <?php
-namespace Phifty\Routing\Route;
+namespace Phifty\Routing;
 use Phifty\View\Engine;
 use Roller\Controller;
 
-class TemplateRoute extends Controller
+class TemplateController extends Controller
 {
-
     public $template;
     public $args;
 

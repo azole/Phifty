@@ -1,10 +1,10 @@
 <?php
-namespace Phifty;
+namespace Phifty\Routing;
 use Phifty\Web\RegionPagerDisplay;
 use Phifty\Region;
 use Phifty\Controller;
 
-abstract class CRUDRouteSet extends Controller
+abstract class CRUDHandler extends Controller
 {
     public $namespace; /* like News\... */
     public $modelClass; /* full-qualified model class */

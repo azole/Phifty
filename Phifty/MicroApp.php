@@ -102,7 +102,7 @@ class MicroApp extends \Phifty\Singleton
                     'template' => $args['template'],
                     'args' => @$args['args'],
                 );
-                $router->add( $path , 'Phifty\Routing\Route\TemplateRoute' , $options );
+                $router->add( $path , 'Phifty\Routing\TemplateController' , $options );
             }
             elseif( isset($args['controller']) ) {
                 $router->add( $path , $args['controller'], $options );
