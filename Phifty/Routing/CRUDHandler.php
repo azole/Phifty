@@ -6,16 +6,30 @@ use Phifty\Controller;
 
 abstract class CRUDHandler extends Controller
 {
+    /**
+     * configurations
+     */
+    public $canCreate = true;
+
+    public $canUpdate = true;
+
+    public $canDelete = true;
+
+
+
+
     public $namespace; /* like News\... */
+
     public $modelClass; /* full-qualified model class */
+
     public $modelName;  /* model name */
+
     public $model;
+
     public $crudId;
+
     public $currentRecord;
 
-    public $canCreate = true;
-    public $canUpdate = true;
-    public $canDelete = true;
 
     /* vars to be export to template */
     public $vars = array();
@@ -39,8 +53,8 @@ abstract class CRUDHandler extends Controller
 
     function init()
     {
+        parent::init();
         $this->vars['CRUD'] = array( 'object' => $this );
-        $this->getModel(); // init model column
     }
 
     function assign( $name , $value )
@@ -121,7 +135,7 @@ abstract class CRUDHandler extends Controller
     function renderCrudIndexTiles()
     {
         $tiles   = array();
-        $tiles[] = Region::ajaxTile( 'crud-list',  $this->getRoute()->getPrefix() . '/crud/list' );
+        $tiles[] = Region::ajaxTile( 'crud-list',  $this->getRoute()->getPath() . '/crud/list' );
         return $tiles;
     }
 
