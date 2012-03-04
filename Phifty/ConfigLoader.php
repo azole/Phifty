@@ -51,7 +51,7 @@ class ConfigLoader
 
     function __construct($app)
     { 
-        $this->environment = getenv('PHIFTY_ENV');
+        $this->environment = $app->environment;
         if( $this->environment == null ) {
             if( isset($_REQUEST['PHIFTY_ENV']) ) {
                 $this->environment = $_REQUEST['PHIFTY_ENV'];

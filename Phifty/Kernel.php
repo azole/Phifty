@@ -63,11 +63,16 @@ class Kernel extends ObjectContainer
     /* boolean: is in development mode ? */
     public $isDev = true;
 
-    function __construct() 
+    function __construct( $environment = null ) 
     {
         $this->frameworkDir = __DIR__; // Kernel is placed under framework directory
         $this->rootDir      = PH_APP_ROOT;
         $this->appName      = PH_APP_NAME;
+        $this->environment  = $environment 
+                ?: getenv('PHIFTY_ENV') 
+                ?: ( isset($_REQUEST['PHIFTY_ENV']) 
+                        ? $_REQUEST['PHIFTY_ENV'] : 'dev' );
+
         $this->appId        = strtolower( PH_APP_NAME );
         $this->isCLI        = isset($_SERVER['argc']);
         $self = $this;
