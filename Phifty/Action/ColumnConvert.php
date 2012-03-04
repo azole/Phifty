@@ -24,15 +24,18 @@ class ColumnConvert
             $param->value = $record->{$name};
 		}
 
-        /* convert column type to param type
+        /**
+         * Convert column type to param type
          *
          * set default render widget
-         * */
-        if( $param->validValues || $param->validPairs )
+         */
+        if( $param->validValues || $param->validPairs ) {
             $param->renderAs( 'Select' );
+        }
 
-        if( ! $param->widgetClass )
+        if( ! $param->widgetClass ) {
             $param->renderAs( 'Text' );
+        }
 
         return $param;
     }
