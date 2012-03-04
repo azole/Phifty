@@ -1,5 +1,4 @@
 <?php
-
 namespace Phifty\Form;
 
 use Phifty\Form\Input;

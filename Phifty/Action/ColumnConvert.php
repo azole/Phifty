@@ -19,7 +19,7 @@ class ColumnConvert
         }
 
         $param->name  = $name;
-        $param->label = @$column->label;
+        $param->label = @$column->attributes->label;
 
 		if( $record ) {
             $param->value = $record->{$name};
