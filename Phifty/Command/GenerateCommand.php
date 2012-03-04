@@ -33,7 +33,7 @@ class GenerateCommand extends \CLIFramework\Command
         $inCore = @$options->core;
         $codeGen = new CodeTemplate;
 
-        $kernel = \AppKernel::getInstance();
+        $kernel = webapp();
         $appdir = $inCore ? $kernel->getCoreDir() : $kernel->getAppDir();
 
 

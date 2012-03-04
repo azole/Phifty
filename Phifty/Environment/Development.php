@@ -31,7 +31,7 @@ class Development
          * if not in CLI mode, include firePHP.
          **/
         if( ! $app->isCLI ) {
-            require PH_ROOT . '/vendor/firephp/lib/FirePHPCore/fb.php';
+            require_once PH_ROOT . '/vendor/firephp/lib/FirePHPCore/fb.php';
         }
 
 

@@ -1,11 +1,11 @@
 <?php
 namespace Phifty;
-require 'src/Phifty/ConfigLoader.php';
-require 'src/Phifty/AppClassKit.php';
-require 'src/Phifty/AppClassLoader.php';
-require 'src/Phifty/CurrentUser.php';
-require 'src/Phifty/L10N.php';
-require 'src/Phifty/FileUtils.php';
+require PH_ROOT . '/src/Phifty/ConfigLoader.php';
+require PH_ROOT . '/src/Phifty/AppClassKit.php';
+require PH_ROOT . '/src/Phifty/AppClassLoader.php';
+require PH_ROOT . '/src/Phifty/CurrentUser.php';
+require PH_ROOT . '/src/Phifty/L10N.php';
+require PH_ROOT . '/src/Phifty/FileUtils.php';
 
 use Phifty\Kernel;
 use Phifty\CurrentUser;

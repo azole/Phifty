@@ -15,7 +15,7 @@ class Export extends \Phifty\Command
 		$options = $this->getOptions();
 
 
-        $app          = \AppKernel::getInstance();
+        $app          = webapp();
         $webroot      = $app->getWebRootDir();
         $webPluginDir = $app->getWebPluginDir();
         $webAssetDir = $app->getWebAssetDir();
