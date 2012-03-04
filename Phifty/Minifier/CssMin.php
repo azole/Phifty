@@ -1,7 +1,5 @@
 <?php
-
 namespace Phifty\Minifier;
-
 
 /**
  * CssMin - A (simple) css minifier with benefits
