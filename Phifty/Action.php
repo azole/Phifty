@@ -138,7 +138,7 @@ abstract class Action
     }
 
 
-    function __invoke() 
+    public function __invoke() 
     {
         /* run column methods */
         // XXX: merge them all...
@@ -157,69 +157,72 @@ abstract class Action
 
 
     /* **** value getters **** */
-    function getClass() { return get_class($this); }
-    function getName()
+    public function getClass() { 
+        return get_class($this);
+    }
+
+    public function getName()
     {
         $class = $this->getClass();
         $pos = strpos( $class, '::Action::' );
         return substr( $class , $pos + strlen('::Action::') );
     }
 
-    function params() 
+    public function params() 
     {
         return $this->params;
     }
 
 
-    function getParam( $field ) 
+    public function getParam( $field ) 
     {
         return @$this->params[ $field ];
     }
 
-    function hasParam( $field ) 
+    public function hasParam( $field ) 
     {
         return @$this->params[ $field ] ? true : false; 
     }
 
 
-    function isAjax()
+    public function isAjax()
     {  
         return isset( $_REQUEST['__ajax_request'] );
     }
 
-    function getCurrentUser() 
+    public function getCurrentUser() 
     {
         if( $this->currentUser )
             return $this->currentUser;
     }
 
-    function setCurrentUser( $user ) 
+    public function setCurrentUser( $user ) 
     {
         $this->currentUser = $user;
     }
 
 
-    function currentUserCan( $user ) 
+    public function currentUserCan( $user ) 
     {
         return $this->record->currentUserCan( $this->type , $this->args , $user );
     }
 
-    function arg( $name ) 
+    public function arg( $name ) 
     {
         return @$this->args[ $name ]; 
     }
 
-    function getArgs() 
+    public function getArgs() 
     {
         return $this->args; 
     }
 
-    function getFile( $name )
+    public function getFile( $name )
     {
         return @$_FILES[ $name ];
     }
 
-    function getFiles() 
+    public function getFiles() 
     {
         return @$_FILES;
     }

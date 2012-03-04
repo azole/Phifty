@@ -4,6 +4,7 @@ namespace Phifty;
 
 class WebPath
 {
+
 	static function appBase()
 	{
 		return '/ph/App';
@@ -28,5 +29,6 @@ class WebPath
     {
         return '/static/minified';
     }
+
 }
 
