@@ -37,13 +37,18 @@ class Column extends \CascadingAttribute
     /* refer class *? */
     public $refer;
 
+
+    public $renderAs;
+
     /* default render Widget */
     public $widgetClass = '\Phifty\FormWidget\Text';
 
-
     public $validator;
+
     public $sanitizer;
+
     public $filter;
+
     public $completer;
 
 

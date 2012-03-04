@@ -33,10 +33,12 @@ class ColumnConvert
             $param->renderAs( 'Select' );
         }
 
+
         if( ! $param->widgetClass ) {
             $param->renderAs( 'Text' );
+        } elseif( $param->renderAs ) {
+            $param->widgetClass = '\Phifty\FormWidget\\' . $param->renderAs;
         }
-
         return $param;
     }
 
