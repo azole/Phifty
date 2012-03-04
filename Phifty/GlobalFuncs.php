@@ -2,6 +2,7 @@
 
 namespace {
 
+
 function array_insert( & $array , $pos = 0 , $elements )
 {
     array_splice( $array, $pos , 0 , (array) $elements );
