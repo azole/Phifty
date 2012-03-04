@@ -228,19 +228,19 @@ abstract class Action
     }
 
 
-    function setArg($name,$value) 
+    public function setArg($name,$value) 
     { 
         $this->args[ $name ] = $value ; 
         return $this; 
     }
 
-    function setArgs($args) 
+    public function setArgs($args) 
     { 
         $this->args = $args;
         return $this; 
     }
 
-    function param( $name , $type = null ) 
+    public function param( $name , $type = null ) 
     {
         if( $type ) {
             $cls = '\Phifty\Action\Column\\' . $type;
