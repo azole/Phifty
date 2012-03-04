@@ -4,7 +4,6 @@ namespace Phifty;
 use Phifty\View;
 use Phifty\WebUtils;
 use Phifty\WebPath;
-use Core\Application as CoreApplication;
 use Phifty\Action\ActionRunner;
 use Phifty\Asset\AssetLoader;
 
@@ -91,10 +90,15 @@ class Web
         if( count($fileList) === 0 ) 
             return '';
 
-        /* get absolute paths */
+
+        /**
+         * Get absolute paths 
+         */
         $filePaths = $this->globPaths( $webDir , $fileList );
 
-        /* convert to web urls */
+        /**
+         * Convert to web urls 
+         * */
         $webPaths = array();
 
         // disable minified js for now.
@@ -145,13 +149,13 @@ class Web
 
     public function include_core_css()
     {
-        $core = CoreApplication::getInstance();
+        $core = \Core\Application::getInstance();
         return $this->includeMicroAppCss( $core , webapp()->getCoreWebDir() , WebPath::coreBase() );
     }
 
     public function include_core_js()
     {
-        $core = CoreApplication::getInstance();
+        $core = \Core\Application::getInstance();
         return $this->includeMicroAppJs( $core , webapp()->getCoreWebDir() , WebPath::coreBase() );
     }
 

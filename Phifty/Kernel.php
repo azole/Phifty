@@ -20,9 +20,6 @@ use CacheKit\CacheKit;
 use CacheKit\ApcCache;
 use Roller\Router;
 
-define( 'DIR_SEP' , DIRECTORY_SEPARATOR );
-define( 'PHIFTY_APP_DIRNAME' , 'apps' );
-define( 'PHIFTY_WEBROOT_DIRNAME' , 'webroot' );
 
 /*
     Phifty Main Controll Object:
@@ -69,7 +66,7 @@ class Kernel extends ObjectContainer
 
     function __construct( $environment = null ) 
     {
-        $this->frameworkDir = __DIR__; // Kernel is placed under framework directory
+        $this->frameworkDir = PH_ROOT; // Kernel is placed under framework directory
         $this->rootDir      = PH_APP_ROOT;
         $this->appName      = PH_APP_NAME;
         $this->environment  = $environment 
@@ -162,7 +159,7 @@ class Kernel extends ObjectContainer
         /**
          * detect for development mode 
          */
-        $this->isDev = $this->configLoader->isDevelopment();
+        $this->isDev = $this->environment == 'dev';
 
         // Turn off all error reporting
         if( $this->isDev || $this->isCLI ) {
@@ -189,6 +186,7 @@ class Kernel extends ObjectContainer
         $app = $class::getInstance();
         return $this->apps[ $appName ] = $app;
     }
+
 
 
     /*
