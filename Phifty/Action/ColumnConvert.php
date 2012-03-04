@@ -18,8 +18,10 @@ class ColumnConvert
             $param->$k = $v;
         }
 
+
         $param->name  = $name;
-        $param->label = @$column->attributes->label;
+
+        var_dump( $param ); 
 
 		if( $record ) {
             $param->value = $record->{$name};
