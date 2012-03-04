@@ -13,6 +13,10 @@ class CreateRecordAction
         /* error checking */
         if( false === $ret->success ) {
             $this->convertRecordValidation( $ret );
+
+            var_dump( $ret->sql ); 
+            var_dump( $ret ); 
+
             return $this->createError( $ret );
         }
         return $this->createSuccess( $ret );
