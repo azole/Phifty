@@ -19,6 +19,7 @@ use Universal\Container\ObjectContainer;
 use CacheKit\CacheKit;
 use CacheKit\ApcCache;
 use Roller\Router;
+use Exception;
 
 
 /*
@@ -39,7 +40,7 @@ use Roller\Router;
 
 class Kernel extends ObjectContainer 
 {
-    /* phifty version */
+    /* framework version */
     const VERSION = '2.2';
 
     /* rootDir: contains app, web, phifty dirs */
@@ -64,7 +65,7 @@ class Kernel extends ObjectContainer
 
     public $environment = 'dev';
 
-    function __construct( $environment = null ) 
+    public function __construct( $environment = null ) 
     {
         $this->frameworkDir = PH_ROOT; // Kernel is placed under framework directory
         $this->rootDir      = PH_APP_ROOT;
@@ -174,7 +175,23 @@ class Kernel extends ObjectContainer
     {
         $this->event->trigger('phifty.before_init');
         $this->initAppClassLoader();
-        $this->initHeader();
+
+
+
+        define( 'CLI_MODE' , $this->isCLI );
+        if( $this->isCLI ) {
+            ini_set('output_buffering ', '0');
+            ini_set('implicit_flush', '1');
+            ob_implicit_flush(true);
+        } else {
+            ob_start();
+            $s = $this->session; // build session object
+            mb_internal_encoding("UTF-8");
+        }
+
+
+
+
         $this->initLang();
         $this->initPlugins();
         $this->event->trigger('phifty.after_init');
@@ -188,7 +205,6 @@ class Kernel extends ObjectContainer
     }
 
 
-
     /*
     public function getApp( $appName )
     {
@@ -197,86 +213,89 @@ class Kernel extends ObjectContainer
     }
     */
 
-
-
-    function isCLI()
+    public function isCLI()
     {
         return $this->isCLI;
     }
 
-    function getAppClass( $bundle )
+    public function getAppClass( $bundle )
     {
         return '\\' . $bundle . '\\Application';
     }
 
-    function getApp($bundleName)
+    public function getApp($bundleName)
     {
         $class = $this->getAppClass($bundleName);
         $instance = $class::getInstance();
         return $instance;
     }
 
-    /*
+
+    /**
      * get current application name
      */
-    function getAppName()
+    public function getAppName()
     {
         return $this->appName;
     }
 
-    function getAppId()
+
+    public function getAppId()
     {
         return $this->appId;
     }
 
-    function getAppDir()
+
+    public function getAppDir()
     {
         return $this->rootDir . DIR_SEP . PHIFTY_APP_DIRNAME . DIR_SEP . $this->appName;
     }
 
-    function getAppPluginDir()
+
+    public function getAppPluginDir()
     {
         return $this->rootDir . DIR_SEP . 'plugins';
     }
 
-    function getFrameworkBundleDir()
+    public function getFrameworkBundleDir()
     {
         return $this->frameworkDir . DIR_SEP . PHIFTY_APP_DIRNAME;
     }
 
-    function getCoreDir()
+    public function getCoreDir()
     {
         return $this->getFrameworkBundleDir() . DIR_SEP . 'Core';
     }
 
 
     /* we should move this into bundles dir */
-    function getFrameworkPluginDir()
+    public function getFrameworkPluginDir()
     {
         return $this->frameworkDir . DIR_SEP . 'plugins';
     }
 
-    function getMinifiedWebDir()
+    public function getMinifiedWebDir()
     {
         return $this->rootDir . DIR_SEP . PHIFTY_WEBROOT_DIRNAME . DIR_SEP . 'static' . DIR_SEP . 'minified';
     }
 
-    function getAppWebDir()
+    public function getAppWebDir()
     {
         return $this->rootDir  . DIR_SEP . PHIFTY_APP_DIRNAME . DIR_SEP . $this->appName . DIR_SEP . 'web';
     }
 
-    function getCoreWebDir()
+    public function getCoreWebDir()
     {
         return $this->getCoreDir() . DIR_SEP . 'web';
     }
 
-    function getWebRootDir()
+    public function getWebRootDir()
     {
         return $this->rootDir . DIR_SEP . PHIFTY_WEBROOT_DIRNAME;
     }
 
-    /* get exported plugin webdir
+    /**
+     * Get exported plugin webdir
      * 
      * web dir structure
      *
@@ -285,7 +304,7 @@ class Kernel extends ObjectContainer
      *   web/ph/plugins/coupon/
      *   ..... etc
      * */
-    function getWebPluginDir()
+    public function getWebPluginDir()
     {
         return $this->rootDir . DIR_SEP . PHIFTY_WEBROOT_DIRNAME .  DIR_SEP . 'ph' . DIR_SEP . 'plugins';
     }
@@ -297,43 +316,47 @@ class Kernel extends ObjectContainer
      *     widgets/Foo/web => webroot/ph/widgets/Foo
      *
     */
-    function getWebAssetDir()
+    public function getWebAssetDir()
     {
         return $this->rootDir . DIR_SEP . PHIFTY_WEBROOT_DIRNAME . DIR_SEP . 'ph' . DIR_SEP . 'assets';
     }
 
-    function getRootDir()
+
+    /**
+     * Get Root Dir
+     */
+    public function getRootDir()
     {
         return $this->rootDir;
     }
 
-    function getFrameworkId()
+    public function getFrameworkId()
     {
         return 'phifty';
     }
 
-    function getFrameworkDir()
+    public function getFrameworkDir()
     {
         return $this->frameworkDir;
     }
 
-    function currentLocale()
+    public function currentLocale()
     {
         return $this->locale->speaking();
     }
 
-    function currentLang()
+    public function currentLang()
     {
         return $this->currentLocale();
     }
 
     /* return Phifty\L10N */
-    function lang()
+    public function lang()
     {
         return $this->locale;
     }
 
-    function initLang()
+    public function initLang()
     {
         $l10n = $this->locale;
         $i18nConfig = $this->config('i18n');
@@ -357,7 +380,7 @@ class Kernel extends ObjectContainer
         # _('en');
     }
 
-    function pluginList()
+    public function pluginList()
     {
         $config = (array) $this->config( 'plugins' );
         if( ! $config )
@@ -365,7 +388,7 @@ class Kernel extends ObjectContainer
         return array_keys( $config );
     }
 
-    function initAppClassLoader() 
+    public function initAppClassLoader() 
     {
         // app names
         $pluginConfigs = $this->config( 'plugins' );
@@ -390,7 +413,7 @@ class Kernel extends ObjectContainer
         }
     }
 
-    function initPlugins()
+    public function initPlugins()
     {
         $pluginConfigs = $this->config( 'plugins' );
         if( ! $pluginConfigs )
@@ -398,12 +421,12 @@ class Kernel extends ObjectContainer
         $this->plugin->loadFromList( $pluginConfigs );
     }
 
-    function hasPlugin($name) 
+    public function hasPlugin($name) 
     {
         return $this->plugin->hasPlugin( $name );
     }
 
-    function run() 
+    public function run() 
     {
         $this->event->trigger('phifty.before_run');
 
@@ -440,18 +463,17 @@ class Kernel extends ObjectContainer
     /**
      * backward-compatible
      */
-    function getPlugin($name) 
+    public function getPlugin($name) 
     {
         return $this->plugin->getPlugin( $name );
     }
 
 
-    /*
-     *
+    /**
      * @return: if $key is empty, return the config hash, 
      *          or will return the config value.
      */
-    function config($key = null , $default = null ) 
+    public function config($key = null , $default = null ) 
     {
         if( $key ) {
             $val = $this->configLoader->get( $key );
@@ -464,7 +486,7 @@ class Kernel extends ObjectContainer
     /**
      * get Phifty\Web object
      */
-    function web()
+    public function web()
     {
         return $this->web;
     }
@@ -472,26 +494,14 @@ class Kernel extends ObjectContainer
     /**
      * get Template Engine
      **/
-    function view()
+    public function view()
     {
         return new \Phifty\View;
     }
 
 
-    function initHeader() {
-        define( 'CLI_MODE' , $this->isCLI );
-        if( $this->isCLI ) {
-            ini_set('output_buffering ', '0');
-            ini_set('implicit_flush', '1');
-            ob_implicit_flush(true);
-        } else {
-            ob_start();
-            $s = $this->session; // build session object
-            mb_internal_encoding("UTF-8");
-        }
-    }
 
-	function __toString()
+	public function __toString()
 	{
 		return '<pre>' . get_class($this ) . '</pre>';
    	}
