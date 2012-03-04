@@ -177,8 +177,8 @@ class Kernel extends ObjectContainer
         $this->initAppClassLoader();
 
 
-
         define( 'CLI_MODE' , $this->isCLI );
+
         if( $this->isCLI ) {
             ini_set('output_buffering ', '0');
             ini_set('implicit_flush', '1');
@@ -193,8 +193,11 @@ class Kernel extends ObjectContainer
 
 
         $this->initLang();
+
         $this->initPlugins();
+
         $this->event->trigger('phifty.after_init');
+
     }
 
     public function loadApp( $appName ) 
@@ -330,6 +333,10 @@ class Kernel extends ObjectContainer
         return $this->rootDir;
     }
 
+
+    /**
+     * return framework id
+     */
     public function getFrameworkId()
     {
         return 'phifty';
