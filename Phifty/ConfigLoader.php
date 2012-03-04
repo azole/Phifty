@@ -52,6 +52,7 @@ class ConfigLoader
     function __construct($app)
     { 
         $this->environment = $app->environment;
+
         switch( $this->environment ) {
             case 'test':
             case 'dev':

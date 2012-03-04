@@ -63,6 +63,10 @@ class Kernel extends ObjectContainer
     /* boolean: is in development mode ? */
     public $isDev = true;
 
+    public $apps = array();
+
+    public $environment = 'dev';
+
     function __construct( $environment = null ) 
     {
         $this->frameworkDir = __DIR__; // Kernel is placed under framework directory
@@ -70,9 +74,10 @@ class Kernel extends ObjectContainer
         $this->appName      = PH_APP_NAME;
         $this->environment  = $environment 
                 ?: getenv('PHIFTY_ENV') 
-                ?: ( isset($_REQUEST['PHIFTY_ENV']) 
-                        ? $_REQUEST['PHIFTY_ENV'] : 'dev' );
+                ?: (isset($_REQUEST['PHIFTY_ENV']) 
+                    ? $_REQUEST['PHIFTY_ENV'] : 'dev');
 
+        
         $this->appId        = strtolower( PH_APP_NAME );
         $this->isCLI        = isset($_SERVER['argc']);
         $self = $this;
@@ -168,7 +173,7 @@ class Kernel extends ObjectContainer
         }
     }
 
-    function init()
+    public function init()
     {
         $this->event->trigger('phifty.before_init');
         $this->initAppClassLoader();
@@ -177,6 +182,22 @@ class Kernel extends ObjectContainer
         $this->initPlugins();
         $this->event->trigger('phifty.after_init');
     }
+
+    public function loadApp( $appName ) 
+    {
+        $class = $appName . '\Application';
+        $app = $class::getInstance();
+        return $this->apps[ $appName ] = $app;
+    }
+
+
+    /*
+    public function getApp( $appName )
+    {
+        if( isset($this->apps[ $appName ]) )
+            return $this->apps[ $appName ];
+    }
+    */
 
 
 
