@@ -102,11 +102,13 @@ abstract class RecordAction extends \Phifty\Action
     }
 
     function convertRecordValidation( $ret ) {
-        foreach( $ret->validations as $vld ) {
-            if( $vld->success ) {
-                $this->result->addValidation( $vld->field , array( "valid" => $vld->message )); 
-            } else {
-                $this->result->addValidation( $vld->field , array( "invalid" => $vld->message ));
+        if( $ret->validations ) {
+            foreach( $ret->validations as $vld ) {
+                if( $vld->success ) {
+                    $this->result->addValidation( $vld->field , array( "valid" => $vld->message )); 
+                } else {
+                    $this->result->addValidation( $vld->field , array( "invalid" => $vld->message ));
+                }
             }
         }
     }

@@ -20,6 +20,9 @@ class UpdateRecordAction
 
         $ret = $record->update( $args );
         if( false === $ret->success ) {
+
+            var_dump( $ret ); 
+            
             $this->convertRecordValidation( $ret );
             return $this->updateError( $ret );
         }
