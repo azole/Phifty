@@ -4,6 +4,16 @@ use Phifty\Web\RegionPagerDisplay;
 use Phifty\Region;
 use Phifty\Controller;
 
+
+/**
+ * Current CRUD template structure:
+ *
+ *    templates/
+ *          {crudId}/create.html (***not yet)
+ *          {crudId}/edit.html
+ *          {crudId}/list.html
+ */
+
 abstract class CRUDHandler extends Controller
 {
     /**
@@ -142,17 +152,23 @@ abstract class CRUDHandler extends Controller
     /* this method should take a collection to render */
     function renderCrudList( $args = array() )
     {
-        return $this->render( 'plugins/' . $this->namespace . '/template/crud_list_' . $this->crudId . '.html' , $args );
+        return $this->render( 
+            'plugins/' 
+            . $this->namespace 
+            . '/template/' . $this->crudId . '/list.html' , $args );
     }
 
     function renderCrudEdit( $args = array() )
     {
-        return $this->render( 'plugins/' . $this->namespace . '/template/crud_edit_' . $this->crudId . '.html', $args );
+        return $this->render( 
+            'plugins/' 
+            . $this->namespace 
+            . '/template/' . $this->crudId . '/edit.html' , $args);
     }
 
     function renderCrudPage( $args = array() )
     {
-        return $this->render( 'Core/template/crud.html' , $args );
+        return $this->render( 'Core/template/crud/page.html' , $args );
     }
 
 
