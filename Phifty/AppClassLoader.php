@@ -52,7 +52,6 @@ class AppClassLoader extends Singleton
             foreach( $this->nsPaths[ $ns ] as $path ) {
                 $classPath = $path . '/' . str_replace( array('\\') , DIRECTORY_SEPARATOR , $class ) . '.php';
                 if( file_exists($classPath) ) {
-                    echo "Required! " . $classPath . "\n";
                     require $classPath;
                     return true;
                 }
