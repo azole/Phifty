@@ -82,8 +82,4 @@ class AppClassKit
         return $classes;
     }
 
-
 }
-
-
-?>
