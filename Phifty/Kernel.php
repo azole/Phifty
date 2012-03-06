@@ -119,7 +119,7 @@ class Kernel extends ObjectContainer
         $this->router = function() {
             return new Router(null, array( 
                 'route_class' => 'Phifty\Routing\Route',
-                'cache_id' => PH_APP_NAME,
+                // 'cache_id' => PH_APP_NAME,
             ));
         };
 
