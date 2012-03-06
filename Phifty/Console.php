@@ -8,15 +8,15 @@
  * file that was distributed with this source code.
  */
 namespace Phifty;
+use CLIFramework\Application;
 
-class Console extends \CLIFramework\Application
+class Console extends Application
 {
 
     function init()
     {
         parent::init();
-        $this->registerCommand( 'schema' );
-        $this->registerCommand( 'cache' );
+        $this->registerCommand( 'export' );
     }
 
 
