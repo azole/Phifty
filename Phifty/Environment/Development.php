@@ -37,8 +37,8 @@ class Development
             require_once PH_ROOT . '/vendor/firephp/lib/FirePHPCore/fb.php';
         }
 
-
-        // xxx: can use universal requirement checker 
+        // xxx: Can use universal requirement checker.
+        //
         // $req = new Universal\Requirement\Requirement;
         // $req->extensions( 'apc','mbstring' );
         // $req->classes( 'ClassName' , 'ClassName2' );
