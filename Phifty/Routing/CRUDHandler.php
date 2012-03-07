@@ -192,13 +192,16 @@ abstract class CRUDHandler extends Controller
 
         $pager = $collection->pager( $env->request->page ?: 1 , $env->request->pagenum ?: 10 );
         $pagerDisplay = new RegionPagerDisplay( $pager );
-        $this->vars['CRUD'] = array(
+        $data = array(
             'Object' => $this,
             'Items' => $pager->items(),
             'Pager' => $pagerDisplay,
             'Title' => $this->getListTitle(),
             'Columns' => $this->getListColumns(),
         );
+        foreach( $data as $k => $v ) {
+            $this->vars['CRUD'][ $k ] = $v;
+        }
     }
 
     /*
@@ -242,14 +245,16 @@ abstract class CRUDHandler extends Controller
             ?  __('Create %1' , $record->getLabel() )
             :  __('Edit %1 %2', $record->getLabel() , (int) $record->id );
 
-
-        $this->vars['CRUD'] = array(
+        $data = array(
             'Object'      => $this,
             'Title'       => $title,
             'ActionClass' => $actionClass,
             'Action'      => $action,
             'Record'      => $record,
         );
+        foreach( $data as $k => $v ) {
+            $this->vars['CRUD'][$k] = $v;
+        }
     }
 
 
