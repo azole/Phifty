@@ -98,6 +98,8 @@ class Image extends Column
 
 		if( $file && $file->found() )
 		{
+
+			
 			$newName = null;
 			if( $this->renameFile ) {
 				$cb = $this->renameFile;
