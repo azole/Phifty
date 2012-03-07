@@ -61,12 +61,6 @@ abstract class CRUDHandler extends Controller
         return $routeset;
     }
 
-    function init()
-    {
-        parent::init();
-        $this->vars['CRUD'] = array( 'object' => $this );
-    }
-
     function assign( $name , $value )
     {
         $this->vars[ $name ] = $value;
@@ -191,11 +185,12 @@ abstract class CRUDHandler extends Controller
         $pager = $collection->pager( $env->request->page ?: 1 , $env->request->pagenum ?: 10 );
         $pagerDisplay = new RegionPagerDisplay( $pager );
 
-        $this->vars['CRUD']['List'] = array(
-            'items' => $pager->items(),
-            'pager' => $pagerDisplay,
-            'title' => $this->getListTitle(),
-            'columns' => $this->getListColumns(),
+        $this->vars['CRUD'] = array(
+            'Object' => $this,
+            'Items' => $pager->items(),
+            'Pager' => $pagerDisplay,
+            'Title' => $this->getListTitle(),
+            'Columns' => $this->getListColumns(),
         );
     }
 
@@ -241,11 +236,12 @@ abstract class CRUDHandler extends Controller
             :  __('Edit %1 %2', $record->getLabel() , (int) $record->id );
 
 
-        $this->vars['CRUD']['Edit'] = array(
-            'title'       => $title,
-            'actionClass' => $actionClass,
-            'action'      => $action,
-            'record'      => $record,
+        $this->vars['CRUD'] = array(
+            'Object'      => $this,
+            'Title'       => $title,
+            'ActionClass' => $actionClass,
+            'Action'      => $action,
+            'Record'      => $record,
         );
     }
 
