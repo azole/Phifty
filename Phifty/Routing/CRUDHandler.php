@@ -46,6 +46,7 @@ abstract class CRUDHandler extends Controller
 
     /* collection order */
     public $defaultOrder = array('id', 'desc');
+
     public $listColumns;
 
     static function expand()
@@ -59,6 +60,13 @@ abstract class CRUDHandler extends Controller
         $routeset->add( '/edit'        ,"$class:edit");
         $routeset->add( '/create'      ,"$class:create");
         return $routeset;
+    }
+
+    function init()
+    {
+        $this->vars['CRUD']['Object'] = $this;
+        $this->vars['CRUD']['Title'] = $this->getListTitle();
+        parent::init();
     }
 
     function assign( $name , $value )
@@ -184,7 +192,6 @@ abstract class CRUDHandler extends Controller
 
         $pager = $collection->pager( $env->request->page ?: 1 , $env->request->pagenum ?: 10 );
         $pagerDisplay = new RegionPagerDisplay( $pager );
-
         $this->vars['CRUD'] = array(
             'Object' => $this,
             'Items' => $pager->items(),
@@ -279,5 +286,7 @@ abstract class CRUDHandler extends Controller
         $tiles = $this->renderCrudIndexTiles();
         return $this->renderCrudPage(array( 'tiles' => $tiles ));
     }
+
+
 
 }
