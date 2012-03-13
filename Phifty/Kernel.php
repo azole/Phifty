@@ -16,9 +16,6 @@ use Phifty\AppClassKit;
 use Phifty\FileUtils;
 use Phifty\Action\ActionRunner;
 use Universal\Container\ObjectContainer;
-use CacheKit\CacheKit;
-use CacheKit\ApcCache;
-use Roller\Router;
 use Exception;
 
 
@@ -88,39 +85,9 @@ class Kernel extends ObjectContainer
             return new L10N;
         };
 
-        $this->apc = function() use ($self) {
-            return new ApcCache( $self->appName );
-        };
-
-        $this->session = function() use ($self) {
-            $session = new \Universal\Session\Session(array(  
-                'state'   => new \Universal\Session\State\NativeState,
-                'storage' => new \Universal\Session\Storage\NativeStorage,
-            ));
-            return $session;
-        };
-
         // php event pool
         $this->event = function() {
             return new \Universal\Event\PhpEvent;
-        };
-
-        $this->cache = function() use ($self) {
-            $b = array();
-            if( extension_loaded('apc') )
-                $b[] = $self->apc;
-            /*
-            if( extension_loaded('memcache') )
-                $b[] = new \CacheKit\MemcacheCache( array( array('localhost',11211) ) );
-            */
-            return new CacheKit($b);
-        };
-
-        $this->router = function() {
-            return new Router(null, array( 
-                'route_class' => 'Phifty\Routing\Route',
-                // 'cache_id' => PH_APP_NAME,
-            ));
         };
 
         $this->currentUser = function() use ($self) {
@@ -147,16 +114,6 @@ class Kernel extends ObjectContainer
             return \Phifty\PluginManager::getInstance();
         };
 
-        $this->mailer = function() {
-            require_once __DIR__ . '/vendor/pear/swift_required.php';
-
-            // Mail transport
-            $transport = Swift_MailTransport::newInstance();
-
-            // Create the Mailer using your created Transport
-            return Swift_Mailer::newInstance($transport);
-        };
-
         /**
          * detect for development mode 
          */
@@ -170,6 +127,14 @@ class Kernel extends ObjectContainer
             \Phifty\Environment\Production::init($this);
         }
     }
+
+
+    public function registerService( \Phifty\Service\ServiceInterface $service )
+    {
+        $service->register( $this );
+    }
+
+
 
     public function init()
     {
