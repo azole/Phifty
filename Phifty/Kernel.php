@@ -110,10 +110,6 @@ class Kernel extends ObjectContainer
             return new \Phifty\Web( $self );
         };
 
-        $this->plugin = function() {
-            return \Phifty\PluginManager::getInstance();
-        };
-
         /**
          * detect for development mode 
          */
@@ -328,6 +324,8 @@ class Kernel extends ObjectContainer
         return $this->locale;
     }
 
+
+    /* Move this into GettextService */
     public function initLang()
     {
         $l10n = $this->locale;
