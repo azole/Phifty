@@ -1,8 +1,9 @@
 <?php
-
 namespace Phifty\Service;
+use Swift_MailTransport;
+use Swift_Mailer;
 
-class SwiftMailerService implements ServiceInterface
+class MailerService implements ServiceInterface
 {
 
 
