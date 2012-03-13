@@ -95,17 +95,6 @@ class Kernel extends ObjectContainer
             return new $currentUserClass;
         };
 
-        $loader = \Lazy\ConfigLoader::getInstance();
-        if( ! $loader->loaded ) { 
-            $loader->load( PH_APP_ROOT . '/.lazy.php');
-            $loader->init();  // init datasource and connection
-        }
-
-        $this->db = function() use($self) {
-            $conm = \Lazy\ConnectionManager::getInstance();
-            return $conm->getConnection();
-        };
-
         $this->web = function() use($self) { 
             return new \Phifty\Web( $self );
         };
