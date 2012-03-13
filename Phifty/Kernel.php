@@ -81,10 +81,6 @@ class Kernel extends ObjectContainer
             return new \Phifty\ConfigLoader( $self );
         };
 
-        $this->locale  = function() {
-            return new L10N;
-        };
-
         // php event pool
         $this->event = function() {
             return new \Universal\Event\PhpEvent;
@@ -136,11 +132,8 @@ class Kernel extends ObjectContainer
         } else {
             ob_start();
             $s = $this->session; // build session object
-            mb_internal_encoding("UTF-8");
+            mb_internal_encoding('UTF-8');
         }
-
-
-
 
         $this->initLang();
 
@@ -297,6 +290,11 @@ class Kernel extends ObjectContainer
         return $this->frameworkDir;
     }
 
+
+
+    /** 
+     * Locale Related 
+     */
     public function currentLocale()
     {
         return $this->locale->speaking();
@@ -313,31 +311,31 @@ class Kernel extends ObjectContainer
         return $this->locale;
     }
 
-
-    /* Move this into GettextService */
+    /* Move this into LangService */
     public function initLang()
     {
-        $l10n = $this->locale;
+        $locale = $this->locale;
         $i18nConfig = $this->config('i18n');
 
         // var_dump( $i18nConfig ); 
         // var_dump( $_SESSION ); 
-        $l10n->setDefault( $i18nConfig->default );
-        $l10n->domain( $this->appId ); # use application id for domain name.
+        $locale->setDefault( $i18nConfig->default );
+        $locale->domain( $this->appId ); # use application id for domain name.
 
         $localeDir = $this->getRootDir() . DIRECTORY_SEPARATOR . $i18nConfig->localedir;
 
-        $l10n->localedir( $localeDir );
+        $locale->localedir( $localeDir );
 
         /* add languages to list */
         foreach( @$i18nConfig->lang as $localeName ) {
-            $l10n->add( $localeName );
+            $locale->add( $localeName );
         }
 
-        $l10n->init();
-
+        $locale->init();
         # _('en');
     }
+
+
 
     public function pluginList()
     {
