@@ -76,6 +76,8 @@ abstract class Action
             return;
 
         if( ! isset($this->params[ $name ] ) ) {
+            return;
+            // just skip it.
             $this->result->addValidation( $name, array( 'invalid' => "Contains invalid arguments: $name" ));
             return true;
         }
