@@ -40,6 +40,8 @@ abstract class CRUDHandler extends Controller
 
     public $currentRecord;
 
+    public $pageLimit = 10;
+
 
     /* vars to be export to template */
     public $vars = array();
@@ -190,7 +192,7 @@ abstract class CRUDHandler extends Controller
             $order_by = 'desc';
         $collection->order( $order_column , $order_by );
 
-        $pager = $collection->pager( $env->request->page ?: 1 , $env->request->pagenum ?: 10 );
+        $pager = $collection->pager( $env->request->page ?: 1 , $env->request->pagenum ?: $this->pageLimit );
         $pagerDisplay = new RegionPagerDisplay( $pager );
         $data = array(
             'Object' => $this,
