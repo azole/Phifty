@@ -5,7 +5,7 @@ class SessionService
     implements ServiceInterface
 {
 
-    function register($kernel)
+    public function register($kernel)
     {
         $kernel->session = function() {
             $session = new \Universal\Session\Session(array(  

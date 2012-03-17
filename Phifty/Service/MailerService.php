@@ -6,8 +6,7 @@ use Swift_Mailer;
 class MailerService implements ServiceInterface
 {
 
-
-    public function register($kernel)
+    public function register($kernel, $options = array() )
     {
         $kernel->mailer = function() {
 

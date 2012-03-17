@@ -6,7 +6,7 @@ class RouterService
     implements ServiceInterface
 {
 
-    function register($kernel) 
+    public function register($kernel, $options = array() ) 
     {
         $kernel->router = function() {
             return new Router(null, array( 

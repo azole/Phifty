@@ -6,7 +6,7 @@ use LazyRecord\ConnectionManager;
 class DatabaseService
     implements ServiceInterface
 {
-    function register($kernel)
+    public function register($kernel, $options = array() )
     {
         $loader = \LazyRecord\ConfigLoader::getInstance();
         if( ! $loader->loaded ) { 

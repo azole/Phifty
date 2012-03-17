@@ -9,7 +9,7 @@ interface ServiceInterface
     /**
      * register service
      */
-    public function register($kernel);
+    public function register($kernel, $options = array() );
 
 }
 

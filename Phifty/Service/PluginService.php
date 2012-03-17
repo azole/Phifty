@@ -6,7 +6,7 @@ class PluginService
     implements ServiceInterface
 {
 
-    public function register($kernel)
+    public function register($kernel, $options = array() )
     {
         $kernel->plugin = function() {
             return PluginManager::getInstance();
