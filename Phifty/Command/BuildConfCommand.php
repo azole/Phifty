@@ -3,6 +3,7 @@ namespace Phifty\Command;
 use CLIFramework\Command;
 use SplFileInfo;
 use SerializerKit\Serializer;
+use Exception;
 
 class BuildConfCommand extends Command
 {
