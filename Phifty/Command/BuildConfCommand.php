@@ -23,6 +23,10 @@ class BuildConfCommand extends Command
             require 'SymfonyComponents/YAML/sfYaml.php';
         }
 
+        if( ! file_exists($configPath) ) {
+            throw new Exception("$configPath file does not exist.");
+        }
+
         $fileInfo = new SplFileInfo( $configPath );
         $ext = $fileInfo->getExtension();
         $configHash = null;
@@ -48,8 +52,5 @@ class BuildConfCommand extends Command
         $this->logger->info('Done');
     }
 }
-
-
-
 
 
