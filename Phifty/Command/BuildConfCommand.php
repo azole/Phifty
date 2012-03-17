@@ -19,10 +19,6 @@ class BuildConfCommand extends Command
 
     public function execute($configPath)
     {
-        if( ! class_exists('sfYaml',true) ) {
-            require 'SymfonyComponents/YAML/sfYaml.php';
-        }
-
         if( ! file_exists($configPath) ) {
             throw new Exception("$configPath file does not exist.");
         }
