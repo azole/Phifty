@@ -16,8 +16,11 @@ class Console extends Application
     function init()
     {
         parent::init();
-        $this->registerCommand('export');
+
+        // $this->registerCommand('init');   // xxx: broken
+
         $this->registerCommand('build-conf');
+        $this->registerCommand('export');
     }
 
 
