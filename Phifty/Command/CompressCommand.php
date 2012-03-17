@@ -4,10 +4,12 @@ use Phifty\FileUtils;
 use Phifty\Web;
 use Phifty\WebPath;
 use Phifty\WebUtils;
+use CLIFramework\Command;
 
-class Compress extends \Phifty\Command
+// XXX: broken
+
+class CompressCommand extends Command
 {
-
     
     function compressApp($app)
     {
@@ -21,7 +23,7 @@ class Compress extends \Phifty\Command
                 mkdir( "$webDir/css" , 0755 , true );
 
             if( count($app->css()) ) {
-                $this->log( "Compressing $id css => $minifiedFile ..." );
+                $this->logger->info( "Compressing $id css => $minifiedFile ..." );
                 $files = $web->globPaths( $webDir , $app->css() );
                 WebUtils::minifyCssFiles( $files , $minifiedFile );
             }
@@ -34,25 +36,25 @@ class Compress extends \Phifty\Command
             if( ! file_exists( "$webDir/js" ) )
                 mkdir( $webDir . '/js' , 0755 , true );
             if( count($app->js()) ) {
-                $this->log( "Compressing $id js => $minifiedFile ..." );
+                $this->logger->info( "Compressing $id js => $minifiedFile ..." );
                 $files = $web->globPaths( $webDir , $app->js() );
                 WebUtils::minifyJsFiles( $files , $minifiedFile );
             }
         }
     }
 
-    function run()
+    function execute()
     {
         $core = \Core\Application::getInstance();
         $this->compressApp( $core );
 
         $plugins = webapp()->plugin->getPlugins();
         if( $plugins ) {
-            $this->log( "Compressing plugins ..." );
+            $this->logger->info( "Compressing plugins ..." );
             foreach( $plugins as $plugin ) {
                 $this->compressApp( $plugin );
             }
         }
-        $this->log( "Done" );
+        $this->logger->info( "Done" );
     }
 }
