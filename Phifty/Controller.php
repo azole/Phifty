@@ -3,7 +3,10 @@ namespace Phifty;
 use Phifty\Web\Request;
 use Universal\Http\HttpRequest;
 use ReflectionObject;
-use YAMLKit\YAML;
+use SerializerKit;
+use SerializerKit\Serializer;
+use SerializerKit\YamlSerializer;
+use SerializerKit\XmlSerializer;
 use Exception;
 
 /*
@@ -133,7 +136,8 @@ class Controller extends \Roller\Controller
     {
         if( ! CLI_MODE )
             header('Content-type: application/yaml; charset=UTF-8;');
-        return YAML::dump( $data );
+        $yaml = new YamlSerializer;
+        return $yaml->encode($data);
     }
 
 

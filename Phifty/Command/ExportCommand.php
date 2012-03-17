@@ -29,7 +29,7 @@ class ExportCommand extends Command
         $app          = webapp();
         $webroot      = $app->getWebRootDir();
         $webPluginDir = $app->getWebPluginDir();
-        $webAssetDir = $app->getWebAssetDir();
+        $webAssetDir  = $app->getWebAssetDir();
         $appWebDir    = $app->getAppWebDir();
         $coreWebDir   = $app->getCoreWebDir();
 

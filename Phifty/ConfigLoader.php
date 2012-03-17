@@ -17,6 +17,7 @@ $loader->get('i18n.setup.blah'); // better way
 */
 namespace Phifty;
 use Exception;
+use SerializerKit\YamlSerializer;
 
 
 /*
@@ -31,7 +32,6 @@ $loader->get( $key );
 	$loader->get('i18n');
 
 */
-use YAMLKit\YAML;
 
 class ConfigLoader
 {
@@ -78,6 +78,10 @@ class ConfigLoader
 
     function loadEnvironmentConfig($app,$environment)
     {
+
+        $yaml = new YamlSerializer;
+
+
         // load config by env
         $appConfigFile = $app->rootDir . DIRECTORY_SEPARATOR . 'config' 
                 . DIRECTORY_SEPARATOR . 'app.yml';
@@ -85,10 +89,10 @@ class ConfigLoader
                 . DIRECTORY_SEPARATOR . 'app_site.yml';
         $appConfig = null;
         if ( file_exists( $appSiteConfigFile ) ) {
-            $appConfig = YAML::loadFile( $appSiteConfigFile );
+            $appConfig = $yaml->decode( file_get_contents($appSiteConfigFile) );
         }
         elseif ( ! $appConfig && file_exists( $appConfigFile ) ) {
-            $appConfig = YAML::loadFile( $appConfigFile );
+            $appConfig = $yaml->decode( file_get_contents( $appConfigFile ) );
         }
 
         if( ! $appConfig )
@@ -106,11 +110,11 @@ class ConfigLoader
         if( ! file_exists( $envConfigFile ) )
             throw new Exception( "$envConfigFile not found." );
 
-        $envConfig = YAML::loadFile( $envConfigFile );
+        $envConfig = $yaml->decode( file_get_contents( $envConfigFile ) );
 
         // it site environment config file is defined, merge it!
         if( file_exists( $envSiteConfigFile ) ) {
-            $envSiteConfig = YAML::loadFile( $envSiteConfigFile );
+            $envSiteConfig = $yaml->decode( file_get_contents( $envSiteConfigFile ) );
             $envConfig = array_merge( $envConfig , $envSiteConfig );
         }
 
