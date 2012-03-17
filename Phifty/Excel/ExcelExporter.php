@@ -1,5 +1,5 @@
 <?php
-namespace Phifty\Collection;
+namespace Phifty\Excel;
 
 /** PHPExcel */
 require_once 'PHPExcel/PHPExcel.php';
