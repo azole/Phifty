@@ -2,15 +2,23 @@
 namespace Phifty\Command;
 use Phifty\FileUtils;
 use Phifty\Asset\AssetFinder;
+use CLIFramework\Command;
+
 
 /*
  * Export plugin web dirs to app webroot.
  */
-class Export extends \Phifty\Command
+class ExportCommand extends Command
 {
-	var $longOpts = array('c|clean');
+	// var $longOpts = array('c|clean');
 
-    function run()
+
+    function log($msg)
+    {
+        $this->getLogger()->info( $msg );
+    }
+
+    function execute()
     {
 		$options = $this->getOptions();
 
@@ -120,4 +128,3 @@ class Export extends \Phifty\Command
     }
 }
 
-?>

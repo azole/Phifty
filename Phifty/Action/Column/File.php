@@ -3,17 +3,10 @@ namespace Phifty\Action\Column;
 use Phifty\Action\Column;
 use Phifty\UploadFile;
 use Exception;
-use Phifty\SimpleImage;
 
-class Image extends Column
+class File extends Column
 {
-
-	// XXX: think about me.
 	public $type = 'file';
-
-	/* image column attributes */
-	public $resizeWidth;
-	public $resizeHeight;
 
 	public $validExtensions;
 	public $putIn;
@@ -23,18 +16,7 @@ class Image extends Column
 
 	protected $attrs = array( 'validExtensions' => self::TypeArray );
 
-	function getImager()
-	{
-		return new SimpleImage;
-	}
-
-	function getFile( $name )
-	{
-		return $_FILES[ $name ];
-	}
-
-
-	function preinit( & $args )
+	public function preinit( & $args )
 	{
 		/* For safety , remove the POST, GET field !! should only keep $_FILES ! */
 		if( isset( $args[ $this->name ] ) ) {
@@ -44,8 +26,9 @@ class Image extends Column
 		}
 	}
 
-	function validate($value)
+	public function validate($value)
 	{
+		return true;
 		$ret = (array) parent::validate($value);
 		if( $ret[0] == false )
 			return $ret;
@@ -55,7 +38,7 @@ class Image extends Column
 		{
 			$dir = $this->putIn;
 			if( ! file_exists( $dir ) )
-				return array( false , _("Static dir $dir doesn't exist.") );
+				return array( false , _("Directory $dir doesn't exist.") );
 
 			$file = new UploadFile( $this->name );
 			if( $this->validExtensions )
@@ -77,51 +60,45 @@ class Image extends Column
 		 * if POST,GET file column key is set. remove it from ->args
 		 *
 		 * */
-		// $file = $this->getFile( $this->name );
 		if( ! $this->putIn )
 			throw new Exception( "putIn attribute is not defined." );
 
 
+		$req = new \Universal\Http\HttpRequest;
 		$file = null;
-
 
 		/* if the column is defined, then use the column 
 		 *
 		 * if not, check sourceField.
 		 * */
-		if( @$_FILES[ $this->name ]['name'] ) {
-			$file = new UploadFile( $this->name );
-		} else {
-			if( $this->sourceField )
-				$file = new UploadFile( $this->sourceField );
+		if( isset($req->files[ $this->name ]) ) {
+			$file = $req->files[ $this->name ];
+		} elseif( $this->sourceField && isset($req->files[ $this->sourceField ]) ) {
+			$file = $req->files[ $this->sourceField ];
 		}
 
-		if( $file && $file->found() )
+		if( $file && $file->hasFile() )
 		{
-
-			
 			$newName = null;
 			if( $this->renameFile ) {
 				$cb = $this->renameFile;
 				$newName = $cb( $file->name );
 			}
 
-			/* if we use sourceField, than use Copy */
-			$file->putIn( $this->putIn , $newName , $this->sourceField ? true : false );
-
-			$args[ $this->name ] = $file->getSavedPath();
-			$this->action->addData( $this->name , $file->getSavedPath() );
-
-            // resize image and save back.
-			if( $this->resizeWidth ) {
-				$image = $this->getImager();
-				$imageFile = $file->getSavedPath();
-				$image->load( $imageFile );
-				if( $image->getWidth() > $this->resizeWidth )
-					$image->resizeToWidth( $this->resizeWidth );
-				$image->save( $imageFile );
+			if( $this->putIn && ! file_exists($this->putIn) ) {
+				mkdir( $this->putIn, 0755 , true );
 			}
 
+			/* if we use sourceField, than use Copy */
+			if( $this->sourceField ) {
+				$file->copy( $this->putIn , $newName );
+			}
+			else {
+				$file->move( $this->putIn , $newName );
+			}
+
+			$args[ $this->name ] = $file->getSavedFilepath();
+			$this->action->addData( $this->name , $file->getSavedFilepath() );
 		}
 	}
 

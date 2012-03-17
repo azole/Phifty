@@ -16,9 +16,6 @@ use Phifty\AppClassKit;
 use Phifty\FileUtils;
 use Phifty\Action\ActionRunner;
 use Universal\Container\ObjectContainer;
-use CacheKit\CacheKit;
-use CacheKit\ApcCache;
-use Roller\Router;
 use Exception;
 
 
@@ -84,43 +81,9 @@ class Kernel extends ObjectContainer
             return new \Phifty\ConfigLoader( $self );
         };
 
-        $this->locale  = function() {
-            return new L10N;
-        };
-
-        $this->apc = function() use ($self) {
-            return new ApcCache( $self->appName );
-        };
-
-        $this->session = function() use ($self) {
-            $session = new \Universal\Session\Session(array(  
-                'state'   => new \Universal\Session\State\NativeState,
-                'storage' => new \Universal\Session\Storage\NativeStorage,
-            ));
-            return $session;
-        };
-
         // php event pool
         $this->event = function() {
             return new \Universal\Event\PhpEvent;
-        };
-
-        $this->cache = function() use ($self) {
-            $b = array();
-            if( extension_loaded('apc') )
-                $b[] = $self->apc;
-            /*
-            if( extension_loaded('memcache') )
-                $b[] = new \CacheKit\MemcacheCache( array( array('localhost',11211) ) );
-            */
-            return new CacheKit($b);
-        };
-
-        $this->router = function() {
-            return new Router(null, array( 
-                'route_class' => 'Phifty\Routing\Route',
-                'cache_id' => PH_APP_NAME,
-            ));
         };
 
         $this->currentUser = function() use ($self) {
@@ -128,33 +91,8 @@ class Kernel extends ObjectContainer
             return new $currentUserClass;
         };
 
-        $loader = \Lazy\ConfigLoader::getInstance();
-        if( ! $loader->loaded ) { 
-            $loader->load( PH_APP_ROOT . '/.lazy.php');
-            $loader->init();  // init datasource and connection
-        }
-
-        $this->db = function() use($self) {
-            $conm = \Lazy\ConnectionManager::getInstance();
-            return $conm->getConnection();
-        };
-
         $this->web = function() use($self) { 
             return new \Phifty\Web( $self );
-        };
-
-        $this->plugin = function() {
-            return \Phifty\PluginManager::getInstance();
-        };
-
-        $this->mailer = function() {
-            require_once __DIR__ . '/vendor/pear/swift_required.php';
-
-            // Mail transport
-            $transport = Swift_MailTransport::newInstance();
-
-            // Create the Mailer using your created Transport
-            return Swift_Mailer::newInstance($transport);
         };
 
         /**
@@ -171,6 +109,14 @@ class Kernel extends ObjectContainer
         }
     }
 
+
+    public function registerService( \Phifty\Service\ServiceInterface $service )
+    {
+        $service->register( $this );
+    }
+
+
+
     public function init()
     {
         $this->event->trigger('phifty.before_init');
@@ -186,11 +132,8 @@ class Kernel extends ObjectContainer
         } else {
             ob_start();
             $s = $this->session; // build session object
-            mb_internal_encoding("UTF-8");
+            mb_internal_encoding('UTF-8');
         }
-
-
-
 
         $this->initLang();
 
@@ -347,6 +290,11 @@ class Kernel extends ObjectContainer
         return $this->frameworkDir;
     }
 
+
+
+    /** 
+     * Locale Related 
+     */
     public function currentLocale()
     {
         return $this->locale->speaking();
@@ -363,29 +311,31 @@ class Kernel extends ObjectContainer
         return $this->locale;
     }
 
+    /* Move this into LangService */
     public function initLang()
     {
-        $l10n = $this->locale;
+        $locale = $this->locale;
         $i18nConfig = $this->config('i18n');
 
         // var_dump( $i18nConfig ); 
         // var_dump( $_SESSION ); 
-        $l10n->setDefault( $i18nConfig->default );
-        $l10n->domain( $this->appId ); # use application id for domain name.
+        $locale->setDefault( $i18nConfig->default );
+        $locale->domain( $this->appId ); # use application id for domain name.
 
         $localeDir = $this->getRootDir() . DIRECTORY_SEPARATOR . $i18nConfig->localedir;
 
-        $l10n->localedir( $localeDir );
+        $locale->localedir( $localeDir );
 
         /* add languages to list */
         foreach( @$i18nConfig->lang as $localeName ) {
-            $l10n->add( $localeName );
+            $locale->add( $localeName );
         }
 
-        $l10n->init();
-
+        $locale->init();
         # _('en');
     }
+
+
 
     public function pluginList()
     {

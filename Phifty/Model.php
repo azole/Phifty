@@ -1,7 +1,7 @@
 <?php
 namespace Phifty;
 use Phifty\Model\Column;
-use Lazy\BaseModel;
+use LazyRecord\BaseModel;
 
 class Model extends BaseModel 
 {

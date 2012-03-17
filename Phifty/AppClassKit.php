@@ -40,7 +40,9 @@ class AppClassKit
         if( file_exists($dir ) ) {
             $files = FileUtils::expand_Dir( $dir );
             foreach( $files as $file ) {
-                require_once $file;
+                $code = file_get_contents($file);
+                if( strpos( $code , 'SchemaDeclare' ) !== false )
+                    require_once $file;
             }
         }
     }
@@ -65,8 +67,7 @@ class AppClassKit
     {
         $paths = static::pluginPaths();
         foreach( $paths as $path ) {
-            $modelPath = $path . DIR_SEP . 'Model';
-            static::loadDir( $modelPath );
+            static::loadDir( $path . DIR_SEP . 'Model' );
         }
     }
 
@@ -77,13 +78,9 @@ class AppClassKit
         $classes = array_filter( $classes , function($c) {
             // $rf = new ReflectionClass($c);
             // var_dump( is_a( $c, 'Lazy\Schema\SchemaDeclare' ) ); // && ! $ref->isAbstract();
-            return is_a( $c, '\Lazy\Schema\SchemaDeclare' ); // && ! $ref->isAbstract();
+            return is_a( $c, '\LazyRecord\Schema\SchemaDeclare' ); // && ! $ref->isAbstract();
         });
         return $classes;
     }
 
-
 }
-
-
-?>

@@ -40,31 +40,35 @@ abstract class CRUDHandler extends Controller
 
     public $currentRecord;
 
+    public $pageLimit = 10;
+
 
     /* vars to be export to template */
     public $vars = array();
 
     /* collection order */
     public $defaultOrder = array('id', 'desc');
+
     public $listColumns;
 
     static function expand()
     {
         $class = get_called_class();
         $routeset = new \Roller\RouteSet;
-        $routeset->add( '/' , "$class:crud_index" );
-        $routeset->add( '/crud/list' , "$class:crud_list" );
-        $routeset->add( '/crud/edit' , "$class:crud_edit" );
-        $routeset->add( '/crud/create' , "$class:crud_create" );
-        $routeset->add( '/edit' , "$class:edit" );
-        $routeset->add( '/create' , "$class:create" );
+        $routeset->add( '/'            ,"$class:crud_index" );
+        $routeset->add( '/crud/list'   ,"$class:crud_list");
+        $routeset->add( '/crud/edit'   ,"$class:crud_edit");
+        $routeset->add( '/crud/create' ,"$class:crud_create");
+        $routeset->add( '/edit'        ,"$class:edit");
+        $routeset->add( '/create'      ,"$class:create");
         return $routeset;
     }
 
     function init()
     {
+        $this->vars['CRUD']['Object'] = $this;
+        $this->vars['CRUD']['Title'] = $this->getListTitle();
         parent::init();
-        $this->vars['CRUD'] = array( 'object' => $this );
     }
 
     function assign( $name , $value )
@@ -106,7 +110,7 @@ abstract class CRUDHandler extends Controller
         # support for lang query,
         # make sure the model has defined lang column for I18N
         if( webapp()->getPlugin('I18N') 
-            && $model->getColumn('lang') )
+            && $langColumn = $model->getColumn('lang') )
         {
             if( $this->env->request->has('_data_lang') ) {
                 if( $lang = $this->env->request->_data_lang ) 
@@ -188,15 +192,18 @@ abstract class CRUDHandler extends Controller
             $order_by = 'desc';
         $collection->order( $order_column , $order_by );
 
-        $pager = $collection->pager( $env->request->page ?: 1 , $env->request->pagenum ?: 10 );
+        $pager = $collection->pager( $env->request->page ?: 1 , $env->request->pagenum ?: $this->pageLimit );
         $pagerDisplay = new RegionPagerDisplay( $pager );
-
-        $this->vars['CRUD']['List'] = array(
-            'items' => $pager->items(),
-            'pager' => $pagerDisplay,
-            'title' => $this->getListTitle(),
-            'columns' => $this->getListColumns(),
+        $data = array(
+            'Object' => $this,
+            'Items' => $pager->items(),
+            'Pager' => $pagerDisplay,
+            'Title' => $this->getListTitle(),
+            'Columns' => $this->getListColumns(),
         );
+        foreach( $data as $k => $v ) {
+            $this->vars['CRUD'][ $k ] = $v;
+        }
     }
 
     /*
@@ -240,13 +247,16 @@ abstract class CRUDHandler extends Controller
             ?  __('Create %1' , $record->getLabel() )
             :  __('Edit %1 %2', $record->getLabel() , (int) $record->id );
 
-
-        $this->vars['CRUD']['Edit'] = array(
-            'title'       => $title,
-            'actionClass' => $actionClass,
-            'action'      => $action,
-            'record'      => $record,
+        $data = array(
+            'Object'      => $this,
+            'Title'       => $title,
+            'ActionClass' => $actionClass,
+            'Action'      => $action,
+            'Record'      => $record,
         );
+        foreach( $data as $k => $v ) {
+            $this->vars['CRUD'][$k] = $v;
+        }
     }
 
 
@@ -283,5 +293,7 @@ abstract class CRUDHandler extends Controller
         $tiles = $this->renderCrudIndexTiles();
         return $this->renderCrudPage(array( 'tiles' => $tiles ));
     }
+
+
 
 }

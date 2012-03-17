@@ -70,22 +70,14 @@ abstract class Action
 
     }
 
-
-    /* new methods */
-    function runSanitize() 
-    {
-        foreach( $this->params as $key => $column ) {
-            if( isset($this->args[$key] ) )
-                $this->args[$key] = $column->sanitize( $this->args[ $key ] );
-        }
-    }
-
     protected function validateParam( $name )
     {
         if( $name == '__ajax_request' )
             return;
 
         if( ! isset($this->params[ $name ] ) ) {
+            return;
+            // just skip it.
             $this->result->addValidation( $name, array( 'invalid' => "Contains invalid arguments: $name" ));
             return true;
         }
@@ -143,7 +135,6 @@ abstract class Action
         /* run column methods */
         // XXX: merge them all...
         $this->runPreinit();
-        $this->runSanitize();
         $error = $this->runValidate();
         if( $error )
             return false;
