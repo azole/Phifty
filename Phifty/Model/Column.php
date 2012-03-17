@@ -1,6 +1,6 @@
 <?php
 namespace Phifty\Model;
-use Lazy\Schema\SchemaDeclare\Column as DeclareColumn;
+use LazyRecord\Schema\SchemaDeclare\Column as DeclareColumn;
 
 class Column extends DeclareColumn
 {

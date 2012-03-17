@@ -78,7 +78,7 @@ class AppClassKit
         $classes = array_filter( $classes , function($c) {
             // $rf = new ReflectionClass($c);
             // var_dump( is_a( $c, 'Lazy\Schema\SchemaDeclare' ) ); // && ! $ref->isAbstract();
-            return is_a( $c, '\Lazy\Schema\SchemaDeclare' ); // && ! $ref->isAbstract();
+            return is_a( $c, '\LazyRecord\Schema\SchemaDeclare' ); // && ! $ref->isAbstract();
         });
         return $classes;
     }

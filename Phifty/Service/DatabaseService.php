@@ -1,14 +1,14 @@
 <?php
 namespace Phifty\Service;
-use Lazy\ConfigLoader;
-use Lazy\ConnectionManager;
+use LazyRecord\ConfigLoader;
+use LazyRecord\ConnectionManager;
 
 class DatabaseService
     implements ServiceInterface
 {
     function register($kernel)
     {
-        $loader = \Lazy\ConfigLoader::getInstance();
+        $loader = \LazyRecord\ConfigLoader::getInstance();
         if( ! $loader->loaded ) { 
             $loader->load( PH_APP_ROOT . '/.lazy.php');
             $loader->init();  // init datasource and connection
