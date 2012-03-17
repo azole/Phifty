@@ -11,7 +11,17 @@ use CLIFramework\Command;
 class ExportCommand extends Command
 {
 
-    function execute()
+    public function usage()
+    {
+        return 'export';
+    }
+
+    public function brief()
+    {
+        return 'export application web paths to http webroot.';
+    }
+
+    public function execute()
     {
 		$options = $this->getOptions();
 
