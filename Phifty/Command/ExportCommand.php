@@ -10,13 +10,6 @@ use CLIFramework\Command;
  */
 class ExportCommand extends Command
 {
-	// var $longOpts = array('c|clean');
-
-
-    function log($msg)
-    {
-        $this->getLogger()->info( $msg );
-    }
 
     function execute()
     {
@@ -31,19 +24,19 @@ class ExportCommand extends Command
         $coreWebDir   = $app->getCoreWebDir();
 
 		if( $options->clean ) {
-			$this->log( "Removing webroot/ph");
+			$this->logger->info( "Removing webroot/ph");
 			$unlinks = array();
 			$unlinks[] = FileUtils::path_join( $webroot , 'ph' , $app->getAppName() );
 			$unlinks[] = FileUtils::path_join( $webroot , 'ph' , 'Core' );
 			foreach( $unlinks as $unlink ) {
-				$this->log("Unlinking $unlink ...");
+				$this->logger->info("Unlinking $unlink ...");
 				if( file_exists( $unlink ) )
 					unlink( $unlink );
 			}
 			return;
 		}
 
-		$this->log( "Exporting web directory to webroot..." );
+		$this->logger->info( "Exporting web directory to webroot..." );
 
         /* Make directories */
 		$dirs = array();
@@ -64,10 +57,10 @@ class ExportCommand extends Command
 
 		foreach( $links as $link ) {
             if( file_exists( $link[1] ) ) {
-                $this->log("\tremove link {$link[1]}");
+                $this->logger->info("\tremove link {$link[1]}");
                 unlink( $link[1] );
             }
-            $this->log("\tcreate link {$link[1]}");
+            $this->logger->info("\tcreate link {$link[1]}");
             symlink( $link[0] , $link[1] );
 		}
 
@@ -94,7 +87,7 @@ class ExportCommand extends Command
 			 * plugins/User/web => webroot/plugin/User
 			 * plugins/{plugin}/web => webroot/plugin/User
 			 */
-            $this->log( "\tLinking: $pluginWebDir to $target" );
+            $this->logger->info( "\tLinking: $pluginWebDir to $target" );
             if( ! file_exists( $target ) )
                 symlink( $pluginWebDir , $target );
         }
@@ -107,7 +100,7 @@ class ExportCommand extends Command
          */
         $assets = AssetFinder::findAll();
         // $webAssetDir;
-        $this->log("Creating links for assets");
+        $this->logger->info("Creating links for assets");
         foreach( $assets as $name => $assetInfo ) {
             $source = $assetInfo->web;
             $target = FileUtils::path_join( $webAssetDir , $assetInfo->name );
@@ -116,7 +109,7 @@ class ExportCommand extends Command
                 unlink( $target );
 
             if( file_exists($source) ) {
-                $this->log("\tcreate link $name\t\t$target");
+                $this->logger->info("\tcreate link $name\t\t$target");
                 symlink( $source, $target );
             }
             else {
@@ -124,7 +117,7 @@ class ExportCommand extends Command
             }
         }
 
-		$this->log( "Done" );
+		$this->logger->info( "Done" );
     }
 }
 
