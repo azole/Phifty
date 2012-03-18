@@ -147,6 +147,15 @@ class Kernel extends ObjectContainer
         return $this->applications[ $appname ] = $app;
     }
 
+
+    /**
+     * Get application object
+     *
+     * kernel()->app('Core')->getController('ControllerClass');
+     * kernel()->app('Core')->getModel('ModelClass');
+     * kernel()->app('Core')->getNamespace();
+     * kernel()->app('Core')->locate();
+     */
     public function app( $appname )
     {
         if( isset($this->applications[ $appname ]) )
