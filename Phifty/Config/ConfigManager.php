@@ -64,27 +64,35 @@ class ConfigManager
             return $this->getterCache[ $key ];
          */
         $config = $this->__get( $section );
-        if( $key == null ) {
+        if( $key == null ) 
+        {
 			if( $config )
 				return new Accessor($config);
 			return null;
 		}
 
-		if( isset($config[ $key ]) ) {
+        if( isset($config[ $key ]) ) 
+        {
 			if( is_array( $config[ $key ] ) )
 				return new Accessor($config[ $key ]);
             return $config[ $key ];
 		}
 
-		if( strchr( $key , '.' ) !== false ) {
+        if( false !== strchr( $key , '.' ) ) 
+        {
+
 			$parts = explode( '.' , $key );
 			$ref = $config;
+
 			while( $ref_key = array_shift( $parts ) ) {
 				if( ! isset($ref[ $ref_key ]) ) 
 					return null;
 					# throw new Exception( "Config key: $key not found.  '$ref_key'" );
 				$ref = & $ref[ $ref_key ];
 			}
+
+            if( is_array( $ref ) )
+                return new Accessor($ref);
 			return $ref;
 		}
 		return null;
