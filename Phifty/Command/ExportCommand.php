@@ -26,11 +26,10 @@ class ExportCommand extends Command
 		$options = $this->getOptions();
 
 
-        $kernel          = kernel();
+        $kernel       = kernel();
         $webroot      = $kernel->webroot;
         $webPluginDir = $kernel->getWebPluginDir();
         $webAssetDir  = $kernel->getWebAssetDir();
-        $coreWebDir   = $kernel->app('Core')->getWebDir();
 
 		if( $options->clean ) {
 			$this->logger->info( "Removing webroot/ph");
@@ -47,12 +46,18 @@ class ExportCommand extends Command
 
 		$this->logger->info( "Exporting web directory to webroot..." );
 
+
         /* Make directories */
 		$dirs = array();
 		$dirs[] = $webroot;
 		$dirs[] = $webPluginDir;
         $dirs[] = $webAssetDir;
-        $dirs[] = $coreWebDir;
+
+        foreach( $kernel->applications as $appname => $app ) {
+            $dirs[] = $app->getWebDir();
+        }
+
+
         $dirs[] = $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload';
 		foreach( $dirs as $dir )
 			FileUtils::mkpath( $dir , true );
@@ -60,16 +65,18 @@ class ExportCommand extends Command
         system( 'chmod -vR 777 ' . $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload' );
 
 		$links = array();
-		// $links[] = array( $kernelWebDir , FileUtils::path_join( $webroot , 'ph' , $kernel->getAppName() ) );
-		$links[] = array( $coreWebDir , FileUtils::path_join( $webroot , 'ph' , 'Core' ) );
+        foreach( $kernel->applications as $appname => $app ) {
+            $links[] = array( $app->getWebDir() , FileUtils::path_join( $webroot , 'ph' , $appname ) );
+        }
 
 		foreach( $links as $link ) {
-            if( file_exists( $link[1] ) ) {
-                $this->logger->info("\tremove link {$link[1]}");
-                unlink( $link[1] );
+            list($from,$target) = $link;
+            if( file_exists( $target ) ) {
+                $this->logger->info("remove link $target");
+                unlink( $target );
             }
-            $this->logger->info("\tcreate link {$link[1]}");
-            symlink( $link[0] , $link[1] );
+            $this->logger->info("create link $target",1);
+            symlink( $from , $target );
 		}
 
 		/* 
@@ -95,7 +102,7 @@ class ExportCommand extends Command
 			 * plugins/User/web => webroot/plugin/User
 			 * plugins/{plugin}/web => webroot/plugin/User
 			 */
-            $this->logger->info( "\tLinking: $pluginWebDir to $target" );
+            $this->logger->info( "create link $target", 1 );
             if( ! file_exists( $target ) )
                 symlink( $pluginWebDir , $target );
         }
