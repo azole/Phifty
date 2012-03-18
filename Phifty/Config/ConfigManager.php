@@ -19,6 +19,7 @@ class ConfigManager
             $config = $ser->decode(file_get_contents($file));
         }
         elseif( $ext === 'php' ) {
+            // load php config directly.
             $config = require $file;
         }
         else {
