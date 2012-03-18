@@ -27,7 +27,7 @@ class AppClassKit
         $result = array();
         $list = kernel()->plugin->getPlugins();
 
-        foreach( $list as $name ) {
+        foreach( $list as $name => $plugin ) {
             $path = static::detectPluginPath( $name );
             if( $path )
                 $result[] = $path;
