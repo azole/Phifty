@@ -32,7 +32,6 @@ $loader->get( $key );
 	$loader->get('i18n');
 
 */
-
 class ConfigLoader
 {
     private $getterCache = array();
