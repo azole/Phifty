@@ -175,4 +175,14 @@ class MicroApp extends \Phifty\Singleton
         $runner = ActionRunner::getInstance();
         $runner->addCRUD( $this->baseClass() , $model , (array) $types );
     }
+
+    public function getWebDir() 
+    {
+        return $this->locate() . DS . 'web';
+    }
+
+    public function getTemplateDir()
+    {
+        return $this->locate() . DS . 'template';
+    }
 }

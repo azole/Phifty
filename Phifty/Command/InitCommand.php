@@ -10,29 +10,27 @@ class InitCommand extends Command
     function execute()
     {
         $kernel = kernel();
-
 		$this->logger->info( "Initializing phifty dirs..." );
-
-		$this->logger->info( "Webroot: " . $kernel->getRootDir() );
+		$this->logger->info( "Webroot: " . $kernel->webroot );
 
         $dirs = array();
-        $dirs[] = FileUtils::path_join( $kernel->getRootDir() , 'cache' , 'view' );
-        $dirs[] = FileUtils::path_join( $kernel->getRootDir() , 'cache' , 'config' );
-		$dirs[] = $kernel->getWebRootDir();
+        $dirs[] = FileUtils::path_join( $kernel->rootDir , 'cache' , 'view' );
+        $dirs[] = FileUtils::path_join( $kernel->rootDir , 'cache' , 'config' );
+		$dirs[] = $kernel->webroot;
 
-        $dirs[] = $kernel->getWebRootDir() . DIRECTORY_SEPARATOR . 'ph' . DIRECTORY_SEPARATOR . 'plugins';
+        $dirs[] = $kernel->webroot . DIRECTORY_SEPARATOR . 'ph' . DIRECTORY_SEPARATOR . 'plugins';
 
 		/* hard links */
-        $dirs[] = $kernel->getWebRootDir() . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'images';
-        $dirs[] = $kernel->getWebRootDir() . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'css';
-        $dirs[] = $kernel->getWebRootDir() . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'js';
-        $dirs[] = $kernel->getWebRootDir() . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload';
+        $dirs[] = $kernel->webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'images';
+        $dirs[] = $kernel->webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'css';
+        $dirs[] = $kernel->webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'js';
+        $dirs[] = $kernel->webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload';
 
         FileUtils::mkpath($dirs,true);
 
         $codegen = new CodeTemplate;
 
-		$htaccessFile = $kernel->getWebRootDir() . DIRECTORY_SEPARATOR . '.htaccess';
+		$htaccessFiln = $kernel->getWebRootDir() . DIRECTORY_SEPARATOR . '.htaccess';
         $codegen->renderFile( $htaccessFile, 'htaccess' );
 
         $webrootIndex = $kernel->getWebRootDir() . DIRECTORY_SEPARATOR . 'index.php';
@@ -41,8 +39,12 @@ class InitCommand extends Command
 		$this->logger->info( "Changing permissions..." );
         $chmods = array();
         $chmods[] = array( "ga+rw" , "cache" );
-        $chmods[] = array( "ga+rw" , $kernel->getCoreWebDir() );
-        $chmods[] = array( "ga+rw" , $kernel->getWebRootDir() . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload' );
+
+        foreach( $kernel->applications as $n => $app ) {
+            $chmods[] = array( "ga+rw" , $kernel->app($n)->getWebDir() );
+        }
+
+        $chmods[] = array( "ga+rw" , $kernel->webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload' );
         foreach( $chmods as $mod ) {
 			$this->logger->info( "{$mod[0]} {$mod[1]}", 1 );
             system("chmod -R {$mod[0]} {$mod[1]}");

@@ -67,8 +67,8 @@ class Kernel extends ObjectContainer
         // path info
         $this->frameworkDir = PH_ROOT; // Kernel is placed under framework directory
         $this->rootDir      = PH_APP_ROOT; // Application root.
+        $this->appDir       = PH_APP_ROOT . DS . 'applications';
         $this->webroot      = PH_APP_ROOT . DS . 'webroot';
-        $this->approot      = PH_APP_ROOT . DS . 'applications';
     }
 
     public function registerService( ServiceInterface $service )
@@ -139,6 +139,10 @@ class Kernel extends ObjectContainer
         $this->event->trigger('phifty.after_init');
     }
 
+
+    /**
+     * Create application object
+     */
     public function loadApp($appname, $config = array() ) 
     {
         $class = $appname . '\Application';
@@ -151,17 +155,22 @@ class Kernel extends ObjectContainer
     /**
      * Get application object
      *
-     * kernel()->app('Core')->getController('ControllerClass');
-     * kernel()->app('Core')->getModel('ModelClass');
-     * kernel()->app('Core')->getNamespace();
-     * kernel()->app('Core')->locate();
+     * @param string application name
+     *
+     * @code
+     *
+     *   kernel()->app('Core')->getController('ControllerClass');
+     *   kernel()->app('Core')->getModel('ModelClass');
+     *   kernel()->app('Core')->getNamespace();
+     *   kernel()->app('Core')->locate();
+     *
+     * @endcode
      */
     public function app( $appname )
     {
         if( isset($this->applications[ $appname ]) )
             return $this->applications[ $appname ];
     }
-
 
     /**
      * get current application name
@@ -205,11 +214,6 @@ class Kernel extends ObjectContainer
     public function getMinifiedWebDir()
     {
         return $this->rootDir . DS . PHIFTY_WEBROOT_DIRNAME . DS . 'static' . DS . 'minified';
-    }
-
-    public function getAppWebDir()
-    {
-        return $this->rootDir  . DS . PHIFTY_APP_DIRNAME . DS . $this->appName . DS . 'web';
     }
 
     public function getCoreWebDir()

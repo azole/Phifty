@@ -150,13 +150,13 @@ class Web
     public function include_core_css()
     {
         $core = \Core\Application::getInstance();
-        return $this->includeMicroAppCss( $core , kernel()->getCoreWebDir() , WebPath::coreBase() );
+        return $this->includeMicroAppCss( $core , kernel()->app('Core')->getWebDir() , WebPath::coreBase() );
     }
 
     public function include_core_js()
     {
         $core = \Core\Application::getInstance();
-        return $this->includeMicroAppJs( $core , kernel()->getCoreWebDir() , WebPath::coreBase() );
+        return $this->includeMicroAppJs( $core , kernel()->app('Core')->getWebDir() , WebPath::coreBase() );
     }
 
     public function include_plugins()
