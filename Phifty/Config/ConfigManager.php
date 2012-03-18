@@ -17,10 +17,9 @@ class ConfigManager
         }
         $info = new SplFileInfo($file);
         $ext = $info->getExtension();
-        $ser = new Serializer;
         $config = array();
         if( $ext === 'yaml' || $ext === 'yml' ) {
-            $ser->setFormat('yaml');
+            $ser = new Serializer('yaml');
             $config = $ser->decode(file_get_contents($file));
         }
         elseif( $ext === 'php' ) {

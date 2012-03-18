@@ -10,7 +10,7 @@ class DatabaseService
     {
         $config = $kernel->config->stashes['database'];
 
-        $loader = \LazyRecord\ConfigLoader::getInstance();
+        $loader = ConfigLoader::getInstance();
         $loader->environment = $kernel->environment;
         if( ! $loader->loaded ) { 
             $loader->load( $config );
