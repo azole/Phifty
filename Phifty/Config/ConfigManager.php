@@ -55,8 +55,11 @@ class ConfigManager
             return $this->getterCache[ $key ];
          */
         $config = $this->__get( $section );
-        if( $key == null )
-            return new Accessor($config);
+        if( $key == null ) {
+			if( $config )
+				return new Accessor($config);
+			return null;
+		}
 
 		if( isset($config[ $key ]) ) {
 			if( is_array( $config[ $key ] ) )

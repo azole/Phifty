@@ -6,6 +6,7 @@ use LazyRecord\ConnectionManager;
 class DatabaseService
     implements ServiceInterface
 {
+
     public function register($kernel, $options = array() )
     {
         $config = $kernel->config->stashes['database'];
@@ -23,6 +24,7 @@ class DatabaseService
             return $conm->getConnection();
         };
     }
+
 }
 
 

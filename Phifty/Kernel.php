@@ -68,13 +68,13 @@ class Kernel extends ObjectContainer
         $this->environment  = $environment ?: getenv('PHIFTY_ENV') ?: 'development';
 
         // path info
-        $this->frameworkDir    = PH_ROOT;
-        $this->frameworkAppDir = PH_ROOT . DS . 'applications';
+        $this->frameworkDir       = PH_ROOT;
+        $this->frameworkAppDir    = PH_ROOT . DS . 'applications';
         $this->frameworkPluginDir = PH_ROOT . DS . 'plugins';
-        $this->rootDir         = PH_APP_ROOT;      // Application root.
-        $this->rootAppDir      = PH_APP_ROOT . DS . 'applications';
+        $this->rootDir            = PH_APP_ROOT;      // Application root.
+        $this->rootAppDir         = PH_APP_ROOT . DS . 'applications';
         $this->rootPluginDir      = PH_APP_ROOT . DS . 'plugins';
-        $this->webroot         = PH_APP_ROOT . DS . 'webroot';
+        $this->webroot            = PH_APP_ROOT . DS . 'webroot';
     }
 
     public function registerService( ServiceInterface $service )
@@ -90,8 +90,8 @@ class Kernel extends ObjectContainer
 
 
         $this->currentUser = function() use ($self) {
-            $currentUserClass = $self->config->get('application','current_user.class');
-            return new $currentUserClass;
+            if( $currentUserClass = $self->config->get('application','current_user.class') )
+                return new $currentUserClass;
         };
 
         $this->web = function() use($self) { 

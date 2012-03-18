@@ -12,9 +12,16 @@ class PluginService
         if( $config->isEmpty() )
             return;
 
+        // depends on classloader
         $manager = PluginManager::getInstance();
-        foreach( $config as $pluginName => $options ) {
-            //$this->plugin->loadFromList( $pluginConfigs );
+        foreach( $config as $pluginName => $config ) {
+            $kernel->classloader->addNamespace(array( 
+                $pluginName => array( 
+                    $kernel->rootPluginDir,
+                    $kernel->frameworkPluginDir,
+                )
+            ));
+            $manager->load( $pluginName , $config );
         }
 
         $kernel->plugin = function() use ($manager) {

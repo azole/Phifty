@@ -8,9 +8,12 @@ class MailerService implements ServiceInterface
 
     public function register($kernel, $options = array() )
     {
-        $kernel->mailer = function() {
+        $kernel->mailer = function() use ($kernel) {
+			$kernel->classloader->addPrefix(array(
+				'Swift' => $kernel->frameworkDir . '/vendor/pear',
+			));
 
-            require_once PH_ROOT . '/vendor/pear/swift_required.php';
+            require_once $kernel->frameworkDir . '/vendor/pear/swift_required.php';
 
             // Mail transport
             $transport = Swift_MailTransport::newInstance();

@@ -140,7 +140,7 @@ class MicroApp extends \Phifty\Singleton
 
             /* If it's not full-qualified classname, we should prepend our base namespace. */
             if( 0 !== strpos( $class , '\\' ) )  {
-                $class = $this->baseClass() . "\\Controller\\$class";
+                $class = $this->getNamespace() . "\\Controller\\$class";
             }
 
             if( ! method_exists($class,$action) ) {
@@ -173,7 +173,7 @@ class MicroApp extends \Phifty\Singleton
     public function withCRUDAction( $model , $types )
     {
         $runner = ActionRunner::getInstance();
-        $runner->addCRUD( $this->baseClass() , $model , (array) $types );
+        $runner->addCRUD( $this->getNamespace() , $model , (array) $types );
     }
 
     public function getWebDir() 
