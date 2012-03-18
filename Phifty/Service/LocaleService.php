@@ -24,7 +24,7 @@ class LocaleService
 
         $locale->localedir( $localeDir );
 
-        /* add languages to list */
+        // add languages to list
         foreach( @$config->lang as $localeName ) {
             $locale->add( $localeName );
         }

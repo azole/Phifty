@@ -32,11 +32,12 @@ class Kernel extends ObjectContainer
     /* framework version */
     const VERSION = '2.3.0';
 
-    /* rootDir: contains app, web, phifty dirs */
-    public $rootDir; 
-
-    /* phifty dir */
     public $frameworkDir;
+    public $frameworkAppDir;
+
+    public $rootDir;  // application root dir
+    public $rootAppDir;   // application dir (./applications)
+
 
     /* application namespace */
     public $namespace;
@@ -65,10 +66,11 @@ class Kernel extends ObjectContainer
         $this->environment  = $environment ?: getenv('PHIFTY_ENV') ?: 'development';
 
         // path info
-        $this->frameworkDir = PH_ROOT; // Kernel is placed under framework directory
-        $this->rootDir      = PH_APP_ROOT; // Application root.
-        $this->appDir       = PH_APP_ROOT . DS . 'applications';
-        $this->webroot      = PH_APP_ROOT . DS . 'webroot';
+        $this->frameworkDir    = PH_ROOT;
+        $this->frameworkAppDir = PH_ROOT . DS . 'applications';
+        $this->rootDir         = PH_APP_ROOT;      // Application root.
+        $this->rootAppDir      = PH_APP_ROOT . DS . 'applications';
+        $this->webroot         = PH_APP_ROOT . DS . 'webroot';
     }
 
     public function registerService( ServiceInterface $service )

@@ -7,6 +7,7 @@ use Phifty\Action\Runner as ActionRunner;
 
 abstract class Engine
 {
+    public $kernel;
 	public $options = array();
     public $templateDirs = array();
     public $cacheDir;
@@ -19,6 +20,7 @@ abstract class Engine
      */
     function __construct( $options = array() )
     {
+        $this->kernel = kernel();
 
 		/* save options */
 		$this->options = $options;
@@ -40,10 +42,10 @@ abstract class Engine
     {
         // when we move all plugins into applications, we take off the PH_APP_ROOT and PH_ROOT from paths
         $dirs = array(
-            PH_APP_ROOT . DIRECTORY_SEPARATOR . PHIFTY_APP_DIRNAME,
-            PH_ROOT . DIRECTORY_SEPARATOR . PHIFTY_APP_DIRNAME,
-            PH_APP_ROOT ,
-            PH_ROOT,
+            $this->kernel->rootAppDir,
+            $this->kernel->frameworkAppDir,
+            $this->kernel->rootDir,
+            $this->kernel->frameworkDir,
         );
 
         $configDirs = kernel()->config->get('view.template_dirs');
