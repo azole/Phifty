@@ -92,8 +92,6 @@ class Kernel extends ObjectContainer
             return new \Phifty\Web( $self );
         };
 
-		// initialize session
-		$this->session;
 
         /**
          * detect for development mode 
@@ -111,25 +109,22 @@ class Kernel extends ObjectContainer
         if( $this->isCLI ) {
             \Phifty\Environment\CommandLine::init($this);
         }
+        else {
+            // build session
+            $this->session;
+        }
 
         $appconfigs = $this->config->get('framework','apps');
-        foreach( $appconfigs as $appname => $appconfig ) {
-            $this->classloader->addNamespace( array( 
-                $appname => array( 
-                    PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' 
-                )
-            ));
-            $this->loadApp( $appname , $appconfig );
-        }
-
-        /*
-        $pluginConfigs = $this->config->get('framework','plugins');
-        if( $pluginConfigs ) {
-            foreach( $pluginConfigs as $name => $config ) {
-                $loader->add( $name , array( PH_APP_ROOT . '/plugins' , PH_ROOT . '/plugins' ) );
+        if( $appconfigs ) {
+            foreach( $appconfigs as $appname => $appconfig ) {
+                $this->classloader->addNamespace( array( 
+                    $appname => array( 
+                        PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' 
+                    )
+                ));
+                $this->loadApp( $appname , $appconfig );
             }
         }
-         */
         $this->event->trigger('phifty.after_init');
     }
 

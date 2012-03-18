@@ -76,20 +76,9 @@ class Plugin extends MicroApp
 
     }
 
-    /* get plugin web dir:
-     *
-     *  like plugins/SB/web 
-     **/
-    function getWebDir()
-    {
-        $path = static::locatePlugin( $name );
-        return $path . DIRECTORY_SEPARATOR . 'web';
-    }
-
-
     function getWebURL( $path )
     {
-        $baseURL = 'ph_plugins/' . $this->getName() . '/' . $path;
+        $baseURL = 'ph/plugins/' . $this->getName() . '/' . $path;
         return $baseURL;
     }
 

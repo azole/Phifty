@@ -56,9 +56,10 @@ class Web
 		return WebPath::coreBase();
     }
 
-    public function includeMicroAppCss( $app , $webDir , $webBaseUrl )
+    public function includeMicroAppCss( $app, $webBaseUrl )
     {
         $isDev = kernel()->isDev;
+        $webDir = $app->getWebDir();
         /*
          * xxx:
          *   Currently css can not be minified because:
@@ -83,8 +84,9 @@ class Web
     }
 
     /* include MicroApp Js */
-    public function includeMicroAppJs( $app , $webDir , $webBaseUrl )
+    public function includeMicroAppJs($app, $webBaseUrl )
     {
+        $webDir = $app->getWebDir();
         $isDev = kernel()->isDev;
         $fileList = $app->js();
         if( count($fileList) === 0 ) 
@@ -149,14 +151,12 @@ class Web
 
     public function include_core_css()
     {
-        $core = \Core\Application::getInstance();
-        return $this->includeMicroAppCss( $core , kernel()->app('Core')->getWebDir() , WebPath::coreBase() );
+        return $this->includeMicroAppCss( kernel()->app('Core') , WebPath::coreBase() );
     }
 
     public function include_core_js()
     {
-        $core = \Core\Application::getInstance();
-        return $this->includeMicroAppJs( $core , kernel()->app('Core')->getWebDir() , WebPath::coreBase() );
+        return $this->includeMicroAppJs( kernel()->app('Core') , WebPath::coreBase() );
     }
 
     public function include_plugins()
@@ -166,11 +166,9 @@ class Web
         if( $plugins ) {
             foreach( $plugins as $plugin ) {
                 $html .= $this->includeMicroAppJs( $plugin , 
-                    $plugin->locate() . DIRECTORY_SEPARATOR . 'web',
                     $plugin->getExportWebDir() 
                 );
                 $html .= $this->includeMicroAppCss( $plugin , 
-                    $plugin->locate() . DIRECTORY_SEPARATOR . 'web',
                     $plugin->getExportWebDir() 
                 );
             }
