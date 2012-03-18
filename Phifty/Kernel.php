@@ -1,12 +1,10 @@
 <?php
 namespace Phifty;
-require __DIR__ . '/AppClassKit.php';
 
 use Phifty\Kernel;
 use Phifty\CurrentUser;
 use Phifty\L10N;
 use Phifty\Web;
-use Phifty\AppClassKit;
 use Phifty\FileUtils;
 use Phifty\Action\ActionRunner;
 use Universal\Container\ObjectContainer;
