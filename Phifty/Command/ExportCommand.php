@@ -26,7 +26,7 @@ class ExportCommand extends Command
 		$options = $this->getOptions();
 
 
-        $app          = webapp();
+        $app          = kernel();
         $webroot      = $app->getWebRootDir();
         $webPluginDir = $app->getWebPluginDir();
         $webAssetDir  = $app->getWebAssetDir();
@@ -78,7 +78,7 @@ class ExportCommand extends Command
 		 * and link the plugin web directory to web/
 		 *
 		 * */
-        foreach( webapp()->plugin->getPlugins() as $plugin ) 
+        foreach( kernel()->plugin->getPlugins() as $plugin ) 
         {
             // create links
             // var_dump( $plugin->getName() ); 

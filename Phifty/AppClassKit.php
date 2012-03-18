@@ -25,7 +25,7 @@ class AppClassKit
     static function pluginPaths()
     {
         $result = array();
-        $list = webapp()->plugin->getPlugins();
+        $list = kernel()->plugin->getPlugins();
 
         foreach( $list as $name ) {
             $path = static::detectPluginPath( $name );
@@ -51,7 +51,7 @@ class AppClassKit
     /* return core Model classes */
     static function loadCoreModels()
     {
-        $dir = webapp()->getCoreDir();
+        $dir = kernel()->getCoreDir();
         $modelDir = $dir . DIRECTORY_SEPARATOR . 'Model';
         static::loadDir( $modelDir );
     }

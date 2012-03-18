@@ -11,7 +11,7 @@ class Locale extends \Phifty\Command
 {
     function run()
     {
-        $kernel = webapp();
+        $kernel = kernel();
         $frameworkId = $kernel->getFrameworkId();
         $appId       = $kernel->getAppNs();
 

@@ -109,7 +109,7 @@ abstract class CRUDHandler extends Controller
 
         # support for lang query,
         # make sure the model has defined lang column for I18N
-        if( webapp()->getPlugin('I18N') 
+        if( kernel()->getPlugin('I18N') 
             && $langColumn = $model->getColumn('lang') )
         {
             if( $this->env->request->has('_data_lang') ) {
@@ -117,7 +117,7 @@ abstract class CRUDHandler extends Controller
                     $collection->where(array( 'lang' => $lang ));
             }
             else {
-                $lang = webapp()->currentLang();
+                $lang = kernel()->currentLang();
                 $collection->where(array( 'lang' => $lang ));
             }
         }

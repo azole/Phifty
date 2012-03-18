@@ -9,7 +9,7 @@ class InitCommand extends Command
 
     function execute()
     {
-        $kernel = webapp();
+        $kernel = kernel();
 
 		$this->logger->info( "Initializing phifty dirs..." );
 

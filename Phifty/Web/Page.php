@@ -17,7 +17,7 @@ class Page
             $this->template = $template;
 
         /* default meta args */
-        $web = webapp()->web();
+        $web = kernel()->web();
         $loader = $web->getLoader();
         $extendHeader =  $loader->render();
 
@@ -28,7 +28,7 @@ class Page
                 "extend" => $extendHeader,
                 "title"  => "",
             ),
-            "action" => webapp()->actionRunner->getResults()
+            "action" => kernel()->actionRunner->getResults()
         );
         $this->prepare();
     }
@@ -62,7 +62,7 @@ class Page
 
     function getEngine()
     {
-        return webapp()->getViewEngine('smarty');
+        return kernel()->getViewEngine('smarty');
     }
 
     function getTemplate()

@@ -28,7 +28,7 @@ class Controller extends \Roller\Controller
 
     public function getCurrentUser()
     {
-        return webapp()->currentUser;
+        return kernel()->currentUser;
     }
 
     /* 
@@ -54,8 +54,8 @@ class Controller extends \Roller\Controller
         if( ! $options )
             $options = array();
 
-        $templateEngine = webapp()->config->get('view.backend');
-        $viewClass      = webapp()->config->get('view.class');
+        $templateEngine = kernel()->config->get('view.backend');
+        $viewClass      = kernel()->config->get('view.class');
         if( ! $viewClass )
             throw new Exception('view.class config is not defined.');
 

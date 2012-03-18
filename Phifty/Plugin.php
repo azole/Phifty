@@ -132,7 +132,7 @@ class Plugin extends MicroApp
     {
         $name = $this->getName();
         return '/ph/plugins/' . $name;
-        # return FileUtils::path_join( webapp()->getWebPluginDir() , $name );
+        # return FileUtils::path_join( kernel()->getWebPluginDir() , $name );
     }
 
 
@@ -140,7 +140,7 @@ class Plugin extends MicroApp
     
     Use case:
 
-        webapp()->getPlugin('SB')->render( 'product/view' , array( .... args .... ) );
+        kernel()->getPlugin('SB')->render( 'product/view' , array( .... args .... ) );
 
     */
     public function render( $vpath )

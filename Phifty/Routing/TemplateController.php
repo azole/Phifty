@@ -18,11 +18,11 @@ class TemplateController extends Controller
     {
         $template   = $this->template;
         $args       = $this->args;
-        $engineType = webapp()->config('view.backend');
+        $engineType = kernel()->config('view.backend');
 
         /* get template engine */
         $engine = Engine::createEngine( $engineType );
-        $viewClass = webapp()->config('view.class');
+        $viewClass = kernel()->config('view.class');
         if( ! $viewClass )
             $viewClass = '\Phifty\View';
 

@@ -19,7 +19,7 @@ class Twig extends \Phifty\View\Engine
 
         $envOpts = array();
 
-        $kernel = webapp();
+        $kernel = kernel();
         $isDev = $kernel->isDev;
 
         // get twig config

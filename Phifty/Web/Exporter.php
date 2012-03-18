@@ -26,7 +26,7 @@ class Exporter
 
         /* register action result */
         $this->vars['Action']      = array( 'results' => ActionRunner::getInstance()->results );
-        $this->vars['Kernel']      = webapp();
+        $this->vars['Kernel']      = kernel();
         $this->vars['CurrentUser'] = new \Phifty\CurrentUser;
         $this->vars['Web']         = new \Phifty\Web;
     }

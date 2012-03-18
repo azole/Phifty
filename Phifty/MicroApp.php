@@ -91,7 +91,7 @@ class MicroApp extends \Phifty\Singleton
      */
     public function route( $path, $args, $options = array() )
     {
-        $router = webapp()->router;
+        $router = kernel()->router;
 
         /* if args is string, it's a controller class */
         if( is_array($args) ) 
@@ -143,7 +143,7 @@ class MicroApp extends \Phifty\Singleton
     public function routeToSet($path,$class)
     {
         $routes = $class::expand();
-        webapp()->router->mount( $path , $routes );
+        kernel()->router->mount( $path , $routes );
     }
 
     function js() { return array(); }

@@ -28,7 +28,7 @@ class View
     function __construct( $actionName ) 
     {
         $this->actionName = $actionName;
-        $this->actionClass = webapp()->getAppName() . '\Action\\' . $actionName;
+        $this->actionClass = kernel()->getAppName() . '\Action\\' . $actionName;
         // $this->action = new $this->actionClass;
     }
 

@@ -58,7 +58,7 @@ class Web
 
     public function includeMicroAppCss( $app , $webDir , $webBaseUrl )
     {
-        $isDev = webapp()->isDev;
+        $isDev = kernel()->isDev;
         /*
          * xxx:
          *   Currently css can not be minified because:
@@ -85,7 +85,7 @@ class Web
     /* include MicroApp Js */
     public function includeMicroAppJs( $app , $webDir , $webBaseUrl )
     {
-        $isDev = webapp()->isDev;
+        $isDev = kernel()->isDev;
         $fileList = $app->js();
         if( count($fileList) === 0 ) 
             return '';
@@ -150,19 +150,19 @@ class Web
     public function include_core_css()
     {
         $core = \Core\Application::getInstance();
-        return $this->includeMicroAppCss( $core , webapp()->getCoreWebDir() , WebPath::coreBase() );
+        return $this->includeMicroAppCss( $core , kernel()->getCoreWebDir() , WebPath::coreBase() );
     }
 
     public function include_core_js()
     {
         $core = \Core\Application::getInstance();
-        return $this->includeMicroAppJs( $core , webapp()->getCoreWebDir() , WebPath::coreBase() );
+        return $this->includeMicroAppJs( $core , kernel()->getCoreWebDir() , WebPath::coreBase() );
     }
 
     public function include_plugins()
     {
         $html = '';
-        $plugins = webapp()->plugin->getPlugins();
+        $plugins = kernel()->plugin->getPlugins();
         if( $plugins ) {
             foreach( $plugins as $plugin ) {
                 $html .= $this->includeMicroAppJs( $plugin , 
@@ -198,7 +198,7 @@ class Web
 
     public function langs()
     {
-        return webapp()->locale->getLangList();
+        return kernel()->locale->getLangList();
     }
 
 

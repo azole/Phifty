@@ -46,7 +46,7 @@ abstract class Engine
             PH_ROOT,
         );
 
-        $configDirs = webapp()->config->get('view.template_dirs');
+        $configDirs = kernel()->config->get('view.template_dirs');
         if( $configDirs ) {
             foreach($configDirs as $dir) {
                 $dirs[] = PH_APP_ROOT . '/' . $dir;
@@ -99,12 +99,12 @@ abstract class Engine
         if( $this->cacheDir )
             return $this->cacheDir;
 
-        $dir = webapp()->config( 'view.cache_dir' );
+        $dir = kernel()->config( 'view.cache_dir' );
         if( $dir )
             return $dir;
 
         // default cache dir
-        return FileUtils::path_join( webapp()->rootDir , 'cache' );
+        return FileUtils::path_join( kernel()->rootDir , 'cache' );
     }
 
     function getTemplateDirs()
@@ -116,14 +116,14 @@ abstract class Engine
         $paths = array();
 
 		/* framework core view template dir */
-        $frameT = webapp()->getCoreDir() . DS . 'template';
+        $frameT = kernel()->getCoreDir() . DS . 'template';
         if( file_exists($frameT) )
             $paths[] = $frameT;
 
-        $dirs = webapp()->config( 'view.template_dirs' );
+        $dirs = kernel()->config( 'view.template_dirs' );
         if( $dirs )
             foreach( $dirs as $dir )
-                $paths[] = FileUtils::path_join( webapp()->rootDir , $dir );
+                $paths[] = FileUtils::path_join( kernel()->rootDir , $dir );
 
         return $paths;
     }

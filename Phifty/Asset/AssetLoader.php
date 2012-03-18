@@ -35,7 +35,7 @@ class AssetLoader
 
     static function includeJsFiles()
     {
-        // $basedir = webapp()->getWebAssetDir();
+        // $basedir = kernel()->getWebAssetDir();
         $baseurl = '/ph/assets';
         $jsFiles = array();
         foreach( static::$assets as $asset ) {
@@ -51,7 +51,7 @@ class AssetLoader
 
     static function includeCssFiles()
     {
-        // $basedir = webapp()->getWebAssetDir();
+        // $basedir = kernel()->getWebAssetDir();
         $baseurl = '/ph/assets';
         $cssFiles = array();
         foreach( static::$assets as $asset ) {
