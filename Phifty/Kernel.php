@@ -140,7 +140,6 @@ class Kernel extends ObjectContainer
             mb_internal_encoding('UTF-8');
         }
 
-        $this->initPlugins();
         $this->event->trigger('phifty.after_init');
     }
 
@@ -286,32 +285,6 @@ class Kernel extends ObjectContainer
     public function lang()
     {
         return $this->locale;
-    }
-
-    public function pluginList()
-    {
-    /*
-        $config = (array) $this->config->get('framework','plugins');
-        if( ! $config )
-            return array();
-        return array_keys( $config );
-     */
-    }
-
-    public function initPlugins()
-    {
-        /*
-         * xxx:
-        $pluginConfigs = $this->config->get( 'framework', 'plugins' );
-        if( ! $pluginConfigs )
-            return;
-        $this->plugin->loadFromList( $pluginConfigs );
-         */
-    }
-
-    public function hasPlugin($name) 
-    {
-        return $this->plugin->hasPlugin( $name );
     }
 
     public function run() 

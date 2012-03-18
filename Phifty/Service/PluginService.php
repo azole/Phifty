@@ -12,8 +12,13 @@ class PluginService
         if( $config->isEmpty() )
             return;
 
-        $kernel->plugin = function() {
-            return PluginManager::getInstance();
+        $manager = PluginManager::getInstance();
+        foreach( $config as $pluginName => $options ) {
+            //$this->plugin->loadFromList( $pluginConfigs );
+        }
+
+        $kernel->plugin = function() use ($manager) {
+            return $manager;
         };
     }
 
