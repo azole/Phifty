@@ -19,23 +19,11 @@ class Development
     static function init($kernel)
     {
         // use Universal\Requirement\Requirement checker
-
-
         if( ! class_exists( 'ReflectionObject' ) )
             throw new Exception('ReflectionObject class is not defined. Seems you are running an oooold php.');
 
-
         error_reporting(E_ALL | E_STRICT | E_ERROR | E_NOTICE | E_WARNING | E_PARSE);
 
-        /**
-         * init firephp for development:
-         * http://www.firephp.org/HQ/Use.htm
-         *
-         * if not in CLI mode, include firePHP.
-         **/
-        if( ! $kernel->isCLI ) {
-            require_once PH_ROOT . '/vendor/firephp/lib/FirePHPCore/fb.php';
-        }
 
         // xxx: Can use universal requirement checker.
         //
@@ -56,17 +44,11 @@ class Development
 
         // if firebug supports
         $kernel->event->register('phifty.after_run', function() use ($kernel) {
-            if( function_exists('fb') ) {
-                fb( (memory_get_usage() / 1024 / 1024 ) . ' MB'  , 'Memory Usage' );
-                fb( (memory_get_peak_usage() / 1024 / 1024 ) . ' MB'  , 'Memory Peak Usage' );
-                fb( $_SERVER['REQUEST_TIME'] , 'Request time' );
-            }
-            elseif( $kernel->isCLI ) {
+            if( $kernel->isCLI ) {
                 echo 'Memory Usage:', (int) (memory_get_usage() / 1024  ) , ' KB', PHP_EOL;
                 echo 'Memory Peak Usage:', (int) (memory_get_peak_usage() / 1024 ) , ' KB' . PHP_EOL;
             }
         });
-
         // when exception found, forward output to exception render controller.
     }
 }
