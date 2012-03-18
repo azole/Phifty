@@ -1,6 +1,6 @@
 <?php
 namespace Phifty\Service;
-use Phifty\L10N;
+use Phifty\Locale;
 
 class LocaleService
     implements ServiceInterface
@@ -9,7 +9,7 @@ class LocaleService
     public function register($kernel, $options = array() )
     {
         // call spl autoload, to load `__` i18n function
-        class_exists('Phifty\L10N', true);
+        class_exists('Phifty\Locale', true);
 
         $config = $kernel->config->get('framework','i18n');
         if( $config->isEmpty() )
@@ -17,7 +17,7 @@ class LocaleService
         if( null == $config->default )
             return;
 
-        $locale = new L10N;
+        $locale = new Locale;
         $locale->setDefault( $config->default );
         $locale->domain( $kernel->config->application['namespace'] ); # use application id for domain name.
         $localeDir = $kernel->rootDir . DIRECTORY_SEPARATOR . $config->localedir;
