@@ -49,6 +49,16 @@ class ConfigManager
         }
     }
 
+
+    function getSection($name)
+    {
+        if( isset( $this->stashes[$name][ $this->environment ] )) {
+            // It must be an array.
+            return $this->stashes[$name][ $this->environment ];
+        }
+    }
+
+
     /**
      * get config from the "config key" like:
      *
@@ -63,7 +73,7 @@ class ConfigManager
         if( isset( $this->getterCache[ $key ] ) ) 
             return $this->getterCache[ $key ];
          */
-        $config = $this->__get( $section );
+        $config = $this->getSection( $section );
         if( $key == null ) 
         {
 			if( $config )
@@ -83,12 +93,10 @@ class ConfigManager
 
 			$parts = explode( '.' , $key );
 			$ref = $config;
-
 			while( $ref_key = array_shift( $parts ) ) {
-				if( ! isset($ref[ $ref_key ]) ) 
-					return null;
-					# throw new Exception( "Config key: $key not found.  '$ref_key'" );
-				$ref = & $ref[ $ref_key ];
+                if( ! isset($ref[ $ref_key ]) )
+                    return null;
+                $ref = & $ref[ $ref_key ];
 			}
 
             if( is_array( $ref ) )

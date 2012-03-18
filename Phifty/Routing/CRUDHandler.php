@@ -117,7 +117,7 @@ abstract class CRUDHandler extends Controller
                     $collection->where(array( 'lang' => $lang ));
             }
             else {
-                $lang = kernel()->currentLang();
+                $lang = kernel()->locale->current;
                 $collection->where(array( 'lang' => $lang ));
             }
         }

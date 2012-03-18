@@ -208,12 +208,12 @@ class Kernel extends ObjectContainer
         return $this->webroot .  DS . 'ph' . DS . 'plugins';
     }
 
-    /*
+    /**
      * Get exported widget web dir
      *
      *     widgets/Foo/web => webroot/ph/widgets/Foo
      *
-    */
+     */
     public function getWebAssetDir()
     {
         return $this->webroot . DS . 'ph' . DS . 'assets';
@@ -244,17 +244,6 @@ class Kernel extends ObjectContainer
     public function currentLocale()
     {
         return $this->locale->speaking();
-    }
-
-    public function currentLang()
-    {
-        return $this->currentLocale();
-    }
-
-    /* return Phifty\L10N */
-    public function lang()
-    {
-        return $this->locale;
     }
 
     public function run() 
