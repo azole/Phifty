@@ -46,7 +46,10 @@ class Accessor
         return $this->config;
     }
 
-
+    public function __get($name)
+    {
+        return $this->offsetGet($name);
+    }
     
 }
 
