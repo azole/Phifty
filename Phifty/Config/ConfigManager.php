@@ -57,12 +57,12 @@ class ConfigManager
          */
         $config = $this->__get( $section );
         if( $key == null )
-            return $config;
+            return new Accessor($config);
 
 		if( isset($config[ $key ]) ) {
 			if( is_array( $config[ $key ] ) )
 				return (object) $config[ $key ];
-            return $config[ $key ];
+            return new Accessor($config[ $key ]);
 		}
 
 		if( strchr( $key , '.' ) !== false ) {
@@ -74,7 +74,7 @@ class ConfigManager
 					# throw new Exception( "Config key: $key not found.  '$ref_key'" );
 				$ref = & $ref[ $ref_key ];
 			}
-			return $ref;
+			return new Accessor($ref);
 		}
 		return null;
 	}

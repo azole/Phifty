@@ -135,8 +135,6 @@ class Kernel extends ObjectContainer
             mb_internal_encoding('UTF-8');
         }
 
-        $this->initLang();
-
         $this->initPlugins();
 
         $this->event->trigger('phifty.after_init');
@@ -292,13 +290,6 @@ class Kernel extends ObjectContainer
     {
         return $this->locale;
     }
-
-    /* Move this into LangService */
-    public function initLang()
-    {
-    }
-
-
 
     public function pluginList()
     {

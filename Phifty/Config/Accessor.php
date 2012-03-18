@@ -1,9 +1,11 @@
 <?php
 namespace Phifty\Config;
 use ArrayAccess;
+use ArrayIterator;
+use IteratorAggregate;
 
 class Accessor
-    implements ArrayAccess
+    implements ArrayAccess, IteratorAggregate
 {
 
     public $config = array();
@@ -13,6 +15,10 @@ class Accessor
         $this->config = $config;
     }
 
+    public function getIterator() 
+    {
+        return new ArrayIterator($this->config ?: array() );
+    }
     
     public function offsetSet($name,$value)
     {
@@ -32,9 +38,15 @@ class Accessor
     
     public function offsetUnset($name)
     {
-        return unset($this->config[$name]);
+        unset($this->config[$name]);
     }
     
+    public function toArray()
+    {
+        return $this->config;
+    }
+
+
     
 }
 

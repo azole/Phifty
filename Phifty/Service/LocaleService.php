@@ -15,9 +15,6 @@ class LocaleService
             return;
 
         $locale = new L10N;
-
-        // var_dump( $config ); 
-        // var_dump( $_SESSION ); 
         $locale->setDefault( $config->default );
         $locale->domain( $kernel->config->application['namespace'] ); # use application id for domain name.
         $localeDir = $kernel->getRootDir() . DIRECTORY_SEPARATOR . $config->localedir;
