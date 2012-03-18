@@ -16,6 +16,8 @@ class ConfigService
     public function register($kernel, $options = array() )
     {
         $self = $this;
+
+        // setup environment
         $this->manager->environment = $kernel->environment;
         $kernel->config = function() use ($self) {  
             return $self->manager;

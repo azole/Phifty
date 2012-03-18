@@ -16,7 +16,7 @@ use Universal\Requirement\Requirement;
 
 class Development 
 {
-    static function init($app)
+    static function init($kernel)
     {
         // use Universal\Requirement\Requirement checker
 
@@ -33,7 +33,7 @@ class Development
          *
          * if not in CLI mode, include firePHP.
          **/
-        if( ! $app->isCLI ) {
+        if( ! $kernel->isCLI ) {
             require_once PH_ROOT . '/vendor/firephp/lib/FirePHPCore/fb.php';
         }
 
@@ -46,7 +46,7 @@ class Development
 
         /* check configs */
         /* check php required extensions */
-        $configExt = $app->config('php.extension');
+        $configExt = $kernel->config->get('php.extension');
         if( $configExt ) {
             foreach( $configExt as $extName ) {
                 if( ! extension_loaded( $extName ) )

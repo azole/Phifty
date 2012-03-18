@@ -30,7 +30,6 @@ class ExportCommand extends Command
         $webroot      = $app->getWebRootDir();
         $webPluginDir = $app->getWebPluginDir();
         $webAssetDir  = $app->getWebAssetDir();
-        $appWebDir    = $app->getAppWebDir();
         $coreWebDir   = $app->getCoreWebDir();
 
 		if( $options->clean ) {
@@ -53,7 +52,6 @@ class ExportCommand extends Command
 		$dirs[] = $webroot;
 		$dirs[] = $webPluginDir;
         $dirs[] = $webAssetDir;
-        $dirs[] = $appWebDir;
         $dirs[] = $coreWebDir;
         $dirs[] = $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload';
 		foreach( $dirs as $dir )
@@ -62,7 +60,7 @@ class ExportCommand extends Command
         system( 'chmod -vR 777 ' . $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload' );
 
 		$links = array();
-		$links[] = array( $appWebDir , FileUtils::path_join( $webroot , 'ph' , $app->getAppName() ) );
+		// $links[] = array( $appWebDir , FileUtils::path_join( $webroot , 'ph' , $app->getAppName() ) );
 		$links[] = array( $coreWebDir , FileUtils::path_join( $webroot , 'ph' , 'Core' ) );
 
 		foreach( $links as $link ) {

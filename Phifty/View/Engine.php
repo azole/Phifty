@@ -115,11 +115,6 @@ abstract class Engine
         /* default template paths */
         $paths = array();
 
-		/* application view template dir */
-        $appT = webapp()->getAppDir() . DIR_SEP . 'template';
-        if( file_exists($appT) )
-            $paths[] = $appT;
-
 		/* framework core view template dir */
         $frameT = webapp()->getCoreDir() . DIR_SEP . 'template';
         if( file_exists($frameT) )

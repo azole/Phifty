@@ -55,6 +55,11 @@ class Kernel extends ObjectContainer
     /* boolean: is in development mode ? */
     public $isDev = true;
 
+    /**
+     * application object pool
+     *
+     * app class name => app object
+     */
     public $apps = array();
 
     public $environment = 'dev';
@@ -79,13 +84,8 @@ class Kernel extends ObjectContainer
         $this->isCLI        = isset($_SERVER['argc']);
         $self = $this;
 
-        // php event pool
-        $this->event = function() {
-            return new \Universal\Event\PhpEvent;
-        };
-
         $this->currentUser = function() use ($self) {
-            $currentUserClass = $self->config('current_user.class');
+            $currentUserClass = $self->config->get('current_user.class');
             return new $currentUserClass;
         };
 
@@ -107,8 +107,21 @@ class Kernel extends ObjectContainer
         }
 
 
-        $this->initAppClassLoader();
+        /*
+        $apploader = AppClassLoader::getInstance();
+        $apploader->register();
 
+        foreach( $this->config->apps as $class => $options ) {
+            $app = new $class( $options );
+        }
+
+        $pluginConfigs = $this->config->get( 'plugins' );
+        if( $pluginConfigs ) {
+            foreach( $pluginConfigs as $name => $config ) {
+                $loader->add( $name , array( PH_APP_ROOT . '/plugins' , PH_ROOT . '/plugins' ) );
+            }
+        }
+         */
 
         define( 'CLI_MODE' , $this->isCLI );
 
@@ -130,38 +143,24 @@ class Kernel extends ObjectContainer
 
     }
 
-    public function loadApp( $appName ) 
+    public function loadApp(MicroApp $class) 
     {
-        $class = $appName . '\Application';
         $app = $class::getInstance();
-        return $this->apps[ $appName ] = $app;
+        return $this->apps[ $class ] = $app;
     }
 
-
-    /*
-    public function getApp( $appName )
+    public function getApp( $class )
     {
-        if( isset($this->apps[ $appName ]) )
-            return $this->apps[ $appName ];
+        if( isset($this->apps[ $class ]) )
+            return $this->apps[ $class ];
     }
-    */
+
 
     public function isCLI()
     {
         return $this->isCLI;
     }
 
-    public function getAppClass( $bundle )
-    {
-        return '\\' . $bundle . '\\Application';
-    }
-
-    public function getApp($bundleName)
-    {
-        $class = $this->getAppClass($bundleName);
-        $instance = $class::getInstance();
-        return $instance;
-    }
 
 
     /**
@@ -180,12 +179,6 @@ class Kernel extends ObjectContainer
     {
         return $this->appNs;
     }
-
-    public function getAppDir()
-    {
-        return $this->rootDir . DIR_SEP . PHIFTY_APP_DIRNAME . DIR_SEP . $this->appName;
-    }
-
 
     public function getAppPluginDir()
     {
@@ -303,68 +296,29 @@ class Kernel extends ObjectContainer
     /* Move this into LangService */
     public function initLang()
     {
-        $locale = $this->locale;
-        $i18nConfig = $this->config('i18n');
-
-        // var_dump( $i18nConfig ); 
-        // var_dump( $_SESSION ); 
-        $locale->setDefault( $i18nConfig->default );
-        $locale->domain( $this->appId ); # use application id for domain name.
-
-        $localeDir = $this->getRootDir() . DIRECTORY_SEPARATOR . $i18nConfig->localedir;
-
-        $locale->localedir( $localeDir );
-
-        /* add languages to list */
-        foreach( @$i18nConfig->lang as $localeName ) {
-            $locale->add( $localeName );
-        }
-
-        $locale->init();
-        # _('en');
     }
 
 
 
     public function pluginList()
     {
-        $config = (array) $this->config( 'plugins' );
+    /*
+        $config = (array) $this->config->get('app','plugins');
         if( ! $config )
             return array();
         return array_keys( $config );
-    }
-
-    public function initAppClassLoader() 
-    {
-        // app names
-        $pluginConfigs = $this->config( 'plugins' );
-        $loader = AppClassLoader::getInstance();
-        $loader->register();
-
-        // get application list from config.
-        $apps = $this->config('apps');
-        foreach( $apps as $appName => $root ) {
-            $loader->add( $appName , (array) (PH_APP_ROOT . DIRECTORY_SEPARATOR . $root) );
-            $appClass = $this->getAppClass( $appName );
-            $appClass::getInstance()->init();
-        }
-
-        /**
-         * also mount plugin dir to path 
-         */
-        if( $pluginConfigs ) {
-            foreach( $pluginConfigs as $name => $config ) {
-                $loader->add( $name , array( PH_APP_ROOT . '/plugins' , PH_ROOT . '/plugins' ) );
-            }
-        }
+     */
     }
 
     public function initPlugins()
     {
-        $pluginConfigs = $this->config( 'plugins' );
+        /*
+         * xxx:
+        $pluginConfigs = $this->config->get( 'app', 'plugins' );
         if( ! $pluginConfigs )
             return;
         $this->plugin->loadFromList( $pluginConfigs );
+         */
     }
 
     public function hasPlugin($name) 

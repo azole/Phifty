@@ -10,11 +10,6 @@ class ConfigManager
 
     public $stashes = array();
 
-    public function __construct($environment) 
-    {
-        return $this->environment = $environment;
-    }
-
     public function load($section,$file) 
     {
         if( ! file_exists($file) ) {
