@@ -18,14 +18,19 @@ class BuildConfCommand extends Command
         return 'build-conf [yaml filepath]';
     }
 
-    public function execute($configPath = null)
+    public function execute()
     {
+        $configPath = func_get_args();
+
         // should we scan config directories ?
-        if( null == $configPath ) {
+        if( empty($configPath) ) {
             $configPath = glob('config/*.yml');
         }
 
-        $configPath = (array) $configPath;
+        if( empty($configPath) ) {
+            die("No config found.");
+        }
+
         foreach( $configPath as $path ) {
 
             if( ! file_exists($path) ) {
