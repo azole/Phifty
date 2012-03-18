@@ -46,7 +46,7 @@ abstract class Engine
             PH_ROOT,
         );
 
-        $configDirs = webapp()->config('view.template_dirs');
+        $configDirs = webapp()->config->get('view.template_dirs');
         if( $configDirs ) {
             foreach($configDirs as $dir) {
                 $dirs[] = PH_APP_ROOT . '/' . $dir;

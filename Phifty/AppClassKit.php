@@ -25,7 +25,7 @@ class AppClassKit
     static function pluginPaths()
     {
         $result = array();
-        $list = webapp()->pluginList();
+        $list = webapp()->plugin->getPlugins();
 
         foreach( $list as $name ) {
             $path = static::detectPluginPath( $name );

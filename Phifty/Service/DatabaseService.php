@@ -10,6 +10,7 @@ class DatabaseService
     {
         $config = $kernel->config->get('database');
         $loader = \LazyRecord\ConfigLoader::getInstance();
+        $loader->environment = $kernel->environment;
         if( ! $loader->loaded ) { 
             $loader->load( $config->toArray() );
             $loader->init();  // init data source and connection

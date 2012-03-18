@@ -24,7 +24,7 @@ class CurrentUser
 
 	function __construct( $record = null ) 
 	{
-        $this->userModelClass = webapp()->config( 'current_user.model' );
+        $this->userModelClass = webapp()->config->get( 'current_user.model' );
 
         /* create a session pool with prefix 'user_' */
 		$this->session = new \Phifty\Session( $this->sessionPrefix );

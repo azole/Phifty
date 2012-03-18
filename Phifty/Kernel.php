@@ -62,12 +62,12 @@ class Kernel extends ObjectContainer
      */
     public $apps = array();
 
-    public $environment = 'dev';
+    public $environment = 'development';
 
     public function __construct( $environment = null ) 
     {
         /* define framework environment */
-        $this->environment  = $environment ?: getenv('PHIFTY_ENV') ?: 'dev';
+        $this->environment  = $environment ?: getenv('PHIFTY_ENV') ?: 'development';
         $this->frameworkDir = PH_ROOT; // Kernel is placed under framework directory
         $this->rootDir      = PH_APP_ROOT;
     }
@@ -85,7 +85,7 @@ class Kernel extends ObjectContainer
         $self = $this;
 
         $this->currentUser = function() use ($self) {
-            $currentUserClass = $self->config->get('current_user.class');
+            $currentUserClass = $self->config->get('application','current_user.class');
             return new $currentUserClass;
         };
 
@@ -96,7 +96,7 @@ class Kernel extends ObjectContainer
         /**
          * detect for development mode 
          */
-        $this->isDev = $this->environment == 'dev';
+        $this->isDev = $this->environment == 'development';
 
         // Turn off all error reporting
         if( $this->isDev || $this->isCLI ) {
@@ -294,7 +294,7 @@ class Kernel extends ObjectContainer
     public function pluginList()
     {
     /*
-        $config = (array) $this->config->get('app','plugins');
+        $config = (array) $this->config->get('application','plugins');
         if( ! $config )
             return array();
         return array_keys( $config );
@@ -305,7 +305,7 @@ class Kernel extends ObjectContainer
     {
         /*
          * xxx:
-        $pluginConfigs = $this->config->get( 'app', 'plugins' );
+        $pluginConfigs = $this->config->get( 'application', 'plugins' );
         if( ! $pluginConfigs )
             return;
         $this->plugin->loadFromList( $pluginConfigs );

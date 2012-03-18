@@ -54,8 +54,8 @@ class Controller extends \Roller\Controller
         if( ! $options )
             $options = array();
 
-        $templateEngine = webapp()->config('view.backend');
-        $viewClass      = webapp()->config('view.class');
+        $templateEngine = webapp()->config->get('view.backend');
+        $viewClass      = webapp()->config->get('view.class');
         if( ! $viewClass )
             throw new Exception('view.class config is not defined.');
 
