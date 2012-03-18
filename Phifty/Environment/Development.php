@@ -55,13 +55,17 @@ class Development
         }
 
         // if firebug supports
-        if( function_exists('fb') ) {
-            $kernel->event->register('phifty.after_run', function() {
+        $kernel->event->register('phifty.after_run', function() use ($kernel) {
+            if( function_exists('fb') ) {
                 fb( (memory_get_usage() / 1024 / 1024 ) . ' MB'  , 'Memory Usage' );
                 fb( (memory_get_peak_usage() / 1024 / 1024 ) . ' MB'  , 'Memory Peak Usage' );
                 fb( $_SERVER['REQUEST_TIME'] , 'Request time' );
-            });
-        }
+            }
+            elseif( $kernel->isCLI ) {
+                echo 'Memory Usage:', (int) (memory_get_usage() / 1024  ) , ' KB', PHP_EOL;
+                echo 'Memory Peak Usage:', (int) (memory_get_peak_usage() / 1024 ) , ' KB' . PHP_EOL;
+            }
+        });
 
         // when exception found, forward output to exception render controller.
     }
