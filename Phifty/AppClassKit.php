@@ -47,13 +47,6 @@ class AppClassKit
         }
     }
 
-    /* return App Model classes */
-    static function loadAppModels()
-    {
-        $dir = webapp()->getAppDir();
-        $modelDir = $dir . DIRECTORY_SEPARATOR . 'Model';
-        static::loadDir( $modelDir );
-    }
 
     /* return core Model classes */
     static function loadCoreModels()
