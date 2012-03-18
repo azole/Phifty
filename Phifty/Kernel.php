@@ -3,9 +3,6 @@ namespace Phifty;
 require PH_ROOT . '/src/Phifty/ConfigLoader.php';
 require PH_ROOT . '/src/Phifty/AppClassKit.php';
 require PH_ROOT . '/src/Phifty/AppClassLoader.php';
-require PH_ROOT . '/src/Phifty/CurrentUser.php';
-require PH_ROOT . '/src/Phifty/L10N.php';
-require PH_ROOT . '/src/Phifty/FileUtils.php';
 
 use Phifty\Kernel;
 use Phifty\CurrentUser;
@@ -38,7 +35,7 @@ use Exception;
 class Kernel extends ObjectContainer 
 {
     /* framework version */
-    const VERSION = '2.2';
+    const VERSION = '2.3.0';
 
     /* rootDir: contains app, web, phifty dirs */
     public $rootDir; 
@@ -69,7 +66,10 @@ class Kernel extends ObjectContainer
         /* define framework environment */
         $this->environment  = $environment ?: getenv('PHIFTY_ENV') ?: 'development';
         $this->frameworkDir = PH_ROOT; // Kernel is placed under framework directory
-        $this->rootDir      = PH_APP_ROOT;
+        $this->rootDir      = PH_APP_ROOT; // Application root.
+
+
+
     }
 
     public function registerService( \Phifty\Service\ServiceInterface $service )
@@ -80,9 +80,9 @@ class Kernel extends ObjectContainer
     public function init()
     {
         $this->event->trigger('phifty.before_init');
-        $this->appName      = PH_APP_NAME;
         $this->isCLI        = isset($_SERVER['argc']);
         $self = $this;
+
 
         $this->currentUser = function() use ($self) {
             $currentUserClass = $self->config->get('application','current_user.class');
@@ -113,8 +113,13 @@ class Kernel extends ObjectContainer
         */
 
         $appconfigs = $this->config->get('application','apps');
-        foreach( $appconfigs as $class => $options ) {
-            $this->loadApp( $class , $options );
+        foreach( $appconfigs as $appname => $options ) {
+            $this->classloader->addNamespace( array( 
+                $appname => array( 
+                    PH_APP_ROOT . '/apps' , PH_ROOT . '/apps' 
+                )
+            ));
+            $this->loadApp( $appname , $options );
         }
 
         /*
@@ -139,26 +144,20 @@ class Kernel extends ObjectContainer
         }
 
         $this->initPlugins();
-
         $this->event->trigger('phifty.after_init');
-
-
-
-
-
     }
 
-    public function loadApp($appName, $options = array() ) 
+    public function loadApp($appname, $options = array() ) 
     {
-        $class = $appName . '\Application';
+        $class = $appname . '\Application';
         $app = $class::getInstance();
-        return $this->apps[ $class ] = $app;
+        return $this->apps[ $appname ] = $app;
     }
 
-    public function getApp( $class )
+    public function app( $appname )
     {
-        if( isset($this->apps[ $class ]) )
-            return $this->apps[ $class ];
+        if( isset($this->apps[ $appname ]) )
+            return $this->apps[ $appname ];
     }
 
 
