@@ -30,10 +30,10 @@ class InitCommand extends Command
 
         $codegen = new CodeTemplate;
 
-		$htaccessFiln = $kernel->getWebRootDir() . DIRECTORY_SEPARATOR . '.htaccess';
+		$htaccessFiln = $kernel->webroot . DIRECTORY_SEPARATOR . '.htaccess';
         $codegen->renderFile( $htaccessFile, 'htaccess' );
 
-        $webrootIndex = $kernel->getWebRootDir() . DIRECTORY_SEPARATOR . 'index.php';
+        $webrootIndex = $kernel->webroot . DIRECTORY_SEPARATOR . 'index.php';
         $codegen->renderFile( $webrootIndex , 'webroot_index.php' );
 
 		$this->logger->info( "Changing permissions..." );

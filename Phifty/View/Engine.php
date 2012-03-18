@@ -118,11 +118,11 @@ abstract class Engine
         $paths = array();
 
 		/* framework core view template dir */
-        $frameT = kernel()->getCoreDir() . DS . 'template';
+        $frameT = kernel()->app('Core')->getTemplateDir();
         if( file_exists($frameT) )
             $paths[] = $frameT;
 
-        $dirs = kernel()->config( 'view.template_dirs' );
+        $dirs = kernel()->config->get( 'view.template_dirs' );
         if( $dirs )
             foreach( $dirs as $dir )
                 $paths[] = FileUtils::path_join( kernel()->rootDir , $dir );

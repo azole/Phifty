@@ -51,7 +51,7 @@ class AppClassKit
     /* return core Model classes */
     static function loadCoreModels()
     {
-        $dir = kernel()->getCoreDir();
+        $dir = kernel()->app('Core')->locate();
         $modelDir = $dir . DIRECTORY_SEPARATOR . 'Model';
         static::loadDir( $modelDir );
     }

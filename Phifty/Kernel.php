@@ -34,9 +34,11 @@ class Kernel extends ObjectContainer
 
     public $frameworkDir;
     public $frameworkAppDir;
+    public $frameworkPluginDir;
 
     public $rootDir;  // application root dir
     public $rootAppDir;   // application dir (./applications)
+    public $rootPluginDir;
 
 
     /* application namespace */
@@ -68,8 +70,10 @@ class Kernel extends ObjectContainer
         // path info
         $this->frameworkDir    = PH_ROOT;
         $this->frameworkAppDir = PH_ROOT . DS . 'applications';
+        $this->frameworkPluginDir = PH_ROOT . DS . 'plugins';
         $this->rootDir         = PH_APP_ROOT;      // Application root.
         $this->rootAppDir      = PH_APP_ROOT . DS . 'applications';
+        $this->rootPluginDir      = PH_APP_ROOT . DS . 'plugins';
         $this->webroot         = PH_APP_ROOT . DS . 'webroot';
     }
 
@@ -182,41 +186,14 @@ class Kernel extends ObjectContainer
         return $this->appNs;
     }
 
-    public function getAppPluginDir()
-    {
-        return $this->rootDir . DS . 'plugins';
-    }
-
-    public function getFrameworkBundleDir()
-    {
-        return $this->frameworkDir . DS . PHIFTY_APP_DIRNAME;
-    }
-
-    public function getCoreDir()
-    {
-        return $this->getFrameworkBundleDir() . DS . 'Core';
-    }
-
-
-    /* we should move this into bundles dir */
-    public function getFrameworkPluginDir()
-    {
-        return $this->frameworkDir . DS . 'plugins';
-    }
-
     public function getMinifiedWebDir()
     {
         return $this->rootDir . DS . PHIFTY_WEBROOT_DIRNAME . DS . 'static' . DS . 'minified';
     }
 
-    public function getCoreWebDir()
-    {
-        return $this->getCoreDir() . DS . 'web';
-    }
-
     public function getWebRootDir()
     {
-        return $this->rootDir . DS . PHIFTY_WEBROOT_DIRNAME;
+        return $this->webroot;
     }
 
     /**
@@ -263,12 +240,6 @@ class Kernel extends ObjectContainer
     {
         return 'phifty';
     }
-
-    public function getFrameworkDir()
-    {
-        return $this->frameworkDir;
-    }
-
 
 
     /** 

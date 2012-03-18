@@ -26,16 +26,16 @@ class ExportCommand extends Command
 		$options = $this->getOptions();
 
 
-        $app          = kernel();
-        $webroot      = $app->getWebRootDir();
-        $webPluginDir = $app->getWebPluginDir();
-        $webAssetDir  = $app->getWebAssetDir();
-        $coreWebDir   = $app->getCoreWebDir();
+        $kernel          = kernel();
+        $webroot      = $kernel->webroot;
+        $webPluginDir = $kernel->getWebPluginDir();
+        $webAssetDir  = $kernel->getWebAssetDir();
+        $coreWebDir   = $kernel->app('Core')->getWebDir();
 
 		if( $options->clean ) {
 			$this->logger->info( "Removing webroot/ph");
 			$unlinks = array();
-			$unlinks[] = FileUtils::path_join( $webroot , 'ph' , $app->getAppName() );
+			$unlinks[] = FileUtils::path_join( $webroot , 'ph' , $kernel->getAppName() );
 			$unlinks[] = FileUtils::path_join( $webroot , 'ph' , 'Core' );
 			foreach( $unlinks as $unlink ) {
 				$this->logger->info("Unlinking $unlink ...");
@@ -60,7 +60,7 @@ class ExportCommand extends Command
         system( 'chmod -vR 777 ' . $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload' );
 
 		$links = array();
-		// $links[] = array( $appWebDir , FileUtils::path_join( $webroot , 'ph' , $app->getAppName() ) );
+		// $links[] = array( $kernelWebDir , FileUtils::path_join( $webroot , 'ph' , $kernel->getAppName() ) );
 		$links[] = array( $coreWebDir , FileUtils::path_join( $webroot , 'ph' , 'Core' ) );
 
 		foreach( $links as $link ) {
