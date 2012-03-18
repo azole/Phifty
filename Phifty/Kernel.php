@@ -107,12 +107,7 @@ class Kernel extends ObjectContainer
         }
 
 
-        /*
-        $apploader = AppClassLoader::getInstance();
-        $apploader->register();
-        */
-
-        $appconfigs = $this->config->get('application','apps');
+        $appconfigs = $this->config->get('framework','apps');
         foreach( $appconfigs as $appname => $options ) {
             $this->classloader->addNamespace( array( 
                 $appname => array( 
@@ -123,14 +118,13 @@ class Kernel extends ObjectContainer
         }
 
         /*
-        $pluginConfigs = $this->config->get( 'plugins' );
+        $pluginConfigs = $this->config->get('framework','plugins');
         if( $pluginConfigs ) {
             foreach( $pluginConfigs as $name => $config ) {
                 $loader->add( $name , array( PH_APP_ROOT . '/plugins' , PH_ROOT . '/plugins' ) );
             }
         }
          */
-
         define( 'CLI_MODE' , $this->isCLI );
 
         if( $this->isCLI ) {
@@ -159,13 +153,6 @@ class Kernel extends ObjectContainer
         if( isset($this->apps[ $appname ]) )
             return $this->apps[ $appname ];
     }
-
-
-    public function isCLI()
-    {
-        return $this->isCLI;
-    }
-
 
 
     /**
