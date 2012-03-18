@@ -4,10 +4,9 @@ use Phifty\Action\ActionRunner;
 use ReflectionClass;
 use ReflectionObject;
 
-/*
-    MicroApp is the base class of App, Core, {Plugin} class.
-*/
-
+/**
+ *  MicroApp is the base class of App, Core, {Plugin} class.
+ */
 class MicroApp extends \Phifty\Singleton
 {
     public $basePath = '';
@@ -23,27 +22,21 @@ class MicroApp extends \Phifty\Singleton
     }
 
 
-    /* get the base class (namespace) name,
+    /**
+     * get the namespace name,
      *
      * for \Product\Application, we get Product.
      *
      * */
-    function baseClass()
+    public function baseClass()
     {
-        if( class_exists('ReflectionClass') ) 
-        {
-            $object = new ReflectionObject($this);
-            return $object->getNamespaceName();
-        } 
-        else 
-        {
-            $class = get_class( $this );
-            list( $ns, $rest ) = explode('\\',$class,2);
-            return $ns;
-        }
+        $object = new ReflectionObject($this);
+        return $object->getNamespaceName();
     }
 
-    /* helper method */
+    /**
+     * helper method, route path to template
+     */
     function page( $path , $template  )
     {
         $this->add( $path , array( 
@@ -52,17 +45,18 @@ class MicroApp extends \Phifty\Singleton
         ));
     }
 
-    /* 
-     * locate plugin app dir path.
-     * 
-     * */
+    /**
+     * Locate plugin app dir path.
+     */
     function locate()
     {
         $object = new ReflectionObject($this);
         return dirname($object->getFilename());
     }
 
-    /* get the model in the namespace of current microapp */
+    /**
+     * get the model in the namespace of current microapp 
+     */
     public function getModel( $name )
     {
         $object = new ReflectionObject($this);
@@ -70,6 +64,7 @@ class MicroApp extends \Phifty\Singleton
         $modelClass = $ns . "\\Model\\" . $name;
         return new $modelClass;
     }
+
 
 
     /**
@@ -146,11 +141,16 @@ class MicroApp extends \Phifty\Singleton
         kernel()->router->mount( $path , $routes );
     }
 
-    function js() { return array(); }
-    function css() { return array(); }
+    public function js() { 
+        return array(); 
+    }
+
+    public function css() { 
+        return array(); 
+    }
 
     /* register CRUD actions */
-    function withCRUDAction( $model , $types )
+    public function withCRUDAction( $model , $types )
     {
         $runner = ActionRunner::getInstance();
         $runner->addCRUD( $this->baseClass() , $model , (array) $types );
