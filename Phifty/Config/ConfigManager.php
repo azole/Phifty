@@ -6,10 +6,20 @@ use Exception;
 
 class ConfigManager
 {
+    public $environment = 'dev';
+
     public $stashes = array();
+
+    public function __construct($environment) 
+    {
+        return $this->environment = $environment;
+    }
 
     public function load($section,$file) 
     {
+        if( ! file_exists($file) ) {
+            throw new Exception("config file $file doesn't exist.");
+        }
         $info = new SplFileInfo($file);
         $ext = $info->getExtension();
         $ser = new Serializer;
@@ -23,11 +33,56 @@ class ConfigManager
             $config = require $file;
         }
         else {
-            throw new Exception("Unsupported config file format.");
+            throw new Exception('Unsupported config file format.');
         }
-        $this->stashes[ $section ] = $stashes;
+        $this->stashes[ $section ] = $config;
     }
 
+
+    function __get($name)
+    {
+        if( isset( $this->config[$name][ $this->environment ] )) {
+            return $this->config[$name][ $this->environment ];
+        }
+    }
+
+    /**
+     * get config from the "config key" like:
+     *
+     *     mail.user
+     *     mail.pass
+     *
+     * @return hash
+     */
+    function get($section, $key = null)
+    {
+        /*
+        if( isset( $this->getterCache[ $key ] ) ) 
+            return $this->getterCache[ $key ];
+         */
+        $config = $this->__get( $section );
+        if( $key == null )
+            return $config;
+
+		if( isset($config[ $key ]) ) {
+			if( is_array( $config[ $key ] ) )
+				return (object) $config[ $key ];
+            return $config[ $key ];
+		}
+
+		if( strchr( $key , '.' ) !== false ) {
+			$parts = explode( '.' , $key );
+			$ref = $config;
+			while( $ref_key = array_shift( $parts ) ) {
+				if( ! isset($ref[ $ref_key ]) ) 
+					return null;
+					# throw new Exception( "Config key: $key not found.  '$ref_key'" );
+				$ref = & $ref[ $ref_key ];
+			}
+			return $ref;
+		}
+		return null;
+	}
 
 }
 

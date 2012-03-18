@@ -64,22 +64,18 @@ class Kernel extends ObjectContainer
 
     public function __construct( $environment = null ) 
     {
-        $this->frameworkDir = PH_ROOT; // Kernel is placed under framework directory
-        $this->rootDir      = PH_APP_ROOT;
-        $this->appName      = PH_APP_NAME;
+        /* define framework environment */
         $this->environment  = $environment 
                 ?: getenv('PHIFTY_ENV') 
                 ?: (isset($_REQUEST['PHIFTY_ENV']) 
                     ? $_REQUEST['PHIFTY_ENV'] : 'dev');
 
-        
+        $this->frameworkDir = PH_ROOT; // Kernel is placed under framework directory
+        $this->rootDir      = PH_APP_ROOT;
+        $this->appName      = PH_APP_NAME;
         $this->appId        = strtolower( PH_APP_NAME );
         $this->isCLI        = isset($_SERVER['argc']);
         $self = $this;
-
-        $this->configLoader = function() use ($self) {
-            return new \Phifty\ConfigLoader( $self );
-        };
 
         // php event pool
         $this->event = function() {
@@ -423,20 +419,6 @@ class Kernel extends ObjectContainer
     public function getPlugin($name) 
     {
         return $this->plugin->getPlugin( $name );
-    }
-
-
-    /**
-     * @return: if $key is empty, return the config hash, 
-     *          or will return the config value.
-     */
-    public function config($key = null , $default = null ) 
-    {
-        if( $key ) {
-            $val = $this->configLoader->get( $key );
-            return $val ? $val : $default;
-        }
-        return $this->configLoader->getConfig();
     }
 
 

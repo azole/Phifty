@@ -16,13 +16,14 @@ class ConfigService
     public function register($kernel, $options = array() )
     {
         $self = $this;
+        $this->manager->environment = $kernel->environment;
         $kernel->config = function() use ($self) {  
             return $self->manager;
         };
     }
 
-    public function load($file) {
-        return $this->manager->load($file);
+    public function load($section,$file) {
+        return $this->manager->load($section,$file);
     }
 }
 

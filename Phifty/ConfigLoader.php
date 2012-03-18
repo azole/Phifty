@@ -138,7 +138,7 @@ class ConfigLoader
     }
 
 
-    /*
+    /**
      * get config from the "config key" like:
      *
      *     mail.user
