@@ -52,10 +52,10 @@ class ConfigManager
     /**
      * get config from the "config key" like:
      *
-     *     mail.user
-     *     mail.pass
+     *   mail.user
+     *   mail.pass
      *
-     * @return hash
+     * @return array
      */
     function get($section, $key = null)
     {
