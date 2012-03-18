@@ -1,20 +1,16 @@
 <?php
 namespace Phifty;
-require PH_ROOT . '/src/Phifty/ConfigLoader.php';
-require PH_ROOT . '/src/Phifty/AppClassKit.php';
-require PH_ROOT . '/src/Phifty/AppClassLoader.php';
+require __DIR__ . '/AppClassKit.php';
 
 use Phifty\Kernel;
 use Phifty\CurrentUser;
 use Phifty\L10N;
 use Phifty\Web;
-use Phifty\AppClassLoader;
 use Phifty\AppClassKit;
 use Phifty\FileUtils;
 use Phifty\Action\ActionRunner;
 use Universal\Container\ObjectContainer;
 use Exception;
-
 
 /*
     Phifty Main Controll Object:
@@ -70,9 +66,6 @@ class Kernel extends ObjectContainer
         $this->environment  = $environment ?: getenv('PHIFTY_ENV') ?: 'development';
         $this->frameworkDir = PH_ROOT; // Kernel is placed under framework directory
         $this->rootDir      = PH_APP_ROOT; // Application root.
-
-
-
     }
 
     public function registerService( \Phifty\Service\ServiceInterface $service )
