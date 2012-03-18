@@ -69,6 +69,15 @@ class MicroApp extends \Phifty\Singleton
         return new $class;
     }
 
+    public function getAction( $name )
+    {
+        $class = sprintf('%s\Action\%s',$this->getNamespace(),$name);
+        return new $class;
+    }
+
+
+
+
 
     /**
      * in route method, we can do route with:
