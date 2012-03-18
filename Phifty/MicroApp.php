@@ -135,7 +135,7 @@ class MicroApp extends \Phifty\Singleton
         }
     }
 
-    public function routeToSet($path,$class)
+    public function expandRoute($path,$class)
     {
         $routes = $class::expand();
         kernel()->router->mount( $path , $routes );
