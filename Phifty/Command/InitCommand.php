@@ -20,8 +20,10 @@ class InitCommand extends Command
         $dirs[] = FileUtils::path_join( $kernel->getRootDir() , 'cache' , 'config' );
 		$dirs[] = $kernel->getWebRootDir();
 
+        /*
 		foreach( explode(' ','View web lib Model Action Controller template') as $subdir )
 			$dirs[] = FileUtils::path_join( $kernel->getAppDir() , $subdir );
+        */
 
         $dirs[] = $kernel->getWebRootDir() . DIRECTORY_SEPARATOR . 'ph' . DIRECTORY_SEPARATOR . 'plugins';
 

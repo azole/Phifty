@@ -46,11 +46,8 @@ class Kernel extends ObjectContainer
     /* phifty dir */
     public $frameworkDir;
 
-    /* app name */
-    public $appName;
-
-    /* app name (lower case) */
-    public $appId;
+    /* application namespace */
+    public $appNs;
 
     /* boolean: is in command mode ? */
     public $isCLI;
@@ -65,15 +62,20 @@ class Kernel extends ObjectContainer
     public function __construct( $environment = null ) 
     {
         /* define framework environment */
-        $this->environment  = $environment 
-                ?: getenv('PHIFTY_ENV') 
-                ?: (isset($_REQUEST['PHIFTY_ENV']) 
-                    ? $_REQUEST['PHIFTY_ENV'] : 'dev');
-
+        $this->environment  = $environment ?: getenv('PHIFTY_ENV') ?: 'dev';
         $this->frameworkDir = PH_ROOT; // Kernel is placed under framework directory
         $this->rootDir      = PH_APP_ROOT;
+    }
+
+    public function registerService( \Phifty\Service\ServiceInterface $service )
+    {
+        $service->register( $this );
+    }
+
+    public function init()
+    {
+        $this->event->trigger('phifty.before_init');
         $this->appName      = PH_APP_NAME;
-        $this->appId        = strtolower( PH_APP_NAME );
         $this->isCLI        = isset($_SERVER['argc']);
         $self = $this;
 
@@ -103,19 +105,8 @@ class Kernel extends ObjectContainer
         else {
             \Phifty\Environment\Production::init($this);
         }
-    }
 
 
-    public function registerService( \Phifty\Service\ServiceInterface $service )
-    {
-        $service->register( $this );
-    }
-
-
-
-    public function init()
-    {
-        $this->event->trigger('phifty.before_init');
         $this->initAppClassLoader();
 
 
@@ -182,11 +173,13 @@ class Kernel extends ObjectContainer
     }
 
 
-    public function getAppId()
+    /** 
+     * application namespace
+     */
+    public function getAppNs()
     {
-        return $this->appId;
+        return $this->appNs;
     }
-
 
     public function getAppDir()
     {

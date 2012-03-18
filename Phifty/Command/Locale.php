@@ -2,7 +2,9 @@
 namespace Phifty\Command;
 use Phifty\FileUtils;
 use Symfony\Component\Finder\Finder;
-/*
+
+
+/**
  * Export Locale
  */
 class Locale extends \Phifty\Command
@@ -11,7 +13,7 @@ class Locale extends \Phifty\Command
     {
         $kernel = webapp();
         $frameworkId = $kernel->getFrameworkId();
-        $appId       = $kernel->getAppId();
+        $appId       = $kernel->getAppNs();
 
         /* merge/update framework locale into app locale dir */
         $finder = Finder::create()->files()->name('*.po')->in( PH_ROOT . DIRECTORY_SEPARATOR . 'locale' );
