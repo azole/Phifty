@@ -44,7 +44,10 @@ class Kernel extends ObjectContainer
     public $frameworkDir;
 
     /* application namespace */
-    public $appNs;
+    public $namespace;
+
+    /* application uuid */
+    public $uuid;
 
     /* boolean: is in command mode ? */
     public $isCLI;
@@ -288,7 +291,7 @@ class Kernel extends ObjectContainer
     public function pluginList()
     {
     /*
-        $config = (array) $this->config->get('application','plugins');
+        $config = (array) $this->config->get('framework','plugins');
         if( ! $config )
             return array();
         return array_keys( $config );
@@ -299,7 +302,7 @@ class Kernel extends ObjectContainer
     {
         /*
          * xxx:
-        $pluginConfigs = $this->config->get( 'application', 'plugins' );
+        $pluginConfigs = $this->config->get( 'framework', 'plugins' );
         if( ! $pluginConfigs )
             return;
         $this->plugin->loadFromList( $pluginConfigs );
