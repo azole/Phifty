@@ -1,5 +1,8 @@
 <?php
 namespace Phifty\View;
+use Twig_Environment;
+use Twig_Extensions_Extension_Debug;
+use Twig_Loader_String;
 
 class TwigLight 
 {
