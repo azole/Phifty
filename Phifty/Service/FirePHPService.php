@@ -11,6 +11,9 @@ class FirePHPService
          * http://www.firephp.org/HQ/Use.htm
          *
          * if not in CLI mode, include firePHP.
+         *
+         * $ pear channel-discover pear.firephp.org
+         * $ pear install firephp/FirePHPCore 
          **/
         if( ! $kernel->isCLI ) {
             require PH_ROOT . '/vendor/firephp/lib/FirePHPCore/fb.php';

@@ -55,7 +55,7 @@ class Kernel extends ObjectContainer
      *
      * app class name => app object
      */
-    public $apps = array();
+    public $applications = array();
 
     public $environment = 'development';
 
@@ -63,8 +63,12 @@ class Kernel extends ObjectContainer
     {
         /* define framework environment */
         $this->environment  = $environment ?: getenv('PHIFTY_ENV') ?: 'development';
+
+        // path info
         $this->frameworkDir = PH_ROOT; // Kernel is placed under framework directory
         $this->rootDir      = PH_APP_ROOT; // Application root.
+        $this->webroot      = PH_APP_ROOT . DS . 'webroot';
+        $this->approot      = PH_APP_ROOT . DS . 'applications';
     }
 
     public function registerService( ServiceInterface $service )
@@ -106,7 +110,7 @@ class Kernel extends ObjectContainer
         foreach( $appconfigs as $appname => $options ) {
             $this->classloader->addNamespace( array( 
                 $appname => array( 
-                    PH_APP_ROOT . '/apps' , PH_ROOT . '/apps' 
+                    PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' 
                 )
             ));
             $this->loadApp( $appname , $options );
@@ -139,13 +143,13 @@ class Kernel extends ObjectContainer
     {
         $class = $appname . '\Application';
         $app = $class::getInstance();
-        return $this->apps[ $appname ] = $app;
+        return $this->applications[ $appname ] = $app;
     }
 
     public function app( $appname )
     {
-        if( isset($this->apps[ $appname ]) )
-            return $this->apps[ $appname ];
+        if( isset($this->applications[ $appname ]) )
+            return $this->applications[ $appname ];
     }
 
 
