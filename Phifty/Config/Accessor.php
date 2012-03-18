@@ -46,6 +46,11 @@ class Accessor
         return $this->config;
     }
 
+    public function isEmpty()
+    {
+        return null === $this->config || empty( $this->config );
+    }
+
     public function __get($name)
     {
         return $this->offsetGet($name);

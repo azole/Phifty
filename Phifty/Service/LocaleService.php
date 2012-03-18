@@ -10,9 +10,8 @@ class LocaleService
     public function register($kernel, $options = array() )
     {
         $config = $kernel->config->get('framework','i18n');
-        if( null == $config )
+        if( $config->isEmpty() )
             return;
-
         if( null == $config->default )
             return;
 

@@ -9,6 +9,8 @@ class DatabaseService
     public function register($kernel, $options = array() )
     {
         $config = $kernel->config->stashes['database'];
+        if( empty($config) )
+            return;
 
         $loader = ConfigLoader::getInstance();
         $loader->environment = $kernel->environment;
