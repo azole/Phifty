@@ -10,6 +10,7 @@ use Phifty\AppClassKit;
 use Phifty\FileUtils;
 use Phifty\Action\ActionRunner;
 use Universal\Container\ObjectContainer;
+use Phifty\Service\ServiceInterface;
 use Exception;
 
 /*
@@ -68,7 +69,7 @@ class Kernel extends ObjectContainer
         $this->rootDir      = PH_APP_ROOT; // Application root.
     }
 
-    public function registerService( \Phifty\Service\ServiceInterface $service )
+    public function registerService( ServiceInterface $service )
     {
         $service->register( $this );
     }
