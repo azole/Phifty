@@ -6,9 +6,11 @@ class LocaleService
     implements ServiceInterface
 {
 
-
     public function register($kernel, $options = array() )
     {
+        // call spl autoload, to load `__` i18n function
+        class_exists('Phifty\L10N', true);
+
         $config = $kernel->config->get('framework','i18n');
         if( $config->isEmpty() )
             return;

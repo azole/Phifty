@@ -12,7 +12,6 @@ _('fr')
 */
 
 namespace Phifty {
-
 use Exception;
 define( 'L10N_LOCALE_KEY' , 'locale' );
 
@@ -221,4 +220,3 @@ namespace {
     }
 }
 
-?>

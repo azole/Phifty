@@ -105,6 +105,9 @@ class Kernel extends ObjectContainer
             \Phifty\Environment\Production::init($this);
         }
 
+        if( $this->isCLI ) {
+            \Phifty\Environment\CommandLine::init($this);
+        }
 
         $appconfigs = $this->config->get('framework','apps');
         foreach( $appconfigs as $appname => $appconfig ) {
@@ -124,18 +127,6 @@ class Kernel extends ObjectContainer
             }
         }
          */
-        define( 'CLI_MODE' , $this->isCLI );
-
-        if( $this->isCLI ) {
-            ini_set('output_buffering ', '0');
-            ini_set('implicit_flush', '1');
-            ob_implicit_flush(true);
-        } else {
-            ob_start();
-            $s = $this->session; // build session object
-            mb_internal_encoding('UTF-8');
-        }
-
         $this->event->trigger('phifty.after_init');
     }
 
