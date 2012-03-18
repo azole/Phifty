@@ -31,7 +31,7 @@ class Web
     {
         $webPaths = array();
         foreach( (array) $fileList as $path ) {
-            $webPaths = array_merge( $webPaths , glob( $parentPath . DIR_SEP . $path ) );
+            $webPaths = array_merge( $webPaths , glob( $parentPath . DS . $path ) );
         }
         return $webPaths;
     }

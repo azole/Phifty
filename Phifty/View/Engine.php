@@ -116,7 +116,7 @@ abstract class Engine
         $paths = array();
 
 		/* framework core view template dir */
-        $frameT = webapp()->getCoreDir() . DIR_SEP . 'template';
+        $frameT = webapp()->getCoreDir() . DS . 'template';
         if( file_exists($frameT) )
             $paths[] = $frameT;
 

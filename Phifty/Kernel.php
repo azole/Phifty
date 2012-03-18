@@ -188,44 +188,44 @@ class Kernel extends ObjectContainer
 
     public function getAppPluginDir()
     {
-        return $this->rootDir . DIR_SEP . 'plugins';
+        return $this->rootDir . DS . 'plugins';
     }
 
     public function getFrameworkBundleDir()
     {
-        return $this->frameworkDir . DIR_SEP . PHIFTY_APP_DIRNAME;
+        return $this->frameworkDir . DS . PHIFTY_APP_DIRNAME;
     }
 
     public function getCoreDir()
     {
-        return $this->getFrameworkBundleDir() . DIR_SEP . 'Core';
+        return $this->getFrameworkBundleDir() . DS . 'Core';
     }
 
 
     /* we should move this into bundles dir */
     public function getFrameworkPluginDir()
     {
-        return $this->frameworkDir . DIR_SEP . 'plugins';
+        return $this->frameworkDir . DS . 'plugins';
     }
 
     public function getMinifiedWebDir()
     {
-        return $this->rootDir . DIR_SEP . PHIFTY_WEBROOT_DIRNAME . DIR_SEP . 'static' . DIR_SEP . 'minified';
+        return $this->rootDir . DS . PHIFTY_WEBROOT_DIRNAME . DS . 'static' . DS . 'minified';
     }
 
     public function getAppWebDir()
     {
-        return $this->rootDir  . DIR_SEP . PHIFTY_APP_DIRNAME . DIR_SEP . $this->appName . DIR_SEP . 'web';
+        return $this->rootDir  . DS . PHIFTY_APP_DIRNAME . DS . $this->appName . DS . 'web';
     }
 
     public function getCoreWebDir()
     {
-        return $this->getCoreDir() . DIR_SEP . 'web';
+        return $this->getCoreDir() . DS . 'web';
     }
 
     public function getWebRootDir()
     {
-        return $this->rootDir . DIR_SEP . PHIFTY_WEBROOT_DIRNAME;
+        return $this->rootDir . DS . PHIFTY_WEBROOT_DIRNAME;
     }
 
     /**
@@ -240,7 +240,7 @@ class Kernel extends ObjectContainer
      * */
     public function getWebPluginDir()
     {
-        return $this->rootDir . DIR_SEP . PHIFTY_WEBROOT_DIRNAME .  DIR_SEP . 'ph' . DIR_SEP . 'plugins';
+        return $this->rootDir . DS . PHIFTY_WEBROOT_DIRNAME .  DS . 'ph' . DS . 'plugins';
     }
 
 
@@ -252,7 +252,7 @@ class Kernel extends ObjectContainer
     */
     public function getWebAssetDir()
     {
-        return $this->rootDir . DIR_SEP . PHIFTY_WEBROOT_DIRNAME . DIR_SEP . 'ph' . DIR_SEP . 'assets';
+        return $this->rootDir . DS . PHIFTY_WEBROOT_DIRNAME . DS . 'ph' . DS . 'assets';
     }
 
 

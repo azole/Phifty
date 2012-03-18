@@ -10,12 +10,12 @@ class AppClassKit
     static function detectPluginPath( $pluginName )
     {
         /* check if it's in app first */
-        $appPluginDir = PH_APP_ROOT . DIR_SEP . 'plugins' . DIR_SEP . $pluginName;
+        $appPluginDir = PH_APP_ROOT . DS . 'plugins' . DS . $pluginName;
         if( file_exists( $appPluginDir ) )
             return $appPluginDir;
 
         /* or in core ? */
-        $corePluginDir = PH_ROOT . DIR_SEP . 'plugins' . DIR_SEP . $pluginName;
+        $corePluginDir = PH_ROOT . DS . 'plugins' . DS . $pluginName;
         if( file_exists( $corePluginDir ) )
             return $corePluginDir;
 
@@ -60,7 +60,7 @@ class AppClassKit
     {
         $paths = static::pluginPaths();
         foreach( $paths as $path ) {
-            static::loadDir( $path . DIR_SEP . 'Model' );
+            static::loadDir( $path . DS . 'Model' );
         }
     }
 
