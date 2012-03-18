@@ -5,29 +5,32 @@ use Phifty\L10N;
 class LocaleService
     implements ServiceInterface
 {
+
+
     public function register($kernel, $options = array() )
     {
+        $config = $kernel->config->framework['i18n'];
+
+        if( null == $config )
+            return;
+
         $locale = new L10N;
-        $i18nConfig = $kernel->config->get('framework','i18n');
 
-        if( $i18nConfig ) {
-            // var_dump( $i18nConfig ); 
-            // var_dump( $_SESSION ); 
-            $locale->setDefault( $i18nConfig->default );
-            $locale->domain( $this->appId ); # use application id for domain name.
+        // var_dump( $config ); 
+        // var_dump( $_SESSION ); 
+        $locale->setDefault( $config->default );
+        $locale->domain( $kernel->config->application['namespace'] ); # use application id for domain name.
+        $localeDir = $kernel->getRootDir() . DIRECTORY_SEPARATOR . $config->localedir;
 
-            $localeDir = $this->getRootDir() . DIRECTORY_SEPARATOR . $i18nConfig->localedir;
+        $locale->localedir( $localeDir );
 
-            $locale->localedir( $localeDir );
-
-            /* add languages to list */
-            foreach( @$i18nConfig->lang as $localeName ) {
-                $locale->add( $localeName );
-            }
-
-            $locale->init();
-            # _('en');
+        /* add languages to list */
+        foreach( @$config->lang as $localeName ) {
+            $locale->add( $localeName );
         }
+
+        $locale->init();
+        # _('en');
         
         $kernel->locale = function() use ($locale) {
             return $locale;
