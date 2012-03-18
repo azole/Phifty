@@ -77,10 +77,11 @@ class MicroApp extends \Phifty\Singleton
 
 
 
-
-
     /**
-     * in route method, we can do route with:
+     * XXX: make this simpler......orz
+     *
+     *
+     * In route method, we can do route with:
      *
      * $this->route('/path/to', array( 
      *          'controller' => 'ControllerClass'
