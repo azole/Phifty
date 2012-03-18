@@ -33,10 +33,19 @@ class ConfigManager
     }
 
 
+
+    /**
+     * Allow more useful getter
+     *
+     * kernel()->config->application  (returns application settings)
+     * kernel()->config->framework  (returns framework settings)
+     * kernel()->config->database  (returns database settings)
+     */
     function __get($name)
     {
         if( isset( $this->stashes[$name][ $this->environment ] )) {
-            return $this->stashes[$name][ $this->environment ];
+            // It must be an array.
+            return new Accessor($this->stashes[$name][ $this->environment ]);
         }
     }
 
