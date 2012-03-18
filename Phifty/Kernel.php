@@ -3,7 +3,7 @@ namespace Phifty;
 
 use Phifty\Kernel;
 use Phifty\CurrentUser;
-use Phifty\L10N;
+use Phifty\Locale;
 use Phifty\Web;
 use Phifty\FileUtils;
 use Phifty\Action\ActionRunner;

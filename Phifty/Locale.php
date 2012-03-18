@@ -15,7 +15,7 @@ namespace Phifty {
 use Exception;
 define( 'L10N_LOCALE_KEY' , 'locale' );
 
-class L10N
+class Locale
 {
     protected $current;
     protected $langList = array();
