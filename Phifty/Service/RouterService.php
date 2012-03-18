@@ -8,10 +8,11 @@ class RouterService
 
     public function register($kernel, $options = array() ) 
     {
-        $kernel->router = function() {
+        $kernel->router = function() use ($kernel) {
+            $uuid = $kernel->config->get('framework','uuid');
             return new Router(null, array( 
                 'route_class' => 'Phifty\Routing\Route',
-                // 'cache_id' => PH_APP_NAME,
+                // 'cache_id' => $uuid,
             ));
         };
     }
