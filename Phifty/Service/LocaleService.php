@@ -14,9 +14,11 @@ class LocaleService
         $config = $kernel->config->get('framework','i18n');
         if( $config->isEmpty() )
             return;
-        if( null == $config->default )
-            return;
 
+        // XXX: FIXME
+        return;
+
+        $default = $config->default ?: 'en';
         $locale = new Locale;
         $locale->setDefault( $config->default );
         $locale->domain( $kernel->config->application['namespace'] ); # use application id for domain name.
