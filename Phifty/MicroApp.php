@@ -9,7 +9,9 @@ use ReflectionObject;
  */
 class MicroApp extends \Phifty\Singleton
 {
-    public $basePath = '';
+
+    public $config;
+
 
     function init()
     {
@@ -75,6 +77,11 @@ class MicroApp extends \Phifty\Singleton
         return new $class;
     }
 
+
+    public function getConfig()
+    {
+        return $this->config;
+    }
 
 
     /**

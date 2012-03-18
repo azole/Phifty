@@ -107,13 +107,13 @@ class Kernel extends ObjectContainer
 
 
         $appconfigs = $this->config->get('framework','apps');
-        foreach( $appconfigs as $appname => $options ) {
+        foreach( $appconfigs as $appname => $appconfig ) {
             $this->classloader->addNamespace( array( 
                 $appname => array( 
                     PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' 
                 )
             ));
-            $this->loadApp( $appname , $options );
+            $this->loadApp( $appname , $appconfig );
         }
 
         /*
@@ -139,10 +139,11 @@ class Kernel extends ObjectContainer
         $this->event->trigger('phifty.after_init');
     }
 
-    public function loadApp($appname, $options = array() ) 
+    public function loadApp($appname, $config = array() ) 
     {
         $class = $appname . '\Application';
         $app = $class::getInstance();
+        $app->config = $config;
         return $this->applications[ $appname ] = $app;
     }
 
