@@ -8,12 +8,12 @@ class DatabaseService
 {
     public function register($kernel, $options = array() )
     {
+        $config = $kernel->config->get('database');
         $loader = \LazyRecord\ConfigLoader::getInstance();
         if( ! $loader->loaded ) { 
-            $loader->load( PH_APP_ROOT . '/.lazy.php');
-            $loader->init();  // init datasource and connection
+            $loader->load( $config->toArray() );
+            $loader->init();  // init data source and connection
         }
-
         $kernel->db = function() {
             $conm = ConnectionManager::getInstance();
             return $conm->getConnection();
