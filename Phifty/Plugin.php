@@ -75,7 +75,7 @@ class Plugin extends MicroApp
 
     function getName()
     {
-        return $this->baseClass();
+        return $this->getNamespace();
     }
 
     /* get plugin dir */

@@ -18,7 +18,7 @@ class MicroApp extends \Phifty\Singleton
 
     function getId()
     {
-        return $this->baseClass();
+        return $this->getNamespace();
     }
 
 
@@ -28,7 +28,7 @@ class MicroApp extends \Phifty\Singleton
      * for \Product\Application, we get Product.
      *
      * */
-    public function baseClass()
+    public function getNamespace()
     {
         $object = new ReflectionObject($this);
         return $object->getNamespaceName();
@@ -59,12 +59,15 @@ class MicroApp extends \Phifty\Singleton
      */
     public function getModel( $name )
     {
-        $object = new ReflectionObject($this);
-        $ns = $object->getNamespaceName();
-        $modelClass = $ns . "\\Model\\" . $name;
-        return new $modelClass;
+        $class = sprintf('%s\Model\%s',$this->getNamespace(),$name);
+        return new $class;
     }
 
+    public function getController( $name )
+    {
+        $class = sprintf('%s\Controller\%s',$this->getNamespace(),$name);
+        return new $class;
+    }
 
 
     /**
