@@ -110,11 +110,14 @@ class Kernel extends ObjectContainer
         /*
         $apploader = AppClassLoader::getInstance();
         $apploader->register();
+        */
 
-        foreach( $this->config->apps as $class => $options ) {
-            $app = new $class( $options );
+        $appconfigs = $this->config->get('application','apps');
+        foreach( $appconfigs as $class => $options ) {
+            $this->loadApp( $class , $options );
         }
 
+        /*
         $pluginConfigs = $this->config->get( 'plugins' );
         if( $pluginConfigs ) {
             foreach( $pluginConfigs as $name => $config ) {
@@ -139,10 +142,15 @@ class Kernel extends ObjectContainer
 
         $this->event->trigger('phifty.after_init');
 
+
+
+
+
     }
 
-    public function loadApp(MicroApp $class) 
+    public function loadApp($appName, $options = array() ) 
     {
+        $class = $appName . '\Application';
         $app = $class::getInstance();
         return $this->apps[ $class ] = $app;
     }

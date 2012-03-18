@@ -8,11 +8,12 @@ class DatabaseService
 {
     public function register($kernel, $options = array() )
     {
-        $config = $kernel->config->get('database');
+        $config = $kernel->config->stashes['database'];
+
         $loader = \LazyRecord\ConfigLoader::getInstance();
         $loader->environment = $kernel->environment;
         if( ! $loader->loaded ) { 
-            $loader->load( $config->toArray() );
+            $loader->load( $config );
             $loader->init();  // init data source and connection
         }
         $kernel->db = function() {

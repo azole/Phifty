@@ -32,7 +32,7 @@ class Accessor
     
     public function offsetGet($name)
     {
-        if( isset($this->config) )
+        if( isset($this->config[$name]) )
             return $this->config[ $name ];
     }
     

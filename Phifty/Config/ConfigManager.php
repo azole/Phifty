@@ -36,8 +36,8 @@ class ConfigManager
 
     function __get($name)
     {
-        if( isset( $this->config[$name][ $this->environment ] )) {
-            return $this->config[$name][ $this->environment ];
+        if( isset( $this->stashes[$name][ $this->environment ] )) {
+            return $this->stashes[$name][ $this->environment ];
         }
     }
 
@@ -61,8 +61,8 @@ class ConfigManager
 
 		if( isset($config[ $key ]) ) {
 			if( is_array( $config[ $key ] ) )
-				return (object) $config[ $key ];
-            return new Accessor($config[ $key ]);
+				return new Accessor($config[ $key ]);
+            return $config[ $key ];
 		}
 
 		if( strchr( $key , '.' ) !== false ) {
@@ -74,7 +74,7 @@ class ConfigManager
 					# throw new Exception( "Config key: $key not found.  '$ref_key'" );
 				$ref = & $ref[ $ref_key ];
 			}
-			return new Accessor($ref);
+			return $ref;
 		}
 		return null;
 	}

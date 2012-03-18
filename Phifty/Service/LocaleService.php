@@ -9,9 +9,11 @@ class LocaleService
 
     public function register($kernel, $options = array() )
     {
-        $config = $kernel->config->framework['i18n'];
-
+        $config = $kernel->config->get('framework','i18n');
         if( null == $config )
+            return;
+
+        if( null == $config->default )
             return;
 
         $locale = new L10N;
