@@ -33,7 +33,7 @@ class Twig extends \Phifty\View\Engine
         }
 
         /* if twig config is defined, then override the current config */
-        $twigConfig = $kernel->config( 'view.twig' );
+        $twigConfig = $kernel->config->get( 'view.twig' );
         if( $twigConfig && is_array( $twigConfig ) ) {
             $envOpts = array_merge( $envOpts , $twigConfig );
         }
