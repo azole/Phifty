@@ -9,6 +9,9 @@ class CacheService
     public function register($kernel, $options = array() )
     {
         $kernel->cache = function() use ($kernel) {
+            $kernel->classloader->addNamespace(array( 
+                'CacheKit' => $kernel->frameworkDir . DS . 'src',
+            ));
             $b = array();
 
             // return new ApcCache( $self->appName );

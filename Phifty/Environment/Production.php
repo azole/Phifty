@@ -12,7 +12,7 @@ namespace Phifty\Environment;
 
 class Production
 {
-    static function init($app)
+    static function init($kernel)
     {
         // if we are in command-line mode, 
         /* for production mode */
@@ -20,8 +20,8 @@ class Production
             xdebug_disable();
         error_reporting(0);
 
-        set_exception_handler( function($e) use ($app) {
-            $subject = 'ERROR: ' . $app->getAppName() . ' - ' . $e->getMessage();
+        set_exception_handler( function($e) use ($kernel) {
+            $subject = 'ERROR: ' . $kernel->config->get('application','name') . ' - ' . $e->getMessage();
             // $to = 'cornelius.howl@gmail.com';
             // $content = '';
             // $content .= print_r( $e, true ) . "\n";

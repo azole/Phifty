@@ -88,15 +88,12 @@ class Kernel extends ObjectContainer
         $this->isCLI        = isset($_SERVER['argc']);
         $self = $this;
 
-
-        $this->currentUser = function() use ($self) {
-            if( $currentUserClass = $self->config->get('application','current_user.class') )
-                return new $currentUserClass;
-        };
-
         $this->web = function() use($self) { 
             return new \Phifty\Web( $self );
         };
+
+		// initialize session
+		$this->session;
 
         /**
          * detect for development mode 
@@ -188,7 +185,7 @@ class Kernel extends ObjectContainer
 
     public function getMinifiedWebDir()
     {
-        return $this->rootDir . DS . PHIFTY_WEBROOT_DIRNAME . DS . 'static' . DS . 'minified';
+        return $this->webroot . DS . 'static' . DS . 'minified';
     }
 
     public function getWebRootDir()
@@ -208,9 +205,8 @@ class Kernel extends ObjectContainer
      * */
     public function getWebPluginDir()
     {
-        return $this->rootDir . DS . PHIFTY_WEBROOT_DIRNAME .  DS . 'ph' . DS . 'plugins';
+        return $this->webroot .  DS . 'ph' . DS . 'plugins';
     }
-
 
     /*
      * Get exported widget web dir
@@ -220,7 +216,7 @@ class Kernel extends ObjectContainer
     */
     public function getWebAssetDir()
     {
-        return $this->rootDir . DS . PHIFTY_WEBROOT_DIRNAME . DS . 'ph' . DS . 'assets';
+        return $this->webroot . DS . 'ph' . DS . 'assets';
     }
 
 

@@ -101,12 +101,8 @@ abstract class Engine
         if( $this->cacheDir )
             return $this->cacheDir;
 
-        $dir = kernel()->config( 'view.cache_dir' );
-        if( $dir )
-            return $dir;
-
-        // default cache dir
-        return FileUtils::path_join( kernel()->rootDir , 'cache' );
+        return kernel()->config->get( 'view.cache_dir' )
+            ?: FileUtils::path_join( kernel()->rootDir , 'cache' );
     }
 
     function getTemplateDirs()
