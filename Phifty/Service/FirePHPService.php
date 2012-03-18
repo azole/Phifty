@@ -16,7 +16,8 @@ class FirePHPService
          * $ pear install firephp/FirePHPCore 
          **/
         if( ! $kernel->isCLI ) {
-            require PH_ROOT . '/vendor/firephp/lib/FirePHPCore/fb.php';
+            require 'FirePHPCore/fb.php';
+            // require 'FirePHPCore/FirePHP.class.php';
         }
 
         // if firebug supports
