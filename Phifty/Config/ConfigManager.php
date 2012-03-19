@@ -76,21 +76,23 @@ class ConfigManager
         $config = $this->getSection( $section );
         if( $key == null ) 
         {
-			if( $config )
+			if( ! empty($config) )
 				return new Accessor($config);
 			return null;
 		}
 
         if( isset($config[ $key ]) ) 
         {
-			if( is_array( $config[ $key ] ) )
+			if( is_array( $config[ $key ] ) ) {
+                if( empty($config[ $key ]) )
+                    return null;
 				return new Accessor($config[ $key ]);
+            }
             return $config[ $key ];
 		}
 
         if( false !== strchr( $key , '.' ) ) 
         {
-
 			$parts = explode( '.' , $key );
 			$ref = $config;
 			while( $ref_key = array_shift( $parts ) ) {
@@ -99,8 +101,11 @@ class ConfigManager
                 $ref = & $ref[ $ref_key ];
 			}
 
-            if( is_array( $ref ) )
+            if( is_array( $ref ) ) {
+                if( empty($ref) )
+                    return null;
                 return new Accessor($ref);
+            }
 			return $ref;
 		}
 		return null;

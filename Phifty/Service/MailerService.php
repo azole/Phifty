@@ -13,7 +13,7 @@ class MailerService implements ServiceInterface
 				'Swift' => $kernel->frameworkDir . '/vendor/pear',
 			));
 
-            require_once $kernel->frameworkDir . '/vendor/pear/swift_required.php';
+            require $kernel->frameworkDir . '/vendor/pear/swift_required.php';
 
             // Mail transport
             $transport = Swift_MailTransport::newInstance();
