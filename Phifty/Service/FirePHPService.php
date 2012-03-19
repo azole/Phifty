@@ -27,8 +27,7 @@ class FirePHPService
 
         // if firebug supports
         $kernel->event->register('phifty.after_run', function() use ($kernel) {
-            if( function_exists('fb') ) 
-            {
+            if( function_exists('fb') ) {
                 fb( (memory_get_usage() / 1024 / 1024 ) . ' MB'  , 'Memory Usage' );
                 fb( (memory_get_peak_usage() / 1024 / 1024 ) . ' MB'  , 'Memory Peak Usage' );
                 fb( (time() - $_SERVER['REQUEST_TIME']) , 'Request time' );
