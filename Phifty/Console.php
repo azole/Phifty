@@ -21,6 +21,7 @@ class Console extends Application
         $this->registerCommand('create');
         $this->registerCommand('build-conf');
         $this->registerCommand('export');
+        $this->registerCommand('locale');
     }
 
 
