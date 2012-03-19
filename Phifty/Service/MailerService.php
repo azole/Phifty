@@ -2,11 +2,11 @@
 namespace Phifty\Service;
 use Swift_MailTransport;
 use Swift_Mailer;
+use Phifty\Config\Accessor;
 
 class MailerService implements ServiceInterface
 {
-
-  /**
+    /**
 
     $kernel->mailer->send( $message );
 
@@ -60,13 +60,40 @@ class MailerService implements ServiceInterface
 
             require $kernel->frameworkDir . '/vendor/pear/swift_required.php';
 
-            // Mail transport
-            $transport = Swift_MailTransport::newInstance();
+            $accessor = Accessor( $options );
+            $transportType = $accessor->transport ?: 'MailTransport';
+            $transportClass = 'Swift_' . $transportType;
+            $transport = null;
+
+            switch( $transportType ) {
+
+                case 'MailTransport':
+                    $transport = $transportClass::newInstance();
+                break;
+
+                case 'SendmailTransport':
+                    // sendmail transport has defined a built-in default command.
+                    $command = $accessor->Command;
+                    $transport = Swift_SendmailTransport::newInstance($command); 
+                break;
+
+                case 'SmtpTransport':
+                    $host = $accessor->Host ?: 'localhost';
+                    $port = $accessor->Port ?: 25;
+                    $username = $accessor->Username;
+                    $password = $accessor->Password;
+                    $transport = Swift_SmtpTransport::newInstance($host, $port);
+                    $transport->setUsername($username)
+                    $transport->setPassword($password);
+                break;
+
+                default:
+                    throw new Exception("Unsupported transport type: $transportType");
+            }
 
             // Create the Mailer using your created Transport
             // return Swift_Mailer::newInstance($transport);
-            $mailer = Swift_Mailer::newInstance($transport);
-            return $mailer;
+            return Swift_Mailer::newInstance($transport); // $mailer
         };
 
     }
