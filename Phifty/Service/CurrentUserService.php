@@ -8,7 +8,7 @@ class CurrentUserService
 	{
 		// current user builder
         $kernel->currentUser = function() use ($kernel) {
-            if( $currentUserClass = $kernel->config->get('framework','current_user.class') )
+            if( $currentUserClass = $kernel->config->get('framework','CurrentUser.Class') )
                 return new $currentUserClass;
         };
 	}

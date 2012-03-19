@@ -48,7 +48,7 @@ abstract class Engine
             $this->kernel->frameworkDir,
         );
 
-        $configDirs = kernel()->config->get('view.template_dirs');
+        $configDirs = kernel()->config->get('framework','View.TemplateDirs');
         if( $configDirs ) {
             foreach($configDirs as $dir) {
                 $dirs[] = PH_APP_ROOT . '/' . $dir;
@@ -101,7 +101,7 @@ abstract class Engine
         if( $this->cacheDir )
             return $this->cacheDir;
 
-        return kernel()->config->get( 'view.cache_dir' )
+        return kernel()->config->get( 'framework', 'View.CacheDir' )
             ?: FileUtils::path_join( kernel()->rootDir , 'cache' );
     }
 
@@ -118,7 +118,7 @@ abstract class Engine
         if( file_exists($frameT) )
             $paths[] = $frameT;
 
-        $dirs = kernel()->config->get( 'view.template_dirs' );
+        $dirs = kernel()->config->get( 'framework', 'View.TemplateDirs' );
         if( $dirs )
             foreach( $dirs as $dir )
                 $paths[] = FileUtils::path_join( kernel()->rootDir , $dir );

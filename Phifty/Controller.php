@@ -54,8 +54,8 @@ class Controller extends \Roller\Controller
         if( ! $options )
             $options = array();
 
-        $templateEngine = kernel()->config->get('view.backend') ?: 'twig';
-        $viewClass      = kernel()->config->get('view.class') ?: 'Phifty\View';
+        $templateEngine = kernel()->config->get('View.Backend') ?: 'twig';
+        $viewClass      = kernel()->config->get('View.Class') ?: 'Phifty\View';
         $engine = \Phifty\View\Engine::createEngine( $templateEngine , $options );
         return $view = new $viewClass( $engine );  // pass 'Smarty' or 'Twig'
     }

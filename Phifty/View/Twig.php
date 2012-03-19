@@ -33,7 +33,7 @@ class Twig extends \Phifty\View\Engine
         }
 
         /* if twig config is defined, then override the current config */
-        $twigConfig = $kernel->config->get( 'view.twig' );
+        $twigConfig = $kernel->config->get( 'View.Twig' );
         if( $twigConfig && is_array( $twigConfig ) ) {
             $envOpts = array_merge( $envOpts , $twigConfig );
         }
@@ -47,8 +47,8 @@ class Twig extends \Phifty\View\Engine
         /* load extensions from config settings */
         if( $twigConfig ) {
 
-            if( isset($twigConfig['core_extensions'] ) ) {
-                foreach( $twigConfig['core_extensions'] as $extension ) {
+            if( isset($twigConfig['CoreExtensions'] ) ) {
+                foreach( $twigConfig['CoreExtensions'] as $extension ) {
                     $extname = null;
                     $options = null;
                     if( is_string($extension) ) {
@@ -63,8 +63,8 @@ class Twig extends \Phifty\View\Engine
                 }
             }
 
-            if( isset($twigConfig['extensions'] ) ) { 
-                foreach( $twigConfig['extensions'] as $extension ) {
+            if( isset($twigConfig['Extensions'] ) ) { 
+                foreach( $twigConfig['Extensions'] as $extension ) {
                     $extname = null;
                     $options = null;
                     if( is_string($extension) ) {

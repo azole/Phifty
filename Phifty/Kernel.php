@@ -114,7 +114,7 @@ class Kernel extends ObjectContainer
             $this->session;
         }
 
-        $appconfigs = $this->config->get('framework','apps');
+        $appconfigs = $this->config->get('framework','Applications');
         if( $appconfigs ) {
             foreach( $appconfigs as $appname => $appconfig ) {
                 $this->classloader->addNamespace( array( 

@@ -8,8 +8,8 @@ class PluginService
 
     public function register($kernel, $options = array() )
     {
-        $config = $kernel->config->get('framework','plugins');
-        if( $config->isEmpty() )
+        $config = $kernel->config->get('framework','Plugins');
+        if( $config === null || $config->isEmpty() )
             return;
 
         // depends on classloader

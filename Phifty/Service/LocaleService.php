@@ -8,14 +8,14 @@ class LocaleService
 
     public function register($kernel, $options = array() )
     {
-        // call spl autoload, to load `__` i18n function
+        // call spl autoload, to load `__` locale function
         class_exists('Phifty\Locale', true);
 
-        $config = $kernel->config->get('framework','i18n');
-        if( $config->isEmpty() )
+        $config = $kernel->config->get('framework','Locale');
+        if( null == $config || $config->isEmpty() )
             return;
 
-        $textdomain =  $kernel->config->get('framework','name');
+        $textdomain =  $kernel->config->get('framework','Namespace');
         $defaultLang  = $config->default ?: 'en';
         $localeDir = $config->localedir;
 
