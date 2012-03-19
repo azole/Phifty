@@ -50,6 +50,11 @@ class MailerService implements ServiceInterface
         MailerService:
           Transport: MailTransport
 
+    Plugins:
+
+        Plugins:
+          AntiFloodPlugin: { EmailLimit: , PauseSeconds: }
+
     */
     public function register($kernel, $options = array() )
     {
@@ -83,7 +88,7 @@ class MailerService implements ServiceInterface
                     $username = $accessor->Username;
                     $password = $accessor->Password;
                     $transport = Swift_SmtpTransport::newInstance($host, $port);
-                    $transport->setUsername($username)
+                    $transport->setUsername($username);
                     $transport->setPassword($password);
                 break;
 
@@ -91,9 +96,28 @@ class MailerService implements ServiceInterface
                     throw new Exception("Unsupported transport type: $transportType");
             }
 
+
             // Create the Mailer using your created Transport
             // return Swift_Mailer::newInstance($transport);
-            return Swift_Mailer::newInstance($transport); // $mailer
+            $mailer = Swift_Mailer::newInstance($transport); // $mailer
+
+            if( $accessor->Plugins ) {
+                foreach( $accessor->Plugins as $pluginName => $options ) {
+                    $pluginOptions = new Accessor( $options );
+                    $class = 'Swift_Plugins_'.$pluginName;
+                    switch( $pluginName ) {
+                        case 'AntiFloodPlugin':
+                            $emailLimit = $pluginOptions->EmailLimit ?: 100; // default email limit
+                            $pauseSeconds = $pluginOptions->PauseSeconds ?: null;
+                            $plugin = new Swift_Plugins_AntiFloodPlugin($emailLimit , $pauseSeconds);
+                            break;
+                    }
+                    $mailer->registerPlugin();
+                }
+            }
+
+
+            return $mailer;
         };
 
     }
