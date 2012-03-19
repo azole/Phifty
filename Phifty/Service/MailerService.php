@@ -27,6 +27,14 @@ class MailerService implements ServiceInterface
           Host: smtp.example.org
           Port: 25
 
+        MailerService:
+          Transport: SmtpTransport
+          Username: your username
+          Password: your password
+          Host: smtp.example.org
+          Port: 587
+          SSL: true
+
     Sendmail Transport:
 
         $transport = Swift_SendmailTransport::newInstance('/usr/sbin/exim -bs');
