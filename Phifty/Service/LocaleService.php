@@ -15,16 +15,18 @@ class LocaleService
         if( $config->isEmpty() )
             return;
 
-        // XXX: FIXME
-        return;
+        $textdomain =  $kernel->config->get('framework','name');
+        $defaultLang  = $config->default ?: 'en';
+        $localeDir = $config->localedir;
 
-        $default = $config->default ?: 'en';
+        if( ! ( $textdomain && $defaultLang && $localeDir) ) {
+            return;
+        }
+
         $locale = new Locale;
-        $locale->setDefault( $config->default );
-        $locale->domain( $kernel->config->application['namespace'] ); # use application id for domain name.
-        $localeDir = $kernel->rootDir . DIRECTORY_SEPARATOR . $config->localedir;
-
-        $locale->localedir( $localeDir );
+        $locale->setDefault( $defaultLang );
+        $locale->domain( $textdomain ); # use application id for domain name.
+        $locale->localedir( $kernel->rootDir . DIRECTORY_SEPARATOR . $localeDir);
 
         // add languages to list
         foreach( @$config->lang as $localeName ) {

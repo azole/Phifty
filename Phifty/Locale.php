@@ -17,16 +17,11 @@ define( 'L10N_LOCALE_KEY' , 'locale' );
 
 class Locale
 {
-    protected $current;
-    protected $langList = array();
-    protected $localedir;
-    protected $domain;
-    protected $defaultLang;
-
-    function __construct()
-    {
-
-    }
+    public $current;
+    public $langList = array();
+    public $localedir;
+    public $domain;
+    public $defaultLang;
 
     function setDefault( $lang )
     {
@@ -54,7 +49,7 @@ class Locale
         if( ! $lang )
             $lang = $this->defaultLang;
         if( ! $lang )
-            throw new Exception( 'L10N: Language is not define.' );
+            throw new Exception( 'Locale: Language is not define.' );
         $this->speak( $lang );
         return $this;
     }
@@ -62,7 +57,7 @@ class Locale
 
     function saveSession()
     {
-        $_SESSION[ L10N_LOCALE_KEY ] = $this->current;
+        kernel()->session->set( L10N_LOCALE_KEY , $this->current );
     }
 
     function saveCookie()
@@ -82,7 +77,6 @@ class Locale
         $this->current = $lang;
         $this->saveCookie();
         $this->saveSession();
-
         $this->initGettext();
         return $this;
     }
@@ -171,16 +165,16 @@ class Locale
             $textdomain = $this->domain;
 
         if( ! $textdomain )
-            throw new Exception( 'L10N: textdomain is not defined.' );
+            throw new Exception( 'Locale: textdomain is not defined.' );
 
         if( ! $localedir )
             $localedir = $this->localedir;
 
         if( ! $localedir )
-            throw new Exception( 'L10N: locale dir is not defined.' );
+            throw new Exception( 'Locale: locale dir is not defined.' );
 
         if( ! file_exists( $localedir ) )
-            throw new Exception( "L10N: locale dir does not exist: $localedir" );
+            throw new Exception( "Locale: locale dir does not exist: $localedir" );
 
         $this->setupEnv();
 
