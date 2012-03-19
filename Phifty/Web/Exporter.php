@@ -1,10 +1,10 @@
 <?php
-
 namespace Phifty\Web;
 
 use Phifty\Singleton;
 use Phifty\Action\ActionRunner;
 use Phifty\AssetLoader;
+use Universal\Http\HttpRequest;
 
 class Exporter
 {
@@ -12,11 +12,11 @@ class Exporter
 
     public function __construct( ) 
     {
+        $this->vars['Request'] = new HttpRequest;
         $this->vars['Env'] = array( 
             'request' => $_REQUEST,
             'post'    => $_POST,
             'get'     => $_GET,
-            'session' => $_SESSION,
             'cookie'  => $_COOKIE,
             'files'   => $_FILES,
             'server'  => $_SERVER,
