@@ -176,9 +176,8 @@ class Kernel extends ObjectContainer
     }
 
 
-
     /**
-     * get current application name
+     * Get current application name from config
      */
     public function getApplicationName()
     {
@@ -186,10 +185,15 @@ class Kernel extends ObjectContainer
     }
 
 
+    /**
+     * Get application UUID from config
+     */
     public function getApplicationUUID()
     {
         return $this->config->framework->ApplicationUUID;
     }
+
+
 
 
     public function getMinifiedWebDir()
