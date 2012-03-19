@@ -106,6 +106,7 @@ class Kernel extends ObjectContainer
             \Phifty\Environment\Production::init($this);
         }
 
+
         if( $this->isCLI ) {
             \Phifty\Environment\CommandLine::init($this);
         }
