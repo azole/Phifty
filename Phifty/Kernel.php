@@ -113,6 +113,7 @@ class Kernel extends ObjectContainer
         else {
             // build session
             $this->session;
+            $this->locale;
         }
 
         $appconfigs = $this->config->get('framework','Applications');
