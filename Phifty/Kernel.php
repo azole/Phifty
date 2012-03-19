@@ -186,6 +186,11 @@ class Kernel extends ObjectContainer
     }
 
 
+    public function getApplicationUUID()
+    {
+        return $this->config->framework->ApplicationUUID;
+    }
+
 
     public function getMinifiedWebDir()
     {
