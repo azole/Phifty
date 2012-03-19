@@ -14,14 +14,14 @@ class LocaleService
         class_exists('Phifty\Locale', true);
 
         $config = $kernel->config->get('framework','Locale');
-        if( null == $config || $config->isEmpty() )
+        if( ! $config )
             return;
         
         $kernel->locale = function() use ($kernel,$config) {
 
-            $textdomain =  $kernel->config->get('framework','ApplicationID');
-            $defaultLang  = $config->default ?: 'en';
-            $localeDir = $config->localedir;
+            $textdomain =  $kernel->config->framework->ApplicationID;
+            $defaultLang  = $config->Default ?: 'en';
+            $localeDir = $config->LocaleDir;
 
             if( ! ( $textdomain && $defaultLang && $localeDir) ) {
                 return;
@@ -33,7 +33,7 @@ class LocaleService
             $locale->localedir( $kernel->rootDir . DIRECTORY_SEPARATOR . $localeDir);
 
             // add languages to list
-            foreach( @$config->lang as $localeName ) {
+            foreach( @$config->Langs as $localeName ) {
                 $locale->add( $localeName );
             }
 
