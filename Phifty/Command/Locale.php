@@ -1,5 +1,6 @@
 <?php
 namespace Phifty\Command;
+use CLIFramework\Command;
 use Phifty\FileUtils;
 use Symfony\Component\Finder\Finder;
 
@@ -7,11 +8,11 @@ use Symfony\Component\Finder\Finder;
 /**
  * Export Locale
  */
-class Locale extends \Phifty\Command
+class Locale extends Command
 {
     function run()
     {
-        $kernel = kernel();
+        $kernel      = kernel();
         $frameworkId = $kernel->getFrameworkId();
         $appId       = $kernel->getAppNs();
 
