@@ -66,8 +66,11 @@ class Kernel extends ObjectContainer
     {
         /* define framework environment */
         $this->environment  = $environment ?: getenv('PHIFTY_ENV') ?: 'development';
+        $this->isCLI        = isset($_SERVER['argc']);
+        // detect development mode 
+        $this->isDev = $this->environment == 'development';
 
-        // path info
+        // build path info
         $this->frameworkDir       = PH_ROOT;
         $this->frameworkAppDir    = PH_ROOT . DS . 'applications';
         $this->frameworkPluginDir = PH_ROOT . DS . 'plugins';
@@ -85,7 +88,7 @@ class Kernel extends ObjectContainer
     public function init()
     {
         $this->event->trigger('phifty.before_init');
-        $this->isCLI        = isset($_SERVER['argc']);
+
         $self = $this;
 
         $this->web = function() use($self) { 
@@ -93,10 +96,6 @@ class Kernel extends ObjectContainer
         };
 
 
-        /**
-         * detect for development mode 
-         */
-        $this->isDev = $this->environment == 'development';
 
         // Turn off all error reporting
         if( $this->isDev || $this->isCLI ) {
@@ -105,7 +104,6 @@ class Kernel extends ObjectContainer
         else {
             \Phifty\Environment\Production::init($this);
         }
-
 
         if( $this->isCLI ) {
             \Phifty\Environment\CommandLine::init($this);
