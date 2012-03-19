@@ -5,6 +5,8 @@ class SessionService
     implements ServiceInterface
 {
 
+    public function getId() { return 'Session'; }
+
     public function register($kernel, $options = array())
     {
         $kernel->session = function() {

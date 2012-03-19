@@ -6,6 +6,8 @@ use CacheKit\ApcCache;
 class CacheService
     implements ServiceInterface
 {
+    public function getId() { return 'Cache'; }
+
     public function register($kernel, $options = array() )
     {
         $kernel->cache = function() use ($kernel) {

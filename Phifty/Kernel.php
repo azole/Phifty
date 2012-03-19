@@ -62,6 +62,8 @@ class Kernel extends ObjectContainer
 
     public $environment = 'development';
 
+    public $services = array();
+
     public function __construct( $environment = null ) 
     {
         /* define framework environment */
@@ -83,6 +85,7 @@ class Kernel extends ObjectContainer
     public function registerService( ServiceInterface $service )
     {
         $service->register( $this );
+        $this->services[ $service->getId() ] = $service;
     }
 
     public function init()

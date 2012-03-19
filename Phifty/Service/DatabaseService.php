@@ -7,6 +7,8 @@ class DatabaseService
     implements ServiceInterface
 {
 
+    public function getId() { return 'Database'; }
+
     public function register($kernel, $options = array() )
     {
         $config = $kernel->config->stashes['database'];

@@ -6,6 +6,9 @@ use Phifty\Config\Accessor;
 
 class MailerService implements ServiceInterface
 {
+
+    public function getId() { return 'Mailer'; }
+
     /**
 
     $kernel->mailer->send( $message );

@@ -6,6 +6,8 @@ class PluginService
     implements ServiceInterface
 {
 
+    public function getId() { return 'Plugin'; }
+
     public function register($kernel, $options = array() )
     {
         $config = $kernel->config->get('framework','Plugins');

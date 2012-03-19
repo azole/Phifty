@@ -6,6 +6,8 @@ class LocaleService
     implements ServiceInterface
 {
 
+    public function getId() { return 'Locale'; }
+
     public function register($kernel, $options = array() )
     {
         // call spl autoload, to load `__` locale function

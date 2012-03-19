@@ -4,6 +4,9 @@ namespace Phifty\Service;
 class FirePHPService 
     implements ServiceInterface
 {
+
+    public function getId() { return 'FirePHP'; }
+
     public function register($kernel, $options = array() )
     {
         // skip this plugin if we are not in development mode
