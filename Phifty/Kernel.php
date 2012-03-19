@@ -164,6 +164,19 @@ class Kernel extends ObjectContainer
             return $this->applications[ $appname ];
     }
 
+
+
+    /**
+     * get service object
+     */
+    public function service($id) 
+    {
+        if( isset($this->services[ $id ] ) )
+            return $this->services[ $id ];
+    }
+
+
+
     /**
      * get current application name
      */
