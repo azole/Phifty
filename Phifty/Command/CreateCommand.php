@@ -24,7 +24,7 @@ class CreateCommand extends Command
         $options = $this->getOptions();
         $logger = $this->logger;
 
-        $branch = $options->branch ? $options->branch->value : 'develop';
+        $branch = $options->branch ? $options->branch : 'develop';
 
         FileUtils::mkdir( $appname );
         chdir( $appname );
