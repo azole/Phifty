@@ -6,9 +6,13 @@ use Phifty\FileUtils;
 
 class CreateCommand extends Command
 {
-    public function brief() { return 'create new phifty app'; }
+    public function brief() { 
+        return 'create new phifty app'; 
+    }
 
-    public function usage() { return 'phifty create [app]'; }
+    public function usage() { 
+        return 'phifty create [app]'; 
+    }
 
     public function options($opts)
     {
@@ -27,12 +31,12 @@ class CreateCommand extends Command
         $appdir = getcwd();
 
         Utils::system('git init');
-        Utils::system("git submodule add -b $branch git@git.corneltek.com:phifty.git phifty");
+        Utils::system("git submodule --quiet add -b $branch git@git.corneltek.com:phifty.git phifty");
 
         chdir('phifty');
         Utils::system('onion bundle');
         Utils::system('git submodule init');
-        Utils::system('git submodule update');
+        Utils::system('git submodule --quiet update');
         chdir($appdir);
 
         
@@ -42,7 +46,7 @@ class CreateCommand extends Command
         $dirs[] = 'cache';
         $dirs[] = 'applications';
         $dirs[] = 'plugins';
-        foreach( $dirs )
+        foreach( $dirs as $dir )
             FileUtils::mkdir($dir);
 
         system('chmod -R og+rw cache');
@@ -76,6 +80,8 @@ And run:
     phifty build-conf
 
 EOS;
+
+
     }
 }
 

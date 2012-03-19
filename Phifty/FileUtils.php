@@ -21,7 +21,7 @@ class FileUtils {
     {
         if( $verbose )
             echo "Creating dir: $path\n";
-        mkdir($path,$mode);
+        mkdir($path,$mode,true);
     }
 
     static function rmtree( $paths , $verbose = false )
