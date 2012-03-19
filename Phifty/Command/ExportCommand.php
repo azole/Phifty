@@ -34,13 +34,12 @@ class ExportCommand extends Command
 		if( $options->clean ) {
 			$this->logger->info( "Removing webroot/ph");
 			$unlinks = array();
-			$unlinks[] = FileUtils::path_join( $webroot , 'ph' , $kernel->getAppName() );
-			$unlinks[] = FileUtils::path_join( $webroot , 'ph' , 'Core' );
-			foreach( $unlinks as $unlink ) {
-				$this->logger->info("Unlinking $unlink ...");
-				if( file_exists( $unlink ) )
-					unlink( $unlink );
-			}
+            foreach( $kernel->applications as $appname => $app ) {
+                $path = FileUtils::path_join( $webroot , 'ph' , $appname );
+				$this->logger->info("Unlinking $path ...");
+				if( file_exists( $path ) )
+					unlink( $path );
+            }
 			return;
 		}
 

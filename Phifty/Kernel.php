@@ -180,19 +180,12 @@ class Kernel extends ObjectContainer
     /**
      * get current application name
      */
-    public function getAppName()
+    public function getApplicationName()
     {
-        return $this->appName;
+        return $this->config->framework->ApplicationName;
     }
 
 
-    /** 
-     * application namespace
-     */
-    public function getAppNs()
-    {
-        return $this->appNs;
-    }
 
     public function getMinifiedWebDir()
     {

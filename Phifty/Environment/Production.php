@@ -21,7 +21,7 @@ class Production
         error_reporting(0);
 
         set_exception_handler( function($e) use ($kernel) {
-            $subject = 'ERROR: ' . $kernel->config->get('application','Name') . ' - ' . $e->getMessage();
+            $subject = 'ERROR: ' . $kernel->config->get('application','ApplicationName') . ' - ' . $e->getMessage();
             // $to = 'cornelius.howl@gmail.com';
             // $content = '';
             // $content .= print_r( $e, true ) . "\n";

@@ -19,7 +19,7 @@ class LocaleService
         
         $kernel->locale = function() use ($kernel,$config) {
 
-            $textdomain =  $kernel->config->get('framework','Namespace');
+            $textdomain =  $kernel->config->get('framework','ApplicationNamespace');
             $defaultLang  = $config->default ?: 'en';
             $localeDir = $config->localedir;
 
