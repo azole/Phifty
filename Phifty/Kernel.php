@@ -201,11 +201,6 @@ class Kernel extends ObjectContainer
         return $this->webroot . DS . 'static' . DS . 'minified';
     }
 
-    public function getWebRootDir()
-    {
-        return $this->webroot;
-    }
-
     /**
      * Get exported plugin webdir
      * 
