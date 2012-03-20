@@ -69,10 +69,13 @@ class PluginManager extends Singleton
         $class = "\\$name\\$name";
         if( class_exists($class,true) ) {
             $plugin = $class::getInstance();
+
+            // xxx: better solution
             $plugin->mergeWithDefaultConfig( $config );
             $plugin->init();
             return $this->plugins[ $name ] = $plugin;
         }
+        throw new Exception("Plugin $class is not found.");
         return false;
     }
 
