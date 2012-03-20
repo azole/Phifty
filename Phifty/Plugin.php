@@ -121,7 +121,7 @@ class Plugin extends MicroApp
     
     Use case:
 
-        kernel()->getPlugin('SB')->render( 'product/view' , array( .... args .... ) );
+        kernel()->plugin('SB')->render( 'product/view' , array( .... args .... ) );
 
     */
     public function render( $vpath )
