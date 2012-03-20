@@ -13,14 +13,20 @@ namespace Phifty;
 use Exception;
 use Phifty\FileUtils;
 use Phifty\Singleton;
+use ArrayAccess;
+use IteratorAggregate;
+use ArrayIterator;
 
 class PluginManager extends Singleton
+    implements ArrayAccess, IteratorAggregate
 {
 
     /**
      * plugin object stack
      */
     public $plugins = array();
+
+
     
     function isLoaded( $name )
     {
@@ -66,9 +72,9 @@ class PluginManager extends Singleton
 
 
     /**
-     * load plugin
+     * Load plugin
      */
-    function load( $name , $config = array() )
+    public function load( $name , $config = array() )
     {
         # $name = '\\' . ltrim( $name , '\\' );
         $class = "\\$name\\$name";
@@ -77,6 +83,39 @@ class PluginManager extends Singleton
         $plugin->init();
         return $this->plugins[ $name ] = $plugin;
     }
+
+    public function add($name,$plugin) 
+    {
+        $this->plugins[ $name ] = $plugin;
+    }
+    
+    public function offsetSet($name,$value)
+    {
+        $this->plugins[ $name ] = $value;
+    }
+    
+    public function offsetExists($name)
+    {
+        return isset($this->plugins[ $name ]);
+    }
+    
+    public function offsetGet($name)
+    {
+        return $this->plugins[ $name ];
+    }
+    
+    public function offsetUnset($name)
+    {
+        unset($this->plugins[$name]);
+    }
+
+    public function getIterator() 
+    {
+        return new ArrayIterator( $this->plugins );
+    }
+
+
+
 
 }
 
