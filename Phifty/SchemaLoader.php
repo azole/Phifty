@@ -4,7 +4,7 @@ foreach( kernel()->applications as $app ) {
 	$finder->addPath( $app->locate() );
 }
 
-foreach( kernel()->pluginManager->getPlugins() as $plugin ) {
+foreach( kernel()->plugins->getPlugins() as $plugin ) {
 	$finder->addPath( $plugin->locate() );
 }
 

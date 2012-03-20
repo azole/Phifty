@@ -181,7 +181,7 @@ class Kernel extends ObjectContainer
      */
     public function plugin($name) 
     {
-        return $this->pluginManager->getPlugin( $name );
+        return $this->plugins->getPlugin( $name );
     }
 
 

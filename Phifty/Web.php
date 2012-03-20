@@ -162,7 +162,7 @@ class Web
     public function include_plugins()
     {
         $html = '';
-        $plugins = kernel()->pluginManager->getPlugins();
+        $plugins = kernel()->plugins->getPlugins();
         if( $plugins ) {
             foreach( $plugins as $plugin ) {
                 $html .= $this->includeMicroAppJs( $plugin , 

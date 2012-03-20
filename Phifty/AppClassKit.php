@@ -25,7 +25,7 @@ class AppClassKit
     static function pluginPaths()
     {
         $result = array();
-        $list = kernel()->pluginManager->getPlugins();
+        $list = kernel()->plugins->getPlugins();
 
         foreach( $list as $name => $plugin ) {
             $path = static::detectPluginPath( $name );

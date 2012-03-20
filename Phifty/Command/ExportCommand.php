@@ -84,7 +84,7 @@ class ExportCommand extends Command
 		 * and link the plugin web directory to web/
 		 *
 		 * */
-        foreach( kernel()->pluginManager->getPlugins() as $plugin ) 
+        foreach( kernel()->plugins->getPlugins() as $plugin ) 
         {
             // create links
             // var_dump( $plugin->getName() ); 
