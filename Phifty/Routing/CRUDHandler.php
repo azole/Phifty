@@ -26,8 +26,6 @@ abstract class CRUDHandler extends Controller
     public $canDelete = true;
 
 
-
-
     public $namespace; /* like News\... */
 
     public $modelClass; /* full-qualified model class */
@@ -109,16 +107,11 @@ abstract class CRUDHandler extends Controller
 
         # support for lang query,
         # make sure the model has defined lang column for I18N
-        if( kernel()->plugin('I18N') 
-            && $langColumn = $model->getColumn('lang') )
+        if( kernel()->plugin('I18N') && $langColumn = $model->getColumn('lang') )
         {
             if( $this->env->request->has('_data_lang') ) {
                 if( $lang = $this->env->request->_data_lang ) 
                     $collection->where(array( 'lang' => $lang ));
-            }
-            else {
-                $lang = kernel()->locale->current;
-                $collection->where(array( 'lang' => $lang ));
             }
         }
 
