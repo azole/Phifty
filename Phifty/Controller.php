@@ -196,15 +196,4 @@ class Controller extends \Roller\Controller
         return false;
     }
 
-    public function getDefaultActionMethod()
-    {
-        if( $this->hasAction('index') ) {
-            return 'indexAction';
-        }
-
-        if( method_exists( $this, 'run' ) ) {
-            return 'run';
-        }
-    }
-
 }
