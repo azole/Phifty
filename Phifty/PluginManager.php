@@ -26,24 +26,22 @@ class PluginManager extends Singleton
      */
     public $plugins = array();
 
-
-    
-    function isLoaded( $name )
+    public function isLoaded( $name )
     {
         return isset( $this->plugins[ $name ] );
     }
 
-    function getList()
+    public function getList()
     {
         return array_keys( $this->plugins );
     }
 
-    function getPlugins()
+    public function getPlugins()
     {
         return array_values( $this->plugins );
     }
 
-    function hasPluginDir( $name )
+    public function hasPluginDir( $name )
     {
         $relpath = FileUtils::path_join( 'plugins' , $name , $name ) . '.php';
         if( file_exists( PH_APP_ROOT . DIRECTORY_SEPARATOR . $relpath) 
@@ -55,7 +53,7 @@ class PluginManager extends Singleton
     /**
      * has plugin 
      */
-	function hasPlugin( $name )
+	public function has( $name )
 	{
 		return isset($this->plugins[ $name ]);
 	}
@@ -64,7 +62,7 @@ class PluginManager extends Singleton
     /**
      * get plugin object
      */
-    function get( $name )
+    public function get( $name )
     {
         if( isset( $this->plugins[ $name ] ) )
             return $this->plugins[ $name ];
