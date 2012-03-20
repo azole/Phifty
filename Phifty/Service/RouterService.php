@@ -5,9 +5,7 @@ use Roller\Router;
 class RouterService 
     implements ServiceInterface
 {
-
     public function getId() { return 'Router'; }
-
     public function register($kernel, $options = array() ) 
     {
         $kernel->router = function() use ($kernel) {
@@ -18,8 +16,5 @@ class RouterService
             ));
         };
     }
-
 }
-
-
 
