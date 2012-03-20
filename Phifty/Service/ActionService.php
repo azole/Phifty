@@ -12,6 +12,7 @@ class ActionService
 
     public function register($kernel, $options = array() )
     {
+
         $kernel->action = function() use ($options) {
             return new \Phifty\Action\ActionRunner;
         };

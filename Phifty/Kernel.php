@@ -255,8 +255,6 @@ class Kernel extends ObjectContainer
     }
 
 
-
-
     /**
      * get Phifty\Web object
      */
@@ -272,8 +270,6 @@ class Kernel extends ObjectContainer
     {
         return new \Phifty\View;
     }
-
-
 
 	public function __toString()
 	{

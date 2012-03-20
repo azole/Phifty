@@ -45,9 +45,9 @@ class Page extends \Phifty\View
     }
 
     /* split template name, join with locale name, like:
-        *    template_en.tpl, 
-        *    template_zh.tpl, 
-        *    template_zh_cn.tpl 
+        *    template_en.html, 
+        *    template_zh.html, 
+        *    template_zh_cn.html 
         *
         *    etc..
         **/

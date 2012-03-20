@@ -254,14 +254,4 @@ class Result
         return json_encode( $data );
     }
 
-    public function render( $template = 'phifty/action_result.tpl' )
-    {
-        $view = kernel()->view();
-        $view->result = $this;
-        $view->render( $template );
-    }
-
 }
-
-
-?>
