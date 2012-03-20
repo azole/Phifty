@@ -83,9 +83,9 @@ class Kernel extends ObjectContainer
         $this->webroot            = PH_APP_ROOT . DS . 'webroot';
     }
 
-    public function registerService( ServiceInterface $service )
+    public function registerService( ServiceInterface $service, $options = array() )
     {
-        $service->register( $this );
+        $service->register( $this , $options );
         $this->services[ $service->getId() ] = $service;
     }
 
