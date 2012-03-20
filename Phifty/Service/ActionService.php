@@ -6,13 +6,10 @@ use Phifty\Action\ActionRunner;
 class ActionService
     implements ServiceInterface
 {
-    public function getId() { 
-        return 'Action'; 
-    }
+    public function getId() { return 'Action'; }
 
     public function register($kernel, $options = array() )
     {
-
         $kernel->action = function() use ($options) {
             return new \Phifty\Action\ActionRunner;
         };
@@ -44,11 +41,3 @@ class ActionService
         });
     }
 }
-
-
-
-
-
-
-
-

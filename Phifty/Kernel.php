@@ -127,6 +127,7 @@ class Kernel extends ObjectContainer
                 $this->loadApp( $appname , $appconfig );
             }
         }
+
         $this->event->trigger('phifty.after_init');
     }
 
