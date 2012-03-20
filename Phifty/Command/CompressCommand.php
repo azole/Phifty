@@ -48,7 +48,7 @@ class CompressCommand extends Command
         $core = \Core\Application::getInstance();
         $this->compressApp( $core );
 
-        $plugins = kernel()->plugin->getPlugins();
+        $plugins = kernel()->pluginManager->getPlugins();
         if( $plugins ) {
             $this->logger->info( "Compressing plugins ..." );
             foreach( $plugins as $plugin ) {

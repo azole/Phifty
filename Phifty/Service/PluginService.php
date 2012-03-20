@@ -26,7 +26,7 @@ class PluginService
             $manager->load( $pluginName , $config );
         }
 
-        $kernel->plugin = function() use ($manager) {
+        $kernel->pluginManager = function() use ($manager) {
             return $manager;
         };
     }
