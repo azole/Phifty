@@ -31,11 +31,12 @@ class Controller extends \Roller\Controller
         return kernel()->currentUser;
     }
 
-    /* 
+    /**
+     * xxx: is not used yet.
+     *
      * currentUserCan method
      *
      * provide a permission check.
-     *
      */
     public function currentUserCan($user)
     {
@@ -71,19 +72,6 @@ class Controller extends \Roller\Controller
         header( "refresh: $seconds; url=" . $url );
     }
 
-
-    /* handle post data */
-    function post($env)
-    {
-
-    }
-
-    /* handle get data */
-    function get($env)
-    {
-
-    }
-
     /* Move this into Agent class */
     function isMobile()
     {
@@ -108,8 +96,6 @@ class Controller extends \Roller\Controller
         // header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
         header( "Expires: $datestr" );
     }
-
-
 
     /*
      * Render json content 
