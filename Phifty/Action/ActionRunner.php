@@ -141,7 +141,7 @@ class ActionRunner extends Singleton
         return false;
     }
 
-    function getAction( $class ) 
+    public function getAction( $class ) 
     {
         $args = array_merge( array() , $_REQUEST );
 
@@ -155,6 +155,8 @@ class ActionRunner extends Singleton
 
         /* check if action is in CRUD list */
         if( isset( $this->crudActions[$class] ) ) {
+
+            
 
             /* generate the crud action */
             $args = $this->crudActions[$class];
