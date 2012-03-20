@@ -41,15 +41,6 @@ class PluginManager extends Singleton
         return array_values( $this->plugins );
     }
 
-    public function hasPluginDir( $name )
-    {
-        $relpath = FileUtils::path_join( 'plugins' , $name , $name ) . '.php';
-        if( file_exists( PH_APP_ROOT . DIRECTORY_SEPARATOR . $relpath) 
-            || file_exists( PH_ROOT . DIRECTORY_SEPARATOR . $relpath ) )
-            return true;
-        return false;
-    }
-
     /**
      * has plugin 
      */
@@ -76,10 +67,13 @@ class PluginManager extends Singleton
     {
         # $name = '\\' . ltrim( $name , '\\' );
         $class = "\\$name\\$name";
-        $plugin = $class::getInstance();
-        $plugin->mergeWithDefaultConfig( $config );
-        $plugin->init();
-        return $this->plugins[ $name ] = $plugin;
+        if( class_exists($class,true) ) {
+            $plugin = $class::getInstance();
+            $plugin->mergeWithDefaultConfig( $config );
+            $plugin->init();
+            return $this->plugins[ $name ] = $plugin;
+        }
+        return false;
     }
 
     public function add($name,$plugin) 
@@ -111,9 +105,6 @@ class PluginManager extends Singleton
     {
         return new ArrayIterator( $this->plugins );
     }
-
-
-
 
 }
 
