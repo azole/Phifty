@@ -64,7 +64,7 @@ class PluginManager extends Singleton
     /**
      * get plugin object
      */
-    function getPlugin( $name )
+    function get( $name )
     {
         if( isset( $this->plugins[ $name ] ) )
             return $this->plugins[ $name ];
