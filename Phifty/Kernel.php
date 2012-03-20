@@ -99,8 +99,6 @@ class Kernel extends ObjectContainer
             return new \Phifty\Web( $self );
         };
 
-
-
         // Turn off all error reporting
         if( $this->isDev || $this->isCLI ) {
             \Phifty\Environment\Development::init($this);
@@ -176,6 +174,16 @@ class Kernel extends ObjectContainer
             return $this->services[ $id ];
     }
 
+    /**
+     * Get plugin object from plugin service
+     *
+     * backward-compatible
+     */
+    public function plugin($name) 
+    {
+        return $this->plugin->getPlugin( $name );
+    }
+
 
     /**
      * Get current application name from config
@@ -230,30 +238,13 @@ class Kernel extends ObjectContainer
     }
 
 
-    /**
-     * Get Root Dir
-     */
-    public function getRootDir()
-    {
-        return $this->rootDir;
-    }
-
 
     /**
      * return framework id
      */
     public function getFrameworkId()
     {
-        return 'phifty';
-    }
-
-
-    /** 
-     * Locale Related 
-     */
-    public function currentLocale()
-    {
-        return $this->locale->speaking();
+        return self::FRAMEWORK_ID;
     }
 
     public function run() 
@@ -290,13 +281,6 @@ class Kernel extends ObjectContainer
     }
 
 
-    /**
-     * backward-compatible
-     */
-    public function getPlugin($name) 
-    {
-        return $this->plugin->getPlugin( $name );
-    }
 
 
     /**
