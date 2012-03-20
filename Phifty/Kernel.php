@@ -250,33 +250,7 @@ class Kernel extends ObjectContainer
     public function run() 
     {
         $this->event->trigger('phifty.before_run');
-
-        // check if there is $_POST['action'] or $_GET['action']
-        if( isset($_POST) || isset( $_GET ) || isset( $_FILES ) ) {
-
-            // only run action in POST,GET method
-            $runner = ActionRunner::getInstance();
-            try 
-            {
-                $result = $runner->run();
-                if( $result && $runner->isAjax() ) {
-                    echo $result;
-                    exit(0);
-                }
-            } 
-            catch( Exception $e ) 
-            {
-                /**
-                 * return 403 status forbidden
-                 */
-                header('HTTP/1.0 403');
-                if( $runner->isAjax() ) {
-                    die( json_encode( array( 'error' => $e->getMessage() ) ) );
-                } else {
-                    die( $e->getMessage() );
-                }
-            }
-        }
+        $this->event->trigger('phifty.run');
         $this->event->trigger('phifty.after_run');
     }
 
