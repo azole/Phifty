@@ -44,6 +44,8 @@ abstract class Engine
         $dirs = array(
             $this->kernel->rootAppDir,
             $this->kernel->frameworkAppDir,
+            $this->kernel->rootPluginDir,
+            $this->kernel->frameworkPluginDir,
             $this->kernel->rootDir,
             $this->kernel->frameworkDir,
         );
@@ -115,14 +117,16 @@ abstract class Engine
 
 		/* framework core view template dir */
         $frameT = kernel()->app('Core')->getTemplateDir();
-        if( file_exists($frameT) )
+        if( file_exists($frameT) ) {
             $paths[] = $frameT;
+        }
 
-        $dirs = kernel()->config->get( 'framework', 'View.TemplateDirs' );
-        if( $dirs )
+        if( $dirs = kernel()->config->get( 'framework', 'View.TemplateDirs' ) ) {
             foreach( $dirs as $dir )
-                $paths[] = FileUtils::path_join( kernel()->rootDir , $dir );
-
+                $paths[] = kernel()->rootDir  . DIRECTORY_SEPARATOR . $dir;
+        }
+        $paths[] = kernel()->rootPluginDir;
+        $paths[] = kernel()->frameworkPluginDir;
         return $paths;
     }
 
