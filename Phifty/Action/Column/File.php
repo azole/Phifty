@@ -28,7 +28,6 @@ class File extends Column
 
 	public function validate($value)
 	{
-		return true;
 		$ret = (array) parent::validate($value);
 		if( $ret[0] == false )
 			return $ret;
@@ -41,9 +40,10 @@ class File extends Column
 				return array( false , _("Directory $dir doesn't exist.") );
 
 			$file = new UploadFile( $this->name );
-			if( $this->validExtensions )
+			if( $this->validExtensions ) {
 				if( ! $file->validateExtension( $this->validExtensions ) )
 					return array( false, _('Invalid File Extension: ' . $this->name ) );
+            }
 
 			if( $this->sizeLimit )
 				if( ! $file->validateSize( $this->sizeLimit ) )
