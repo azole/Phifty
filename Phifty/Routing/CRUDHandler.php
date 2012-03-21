@@ -165,7 +165,7 @@ abstract class CRUDHandler extends Controller
 
     function renderCrudPage( $args = array() )
     {
-        return $this->render( 'Core/template/crud/page.html' , $args );
+        return $this->render( 'CRUD/template/page.html' , $args );
     }
 
 
