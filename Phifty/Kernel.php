@@ -81,6 +81,9 @@ class Kernel extends ObjectContainer
         $this->rootAppDir         = PH_APP_ROOT . DS . 'applications';
         $this->rootPluginDir      = PH_APP_ROOT . DS . 'plugins';
         $this->webroot            = PH_APP_ROOT . DS . 'webroot';
+
+        if( ! $this->isCLI )
+            ob_start();
     }
 
     public function registerService( ServiceInterface $service, $options = array() )
