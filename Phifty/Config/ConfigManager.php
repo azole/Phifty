@@ -16,7 +16,9 @@ class ConfigManager
             throw new Exception("config file $file doesn't exist.");
         }
         $info = new SplFileInfo($file);
-        $ext = $info->getExtension();
+        // $ext = $info->getExtension();
+
+        $ext = end(explode('.',$file));
         $config = array();
         if( $ext === 'yaml' || $ext === 'yml' ) {
             $ser = new Serializer('yaml');
