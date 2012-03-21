@@ -62,10 +62,7 @@ abstract class Engine
     /*
      * Method for creating new renderer object
      */
-    function newRenderer()
-    {
-
-    }
+    abstract function newRenderer();
 
     /*
      * Return Renderer object, statical
