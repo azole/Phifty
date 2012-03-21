@@ -140,6 +140,7 @@ class Kernel extends ObjectContainer
         $class = $appname . '\Application';
         $app = $class::getInstance();
         $app->config = $config;
+        $app->init();
         return $this->applications[ $appname ] = $app;
     }
 
