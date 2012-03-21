@@ -5,8 +5,6 @@ class CommandLine
 {
     static function init($kernel)
     {
-        mb_internal_encoding('UTF-8');
-        define( 'CLI_MODE' , $kernel->isCLI );
         if( $kernel->isCLI ) {
             ini_set('output_buffering ', '0');
             ini_set('implicit_flush', '1');

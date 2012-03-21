@@ -82,6 +82,8 @@ class Kernel extends ObjectContainer
         $this->rootPluginDir      = PH_APP_ROOT . DS . 'plugins';
         $this->webroot            = PH_APP_ROOT . DS . 'webroot';
 
+        define( 'CLI_MODE' , $this->isCLI );
+        mb_internal_encoding('UTF-8');
         if( ! $this->isCLI )
             ob_start();
     }
