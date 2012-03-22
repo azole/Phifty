@@ -115,7 +115,7 @@ class MailerService implements ServiceInterface
                             $plugin = new \Swift_Plugins_AntiFloodPlugin($emailLimit , $pauseSeconds);
                             break;
                     }
-                    $mailer->registerPlugin();
+                    $mailer->registerPlugin($plugin);
                 }
             }
 
