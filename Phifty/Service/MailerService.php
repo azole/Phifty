@@ -112,7 +112,7 @@ class MailerService implements ServiceInterface
                         case 'AntiFloodPlugin':
                             $emailLimit = $pluginOptions->EmailLimit ?: 100; // default email limit
                             $pauseSeconds = $pluginOptions->PauseSeconds ?: null;
-                            $plugin = new Swift_Plugins_AntiFloodPlugin($emailLimit , $pauseSeconds);
+                            $plugin = new \Swift_Plugins_AntiFloodPlugin($emailLimit , $pauseSeconds);
                             break;
                     }
                     $mailer->registerPlugin();
