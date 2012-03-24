@@ -1,5 +1,6 @@
 <?php
 $finder = new LazyRecord\Schema\SchemaFinder;
+
 foreach( kernel()->applications as $app ) {
 	$finder->addPath( $app->locate() );
 }
