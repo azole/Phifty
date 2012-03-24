@@ -6,7 +6,7 @@ use Phifty\CurrentUser;
 use Phifty\Locale;
 use Phifty\Web;
 use Phifty\FileUtils;
-use Phifty\Action\ActionRunner;
+use ActionKit\ActionRunner;
 use Universal\Container\ObjectContainer;
 use Phifty\Service\ServiceInterface;
 use Exception;

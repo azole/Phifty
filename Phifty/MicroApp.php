@@ -1,6 +1,6 @@
 <?php
 namespace Phifty;
-use Phifty\Action\ActionRunner;
+use ActionKit\ActionRunner;
 use ReflectionClass;
 use ReflectionObject;
 

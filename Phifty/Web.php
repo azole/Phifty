@@ -4,7 +4,7 @@ namespace Phifty;
 use Phifty\View;
 use Phifty\WebUtils;
 use Phifty\WebPath;
-use Phifty\Action\ActionRunner;
+use ActionKit\ActionRunner;
 use Phifty\Asset\AssetLoader;
 
 class Web

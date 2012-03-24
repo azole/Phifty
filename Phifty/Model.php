@@ -24,7 +24,7 @@ class Model extends BaseModel
     private function _newAction($type)
     {
         $class = get_class($this);
-        $actionClass = \Phifty\Action\RecordAction::createCRUDClass( $class, $type);
+        $actionClass = \ActionKit\RecordAction::createCRUDClass( $class, $type);
         $action = new $actionClass( array(), $this );
         return $action;
     }

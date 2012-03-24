@@ -3,7 +3,7 @@
 namespace Phifty\View;
 
 use Phifty\FileUtils;
-use Phifty\Action\Runner as ActionRunner;
+use ActionKit\Runner as ActionRunner;
 
 abstract class Engine
 {
