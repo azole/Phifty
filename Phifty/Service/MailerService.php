@@ -40,6 +40,7 @@ class MailerService implements ServiceInterface
 
     Sendmail Transport:
 
+        $transport = Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -bs');
         $transport = Swift_SendmailTransport::newInstance('/usr/sbin/exim -bs');
 
         MailerService:
@@ -67,9 +68,8 @@ class MailerService implements ServiceInterface
         require $kernel->frameworkDir . '/vendor/pear/swift_required.php';
 
         $kernel->mailer = function() use ($kernel,$options) {
-
             $accessor = new Accessor( $options );
-            $transportType = $accessor->transport ?: 'MailTransport';
+            $transportType = $accessor->Transport ?: 'MailTransport';
             $transportClass = 'Swift_' . $transportType;
             $transport = null;
 
@@ -81,8 +81,8 @@ class MailerService implements ServiceInterface
 
                 case 'SendmailTransport':
                     // sendmail transport has defined a built-in default command.
-                    $command = $accessor->Command;
-                    $transport = Swift_SendmailTransport::newInstance($command); 
+                    $command = $accessor->Command ?: '/usr/sbin/sendmail -bs';
+                    $transport = $transportClass::newInstance($command); 
                 break;
 
                 case 'SmtpTransport':
@@ -90,7 +90,7 @@ class MailerService implements ServiceInterface
                     $port = $accessor->Port ?: 25;
                     $username = $accessor->Username;
                     $password = $accessor->Password;
-                    $transport = Swift_SmtpTransport::newInstance($host, $port);
+                    $transport = $transportClass::newInstance($host, $port);
                     $transport->setUsername($username);
                     $transport->setPassword($password);
                 break;
