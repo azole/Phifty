@@ -1,7 +1,7 @@
 <?php
 namespace Phifty\Service;
 use Exception;
-use Phifty\Action\ActionRunner;
+use ActionKit\ActionRunner;
 
 class ActionService
     implements ServiceInterface
@@ -11,8 +11,10 @@ class ActionService
     public function register($kernel, $options = array() )
     {
         $kernel->action = function() use ($options) {
-            return \Phifty\Action\ActionRunner::getInstance();
+            return \ActionKit\ActionRunner::getInstance();
         };
+
+        $kernel->classloader->addNamespace(array( 'ActionKit' => array( $kernel->frameworkDir . DIRECTORY_SEPARATOR . 'src' ) ));
 
         $kernel->event->register('phifty.run',function() use ($kernel) {
 

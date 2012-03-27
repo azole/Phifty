@@ -6,11 +6,18 @@ class Checkbox extends FormWidget
 {
     public function template()
     {
+        $id = time();
         return <<<CODE
+    <input id="field-{{ column.name }}-$id" 
+        type="hidden" 
+        name="{{ column.name }}" 
+        value="{% if column.value %}1{% else %}0{% endif %}"/>
     <input type="checkbox" 
-            name="{{ column.name }}" 
-            {% for attr_name,attr_value in attrs %} {{attr_name}}="{{attr_value}}" {% endfor %}
-            {% if column.value %} checked {% endif %} value="1"/>
+        {% if column.value %} checked {% endif %} 
+        onclick="
+            var el = document.getElementById('field-{{ column.name }}-$id');
+            el.value =  el.value == 1 ? 0 : 1;
+        "/>
 CODE;
     }
 

@@ -2,7 +2,7 @@
 namespace Phifty\Web;
 
 use Phifty\Singleton;
-use Phifty\Action\ActionRunner;
+use ActionKit\ActionRunner;
 use Phifty\AssetLoader;
 use Universal\Http\HttpRequest;
 

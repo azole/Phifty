@@ -6,7 +6,7 @@ use Phifty\CurrentUser;
 use Phifty\Locale;
 use Phifty\Web;
 use Phifty\FileUtils;
-use Phifty\Action\ActionRunner;
+use ActionKit\ActionRunner;
 use Universal\Container\ObjectContainer;
 use Phifty\Service\ServiceInterface;
 use Exception;
@@ -81,6 +81,11 @@ class Kernel extends ObjectContainer
         $this->rootAppDir         = PH_APP_ROOT . DS . 'applications';
         $this->rootPluginDir      = PH_APP_ROOT . DS . 'plugins';
         $this->webroot            = PH_APP_ROOT . DS . 'webroot';
+
+        define( 'CLI_MODE' , $this->isCLI );
+        mb_internal_encoding('UTF-8');
+        if( ! $this->isCLI )
+            ob_start();
     }
 
     public function registerService( ServiceInterface $service, $options = array() )
