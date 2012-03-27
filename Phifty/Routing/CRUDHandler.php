@@ -150,16 +150,14 @@ abstract class CRUDHandler extends Controller
     function renderCrudList( $args = array() )
     {
         return $this->render( 
-            'plugins/' 
-            . $this->namespace 
+            $this->namespace 
             . '/template/' . $this->crudId . '/list.html' , $args );
     }
 
     function renderCrudEdit( $args = array() )
     {
         return $this->render( 
-            'plugins/' 
-            . $this->namespace 
+            $this->namespace 
             . '/template/' . $this->crudId . '/edit.html' , $args);
     }
 
@@ -223,6 +221,7 @@ abstract class CRUDHandler extends Controller
         $env = $this->env;
         $record = $this->loadRecord();
         $isCreate = $record->id ? false : true;
+
 
         // if the record is not loaded, we can use predefined values
         if( $isCreate ) {
