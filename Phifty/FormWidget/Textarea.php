@@ -14,9 +14,7 @@ class Textarea extends FormWidget
     {{attr_name}}="{{attr_value}}" 
     {% endfor %}
     rows="10" 
-    cols="90">
-    {{ column.value }}
-</textarea>
+    cols="90">{{ column.value }}</textarea>
 
 CODE;
     }
