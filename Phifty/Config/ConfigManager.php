@@ -18,7 +18,9 @@ class ConfigManager
         $info = new SplFileInfo($file);
         // $ext = $info->getExtension();
 
-        $ext = end(explode('.',$file));
+        $parts = explode('.',$file);
+        $ext = end($parts);
+
         $config = array();
         if( $ext === 'yaml' || $ext === 'yml' ) {
             $ser = new Serializer('yaml');

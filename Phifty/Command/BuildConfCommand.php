@@ -39,7 +39,9 @@ class BuildConfCommand extends Command
 
             $fileInfo = new SplFileInfo( $path );
             // $ext = $fileInfo->getExtension();
-            $ext = end(explode('.',$path));
+            $parts = explode('.',$path);
+            $ext = end($parts);
+
             $configHash = null;
             switch( $ext ) {
                 case "yml":
