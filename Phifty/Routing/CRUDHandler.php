@@ -194,7 +194,6 @@ abstract class CRUDHandler extends Controller
         );
 
         // var_dump( $collection->getLastSQL() , $collection->getVars() ); 
-            
         foreach( $data as $k => $v ) {
             $this->vars['CRUD'][ $k ] = $v;
         }
