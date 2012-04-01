@@ -16,7 +16,6 @@ class DatabaseService
             return;
 
         $loader = ConfigLoader::getInstance();
-        $loader->environment = $kernel->environment;
         if( ! $loader->loaded ) { 
             $loader->load( $config );
             $loader->init();  // init data source and connection

@@ -6,8 +6,6 @@ use Exception;
 
 class ConfigManager
 {
-    public $environment = 'dev';
-
     public $stashes = array();
 
     public function load($section,$file) 
@@ -47,18 +45,18 @@ class ConfigManager
      */
     function __get($name)
     {
-        if( isset( $this->stashes[$name][ $this->environment ] )) {
+        if( isset( $this->stashes[$name] )) {
             // It must be an array.
-            return new Accessor($this->stashes[$name][ $this->environment ]);
+            return new Accessor($this->stashes[$name]);
         }
     }
 
 
     function getSection($name)
     {
-        if( isset( $this->stashes[$name][ $this->environment ] )) {
+        if( isset( $this->stashes[$name] )) {
             // It must be an array.
-            return $this->stashes[$name][ $this->environment ];
+            return $this->stashes[$name];
         }
     }
 
