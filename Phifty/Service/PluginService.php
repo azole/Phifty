@@ -11,8 +11,10 @@ class PluginService
     public function register($kernel, $options = array() )
     {
         $config = $kernel->config->get('framework','Plugins');
-        if( $config === null || $config->isEmpty() )
+        if( $config === null || $config->isEmpty() ) {
             return;
+        }
+
 
         // depends on classloader
         $manager = PluginManager::getInstance();
@@ -25,7 +27,6 @@ class PluginService
             ));
             $manager->load( $pluginName , $config );
         }
-
         $kernel->plugins = function() use ($manager) {
             return $manager;
         };

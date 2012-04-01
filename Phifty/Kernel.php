@@ -126,9 +126,7 @@ class Kernel extends ObjectContainer
         if( $appconfigs ) {
             foreach( $appconfigs as $appname => $appconfig ) {
                 $this->classloader->addNamespace( array( 
-                    $appname => array( 
-                        PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' 
-                    )
+                    $appname => array( PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' )
                 ));
                 $this->loadApp( $appname , $appconfig );
             }
