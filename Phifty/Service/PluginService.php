@@ -16,7 +16,8 @@ class PluginService
         }
 
 
-        // depends on classloader
+        // plugin manager depends on classloader,
+        // register plugin namespace to classloader.
         $manager = PluginManager::getInstance();
         foreach( $config as $pluginName => $config ) {
             $kernel->classloader->addNamespace(array( 
@@ -33,9 +34,5 @@ class PluginService
     }
 
 }
-
-
-
-
 
 
