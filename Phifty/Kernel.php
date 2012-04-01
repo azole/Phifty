@@ -70,8 +70,9 @@ class Kernel extends ObjectContainer
         /* define framework environment */
         $this->environment  = $environment ?: getenv('PHIFTY_ENV') ?: 'development';
         $this->isCLI        = isset($_SERVER['argc']);
+
         // detect development mode 
-        $this->isDev = $this->environment == 'development';
+        $this->isDev = $this->environment === 'development';
 
         // build path info
         $this->frameworkDir       = PH_ROOT;

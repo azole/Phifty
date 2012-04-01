@@ -1,8 +1,8 @@
 <?php
 namespace Phifty\Config;
 use SplFileInfo;
-use SerializerKit\Serializer;
 use Exception;
+use SerializerKit\Serializer;
 
 class ConfigManager
 {
