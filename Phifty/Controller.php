@@ -48,7 +48,7 @@ class Controller extends \Roller\Controller
         static $view;
         if( $view ) {
             if( $options )
-                throw new Exception("The View object has been initialized.");
+                throw new Exception("The View object is initialized already.");
             return $view;
         }
 
