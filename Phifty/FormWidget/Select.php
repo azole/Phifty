@@ -9,8 +9,10 @@ class Select extends FormWidget
     public function setup()
     {
         if( $this->column->validValues ) {
-            foreach( $this->column->validValues as $val ) {
-                $this->options[] = array( 'value' => $val , 'label' => $val );
+            foreach( $this->column->validValues as $value => $label ) {
+                if( is_integer($value) )
+                    $value = $label;
+                $this->options[] = array( 'value' => $value , 'label' => $label );
             }
         } elseif( $this->column->validPairs ) {
             foreach( $this->column->validPairs as $value => $label ) {
