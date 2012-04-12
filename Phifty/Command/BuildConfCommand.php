@@ -37,6 +37,8 @@ class BuildConfCommand extends Command
                 throw new Exception("$path file does not exist.");
             }
 
+            $this->logger->info( "Building config file $path" );
+
             $fileInfo = new SplFileInfo( $path );
             // $ext = $fileInfo->getExtension();
             $parts = explode('.',$path);
