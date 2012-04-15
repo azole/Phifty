@@ -16,6 +16,12 @@ use Universal\Requirement\Requirement;
 
 class Development 
 {
+
+	static function exception_handler($e)
+	{
+		var_dump( $e ); 
+	}
+
     static function init($kernel)
     {
         // use Universal\Requirement\Requirement checker
@@ -41,6 +47,8 @@ class Development
                     throw new \Exception("Extension $extName is not loaded.");
             }
         }
+
+		set_exception_handler( array(__CLASS__,'exception_handler') );
 
         // if firebug supports
         $kernel->event->register('phifty.after_run', function() use ($kernel) {

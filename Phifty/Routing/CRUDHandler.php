@@ -115,8 +115,17 @@ abstract class CRUDHandler extends Controller
             }
         }
 
-        if( $this->defaultOrder )
+        if( $this->defaultOrder ) {
             $collection->order( $this->defaultOrder[0] , $this->defaultOrder[1] );
+        } else {
+            $order_column = $this->request->param('_order_column');
+            $order_by     = $this->request->param('_order_by');
+            if( ! $order_column )
+                $order_column = 'id';
+            if( ! $order_by )
+                $order_by = 'desc';
+            $collection->order( $order_column , $order_by );
+        }
 
         return $collection;
     }
@@ -172,16 +181,8 @@ abstract class CRUDHandler extends Controller
      */
     function crud_list_prepare()
     {
-        $collection = $this->getCollection();
-        $env = $this->env;
-        $order_column = $this->request->param('_order_column');
-        $order_by     = $this->request->param('_order_by');
-
-        if( ! $order_column )
-            $order_column = 'id';
-        if( ! $order_by )
-            $order_by = 'desc';
-        $collection->order( $order_column , $order_by );
+        $collection   = $this->getCollection();
+        $env          = $this->env;
 
         $pager = $collection->pager( $env->request->page ?: 1 , $env->request->pagenum ?: $this->pageLimit );
         $pagerDisplay = new RegionPagerDisplay( $pager );
