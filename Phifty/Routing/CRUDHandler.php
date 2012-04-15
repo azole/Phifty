@@ -111,7 +111,8 @@ abstract class CRUDHandler extends Controller
         {
             if( $this->env->request->has('_data_lang') ) {
                 if( $lang = $this->env->request->_data_lang ) 
-                    $collection->where(array( 'lang' => $lang ));
+                    $collection->where()
+                        ->equal('lang', $lang);
             }
         }
 
@@ -126,7 +127,6 @@ abstract class CRUDHandler extends Controller
                 $order_by = 'desc';
             $collection->order( $order_column , $order_by );
         }
-
         return $collection;
     }
 
