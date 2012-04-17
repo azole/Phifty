@@ -30,7 +30,6 @@ use Exception;
 class Kernel extends ObjectContainer 
 {
     /* framework version */
-    const VERSION = '2.3.0';
     const FRAMEWORK_ID = 'phifty';
 
     public $frameworkDir;
