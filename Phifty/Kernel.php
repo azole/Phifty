@@ -262,6 +262,7 @@ class Kernel extends ObjectContainer
 
     /**
      * get Phifty\Web object
+     * XXX: refactor this
      */
     public function web()
     {
@@ -270,17 +271,12 @@ class Kernel extends ObjectContainer
 
     /**
      * get Template Engine
+     * XXX: not used ?
      **/
     public function view()
     {
         return new \Phifty\View;
     }
-
-	public function __toString()
-	{
-		return '<pre>' . get_class($this ) . '</pre>';
-   	}
-
 
     static function getInstance()
     {

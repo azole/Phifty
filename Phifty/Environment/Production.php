@@ -21,6 +21,7 @@ class Production
         error_reporting(0);
 
         set_exception_handler( function($e) use ($kernel) {
+			die('ERROR');
             $subject = 'ERROR: ' . $kernel->config->get('application','ApplicationName') . ' - ' . $e->getMessage();
             // $to = 'cornelius.howl@gmail.com';
             // $content = '';
@@ -29,7 +30,7 @@ class Production
             // $content .= print_r( $_REQUEST, true ) . "\n";
             // $content .= print_r( $_SESSION, true ) . "\n";
             // xxx: show an error page of this
-            mail( $to , $subject , $content );
+            // mail( $to , $subject , $content );
         });
     }
 }
