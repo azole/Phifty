@@ -68,7 +68,7 @@ class Kernel extends ObjectContainer
     {
         /* define framework environment */
         $this->environment  = $environment ?: getenv('PHIFTY_ENV') ?: 'development';
-        $this->isCLI        = isset($_SERVER['argc']);
+        $this->isCLI        = isset($_SERVER['argc']) && !isset($_SERVER['HTTP_HOST']);
 
         // detect development mode 
         $this->isDev = $this->environment === 'development';
@@ -97,9 +97,7 @@ class Kernel extends ObjectContainer
     public function init()
     {
         $this->event->trigger('phifty.before_init');
-
         $self = $this;
-
         $this->web = function() use($self) { 
             return new \Phifty\Web( $self );
         };
