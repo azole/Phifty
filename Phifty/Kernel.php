@@ -85,7 +85,7 @@ class Kernel extends ObjectContainer
     public function init()
     {
         $this->event->trigger('phifty.before_init');
-        $this->isCLI        = isset($_SERVER['argc']);
+        $this->isCLI        = isset($_SERVER['argc']) && !isset($_SERVER['HTTP_HOST']);
         $self = $this;
 
         $this->web = function() use($self) { 
