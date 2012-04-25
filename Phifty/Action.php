@@ -1,5 +1,6 @@
 <?php
 namespace Phifty;
+use Exception;
 
 // vim:fdm=marker:
 // Action {{{
@@ -69,23 +70,15 @@ abstract class Action
 
     }
 
-
-    /* new methods */
-    function runSanitize() 
-    {
-        foreach( $this->params as $key => $column ) {
-            if( isset($this->args[$key] ) )
-                $this->args[$key] = $column->sanitize( $this->args[ $key ] );
-        }
-    }
-
     protected function validateParam( $name )
     {
         if( $name == '__ajax_request' )
             return;
 
         if( ! isset($this->params[ $name ] ) ) {
-            $this->result->addValidation( $name, array( "invalid" => "Contains invalid arguments: $name" ));
+            return;
+            // just skip it.
+            $this->result->addValidation( $name, array( 'invalid' => "Contains invalid arguments: $name" ));
             return true;
         }
 
@@ -95,7 +88,7 @@ abstract class Action
             if( $ret[0] ) {
                 # $this->result->addValidation( $name, array( "valid" => $ret[1] ));
             } else {
-                $this->result->addValidation( $name, array( "invalid" => @$ret[1] ));
+                $this->result->addValidation( $name, array( 'invalid' => @$ret[1] ));
                 return true;
             }
         } else {
@@ -137,12 +130,11 @@ abstract class Action
     }
 
 
-    function __invoke() 
+    public function __invoke() 
     {
         /* run column methods */
         // XXX: merge them all...
         $this->runPreinit();
-        $this->runSanitize();
         $error = $this->runValidate();
         if( $error )
             return false;
@@ -156,87 +148,90 @@ abstract class Action
 
 
     /* **** value getters **** */
-    function getClass() { return get_class($this); }
-    function getName()
+    public function getClass() { 
+        return get_class($this);
+    }
+
+    public function getName()
     {
         $class = $this->getClass();
         $pos = strpos( $class, '::Action::' );
         return substr( $class , $pos + strlen('::Action::') );
     }
 
-    function params() 
+    public function params() 
     {
         return $this->params;
     }
 
 
-    function getParam( $field ) 
+    public function getParam( $field ) 
     {
         return @$this->params[ $field ];
     }
 
-    function hasParam( $field ) 
+    public function hasParam( $field ) 
     {
         return @$this->params[ $field ] ? true : false; 
     }
 
 
-    function isAjax()
+    public function isAjax()
     {  
         return isset( $_REQUEST['__ajax_request'] );
     }
 
-    function getCurrentUser() 
+    public function getCurrentUser() 
     {
         if( $this->currentUser )
             return $this->currentUser;
     }
 
-    function setCurrentUser( $user ) 
+    public function setCurrentUser( $user ) 
     {
         $this->currentUser = $user;
     }
 
 
-    function currentUserCan( $user ) 
+    public function currentUserCan( $user ) 
     {
         return $this->record->currentUserCan( $this->type , $this->args , $user );
     }
 
-    function arg( $name ) 
+    public function arg( $name ) 
     {
         return @$this->args[ $name ]; 
     }
 
-    function getArgs() 
+    public function getArgs() 
     {
         return $this->args; 
     }
 
-    function getFile( $name )
+    public function getFile( $name )
     {
         return @$_FILES[ $name ];
     }
 
-    function getFiles() 
+    public function getFiles() 
     {
         return @$_FILES;
     }
 
 
-    function setArg($name,$value) 
+    public function setArg($name,$value) 
     { 
         $this->args[ $name ] = $value ; 
         return $this; 
     }
 
-    function setArgs($args) 
+    public function setArgs($args) 
     { 
         $this->args = $args;
         return $this; 
     }
 
-    function param( $name , $type = null ) 
+    public function param( $name , $type = null ) 
     {
         if( $type ) {
             $cls = '\Phifty\Action\Column\\' . $type;
@@ -339,8 +334,11 @@ abstract class Action
     public function render( $name = null , $attrs = array() ) 
     {
         if( $name ) {
-            $param = $this->getParam( $name );
-            return $param->render( $attrs );
+            if( $param = $this->getParam( $name ) )
+                return $param->render( $attrs );
+            else {
+                throw new Exception("parameter $name is not defined.");
+            }
         }
         else {
             /* render all */

@@ -102,12 +102,6 @@ class ActionRunner extends Singleton
         return strpos( $actionName, '::' ) != -1;
     }
 
-    function getFullQualifiedName( $shortActionName )
-    {
-        $class = webapp()->getAppName() . "::Action::" . $shortActionName;
-        return $class;
-    }
-
     function isAjax() 
     {
         return (bool) @$_REQUEST['__ajax_request'];
@@ -129,13 +123,10 @@ class ActionRunner extends Singleton
      * */
     function getActionClass( $actionName ) 
     {
+        // replace :: with '\'
         if( $this->isFullQualifiedName( $actionName ) ) {
             return str_replace( '::' , '\\' , $actionName );
         }
-
-        // replace :: with '\'
-        $fullname = $this->getFullQualifiedName( $actionName );
-        return str_replace( '::' , '\\' , $fullname );
     }
 
     function tryLoad( $class ) 

@@ -1,5 +1,4 @@
 <?php
-
 namespace {
 
 function array_insert( & $array , $pos = 0 , $elements )
@@ -56,7 +55,6 @@ function croak_log($message)
 
 }
 
-
 function trydefine( $name , $value )
 {
     if( defined( $name ) )
@@ -69,4 +67,3 @@ function trydefine( $name , $value )
     croak_log(); 
  * */
 }
-

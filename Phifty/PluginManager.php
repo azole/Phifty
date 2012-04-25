@@ -47,25 +47,6 @@ class PluginManager extends Singleton
     }
 
     /**
-     * load from plugin list
-     */
-    function loadFromList( $pluginList )
-    {
-        try {
-            foreach( $pluginList as $name => $config ) {
-                $this->load( $name , $config );
-                /* add plugin name to loader list */
-                # $loader->addPlugin( $name );
-            }
-        }
-        catch( Exception $e )
-        {
-            die( $e->getMessage() );
-        }
-    }
-
-
-    /**
      * has plugin 
      */
 	function hasPlugin( $name )

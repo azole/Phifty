@@ -2,7 +2,6 @@
 
 namespace Phifty\Action;
 
-
 define('NL',"\n");
 
 /* 
@@ -25,10 +24,10 @@ class View
     public $actionClass;
     public $action;
 
-    function __construct( $actionName ) 
+    function __construct( $actionClass ) 
     {
-        $this->actionName = $actionName;
-        $this->actionClass = webapp()->getAppName() . '\Action\\' . $actionName;
+        $this->actionClass = $actionClass;
+        // $this->actionClass = kernel()->config->('name') . '\Action\\' . $actionName;
         // $this->action = new $this->actionClass;
     }
 
@@ -63,5 +62,3 @@ class View
         $this->formEnd();
     }
 }
-
-?>

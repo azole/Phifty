@@ -29,7 +29,7 @@ class Column extends \CascadingAttribute
     public $validPairs;
 
     /* default value */
-    public $defaultValue;
+    public $default;
 
     /* is immutable ? */
     public $immutable;
@@ -37,13 +37,18 @@ class Column extends \CascadingAttribute
     /* refer class *? */
     public $refer;
 
+
+    public $renderAs;
+
     /* default render Widget */
     public $widgetClass = '\Phifty\FormWidget\Text';
 
-
     public $validator;
+
     public $sanitizer;
+
     public $filter;
+
     public $completer;
 
 
@@ -51,60 +56,30 @@ class Column extends \CascadingAttribute
     {
 		$this->name = $name;
 		$this->action = $action;
+
+		// var_dump( array( $name , get_class($this) ) ); 
 	}
 
-    function setAction( $action )
-    {
-        $this->action = $action;
-    }
 
 
-    function sanitize( $value ) 
-    {
-        if( $this->sanitizer ) {
-            $san = $this->sanitizer;
-            if( is_string( $san ) ) {
-
-                spl_autoload_call( $san );
-                if( class_exists( $san ) ) {
-                    $sanObj = new $san( $value );
-                    return $sanObj->sanitize();
-                }
-
-                /* fallback */
-                $class = '\Phifty\Action\Sanitizer\\' . $san;
-                spl_autoload_call( $class );
-
-                if( ! class_exists( $class ) )
-
-                $sanObj = new $class( $value );
-                return $sanObj->sanitize();
-            } 
-            elseif( is_callable( $san ) ) {
-                return $san( $value );
-            }
-        } else {
-            // XXX: use builtin sanitizer
-        }
-        return $value;
-    }
-
-    /* We dont save any value here,
-    * The value's should be passed from outside.
-    *
-    * Supported validations:
-    *   * required
-    * */
+    /** We dont save any value here,
+     * The value's should be passed from outside.
+     *
+     * Supported validations:
+     *   * required
+     * */
     function validate( $value )
     {
 
         /* if it's file type , should read from $_FILES , not from the args of action */
         if( $this->type == 'file' ) {
-            if( $this->required && ! @$_FILES[ $this->name ]['tmp_name'] )
+            if( $this->required && ! isset($_FILES[ $this->name ]['tmp_name']) ) {
                 return array(false, __('Field %1 is required.' , $this->getLabel()  ) );
+			}
         } else {
-            if( $this->required && ! @$_REQUEST[ $this->name ] && ! $this->defaultValue )
+            if( $this->required && ! isset($_REQUEST[ $this->name ]) && ! $this->default ) {
                 return array(false, __('Field %1 is required.' , $this->getLabel()  ) );
+			}
         }
 
         if( $this->validator ) {
@@ -133,7 +108,7 @@ class Column extends \CascadingAttribute
 
     public function renderAs( $type ) 
     {
-        $this->widgetClass = $widgetClass = 
+        $this->widgetClass = 
             ( $type[0] == '\\' ) ? $type : '\Phifty\FormWidget\\' . $type;
     }
 
@@ -161,6 +136,7 @@ class Column extends \CascadingAttribute
         $widget = $this->_newWidget();
         return $widget->render( $attrs );
     }
+
+
 }
 
-?>

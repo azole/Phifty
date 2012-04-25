@@ -256,7 +256,7 @@ class Result
 
     public function render( $template = 'phifty/action_result.tpl' )
     {
-        $view = webapp()->view();
+        $view = kernel()->view();
         $view->result = $this;
         $view->render( $template );
     }

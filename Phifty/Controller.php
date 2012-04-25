@@ -3,53 +3,32 @@ namespace Phifty;
 use Phifty\Web\Request;
 use Universal\Http\HttpRequest;
 use ReflectionObject;
-use YAMLKit\YAML;
+use SerializerKit;
+use SerializerKit\Serializer;
+use SerializerKit\YamlSerializer;
+use SerializerKit\XmlSerializer;
 use Exception;
-
-interface ControllerInterface 
-{
-    public function after();
-    public function before();
-
-    function post( $env );
-    function get( $env );
-}
 
 /*
     Synopsis
-
     $controller = new $class( $this );
-    $controller->runAction( 'indexAction' , array(
-        'vars' => array( name => $value ),
-        'default' => array( ... ),
-    ) );
 */
 
-class Controller 
-    implements ControllerInterface
+class Controller extends \Roller\Controller
 {
-
     /* env request object, handles post, get, request objects */
     public $env;
-
     public $request;
 
-    function __construct()
+    public function init()
     {
-        $this->init();
-        // old: XXX
         $this->env   = new Request;
         $this->request = new HttpRequest;
     }
 
-    public function init()
-    {
-
-    }
-
     public function getCurrentUser()
     {
-        return webapp()->currentUser;
+        return kernel()->currentUser;
     }
 
     /* 
@@ -75,12 +54,9 @@ class Controller
         if( ! $options )
             $options = array();
 
-        $templateEngine = webapp()->config('view.backend');
-        $viewClass      = webapp()->config('view.class');
-        if( ! $viewClass )
-            throw new Exception('view.class config is not defined.');
-
-        $engine         = \Phifty\View\Engine::createEngine( $templateEngine , $options );
+        $templateEngine = kernel()->config->get('View.Backend') ?: 'twig';
+        $viewClass      = kernel()->config->get('View.Class') ?: 'Phifty\View';
+        $engine = \Phifty\View\Engine::createEngine( $templateEngine , $options );
         return $view = new $viewClass( $engine );  // pass 'Smarty' or 'Twig'
     }
 
@@ -109,6 +85,7 @@ class Controller
     }
     */
 
+
     /* web utils functions */
     function redirect($url)
     {
@@ -130,7 +107,6 @@ class Controller
     /* handle get data */
     function get($env)
     {
-
 
     }
 
@@ -183,7 +159,8 @@ class Controller
     {
         if( ! CLI_MODE )
             header('Content-type: application/yaml; charset=UTF-8;');
-        return YAML::dump( $data );
+        $yaml = new YamlSerializer;
+        return $yaml->encode($data);
     }
 
 
@@ -217,18 +194,6 @@ class Controller
         return $view->render( $template );
     }
 
-
-    /**
-     * run after
-     */
-    public function after() { }
-
-
-    /**
-     * run before
-     */
-    public function before() { }
-
     public function forbidden($msg = null)
     {
         /* XXX: dirty hack this for phpunit testing */
@@ -252,8 +217,9 @@ class Controller
      */
     public function forward($class, $action = 'index' , $parameters = array())
     {
-        $controller = new $class;
-        return $controller->runAction( $action , $parameters );
+        // $controller = new $class;
+        // xxx: implement this
+        // return $controller->runAction( $action , $parameters );
     }
 
 
@@ -281,71 +247,4 @@ class Controller
         }
     }
 
-    protected function checkActionParameters($refParameters,$arguments)
-    {
-        // XXX: 
-
-    }
-
-
-    /**
-     * dispatch and run controller action method
-     *
-     * $c->dispatchAction('index', $route );  => indexAction method
-     * $c->dispatchAction('post',  $route );  => postAction method
-     * 
-     * @param string $action action name
-     *
-     */
-    public function runAction($action,$parameters)
-    {
-        $method = $this->hasAction($action);
-
-        /* is method ? backward-compatible support */
-        if( method_exists($this,$action) )
-            $method = $action;
-
-        if( ! $method )
-            $method = $this->getDefaultActionMethod();
-
-        if( ! $method ) {
-            // XXX: show exception
-            header('HTTP/1.1 403');
-            throw new Exception( "Controller action method $method not found." );
-        }
-            
-        $this->before();
-
-        // validation action method prototype
-        $vars = isset($parameters['vars']) ? $parameters['vars'] : array();
-
-        // get relection method parameter prototype for checking...
-        $ro = new ReflectionObject( $this );
-        $rm = $ro->getMethod($method);
-
-        $rfParameters = $rm->getParameters();
-        $arguments = array();
-        foreach( $rfParameters as $rfParam ) {
-            if( isset( $vars[ $rfParam->getName() ] ) ) 
-            {
-                $arguments[] = $vars[ $rfParam->getName() ];
-            } 
-            else if( isset($parameters['default'][ $rfParam->getName() ] )
-                            && $default = $parameters['default'][ $rfParam->getName() ] )
-            {
-                $arguments[] = $default;
-            }
-            else {
-                // throw new Exception("controller parameter error: ");
-            }
-        }
-
-        // XXX: check parameter numbers here
-
-        $content = call_user_func_array( array( $this, $method ) , $arguments );
-        $this->after();
-        return $content;
-    }
-
 }
-

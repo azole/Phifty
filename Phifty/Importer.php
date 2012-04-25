@@ -20,6 +20,7 @@ abstract class Importer
 
     /* import from a file or a directory */
     abstract function import($target);
+
 }
 
 

@@ -1,17 +1,10 @@
 <?php
 namespace Phifty;
 use Phifty\Model\Column;
-use LazyRecord\ModelBase;
+use LazyRecord\BaseModel;
 
-class Model extends ModelBase 
+class Model extends BaseModel 
 {
-	/* export schema to database ?  */
-	public $export = true;
-
-    function initBaseData()
-    {
-
-    }
 
     public function asCreateAction()
     {
@@ -26,11 +19,6 @@ class Model extends ModelBase
     public function asDeleteAction()
     {
         return $this->_newAction( 'Delete' );
-    }
-
-    protected function column( $name ) 
-    {
-        return $this->columns[ $name ] = new \Phifty\Model\Column($name , $this );
     }
 
     private function _newAction($type)

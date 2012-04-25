@@ -1,6 +1,5 @@
 <?php
 namespace Phifty;
-use Phifty\AbstractClassLoader;
 use Phifty\FileUtils;
 use Phifty\Singleton;
 
@@ -56,36 +55,6 @@ class AppClassLoader extends Singleton
                     require $classPath;
                     return true;
                 }
-
-                /** 
-                 * If it's supported types, the class name should have 3 parts. 
-                 */
-                if( count($parts) > 2 ) {
-                    /**
-                     * special case for collection class (with Collection suffix)
-                     */
-                    if( substr( $class , -10 ) == 'Collection' ) {
-
-                        // if so, load model first.
-                        $modelClass = substr( $class, 0, -10 );
-                        if( ! class_exists( $modelClass ) ) {
-                            $this->load( $modelClass );
-                        }
-
-                        if( ! class_exists( $modelClass ) ) {
-                            $modelClass .= 'Model';
-                            if( ! class_exists( $modelClass ) )
-                                $this->load( $modelClass );
-                        }
-
-
-                        /**
-                         * improve performance for this case
-                         */
-                        if( class_exists( $modelClass ) )
-                            return $modelClass::produceCollectionClass();
-                    }
-                } 
             }
         }
     }

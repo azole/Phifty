@@ -16,7 +16,7 @@ class Smarty extends \Phifty\View\Engine
         $smarty->template_dir = $this->getTemplateDirs();
         $smarty->compile_dir  = $this->getCachePath();
 
-        // $opts = $this->kernel->config('view.smarty');
+        // $opts = $this->kernel->config('View.Smarty');
 
         /*
         foreach( $opts as $key => $value )

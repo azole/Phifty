@@ -2,12 +2,12 @@
 
 namespace Phifty;
 use Phifty\MicroApp;
+use Phifty\Config\Accessor;
 
 class Plugin extends MicroApp
 {
     public $config;
     public $basePath;
-    private $getterCache = array();
 
     public function setConfig( $config )
     {
@@ -43,13 +43,10 @@ class Plugin extends MicroApp
      */
     public function config( $key ) 
     {
-        if( isset( $this->getterCache[ $key ] ) ) 
-            return $this->getterCache[ $key ];
-
 		if( isset($this->config[ $key ]) ) {
 			if( is_array( $this->config[ $key ] ) )
-				return (object) $this->config[ $key ];
-            return $this->getterCache[ $key ] = $this->config[ $key ];
+				return new Accessor($this->config[ $key ]);
+            return $this->config[ $key ];
 		}
 
 		if( strchr( $key , '.' ) !== false ) {
@@ -61,21 +58,16 @@ class Plugin extends MicroApp
 					# throw new Exception( "Config key: $key not found.  '$ref_key'" );
 				$ref = & $ref[ $ref_key ];
 			}
-			return $this->getterCache[ $key ] = $ref;
+			return $ref;
 		}
 		return null;
 	}
 
 
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
 
     function getName()
     {
-        return $this->baseClass();
+        return $this->getNamespace();
     }
 
     /* get plugin dir */
@@ -84,20 +76,9 @@ class Plugin extends MicroApp
 
     }
 
-    /* get plugin web dir:
-     *
-     *  like plugins/SB/web 
-     **/
-    function getWebDir()
-    {
-        $path = static::locatePlugin( $name );
-        return $path . DIRECTORY_SEPARATOR . 'web';
-    }
-
-
     function getWebURL( $path )
     {
-        $baseURL = 'ph_plugins/' . $this->getName() . '/' . $path;
+        $baseURL = 'ph/plugins/' . $this->getName() . '/' . $path;
         return $baseURL;
     }
 
@@ -132,7 +113,7 @@ class Plugin extends MicroApp
     {
         $name = $this->getName();
         return '/ph/plugins/' . $name;
-        # return FileUtils::path_join( webapp()->getWebPluginDir() , $name );
+        # return FileUtils::path_join( kernel()->getWebPluginDir() , $name );
     }
 
 
@@ -140,7 +121,7 @@ class Plugin extends MicroApp
     
     Use case:
 
-        webapp()->getPlugin('SB')->render( 'product/view' , array( .... args .... ) );
+        kernel()->getPlugin('SB')->render( 'product/view' , array( .... args .... ) );
 
     */
     public function render( $vpath )

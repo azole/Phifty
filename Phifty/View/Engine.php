@@ -7,6 +7,7 @@ use Phifty\Action\Runner as ActionRunner;
 
 abstract class Engine
 {
+    public $kernel;
 	public $options = array();
     public $templateDirs = array();
     public $cacheDir;
@@ -19,6 +20,7 @@ abstract class Engine
      */
     function __construct( $options = array() )
     {
+        $this->kernel = kernel();
 
 		/* save options */
 		$this->options = $options;
@@ -40,13 +42,13 @@ abstract class Engine
     {
         // when we move all plugins into applications, we take off the PH_APP_ROOT and PH_ROOT from paths
         $dirs = array(
-            PH_APP_ROOT . DIRECTORY_SEPARATOR . PHIFTY_APP_DIRNAME,
-            PH_ROOT . DIRECTORY_SEPARATOR . PHIFTY_APP_DIRNAME,
-            PH_APP_ROOT ,
-            PH_ROOT,
+            $this->kernel->rootAppDir,
+            $this->kernel->frameworkAppDir,
+            $this->kernel->rootDir,
+            $this->kernel->frameworkDir,
         );
 
-        $configDirs = webapp()->config('view.template_dirs');
+        $configDirs = kernel()->config->get('framework','View.TemplateDirs');
         if( $configDirs ) {
             foreach($configDirs as $dir) {
                 $dirs[] = PH_APP_ROOT . '/' . $dir;
@@ -99,12 +101,8 @@ abstract class Engine
         if( $this->cacheDir )
             return $this->cacheDir;
 
-        $dir = webapp()->config( 'view.cache_dir' );
-        if( $dir )
-            return $dir;
-
-        // default cache dir
-        return FileUtils::path_join( webapp()->rootDir , 'cache' );
+        return kernel()->config->get( 'framework', 'View.CacheDir' )
+            ?: FileUtils::path_join( kernel()->rootDir , 'cache' );
     }
 
     function getTemplateDirs()
@@ -115,20 +113,15 @@ abstract class Engine
         /* default template paths */
         $paths = array();
 
-		/* application view template dir */
-        $appT = webapp()->getAppDir() . DIR_SEP . 'template';
-        if( file_exists($appT) )
-            $paths[] = $appT;
-
 		/* framework core view template dir */
-        $frameT = webapp()->getCoreDir() . DIR_SEP . 'template';
+        $frameT = kernel()->app('Core')->getTemplateDir();
         if( file_exists($frameT) )
             $paths[] = $frameT;
 
-        $dirs = webapp()->config( 'view.template_dirs' );
+        $dirs = kernel()->config->get( 'framework', 'View.TemplateDirs' );
         if( $dirs )
             foreach( $dirs as $dir )
-                $paths[] = FileUtils::path_join( webapp()->rootDir , $dir );
+                $paths[] = FileUtils::path_join( kernel()->rootDir , $dir );
 
         return $paths;
     }

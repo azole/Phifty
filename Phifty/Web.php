@@ -4,7 +4,6 @@ namespace Phifty;
 use Phifty\View;
 use Phifty\WebUtils;
 use Phifty\WebPath;
-use Core\Application as CoreApplication;
 use Phifty\Action\ActionRunner;
 use Phifty\Asset\AssetLoader;
 
@@ -32,7 +31,7 @@ class Web
     {
         $webPaths = array();
         foreach( (array) $fileList as $path ) {
-            $webPaths = array_merge( $webPaths , glob( $parentPath . DIR_SEP . $path ) );
+            $webPaths = array_merge( $webPaths , glob( $parentPath . DS . $path ) );
         }
         return $webPaths;
     }
@@ -57,9 +56,10 @@ class Web
 		return WebPath::coreBase();
     }
 
-    public function includeMicroAppCss( $app , $webDir , $webBaseUrl )
+    public function includeMicroAppCss( $app, $webBaseUrl )
     {
-        $isDev = webapp()->isDev;
+        $isDev = kernel()->isDev;
+        $webDir = $app->getWebDir();
         /*
          * xxx:
          *   Currently css can not be minified because:
@@ -84,17 +84,23 @@ class Web
     }
 
     /* include MicroApp Js */
-    public function includeMicroAppJs( $app , $webDir , $webBaseUrl )
+    public function includeMicroAppJs($app, $webBaseUrl )
     {
-        $isDev = webapp()->isDev;
+        $webDir = $app->getWebDir();
+        $isDev = kernel()->isDev;
         $fileList = $app->js();
         if( count($fileList) === 0 ) 
             return '';
 
-        /* get absolute paths */
+
+        /**
+         * Get absolute paths 
+         */
         $filePaths = $this->globPaths( $webDir , $fileList );
 
-        /* convert to web urls */
+        /**
+         * Convert to web urls 
+         * */
         $webPaths = array();
 
         // disable minified js for now.
@@ -145,28 +151,24 @@ class Web
 
     public function include_core_css()
     {
-        $core = CoreApplication::getInstance();
-        return $this->includeMicroAppCss( $core , webapp()->getCoreWebDir() , WebPath::coreBase() );
+        return $this->includeMicroAppCss( kernel()->app('Core') , WebPath::coreBase() );
     }
 
     public function include_core_js()
     {
-        $core = CoreApplication::getInstance();
-        return $this->includeMicroAppJs( $core , webapp()->getCoreWebDir() , WebPath::coreBase() );
+        return $this->includeMicroAppJs( kernel()->app('Core') , WebPath::coreBase() );
     }
 
     public function include_plugins()
     {
         $html = '';
-        $plugins = webapp()->plugin->getPlugins();
+        $plugins = kernel()->plugin->getPlugins();
         if( $plugins ) {
             foreach( $plugins as $plugin ) {
                 $html .= $this->includeMicroAppJs( $plugin , 
-                    $plugin->locate() . DIRECTORY_SEPARATOR . 'web',
                     $plugin->getExportWebDir() 
                 );
                 $html .= $this->includeMicroAppCss( $plugin , 
-                    $plugin->locate() . DIRECTORY_SEPARATOR . 'web',
                     $plugin->getExportWebDir() 
                 );
             }
@@ -194,7 +196,7 @@ class Web
 
     public function langs()
     {
-        return webapp()->locale->getLangList();
+        return kernel()->locale->getLangList();
     }
 
 

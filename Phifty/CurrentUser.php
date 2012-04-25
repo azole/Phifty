@@ -1,16 +1,6 @@
 <?php
 namespace Phifty;
 
-use LazyRecord\UserInterface;
-
-/*
-	XXX: Take off model's user interface into Phifty\Model class.
-	like currentUserCan, or getCurrentUser
-*/
-interface CurrentUserInterface extends \LazyRecord\UserInterface 
-{
-
-}
 
 /*
 	For users that needs to be remembered,
@@ -21,7 +11,6 @@ interface CurrentUserInterface extends \LazyRecord\UserInterface
 	if matched to a user, then do the login
 */
 class CurrentUser 
-    implements CurrentUserInterface
 {
     /* User model class */
 	public $userModelClass;
@@ -35,7 +24,7 @@ class CurrentUser
 
 	function __construct( $record = null ) 
 	{
-        $this->userModelClass = webapp()->config( 'current_user.model' );
+        $this->userModelClass = kernel()->config->get( 'framework', 'CurrentUser.Model' );
 
         /* create a session pool with prefix 'user_' */
 		$this->session = new \Phifty\Session( $this->sessionPrefix );

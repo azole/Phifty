@@ -1,45 +1,44 @@
 <?php
 namespace Phifty\Action;
 
+/**
+ * Convert LazyORM column to Action column, 
+ * so that we can render with widget (currently).
+ */
 class ColumnConvert 
 {
 
-    static function toParam( \LazyRecord\Column $column , $record = null )
+    static function toParam( $column , $record = null )
     {
-
 		$name = $column->name;
+
         $param = new \Phifty\Action\Column( $name );
 
-        $cloneAttrs = array(
-            'validValues',
-            'validPairs',
-            'immutable',
-            'refer',
-            'defaultValue',
-			'unique',
-            'required',
-            'label',
-            'widgetClass',
-        );
-        foreach( $cloneAttrs as $attr ) {
-            $param->$attr = $column->$attr;
+        foreach( $column->attributes as $k => $v ) {
+            $param->$k = $v;
         }
 
+        $param->name  = $name;
+
 		if( $record ) {
-			$recordValue = $record->value( $name );
-            $param->value( $recordValue );
+            $param->value = $record->{$name};
 		}
 
-        /* convert column type to param type
+        /**
+         * Convert column type to param type
          *
          * set default render widget
-         * */
-        if( $param->validValues || $param->validPairs )
+         */
+        if( $param->validValues || $param->validPairs ) {
             $param->renderAs( 'Select' );
+        }
 
-        if( ! $param->widgetClass )
+
+        if( ! $param->widgetClass ) {
             $param->renderAs( 'Text' );
-
+        } elseif( $param->renderAs ) {
+            $param->widgetClass = '\Phifty\FormWidget\\' . $param->renderAs;
+        }
         return $param;
     }
 

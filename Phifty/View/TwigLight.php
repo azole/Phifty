@@ -1,5 +1,8 @@
 <?php
 namespace Phifty\View;
+use Twig_Environment;
+use Twig_Extensions_Extension_Debug;
+use Twig_Loader_String;
 
 class TwigLight 
 {
@@ -13,7 +16,6 @@ class TwigLight
         $twig = new \Twig_Environment($loader,array(
             'debug' => true,
             # cache doesnt work here.
-            # 'cache' => webapp()->getAppDir() . DIR_SEP . 'cache',
             # 'auto_reload' => true,
         ));
         $debug = new \Twig_Extensions_Extension_Debug;

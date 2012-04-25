@@ -34,13 +34,13 @@ abstract class RecordAction extends \Phifty\Action
         $class = $this->recordClass;
         $this->record = $record ? $record : new $class;
 
-        if( is_a( $this , '\Phifty\Action\CreateRecordAction' ) ) {
+        if( is_a( $this , 'Phifty\Action\CreateRecordAction' ) ) {
             $this->type = 'create';
         }
-        elseif( is_a( $this, '\Phifty\Action\UpdateRecordAction' ) ) {
+        elseif( is_a( $this, 'Phifty\Action\UpdateRecordAction' ) ) {
             $this->type = 'update';
         }
-        elseif( is_a( $this, '\Phifty\Action\DeleteRecordAction' ) ) {
+        elseif( is_a( $this, 'Phifty\Action\DeleteRecordAction' ) ) {
             $this->type = 'delete';
         } else {
             throw new Exception( sprintf('Unknown Record Action Type: %s' , get_class($this) ));
@@ -50,6 +50,10 @@ abstract class RecordAction extends \Phifty\Action
         $this->initRecordColumn();
     }
 
+
+    /**
+     * load record
+     */
     function initRecord() 
     {
         if( isset( $this->args['id'] ) && ! $this->record->id ) {
@@ -57,12 +61,16 @@ abstract class RecordAction extends \Phifty\Action
         }
     }
 
+    /**
+     * Convert model columns to action columns 
+     */
     function initRecordColumn()
     {
         if( $this->record ) {
-            foreach( $this->record->columns as $name => $column ) {
-                if( ! isset( $this->params[ $name ] ) )
-                    $this->params[ $name ] = \Phifty\Action\ColumnConvert::toParam( $column , $this->record );
+            foreach( $this->record->getColumns() as $column ) {
+				if( ! isset($this->params[$column->name] ) ) {
+					$this->params[ $column->name ] = \Phifty\Action\ColumnConvert::toParam( $column , $this->record );
+				}
             }
         }
     }
@@ -96,21 +104,28 @@ abstract class RecordAction extends \Phifty\Action
     }
 
     function convertRecordValidation( $ret ) {
-        foreach( $ret as $rs ) {
-            if( $rs->ok ) $this->result->addValidation( $rs->field , array( "valid" => $rs->msg )); 
-            else          $this->result->addValidation( $rs->field , array( "invalid" => $rs->msg ));
+        if( $ret->validations ) {
+            foreach( $ret->validations as $vld ) {
+                if( $vld->success ) {
+                    $this->result->addValidation( $vld->field , array( "valid" => $vld->message )); 
+                } else {
+                    $this->result->addValidation( $vld->field , array( "invalid" => $vld->message ));
+                }
+            }
         }
     }
 
 
-    /* TODO: seperate this to CRUD actions */
+    /**
+     * TODO: seperate this to CRUD actions 
+     */
     function runUpdateValidate()
     {
         // validate from args 
         $error = false;
         foreach( $this->args as $key => $value ) {
             /* skip action column */
-            if( $key == "action" || $key == "__ajax_request" )
+            if( $key === 'action' || $key === '__ajax_request' )
                 continue;
 
             $hasError = $this->validateparam( $key );
@@ -149,136 +164,9 @@ abstract class RecordAction extends \Phifty\Action
     }
 
 
-    # Use cases:
-    #
-    # When updating user data:
-    #   those columns like "role" is not required. but is required when creating.
-    #   but please notice that if user empty the field, we shouldn't update
-
-    /*
-     * Update:
-        email is required.       
-
-        POST:
-
-        { 
-            email => ""
-        }
-
-        Reject by validation.
-
-        
-        POST:
-
-        {
-            name => "Jack"
-        }
-
-        Validate ok.
-
-        So the action.js should submit all data of a form.
-        But let the action to decide the validation.
-
-        If the same column is validated in action.
-        We should skip the record validation. (???)
-
-
-        XXX: not used.
-
-     */
-    function validate( $only = true )
-    {
-        $args = $this->getArgs();
-		$error = null;
-
-
-        # When updating
-        # (Record) We dont need to fill all fields for updating.
-        # (Update Action) The action params should be all validated.
-        #
-        # When creating
-        # (Record) The arguments for creating record should be validated.
-        # (Create Action) require all arguments that are required.
-
-        /*
-            Currently, we validate by action params first.
-            Then run record validation, and skip those columns that is defined 
-            in action schema.
-
-            Should we inherit all record columns to action ?
-            When updating record, we only need those columns that we need for updating.
-            So the action behavior should be the same.
-
-            If we defined action schema, we should also respect them.
-            Should it be overridded ? or just run after / before ?
-        */
-
-        foreach( $this->params as $name => $param ) {
-            $ret = null;
-            $ret = (array) $param->validate( @$args[ $name ] );
-            if( ! $ret )
-                continue;
-
-            if( ! $ret[0] ) {
-                $this->result->addValidation( $name , array( "invalid" => $ret[1] ));
-                $error = true;
-			}
-
-            if( $only )
-                $ret[0] ? $this->result->valid() : $this->result->invalid(); # set result type if we only run validation.
-        }
-		if( $error )
-			return false;
-
-        # XXX: should we run this before param validation?
-        #    When login-ing, 
-        #    When registering, the password hash is require 
-        if( $this->type == "create" ) 
-            $args = $this->record->beforeCreate( $args );  
-        elseif( $this->type == "update" )
-            $args = $this->record->beforeUpdate( $args );
-        elseif( $this->type == "delete" )
-            $args = $this->record->beforeDelete( $args );
-
-        $v_rs = $this->record->validate( $this->type , $args );
-		
-        foreach( $v_rs as $rs ) {
-            if( $rs->ok ) $this->result->addValidation( $rs->field , array( "valid" => $rs->msg )); 
-            else          $this->result->addValidation( $rs->field , array( "invalid" => $rs->msg ));
-
-            if( $rs->ok == false ) $error = true;
-            if( $only ) $rs->ok ? $this->result->valid() : $this->result->invalid(); # set result type if we only run validation.
-        }
-
-        /*
-        foreach( $args as $name => $value ) {
-            # let column could be overrided by action param, skip param
-            $param = $this->get_param( $name );
-            if( $param )
-                continue;
-
-            $column = $this->record->get_column( $name );
-            if( ! $column )
-                continue;
-
-            $result = null;
-            $result = $column->validate( @$args[ $name ] );
-            if( ! $result )
-                continue;
-
-        }
-         */
-
-		if( $only ) {
-			if( $error ) $this->result->invalid();
-			else         $this->result->valid();
-		}
-		if( $error )     return false;
-		return true;
-    }
-
-
-    /*
+    /**
+     * Create Record Action dynamically.
+     *
      * RecordAction::generate( 'PluginName' , 'News' , 'Create' );
      * will generate:
      * PluginName\Action\CreateNews

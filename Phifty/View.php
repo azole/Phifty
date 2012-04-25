@@ -31,7 +31,7 @@ class View
                 $this->engine = \Phifty\View\Engine::createEngine( $engine , $engineOpts );
         } else {
             /* get default engine from config */
-            $backend = webapp()->config('view.backend');
+            $backend = kernel()->config->get('framework','View.Backend') ?: 'twig';
             $this->engine = \Phifty\View\Engine::createEngine( $backend , $engineOpts );
         }
     }

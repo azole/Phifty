@@ -2,10 +2,6 @@
 
 class ProcessPipe
 {
-	function __construct()
-	{
-	}
-
 	function __invoke($cmd,$input = '')
 	{
 		return $this->execute( $cmd , $input );

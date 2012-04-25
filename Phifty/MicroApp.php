@@ -1,28 +1,17 @@
 <?php
 namespace Phifty;
 use Phifty\Action\ActionRunner;
+use ReflectionClass;
+use ReflectionObject;
 
-/*
-    MicroApp is the base class of App, Core, {Plugin} class.
-*/
-
-interface MicroAppInterface
-{
-
-    function page( $path, $template );
-
-    function route( $path , $args );
-
-    function js();
-
-    function css();
-
-}
-
+/**
+ *  MicroApp is the base class of App, Core, {Plugin} class.
+ */
 class MicroApp extends \Phifty\Singleton
-    implements MicroAppInterface
 {
-    public $basePath = '';
+
+    public $config;
+
 
     function init()
     {
@@ -31,112 +20,169 @@ class MicroApp extends \Phifty\Singleton
 
     function getId()
     {
-        return $this->baseClass();
+        return $this->getNamespace();
     }
 
 
-    /* get the base class (namespace) name,
+    /**
+     * get the namespace name,
      *
      * for \Product\Application, we get Product.
      *
      * */
-    function baseClass()
+    public function getNamespace()
     {
-        if( class_exists('ReflectionClass') ) 
-        {
-            $object = new \ReflectionObject($this);
-            $ns = $object->getNamespaceName();
-            return $ns;
-        } 
-        else 
-        {
-            $class = get_class( $this );
-            list( $ns, $rest ) = explode('\\',$class,2);
-            return $ns;
-        }
+        $object = new ReflectionObject($this);
+        return $object->getNamespaceName();
     }
 
-    /* helper method */
-    function page( $pattern , $template  )
+    /**
+     * helper method, route path to template
+     */
+    function page( $path , $template  )
     {
-        $args = array();
-        $args['template'] = $template;
-        $args['args'] = array();
-        webapp()->dispatcher->add( $pattern , $args );
+        $this->add( $path , array( 
+            'template' => $template,
+            'args' => array() ,
+        ));
     }
 
-    /* 
-     * locate plugin app dir path.
-     * 
-     * */
+    /**
+     * Locate plugin app dir path.
+     */
     function locate()
     {
-        $object = new \ReflectionObject($this);
+        $object = new ReflectionObject($this);
         return dirname($object->getFilename());
     }
 
-    /* get the model in the namespace of current microapp */
+    /**
+     * get the model in the namespace of current microapp 
+     */
     public function getModel( $name )
     {
-        $object = new \ReflectionObject($this);
-        $ns = $object->getNamespaceName();
-        $modelClass = $ns . "\\Model\\" . $name;
-        return new $modelClass;
+        $class = sprintf('%s\Model\%s',$this->getNamespace(),$name);
+        return new $class;
     }
 
-    /* mount a routerSet at somewhere */
-    public function routeToSet( $pattern , $routerSetClass )
+    public function getController( $name )
     {
-        // this will expand router set to routers
-        webapp()->dispatcher->add( $pattern, new $routerSetClass );
+        $class = sprintf('%s\Controller\%s',$this->getNamespace(),$name);
+        return new $class;
+    }
+
+    public function getAction( $name )
+    {
+        $class = sprintf('%s\Action\%s',$this->getNamespace(),$name);
+        return new $class;
     }
 
 
-    /*
-     * in route method, we can do route with:
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+
+    /**
+     * XXX: make this simpler......orz
      *
-     * $this->route('/path/to', array( 'controller' => 'ControllerClass' ))
-     * $this->route('/path/to', 'ControllerClass' )
-     * $this->route('/path/to', 'ControllerClass:actionName' )  # mapping to actionNameAction method.
      *
-     * $this->route('/path/to', array( 'template' => 'template_file.html', 'args' => array( ... ) ) )
+     * In route method, we can do route with:
      *
+     * $this->route('/path/to', array( 
+     *          'controller' => 'ControllerClass'
+     *  ))
+     * $this->route('/path/to', 'ControllerClass' );
+     *
+     * Mapping to actionNameAction method.
+     *
+     * $this->route('/path/to', 'ControllerClass:actionName' )  
+     *
+     * $this->route('/path/to', array( 
+     *          'template' => 'template_file.html', 
+     *          'args' => array( ... ) )
+     * )
      */
-    public function route( $pattern, $args, $extra = null)
+    public function route( $path, $args, $options = array() )
     {
+        $router = kernel()->router;
+
         /* if args is string, it's a controller class */
-        if( is_string($args)  ) 
+        if( is_array($args) ) 
         {
-            $class = $args;
+            // call template controller
+            if( isset($args['template']) ) {
+                $options[':args'] = array( 
+                    'template' => $args['template'],
+                    'args' => @$args['args'],
+                );
+                $router->add( $path , 'Phifty\Routing\TemplateController' , $options );
+            }
+            elseif( isset($args['controller']) ) {
+                $router->add( $path , $args['controller'], $options );
+            }
+        }
+        elseif( is_string($args)  ) 
+        {
+            /* extract action method name out, and set default to run method. */
+            $class = null;
+            $action = 'indexAction';
+            if( false !== ($pos = strrpos($args,':')) ) {
+                list($class,$action) = explode(':',$args);
+                if( false === strpos( $action , 'Action' ) )
+                    $action .= 'Action';
+            }
+            else {
+                $class = $args;
+            }
+
 
             /* If it's not full-qualified classname, we should prepend our base namespace. */
-            if( strpos( $class , '\\' ) !== 0 ) 
-                $class = '\\' .  $this->baseClass() . "\\Controller\\$class";
-
-            /* extract action method name out, and set default to run method. */
-            $action = 'index';
-            if( ($pos = strrpos($class,':')) !== false ) {
-                list($class,$action) = explode(':',$class);
+            if( 0 !== strpos( $class , '\\' ) )  {
+                $class = $this->getNamespace() . "\\Controller\\$class";
             }
-            $route = array(
-                'controller' => $class,
-                'action'     => $action,
-            );
-            webapp()->dispatcher->add( $pattern, $route , $extra );
+
+            if( ! method_exists($class,$action) ) {
+                $action = 'run';
+            }
+
+            $args = $class . ':' . $action;
+            $router->add( $path , $args , $options );
         }
-        elseif ( is_array($args) )      /* is a raw route data array */
-        {
-            webapp()->dispatcher->add( $pattern, $args , $extra );
+        else {
+            throw new Exception( "Unkown route argument." );
         }
     }
 
-    function js() { return array(); }
-    function css() { return array(); }
+    public function expandRoute($path,$class)
+    {
+        $routes = $class::expand();
+        kernel()->router->mount( $path , $routes );
+    }
+
+    public function js() { 
+        return array(); 
+    }
+
+    public function css() { 
+        return array(); 
+    }
 
     /* register CRUD actions */
-    function withCRUDAction( $model , $types )
+    public function withCRUDAction( $model , $types )
     {
         $runner = ActionRunner::getInstance();
-        $runner->addCRUD( $this->baseClass() , $model , (array) $types );
+        $runner->addCRUD( $this->getNamespace() , $model , (array) $types );
+    }
+
+    public function getWebDir() 
+    {
+        return $this->locate() . DS . 'web';
+    }
+
+    public function getTemplateDir()
+    {
+        return $this->locate() . DS . 'template';
     }
 }

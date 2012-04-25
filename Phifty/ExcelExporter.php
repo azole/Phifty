@@ -108,15 +108,15 @@ class ExcelExporter
         $excel->setActiveSheetIndex(0);
 
         // Redirect output to a client’s web browser (Excel5)
-        header("Pragma: public"); // required 
-        header("Expires: 0"); 
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
-        header("Cache-Control: private", false); // required for certain browsers 
+        header('Pragma: public'); // required 
+        header('Expires: 0'); 
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0'); 
+        header('Cache-Control: private', false); // required for certain browsers 
         header('Cache-Control: max-age=0');
 
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment;filename=\"$filename\"");
-        header("Content-Transfer-Encoding: binary"); 
+        header('Content-Transfer-Encoding: binary'); 
 
         $objWriter = \PHPExcel_IOFactory::createWriter($excel, 'Excel5');
         $objWriter->save('php://output');
