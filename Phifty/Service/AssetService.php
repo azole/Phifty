@@ -25,9 +25,10 @@ class AssetService
             $writer->env($kernel->environment);
 
             // cache
-            if( $cache = $kernel->cache ) {
-                $writer->cache( $cache );
+            if( isset($kernel->cache) ) {
+                $writer->cache( $kernel->cache );
             }
+
             if( $kernel->namespace ) {
                 $writer->name($kernel->namespace);
             }
