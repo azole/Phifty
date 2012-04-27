@@ -20,6 +20,11 @@ class Web
         return $html;
     }
 
+
+    /**
+     * @param string[] $assets asset names
+     * @param string $name name
+     */
     public function include_assets($assets, $name = null)
     {
         $kernel = kernel();
