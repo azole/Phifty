@@ -4,6 +4,7 @@ namespace Phifty;
 use Phifty\View;
 use Phifty\WebUtils;
 use ActionKit\ActionRunner;
+use AssetKit\IncludeRender;
 
 class Web
 {
@@ -17,6 +18,21 @@ class Web
             $html .= $this->render_result( $key );
         }
         return $html;
+    }
+
+    public function include_assets($assets, $name = null)
+    {
+        $kernel = kernel();
+        $render = new IncludeRender;
+        $writer = $kernel->asset->writer;
+        if( $name )
+            $kernel->name($name);
+
+        $assets = array_map(function($n) use($kernel) {
+                    return $kernel->asset->loader->load($n);
+                },$assets);
+        $manifest = $writer->write($assets);
+        return $render->render($manifest);
     }
 
     public function langs()
