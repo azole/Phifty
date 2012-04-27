@@ -11,7 +11,6 @@ class AssetService
         return 'asset';
     }
 
-
     /**
      *
      * $kernel->asset->loader
@@ -24,6 +23,11 @@ class AssetService
             $loader = new AssetKit\AssetLoader($config),
             $writer = new AssetKit\AssetWriter($config);
             $writer->env($kernel->environment);
+
+            // cache
+            if( $cache = $kernel->cache ) {
+                $writer->cache( $cache );
+            }
             if( $kernel->namespace ) {
                 $writer->name($kernel->namespace);
             }
