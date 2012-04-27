@@ -6,7 +6,6 @@ class AssetService
     implements ServiceInterface
 {
 
-
     function getId()
     {
         return 'asset';
