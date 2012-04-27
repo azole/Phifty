@@ -21,9 +21,24 @@ class Web
     }
 
 
+    public function include_loaded_assets($name = null)
+    {
+        $kernel = kernel();
+
+        $render = new IncludeRender;
+        $writer = $kernel->asset->writer;
+        if( $name )
+            $kernel->name($name);
+        $assets = $kernel->asset->loader->getAssets(); 
+        $manifest = $writer->write($assets);
+        return $render->render($manifest);
+    }
+
     /**
      * @param string[] $assets asset names
      * @param string $name name
+     *
+     * {{ Web.include_assets ['jquery','jquery-ui'], 'page_name' }}
      */
     public function include_assets($assets, $name = null)
     {
