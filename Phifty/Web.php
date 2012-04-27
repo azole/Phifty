@@ -5,7 +5,6 @@ use Phifty\View;
 use Phifty\WebUtils;
 use Phifty\WebPath;
 use ActionKit\ActionRunner;
-use Phifty\Asset\AssetLoader;
 
 class Web
 {
@@ -175,13 +174,6 @@ class Web
         }
         return $html;
     }
-
-	public function include_assets()
-	{
-        return 
-            AssetLoader::includeJsFiles() .
-            AssetLoader::includeCssFiles();
-	}
 
     public function render_all_results()
     {
