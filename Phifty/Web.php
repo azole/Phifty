@@ -20,6 +20,10 @@ class Web
         return $html;
     }
 
+
+    /**
+     * @param string $name
+     */
     public function include_loaded_assets($name = null)
     {
         $kernel = kernel();
