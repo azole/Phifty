@@ -24,7 +24,6 @@ class Web
     public function include_loaded_assets($name = null)
     {
         $kernel = kernel();
-
         $render = new IncludeRender;
         $writer = $kernel->asset->writer;
         if( $name )
