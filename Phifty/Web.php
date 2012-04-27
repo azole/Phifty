@@ -20,7 +20,6 @@ class Web
         return $html;
     }
 
-
     public function include_loaded_assets($name = null)
     {
         $kernel = kernel();
