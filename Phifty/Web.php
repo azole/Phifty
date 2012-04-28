@@ -44,6 +44,8 @@ class Web
      */
     public function include_assets($assets, $name = null)
     {
+        var_dump( func_get_args() ); 
+        
         $kernel = kernel();
         $render = new IncludeRender;
         $writer = $kernel->asset->writer;

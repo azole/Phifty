@@ -19,7 +19,7 @@ class AssetService
     function register($kernel, $options = array() ) 
     {
         $config = new AssetKit\Config( PH_APP_ROOT . '/.assetkit' );
-        $kernel->asset = function($kernel) use ($config) {
+        $kernel->asset = function() use ($kernel,$config) {
             $loader = new AssetKit\AssetLoader($config);
             $writer = new AssetKit\AssetWriter($config);
             $writer->env($kernel->environment);
