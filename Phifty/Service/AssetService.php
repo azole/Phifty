@@ -24,6 +24,9 @@ class AssetService
             $writer = new AssetKit\AssetWriter($config);
             $writer->env($kernel->environment);
 
+            if( $kernel->namespace )
+                $writer->name( $kernel->namespace );
+
             // cache
             if( isset($kernel->cache) ) {
                 $writer->cache( $kernel->cache );
