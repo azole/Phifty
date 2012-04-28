@@ -28,11 +28,6 @@ class AssetService
             if( isset($kernel->cache) ) {
                 $writer->cache( $kernel->cache );
             }
-
-            if( $kernel->namespace ) {
-                $writer->name($kernel->namespace);
-            }
-
             return (object) array( 
                 'loader' => $loader,
                 'writer' => $writer,

@@ -44,13 +44,11 @@ class Web
      */
     public function include_assets($assets, $name = null)
     {
-        var_dump( func_get_args() ); 
-        
         $kernel = kernel();
         $render = new IncludeRender;
         $writer = $kernel->asset->writer;
         if( $name )
-            $kernel->name($name);
+            $writer->name($name);
 
         $assets = array_map(function($n) use($kernel) {
                     return $kernel->asset->loader->load($n);
