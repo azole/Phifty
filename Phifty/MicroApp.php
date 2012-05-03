@@ -161,14 +161,6 @@ class MicroApp extends \Phifty\Singleton
         kernel()->router->mount( $path , $routes );
     }
 
-    public function js() { 
-        return array(); 
-    }
-
-    public function css() { 
-        return array(); 
-    }
-
     /* register CRUD actions */
     public function withCRUDAction( $model , $types )
     {
