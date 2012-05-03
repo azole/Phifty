@@ -30,7 +30,7 @@ class Web
         $render = new IncludeRender;
         $writer = $kernel->asset->writer;
         if( $name )
-            $kernel->name($name);
+            $writer->name($name);
         $assets = $kernel->asset->loader->getAssets(); 
         $manifest = $writer->write($assets);
         return $render->render($manifest);
