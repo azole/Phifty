@@ -11,23 +11,7 @@ use Universal\Container\ObjectContainer;
 use Phifty\Service\ServiceInterface;
 use Exception;
 
-/*
-    Phifty Main Controll Object:
-        process startup operations
-
-        init header
-        init db
-        init language
-        init core object
-        init plugin objects
-        init app object
-
-        run actions
-
-        dispatch controllers
-*/
-
-class Kernel extends ObjectContainer 
+class Kernel extends ObjectContainer
 {
     /* framework version */
     const FRAMEWORK_ID = 'phifty';
