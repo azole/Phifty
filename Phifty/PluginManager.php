@@ -44,10 +44,10 @@ class PluginManager extends Singleton
     /**
      * has plugin 
      */
-	public function has( $name )
-	{
-		return isset($this->plugins[ $name ]);
-	}
+    public function has( $name )
+    {
+        return isset($this->plugins[ $name ]);
+    }
 
 
     /**
