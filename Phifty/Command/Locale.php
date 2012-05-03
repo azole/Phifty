@@ -6,6 +6,7 @@ use Symfony\Component\Finder\Finder;
 use Phifty::Kernel;
 
 /**
+ * XXX: deprecated, but reserved.
  * Export Locale
  */
 class Locale extends Command
