@@ -9,7 +9,6 @@ use ReflectionObject;
  */
 class MicroApp extends \Phifty\Singleton
 {
-
     public $config;
 
 
