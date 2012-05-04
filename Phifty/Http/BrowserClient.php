@@ -36,6 +36,8 @@ class BrowserClient
 
     public $geoipSupports = false;
 
+    public $userAgent;
+
     function __construct($ip = null)
     {
         if( $ip ) {
@@ -49,6 +51,10 @@ class BrowserClient
         }
         else {
             $this->ip = $_SERVER['REMOTE_ADDR'];
+        }
+
+        if( isset($_SERVER['HTTP_USER_AGENT']) ) {
+            $this->userAgent = $_SERVER['HTTP_USER_AGENT'];
         }
 
         if( $this->ip && function_exists('gethostbyaddr') ) {
