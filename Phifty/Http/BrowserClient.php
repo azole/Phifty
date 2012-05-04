@@ -1,10 +1,11 @@
 <?php
 namespace Phifty\Http;
 
-/*
-   apt-get install geoip-bin geoip-database libgeoip-dev libgeoip1 php5-geoip 
-*/
-
+/**
+ * Debian system:
+ *
+ * $ apt-get install geoip-bin geoip-database libgeoip-dev libgeoip1 php5-geoip 
+ */
 class BrowserClient
 {
     public $ip;
@@ -23,9 +24,14 @@ class BrowserClient
 
     public $longitude;
 
-    function __construct()
+    public $geoipSupports = false;
+
+    function __construct($ip = null)
     {
-        if ( isset( $_SERVER{'HTTP_CLIENT_IP']) ) {
+        if( $ip ) {
+            $this->ip = $ip;
+        }
+        elseif ( isset( $_SERVER['HTTP_CLIENT_IP']) ) {
             $this->ip = $_SERVER['HTTP_CLIENT_IP'];
         }
         elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
@@ -36,7 +42,7 @@ class BrowserClient
         }
 
         if( $this->ip && function_exists('gethostbyaddr') ) {
-            $this->host = gethostbyaddr( $this->id );
+            $this->host = gethostbyaddr( $this->ip );
         }
 
         // get extended informations
@@ -48,9 +54,9 @@ class BrowserClient
                 $this->city = $record['city'];
                 $this->latitude = $record['latitude'];
                 $this->longitude = $record['longitude'];
+                $this->geoipSupports = true;
             }
         }
     }
-
 }
 
