@@ -12,6 +12,16 @@ class BrowserClient
 
     public $host;
 
+
+    /**
+     * AS for Asia
+     * EU for Europe
+     * SA for South America
+     * AF for Africa
+     * AN for µAntartica
+     * OC for Oceania
+     * NA for North America
+     */
     public $continent;
 
     public $countryCode;
