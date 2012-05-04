@@ -41,7 +41,7 @@ class BrowserClient
 
     public $browser = array();
 
-    function __construct($ip = null)
+    function __construct($ip = null, $userAgentStr = null)
     {
         if( $ip ) {
             $this->ip = $ip;
@@ -79,16 +79,12 @@ class BrowserClient
 
         // if browscap string is set in php.ini, we can use get_browser function
         if( $browscapStr = ini_get('browscap') ) {
-            $this->browser = get_browser( 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7) Gecko/20040803 Firefox/0.9.3', true);
+            $this->browser = get_browser( $userAgentStr , true);
         }
         else {
-            $browscap = new Phifty\Http\Browscap('cache');
-        $info = $browscap->getBrowser('Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7) Gecko/20040803 Firefox/0.9.3', true);
-        ok( $info['Platform'] );
-
-
+            $browscap = new Browscap( kernel()->cacheDir );
+            $this->browser = $browscap->getBrowser( $userAgentStr , true);
         }
-
     }
 }
 
