@@ -1,5 +1,6 @@
 <?php
 namespace Phifty\Http;
+use Phifty\Http\Browscap;
 
 /**
  * Debian system:
@@ -38,6 +39,8 @@ class BrowserClient
 
     public $userAgent;
 
+    public $browser = array();
+
     function __construct($ip = null)
     {
         if( $ip ) {
@@ -73,6 +76,19 @@ class BrowserClient
                 $this->geoipSupports = true;
             }
         }
+
+        // if browscap string is set in php.ini, we can use get_browser function
+        if( $browscapStr = ini_get('browscap') ) {
+            $this->browser = get_browser( 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7) Gecko/20040803 Firefox/0.9.3', true);
+        }
+        else {
+            $browscap = new Phifty\Http\Browscap('cache');
+        $info = $browscap->getBrowser('Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7) Gecko/20040803 Firefox/0.9.3', true);
+        ok( $info['Platform'] );
+
+
+        }
+
     }
 }
 
