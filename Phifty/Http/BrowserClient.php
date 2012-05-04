@@ -56,7 +56,10 @@ class BrowserClient
             $this->ip = $_SERVER['REMOTE_ADDR'];
         }
 
-        if( isset($_SERVER['HTTP_USER_AGENT']) ) {
+        if( $userAgentStr ) {
+            $this->userAgent = $userAgent;
+        }
+        elseif( isset($_SERVER['HTTP_USER_AGENT']) ) {
             $this->userAgent = $_SERVER['HTTP_USER_AGENT'];
         }
 
@@ -79,11 +82,11 @@ class BrowserClient
 
         // if browscap string is set in php.ini, we can use get_browser function
         if( $browscapStr = ini_get('browscap') ) {
-            $this->browser = get_browser( $userAgentStr , true);
+            $this->browser = (object) get_browser( $userAgentStr , true);
         }
         else {
             $browscap = new Browscap( kernel()->cacheDir );
-            $this->browser = $browscap->getBrowser( $userAgentStr , true);
+            $this->browser = (object) $browscap->getBrowser( $userAgentStr , true);
         }
     }
 }
