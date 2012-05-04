@@ -129,7 +129,7 @@ class Browscap
      *
      * @var bool
      */
-    public $lowercase = false;
+    public $lowercase = true;
 
     /**
      * Flag to enable/disable silent error management.
