@@ -39,6 +39,8 @@ class BrowserClient
 
     public $userAgent;
 
+    public $refer;
+
     public $browser = array();
 
     function __construct($ip = null, $userAgentStr = null)
@@ -65,6 +67,10 @@ class BrowserClient
 
         if( $this->ip && function_exists('gethostbyaddr') ) {
             $this->host = gethostbyaddr( $this->ip );
+        }
+
+        if( isset($_SERVER['HTTP_REFERER']) ) {
+            $this->refer = $_SERVER['HTTP_REFERER'];
         }
 
         // get extended informations
