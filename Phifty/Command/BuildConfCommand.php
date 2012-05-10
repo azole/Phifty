@@ -24,7 +24,14 @@ class BuildConfCommand extends Command
 
         // should we scan config directories ?
         if( empty($configPath) ) {
-            $configPath = glob('config/*.yml');
+            $configPath = array_filter(
+                array(
+                    'config/application.yml',
+                    'config/framework.yml',
+                    'config/database.yml' 
+                ), function($file) {
+                            return file_exists($file);
+                        });
         }
 
         if( empty($configPath) ) {
