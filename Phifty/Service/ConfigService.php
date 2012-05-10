@@ -8,7 +8,9 @@ use Phifty\Config\ConfigManager;
  * Config service usage
  *
  * $noreply = kernel()->config->get('framework','Mail.NoReply');
+ *
  * $domain = kernel()->config->framework->Domain ?: $_SERVER['HTTP_HOST'];
+ *
  * $config = $kernel->config->get('framework','Locale');
  */
 class ConfigService
