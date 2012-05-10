@@ -26,8 +26,6 @@ abstract class CRUDHandler extends Controller
     public $canDelete = true;
 
 
-
-
     public $namespace; /* like News\... */
 
     public $modelClass; /* full-qualified model class */
@@ -109,22 +107,26 @@ abstract class CRUDHandler extends Controller
 
         # support for lang query,
         # make sure the model has defined lang column for I18N
-        if( kernel()->getPlugin('I18N') 
-            && $langColumn = $model->getColumn('lang') )
+        if( kernel()->plugin('I18N') && $langColumn = $model->getColumn('lang') )
         {
             if( $this->env->request->has('_data_lang') ) {
                 if( $lang = $this->env->request->_data_lang ) 
-                    $collection->where(array( 'lang' => $lang ));
-            }
-            else {
-                $lang = kernel()->locale->current;
-                $collection->where(array( 'lang' => $lang ));
+                    $collection->where()
+                        ->equal('lang', $lang);
             }
         }
 
-        if( $this->defaultOrder )
+        if( $this->defaultOrder ) {
             $collection->order( $this->defaultOrder[0] , $this->defaultOrder[1] );
-
+        } else {
+            $order_column = $this->request->param('_order_column');
+            $order_by     = $this->request->param('_order_by');
+            if( ! $order_column )
+                $order_column = 'id';
+            if( ! $order_by )
+                $order_by = 'desc';
+            $collection->order( $order_column , $order_by );
+        }
         return $collection;
     }
 
@@ -157,22 +159,20 @@ abstract class CRUDHandler extends Controller
     function renderCrudList( $args = array() )
     {
         return $this->render( 
-            'plugins/' 
-            . $this->namespace 
+            $this->namespace 
             . '/template/' . $this->crudId . '/list.html' , $args );
     }
 
     function renderCrudEdit( $args = array() )
     {
         return $this->render( 
-            'plugins/' 
-            . $this->namespace 
+            $this->namespace 
             . '/template/' . $this->crudId . '/edit.html' , $args);
     }
 
     function renderCrudPage( $args = array() )
     {
-        return $this->render( 'Core/template/crud/page.html' , $args );
+        return $this->render( 'CRUD/template/page.html' , $args );
     }
 
 
@@ -181,16 +181,8 @@ abstract class CRUDHandler extends Controller
      */
     function crud_list_prepare()
     {
-        $collection = $this->getCollection();
-        $env = $this->env;
-        $order_column = $this->request->param('_order_column');
-        $order_by     = $this->request->param('_order_by');
-
-        if( ! $order_column )
-            $order_column = 'id';
-        if( ! $order_by )
-            $order_by = 'desc';
-        $collection->order( $order_column , $order_by );
+        $collection   = $this->getCollection();
+        $env          = $this->env;
 
         $pager = $collection->pager( $env->request->page ?: 1 , $env->request->pagenum ?: $this->pageLimit );
         $pagerDisplay = new RegionPagerDisplay( $pager );
@@ -201,6 +193,8 @@ abstract class CRUDHandler extends Controller
             'Title' => $this->getListTitle(),
             'Columns' => $this->getListColumns(),
         );
+
+        // var_dump( $collection->getLastSQL() , $collection->getVars() ); 
         foreach( $data as $k => $v ) {
             $this->vars['CRUD'][ $k ] = $v;
         }
@@ -230,6 +224,7 @@ abstract class CRUDHandler extends Controller
         $env = $this->env;
         $record = $this->loadRecord();
         $isCreate = $record->id ? false : true;
+
 
         // if the record is not loaded, we can use predefined values
         if( $isCreate ) {

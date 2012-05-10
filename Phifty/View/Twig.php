@@ -6,7 +6,7 @@ use Phifty\FileUtils;
 use Phifty\ClassUtils;
 
 class Twig extends \Phifty\View\Engine 
-    implements \Phifty\View\EngineInterface
+//    implements \Phifty\View\EngineInterface
 {
     public $twigLoader;
     public $twigEnv;

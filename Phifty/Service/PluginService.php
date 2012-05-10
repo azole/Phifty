@@ -6,13 +6,18 @@ class PluginService
     implements ServiceInterface
 {
 
+    public function getId() { return 'Plugin'; }
+
     public function register($kernel, $options = array() )
     {
         $config = $kernel->config->get('framework','Plugins');
-        if( $config === null || $config->isEmpty() )
+        if( $config === null || $config->isEmpty() ) {
             return;
+        }
 
-        // depends on classloader
+
+        // plugin manager depends on classloader,
+        // register plugin namespace to classloader.
         $manager = PluginManager::getInstance();
         foreach( $config as $pluginName => $config ) {
             $kernel->classloader->addNamespace(array( 
@@ -23,16 +28,11 @@ class PluginService
             ));
             $manager->load( $pluginName , $config );
         }
-
-        $kernel->plugin = function() use ($manager) {
+        $kernel->plugins = function() use ($manager) {
             return $manager;
         };
     }
 
 }
-
-
-
-
 
 

@@ -24,7 +24,14 @@ class BuildConfCommand extends Command
 
         // should we scan config directories ?
         if( empty($configPath) ) {
-            $configPath = glob('config/*.yml');
+            $configPath = array_filter(
+                array(
+                    'config/application.yml',
+                    'config/framework.yml',
+                    'config/database.yml' 
+                ), function($file) {
+                            return file_exists($file);
+                        });
         }
 
         if( empty($configPath) ) {
@@ -37,8 +44,13 @@ class BuildConfCommand extends Command
                 throw new Exception("$path file does not exist.");
             }
 
+            $this->logger->info( "Building config file $path" );
+
             $fileInfo = new SplFileInfo( $path );
-            $ext = $fileInfo->getExtension();
+            // $ext = $fileInfo->getExtension();
+            $parts = explode('.',$path);
+            $ext = end($parts);
+
             $configHash = null;
             switch( $ext ) {
                 case "yml":

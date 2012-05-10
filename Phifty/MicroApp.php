@@ -1,6 +1,6 @@
 <?php
 namespace Phifty;
-use Phifty\Action\ActionRunner;
+use ActionKit\ActionRunner;
 use ReflectionClass;
 use ReflectionObject;
 
@@ -9,7 +9,6 @@ use ReflectionObject;
  */
 class MicroApp extends \Phifty\Singleton
 {
-
     public $config;
 
 
@@ -161,19 +160,10 @@ class MicroApp extends \Phifty\Singleton
         kernel()->router->mount( $path , $routes );
     }
 
-    public function js() { 
-        return array(); 
-    }
-
-    public function css() { 
-        return array(); 
-    }
-
     /* register CRUD actions */
     public function withCRUDAction( $model , $types )
     {
-        $runner = ActionRunner::getInstance();
-        $runner->addCRUD( $this->getNamespace() , $model , (array) $types );
+        kernel()->action->addCRUD( $this->getNamespace() , $model , (array) $types );
     }
 
     public function getWebDir() 

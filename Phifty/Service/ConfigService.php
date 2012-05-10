@@ -2,6 +2,17 @@
 namespace Phifty\Service;
 use Phifty\Config\ConfigManager;
 
+
+
+/**
+ * Config service usage
+ *
+ * $noreply = kernel()->config->get('framework','Mail.NoReply');
+ *
+ * $domain = kernel()->config->framework->Domain ?: $_SERVER['HTTP_HOST'];
+ *
+ * $config = $kernel->config->get('framework','Locale');
+ */
 class ConfigService
     implements ServiceInterface
 {
@@ -13,12 +24,11 @@ class ConfigService
         $this->manager = new ConfigManager;
     }
 
+    public function getId() { return 'Config'; }
+
     public function register($kernel, $options = array() )
     {
         $self = $this;
-
-        // setup environment
-        $this->manager->environment = $kernel->environment;
         $kernel->config = function() use ($self) {  
             return $self->manager;
         };

@@ -6,6 +6,8 @@ class EventService
     implements ServiceInterface
 {
 
+    public function getId() { return 'Event'; }
+
     public function register($kernel, $options = array() )
     {
         // php event pool

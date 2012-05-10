@@ -1,13 +1,11 @@
 <?php
 namespace Phifty\Config;
 use SplFileInfo;
-use SerializerKit\Serializer;
 use Exception;
+use SerializerKit\Serializer;
 
 class ConfigManager
 {
-    public $environment = 'dev';
-
     public $stashes = array();
 
     public function load($section,$file) 
@@ -16,7 +14,11 @@ class ConfigManager
             throw new Exception("config file $file doesn't exist.");
         }
         $info = new SplFileInfo($file);
-        $ext = $info->getExtension();
+        // $ext = $info->getExtension();
+
+        $parts = explode('.',$file);
+        $ext = end($parts);
+
         $config = array();
         if( $ext === 'yaml' || $ext === 'yml' ) {
             $ser = new Serializer('yaml');
@@ -43,18 +45,18 @@ class ConfigManager
      */
     function __get($name)
     {
-        if( isset( $this->stashes[$name][ $this->environment ] )) {
+        if( isset( $this->stashes[$name] )) {
             // It must be an array.
-            return new Accessor($this->stashes[$name][ $this->environment ]);
+            return new Accessor($this->stashes[$name]);
         }
     }
 
 
     function getSection($name)
     {
-        if( isset( $this->stashes[$name][ $this->environment ] )) {
+        if( isset( $this->stashes[$name] )) {
             // It must be an array.
-            return $this->stashes[$name][ $this->environment ];
+            return $this->stashes[$name];
         }
     }
 
@@ -76,21 +78,23 @@ class ConfigManager
         $config = $this->getSection( $section );
         if( $key == null ) 
         {
-			if( $config )
+			if( ! empty($config) )
 				return new Accessor($config);
 			return null;
 		}
 
         if( isset($config[ $key ]) ) 
         {
-			if( is_array( $config[ $key ] ) )
+			if( is_array( $config[ $key ] ) ) {
+                if( empty($config[ $key ]) )
+                    return null;
 				return new Accessor($config[ $key ]);
+            }
             return $config[ $key ];
 		}
 
         if( false !== strchr( $key , '.' ) ) 
         {
-
 			$parts = explode( '.' , $key );
 			$ref = $config;
 			while( $ref_key = array_shift( $parts ) ) {
@@ -99,8 +103,11 @@ class ConfigManager
                 $ref = & $ref[ $ref_key ];
 			}
 
-            if( is_array( $ref ) )
+            if( is_array( $ref ) ) {
+                if( empty($ref) )
+                    return null;
                 return new Accessor($ref);
+            }
 			return $ref;
 		}
 		return null;

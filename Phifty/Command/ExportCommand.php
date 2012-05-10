@@ -23,7 +23,7 @@ class ExportCommand extends Command
 
     public function execute()
     {
-		$options = $this->getOptions();
+        $options = $this->getOptions();
 
 
         $kernel       = kernel();
@@ -31,61 +31,41 @@ class ExportCommand extends Command
         $webPluginDir = $kernel->getWebPluginDir();
         $webAssetDir  = $kernel->getWebAssetDir();
 
-		if( $options->clean ) {
-			$this->logger->info( "Removing webroot/ph");
-			$unlinks = array();
-			$unlinks[] = FileUtils::path_join( $webroot , 'ph' , $kernel->getAppName() );
-			$unlinks[] = FileUtils::path_join( $webroot , 'ph' , 'Core' );
-			foreach( $unlinks as $unlink ) {
-				$this->logger->info("Unlinking $unlink ...");
-				if( file_exists( $unlink ) )
-					unlink( $unlink );
-			}
-			return;
-		}
+        if( $options->clean ) {
+            $this->logger->info( "Removing webroot/ph");
+            $unlinks = array();
+            foreach( $kernel->applications as $appname => $app ) {
+                $path = FileUtils::path_join( $webroot , 'ph' , $appname );
+                $this->logger->info("Unlinking $path ...");
+                if( file_exists( $path ) )
+                    unlink( $path );
+            }
+            return;
+        }
 
-		$this->logger->info( "Exporting web directory to webroot..." );
+        $this->logger->info( "Exporting web directory to webroot..." );
 
 
         /* Make directories */
-		$dirs = array();
-		$dirs[] = $webroot;
-		$dirs[] = $webPluginDir;
+        $dirs = array();
+        $dirs[] = $webroot;
+        $dirs[] = $webPluginDir;
         $dirs[] = $webAssetDir;
-
-        foreach( $kernel->applications as $appname => $app ) {
-            $dirs[] = $app->getWebDir();
-        }
 
 
         $dirs[] = $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload';
-		foreach( $dirs as $dir )
-			FileUtils::mkpath( $dir , true );
+        foreach( $dirs as $dir )
+            FileUtils::mkpath( $dir , true );
 
         system( 'chmod -vR 777 ' . $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload' );
 
-		$links = array();
-        foreach( $kernel->applications as $appname => $app ) {
-            $links[] = array( $app->getWebDir() , FileUtils::path_join( $webroot , 'ph' , $appname ) );
-        }
-
-		foreach( $links as $link ) {
-            list($from,$target) = $link;
-            if( file_exists( $target ) ) {
-                $this->logger->info("remove link $target");
-                unlink( $target );
-            }
-            $this->logger->info("create link $target",1);
-            symlink( $from , $target );
-		}
-
-		/* 
-		 * get all plugins 
-		 *
-		 * and link the plugin web directory to web/
-		 *
-		 * */
-        foreach( kernel()->plugin->getPlugins() as $plugin ) 
+        /* 
+         * get all plugins 
+         *
+         * and link the plugin web directory to web/
+         *
+         * */
+        foreach( kernel()->plugins as $plugin ) 
         {
             // create links
             // var_dump( $plugin->getName() ); 
@@ -98,10 +78,10 @@ class ExportCommand extends Command
             if( ! file_exists( $pluginWebDir ) ) 
                 continue;
 
-			/*
-			 * plugins/User/web => webroot/plugin/User
-			 * plugins/{plugin}/web => webroot/plugin/User
-			 */
+            /*
+             * plugins/User/web => webroot/plugin/User
+             * plugins/{plugin}/web => webroot/plugin/User
+             */
             $this->logger->info( "create link $target", 1 );
             if( ! file_exists( $target ) )
                 symlink( $pluginWebDir , $target );
@@ -132,7 +112,7 @@ class ExportCommand extends Command
             }
         }
 
-		$this->logger->info( "Done" );
+        $this->logger->info( "Done" );
     }
 }
 

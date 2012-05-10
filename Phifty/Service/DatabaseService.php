@@ -7,6 +7,8 @@ class DatabaseService
     implements ServiceInterface
 {
 
+    public function getId() { return 'Database'; }
+
     public function register($kernel, $options = array() )
     {
         $config = $kernel->config->stashes['database'];
@@ -14,7 +16,6 @@ class DatabaseService
             return;
 
         $loader = ConfigLoader::getInstance();
-        $loader->environment = $kernel->environment;
         if( ! $loader->loaded ) { 
             $loader->load( $config );
             $loader->init();  // init data source and connection

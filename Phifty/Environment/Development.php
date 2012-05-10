@@ -12,10 +12,24 @@ namespace Phifty\Environment;
 use Universal\Requirement\Requirement;
 
 
-
-
 class Development 
 {
+
+	static function exception_handler($e)
+	{
+		var_dump( $e ); 
+	}
+
+
+	/**
+	 * @link http://www.php.net/manual/en/function.set-error-handler.php
+	 */
+	static function error_handler($errno, $errstr, $errfile, $errline, $errcontext)
+	{
+		echo "$errno: $errstr @ $errfile:$errline\n";
+		var_dump( $errcontext ); 
+	}
+
     static function init($kernel)
     {
         // use Universal\Requirement\Requirement checker
@@ -41,6 +55,9 @@ class Development
                     throw new \Exception("Extension $extName is not loaded.");
             }
         }
+
+		set_exception_handler( array(__CLASS__,'exception_handler') );
+		// set_error_handler( array(__CLASS__,'error_handler') );
 
         // if firebug supports
         $kernel->event->register('phifty.after_run', function() use ($kernel) {

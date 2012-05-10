@@ -31,11 +31,12 @@ class Controller extends \Roller\Controller
         return kernel()->currentUser;
     }
 
-    /* 
+    /**
+     * xxx: is not used yet.
+     *
      * currentUserCan method
      *
      * provide a permission check.
-     *
      */
     public function currentUserCan($user)
     {
@@ -47,15 +48,15 @@ class Controller extends \Roller\Controller
         static $view;
         if( $view ) {
             if( $options )
-                throw new Exception("The View object has been initialized.");
+                throw new Exception("The View object is initialized already.");
             return $view;
         }
 
         if( ! $options )
             $options = array();
 
-        $templateEngine = kernel()->config->get('View.Backend') ?: 'twig';
-        $viewClass      = kernel()->config->get('View.Class') ?: 'Phifty\View';
+        $templateEngine = kernel()->config->get('framework','View.Backend') ?: 'twig';
+        $viewClass      = kernel()->config->get('framework','View.Class') ?: 'Phifty\View';
         $engine = \Phifty\View\Engine::createEngine( $templateEngine , $options );
         return $view = new $viewClass( $engine );  // pass 'Smarty' or 'Twig'
     }
@@ -97,19 +98,6 @@ class Controller extends \Roller\Controller
         header( "refresh: $seconds; url=" . $url );
     }
 
-
-    /* handle post data */
-    function post($env)
-    {
-
-    }
-
-    /* handle get data */
-    function get($env)
-    {
-
-    }
-
     /* Move this into Agent class */
     function isMobile()
     {
@@ -134,8 +122,6 @@ class Controller extends \Roller\Controller
         // header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
         header( "Expires: $datestr" );
     }
-
-
 
     /*
      * Render json content 
@@ -234,17 +220,6 @@ class Controller extends \Roller\Controller
         if( method_exists($this,$action . 'Action') )
             return $action . 'Action';
         return false;
-    }
-
-    public function getDefaultActionMethod()
-    {
-        if( $this->hasAction('index') ) {
-            return 'indexAction';
-        }
-
-        if( method_exists( $this, 'run' ) ) {
-            return 'run';
-        }
     }
 
 }

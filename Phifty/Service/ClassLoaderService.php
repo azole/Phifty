@@ -6,6 +6,8 @@ class ClassLoaderService
 {
     public $classloader;
 
+    public function getId() { return 'Classloader'; }
+
     public function setClassLoader($classloader)
     {
         $this->classloader = $classloader;

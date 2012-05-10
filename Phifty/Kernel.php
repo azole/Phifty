@@ -6,35 +6,21 @@ use Phifty\CurrentUser;
 use Phifty\Locale;
 use Phifty\Web;
 use Phifty\FileUtils;
-use Phifty\Action\ActionRunner;
+use ActionKit\ActionRunner;
 use Universal\Container\ObjectContainer;
 use Phifty\Service\ServiceInterface;
 use Exception;
 
-/*
-    Phifty Main Controll Object:
-        process startup operations
-
-        init header
-        init db
-        init language
-        init core object
-        init plugin objects
-        init app object
-
-        run actions
-
-        dispatch controllers
-*/
-
-class Kernel extends ObjectContainer 
+class Kernel extends ObjectContainer
 {
     /* framework version */
-    const VERSION = '2.3.0';
+    const FRAMEWORK_ID = 'phifty';
 
     public $frameworkDir;
     public $frameworkAppDir;
     public $frameworkPluginDir;
+
+    public $cacheDir;
 
     public $rootDir;  // application root dir
     public $rootAppDir;   // application dir (./applications)
@@ -62,12 +48,18 @@ class Kernel extends ObjectContainer
 
     public $environment = 'development';
 
+    public $services = array();
+
     public function __construct( $environment = null ) 
     {
         /* define framework environment */
         $this->environment  = $environment ?: getenv('PHIFTY_ENV') ?: 'development';
+        $this->isCLI        = isset($_SERVER['argc']) && !isset($_SERVER['HTTP_HOST']);
 
-        // path info
+        // detect development mode 
+        $this->isDev = $this->environment === 'development';
+
+        // build path info
         $this->frameworkDir       = PH_ROOT;
         $this->frameworkAppDir    = PH_ROOT . DS . 'applications';
         $this->frameworkPluginDir = PH_ROOT . DS . 'plugins';
@@ -75,28 +67,27 @@ class Kernel extends ObjectContainer
         $this->rootAppDir         = PH_APP_ROOT . DS . 'applications';
         $this->rootPluginDir      = PH_APP_ROOT . DS . 'plugins';
         $this->webroot            = PH_APP_ROOT . DS . 'webroot';
+        $this->cacheDir           = PH_APP_ROOT . DS . 'cache';
+
+        define( 'CLI_MODE' , $this->isCLI );
+        mb_internal_encoding('UTF-8');
+        if( ! $this->isCLI )
+            ob_start();
     }
 
-    public function registerService( ServiceInterface $service )
+    public function registerService( ServiceInterface $service, $options = array() )
     {
-        $service->register( $this );
+        $service->register( $this , $options );
+        $this->services[ $service->getId() ] = $service;
     }
 
     public function init()
     {
         $this->event->trigger('phifty.before_init');
-        $this->isCLI        = isset($_SERVER['argc']) && !isset($_SERVER['HTTP_HOST']);
         $self = $this;
-
         $this->web = function() use($self) { 
             return new \Phifty\Web( $self );
         };
-
-
-        /**
-         * detect for development mode 
-         */
-        $this->isDev = $this->environment == 'development';
 
         // Turn off all error reporting
         if( $this->isDev || $this->isCLI ) {
@@ -105,7 +96,6 @@ class Kernel extends ObjectContainer
         else {
             \Phifty\Environment\Production::init($this);
         }
-
 
         if( $this->isCLI ) {
             \Phifty\Environment\CommandLine::init($this);
@@ -120,13 +110,12 @@ class Kernel extends ObjectContainer
         if( $appconfigs ) {
             foreach( $appconfigs as $appname => $appconfig ) {
                 $this->classloader->addNamespace( array( 
-                    $appname => array( 
-                        PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' 
-                    )
+                    $appname => array( PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' )
                 ));
                 $this->loadApp( $appname , $appconfig );
             }
         }
+
         $this->event->trigger('phifty.after_init');
     }
 
@@ -139,6 +128,7 @@ class Kernel extends ObjectContainer
         $class = $appname . '\Application';
         $app = $class::getInstance();
         $app->config = $config;
+        $app->init();
         return $this->applications[ $appname ] = $app;
     }
 
@@ -163,32 +153,53 @@ class Kernel extends ObjectContainer
             return $this->applications[ $appname ];
     }
 
+
+
     /**
-     * get current application name
+     * get service object
      */
-    public function getAppName()
+    public function service($id) 
     {
-        return $this->appName;
+        if( isset($this->services[ $id ] ) )
+            return $this->services[ $id ];
+    }
+
+    /**
+     * Get plugin object from plugin service
+     *
+     * backward-compatible
+     */
+    public function plugin($name) 
+    {
+        return $this->plugins->get( $name );
     }
 
 
-    /** 
-     * application namespace
+    /**
+     * Get current application name from config
      */
-    public function getAppNs()
+    public function getApplicationName()
     {
-        return $this->appNs;
+        return $this->config->framework->ApplicationName;
     }
+
+
+    /**
+     * Get application UUID from config
+     */
+    public function getApplicationUUID()
+    {
+        return $this->config->framework->ApplicationUUID;
+    }
+
+
+
 
     public function getMinifiedWebDir()
     {
         return $this->webroot . DS . 'static' . DS . 'minified';
     }
 
-    public function getWebRootDir()
-    {
-        return $this->webroot;
-    }
 
     /**
      * Get exported plugin webdir
@@ -217,77 +228,26 @@ class Kernel extends ObjectContainer
     }
 
 
-    /**
-     * Get Root Dir
-     */
-    public function getRootDir()
-    {
-        return $this->rootDir;
-    }
-
 
     /**
      * return framework id
      */
     public function getFrameworkId()
     {
-        return 'phifty';
-    }
-
-
-    /** 
-     * Locale Related 
-     */
-    public function currentLocale()
-    {
-        return $this->locale->speaking();
+        return self::FRAMEWORK_ID;
     }
 
     public function run() 
     {
         $this->event->trigger('phifty.before_run');
-
-        // check if there is $_POST['action'] or $_GET['action']
-        if( isset($_POST) || isset( $_GET ) || isset( $_FILES ) ) {
-
-            // only run action in POST,GET method
-            $runner = ActionRunner::getInstance();
-            try 
-            {
-                $result = $runner->run();
-                if( $result && $runner->isAjax() ) {
-                    echo $result;
-                    exit(0);
-                }
-            } 
-            catch( Exception $e ) 
-            {
-                /**
-                 * return 403 status forbidden
-                 */
-                header('HTTP/1.0 403');
-                if( $runner->isAjax() ) {
-                    die( json_encode( array( 'error' => $e->getMessage() ) ) );
-                } else {
-                    die( $e->getMessage() );
-                }
-            }
-        }
+        $this->event->trigger('phifty.run');
         $this->event->trigger('phifty.after_run');
     }
 
 
     /**
-     * backward-compatible
-     */
-    public function getPlugin($name) 
-    {
-        return $this->plugin->getPlugin( $name );
-    }
-
-
-    /**
      * get Phifty\Web object
+     * XXX: refactor this
      */
     public function web()
     {
@@ -296,19 +256,12 @@ class Kernel extends ObjectContainer
 
     /**
      * get Template Engine
+     * XXX: not used ?
      **/
     public function view()
     {
         return new \Phifty\View;
     }
-
-
-
-	public function __toString()
-	{
-		return '<pre>' . get_class($this ) . '</pre>';
-   	}
-
 
     static function getInstance()
     {

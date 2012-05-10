@@ -61,7 +61,7 @@ class UploadFile
 
 	function validateExtension( $exts )
 	{
-		$ext = $this->getExtension();
+		$ext = strtolower($this->getExtension());
 		return in_array( $ext, $exts );
 	}
 
