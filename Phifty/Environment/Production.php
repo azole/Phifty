@@ -18,11 +18,16 @@ class Production
         /* for production mode */
         if( extension_loaded('xdebug') )
             xdebug_disable();
-        error_reporting(0);
+
+        # error_reporting(0);
+
+        set_error_handler(function($errno,$errmsg) {
+            trigger_error( "$errno: $errmsg" );
+        });
 
         set_exception_handler( function($e) use ($kernel) {
-			die('ERROR');
-            $subject = 'ERROR: ' . $kernel->config->get('application','ApplicationName') . ' - ' . $e->getMessage();
+            die('ERROR');
+            # $subject = 'ERROR: ' . $kernel->config->get('application','ApplicationName') . ' - ' . $e->getMessage();
             // $to = 'cornelius.howl@gmail.com';
             // $content = '';
             // $content .= print_r( $e, true ) . "\n";
