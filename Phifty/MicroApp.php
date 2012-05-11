@@ -11,11 +11,7 @@ class MicroApp extends \Phifty\Singleton
 {
     public $config;
 
-
-    function init()
-    {
-
-    }
+    function init() { }
 
     function getId()
     {
@@ -53,6 +49,25 @@ class MicroApp extends \Phifty\Singleton
     {
         $object = new ReflectionObject($this);
         return dirname($object->getFilename());
+    }
+
+    public function getAssetDirs()
+    {
+        $dir = $this->locate();
+        $assetDir = $dir . DIRECTORY_SEPARATOR . 'assets';
+
+        $dirs = array();
+        if( file_exists($assetDir) && $handle = opendir($assetDir) ) {
+            while (false !== ($entry = readdir($handle))) {
+                if( '.' === $entry || '..' === $entry ) 
+                    continue;
+                $path = $assetDir . DIRECTORY_SEPARATOR . $entry;
+                if( is_dir($path) )
+                    $dirs[] = $path;
+            }
+            closedir($handle);
+        }
+        return $dirs;
     }
 
     /**
