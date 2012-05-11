@@ -10,8 +10,9 @@ class RouterCommand extends Command
     function execute()
     {
         $router = kernel()->router;
-
-
+        $router->compile();
+        $dumper = new \Roller\Dumper\ConsoleDumper;
+        $dumper->dump( $router->routes );
     }
 }
 
