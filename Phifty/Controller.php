@@ -67,8 +67,8 @@ class Controller extends \Roller\Controller
 	 */
 	public function createView($class,$options = null)
 	{
-        $templateEngine = webapp()->config('view.backend');
-        $viewClass      = webapp()->config('view.class');
+        $templateEngine = kernel()->config('view.backend');
+        $viewClass      = kernel()->config('view.class');
         if( ! $viewClass )
             throw new Exception('view.class config is not defined.');
 
