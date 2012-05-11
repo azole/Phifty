@@ -26,6 +26,7 @@ class Console extends Application
         $this->registerCommand('locale');
         $this->registerCommand('console');
         $this->registerCommand('router');
+        $this->registerCommand('asset');
     }
 
 
