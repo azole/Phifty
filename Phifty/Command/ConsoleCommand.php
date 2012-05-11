@@ -9,26 +9,37 @@ class ConsoleCommand extends Command
     
     function execute()
     {
-
         set_error_handler(function( $errno, $errstr, $errfile, $errline, $errcontext ) { 
             print_r( $errno, $errstr );
             return false;
         });
 
-        $k = kernel();
+        if( extension_loaded('xdebug') ) {
+            ini_set('xdebug.cli_color', true );
+            ini_set('xdebug.show_local_vars', true );
+            ini_set('xdebug.var_display_max_data', 64 );
+        }
+
+        $kernel = kernel();
         while(1) {
-            $text = $this->ask('>');
-            $var = null;
-            $return = eval($text);
-            if( $return ) {
-                // parse text and dump the value.
-                var_dump($return);
-            }
-            else {
-                if( preg_match('#^\s*\$(\w+)#i',$text,$regs) ) {
-                    $__n = $regs[1];
-                    var_dump( $$__n );
+            try {
+                $text = $this->ask('>>');
+                $var = null;
+                $return = eval($text);
+                if( $return ) {
+                    // parse text and dump the value.
+                    var_dump($return);
                 }
+                else {
+                    if( preg_match('#^\s*\$(\w+)#i',$text,$regs) ) {
+                        $__n = $regs[1];
+                        var_dump( $$__n );
+                    }
+                }
+            }
+            catch ( Exception $e ) {
+                $printer = new \Exception\ConsolePrinter( $e );
+                echo $printer;
             }
         }
     }
