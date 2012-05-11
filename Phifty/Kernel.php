@@ -15,6 +15,7 @@ class Kernel extends ObjectContainer
 {
     /* framework version */
     const FRAMEWORK_ID = 'phifty';
+    const VERSION = '2.1.0';
 
     public $frameworkDir;
     public $frameworkAppDir;
