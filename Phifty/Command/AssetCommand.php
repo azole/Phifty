@@ -8,6 +8,9 @@ class AssetCommand extends Command
     {
         $config = new \AssetKit\Config('.assetkit');
         $kernel = kernel();
+
+
+        $this->logger->info("Finding assets from plugins...");
         foreach( $kernel->plugins as $plugin ) {
             foreach( $plugin->getAssetDirs() as $dir ) {
                 $manifestPath = $dir  . DIRECTORY_SEPARATOR . 'manifest.yml';
