@@ -134,6 +134,7 @@ class Kernel extends ObjectContainer
     }
 
 
+
     /**
      * Get application object
      *
@@ -153,7 +154,6 @@ class Kernel extends ObjectContainer
         if( isset($this->applications[ $appname ]) )
             return $this->applications[ $appname ];
     }
-
 
 
     /**
