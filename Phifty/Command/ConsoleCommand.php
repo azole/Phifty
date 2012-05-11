@@ -9,6 +9,12 @@ class ConsoleCommand extends Command
     
     function execute()
     {
+
+        set_error_handler(function( $errno, $errstr, $errfile, $errline, $errcontext ) { 
+            print_r( $errno, $errstr );
+            return false;
+        });
+
         $k = kernel();
         while(1) {
             $text = $this->ask('>');
@@ -27,6 +33,5 @@ class ConsoleCommand extends Command
         }
     }
 }
-
 
 
