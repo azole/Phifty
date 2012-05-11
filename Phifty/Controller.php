@@ -62,19 +62,19 @@ class Controller extends \Roller\Controller
     }
 
 
-	/**
-	 * create view object with custom view class
-	 */
-	public function createView($class,$options = null)
-	{
-        $templateEngine = kernel()->config('view.backend');
-        $viewClass      = kernel()->config('view.class');
+    /**
+     * create view object with custom view class
+     */
+    public function createView($class,$options = null)
+    {
+        $templateEngine = kernel()->config->get('framework','View.Backend');
+        $viewClass      = kernel()->config->get('framework','View.Class');
         if( ! $viewClass )
             throw new Exception('view.class config is not defined.');
 
         $engine         = \Phifty\View\Engine::createEngine( $templateEngine , $options );
         return new $class( $engine );  // pass 'Smarty' or 'Twig'
-	}
+    }
 
     /*
     function run()
