@@ -20,10 +20,20 @@ class ConsoleCommand extends Command
             ini_set('xdebug.var_display_max_data', 64 );
         }
 
+        $commands = array();
+        $commands['exit'] = function() {
+            exit(0);
+        };
+
         $kernel = kernel();
         while(1) {
             try {
                 $text = $this->ask('>>');
+
+                if( isset($commands[$text]) ) {
+                    call_user_func( $commands[$text] );
+                }
+
                 $var = null;
                 $return = eval($text);
                 if( $return ) {
