@@ -34,7 +34,7 @@ class ConsoleCommand extends Command
                     call_user_func( $commands[$text] );
                 }
 
-                $var = null;
+                $text = 'return ' . $text . ';';
                 $return = eval($text);
                 if( $return ) {
                     // parse text and dump the value.
