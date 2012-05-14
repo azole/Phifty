@@ -34,14 +34,14 @@ class LibraryLoader {
         $this->paths = array_unshift( $this->paths , $path );
     }
 
-    function load( $name ) {
+    function load( $name , $script = 'init.php' ) {
         if( isset( $this->loaded[ $name ] ) ) {
             return $this->loaded[ $name ];
         }
 
         foreach( $this->getPaths() as $path ) {
             $dir = $path . DS . $name;
-            $initFile = $dir . DS . 'init.php';
+            $initFile = $dir . DS . $script;
             if( file_exists($dir) && is_dir($dir) ) {
                 if( ! file_exists( $initFile ) ) {
                     throw new Exception("$initFile not found.");
