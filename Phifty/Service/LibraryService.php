@@ -1,9 +1,12 @@
 <?php
 namespace Phifty\Service;
+use Exception;
 
 class LibraryLoader {
 
     public $kernel;
+
+    public $throwOnFail = true;
 
     public $paths = array();
 
@@ -41,11 +44,15 @@ class LibraryLoader {
             $initFile = $dir . DS . 'init.php';
             if( file_exists($dir) && is_dir($dir) ) {
                 if( ! file_exists( $initFile ) ) {
-                    throw new \Exception("$initFile not found.");
+                    throw new Exception("$initFile not found.");
                 }
                 require $initFile;
                 return $dir;
             }
+        }
+
+        if( $this->throwOnFail ) {
+            throw new Exception("Can not load library $name");
         }
         return false;
     }
