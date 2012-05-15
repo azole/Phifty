@@ -39,7 +39,7 @@ abstract class CRUDHandler extends Controller
 
     public $currentRecord;
 
-    public $pageLimit = 10;
+    public $pageLimit = 15;
 
 
     /* vars to be export to template */
@@ -189,8 +189,7 @@ abstract class CRUDHandler extends Controller
 
         // SQLBuilder query doesn't support __clone, for that 
         // we have to create two collection for two queries.
-        $collection2  = $this->getCollection();
-        $totalItems = $collection2->queryCount();
+        $totalItems = $this->getCollection()->queryCount();
 
         $collection   = $this->getCollection();
         $collection->page( $page, $pageSize );
