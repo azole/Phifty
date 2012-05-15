@@ -19,6 +19,8 @@ class Pager
     public $wrapperClass = 'pager';
     public $whenOverflow  = true;
 
+    public $rangeLimit = 3;
+
     public $totalPages = 0;
     public $pageSize = 20;
     public $currentPage = 1;
@@ -106,8 +108,8 @@ TWIG;
         }
 
 
-        $pagenum_start = $cur > 5 ? $cur - 5 : 1 ;
-        $pagenum_end   = $cur + 5 < $total_pages ?  $cur + 5 : $total_pages;
+        $pagenum_start = $cur > $this->rangeLimit ? $cur - $this->rangeLimit : 1 ;
+        $pagenum_end   = $cur + $this->rangeLimit < $total_pages ?  $cur + $this->rangeLimit : $total_pages;
 
         $output = "";
         $output .= '<div class="'.$this->wrapperClass.'">';
