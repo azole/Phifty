@@ -39,7 +39,7 @@ class Pager
     {
         if( $size )
             $this->pageSize = $size;
-        $this->totalPages = $total / $this->pageSize;
+        $this->totalPages = $total > 0 ? (int) ($total / $this->pageSize) : 0;
     }
 
 
