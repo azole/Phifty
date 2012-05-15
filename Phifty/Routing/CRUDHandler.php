@@ -1,6 +1,7 @@
 <?php
 namespace Phifty\Routing;
 use Phifty\Web\RegionPagerDisplay;
+use Phifty\Web\RegionPager;
 use Phifty\Region;
 use Phifty\Controller;
 
@@ -38,7 +39,7 @@ abstract class CRUDHandler extends Controller
 
     public $currentRecord;
 
-    public $pageLimit = 10;
+    public $pageLimit = 15;
 
 
     /* vars to be export to template */
@@ -181,15 +182,29 @@ abstract class CRUDHandler extends Controller
      */
     function crud_list_prepare()
     {
-        $collection   = $this->getCollection();
-        $env          = $this->env;
 
-        $pager = $collection->pager( $env->request->page ?: 1 , $env->request->pagenum ?: $this->pageLimit );
-        $pagerDisplay = new RegionPagerDisplay( $pager );
+        $env = $this->env;
+        $page = $env->request->page ?: 1;
+        $pageSize = $env->request->pagenum ?: $this->pageLimit;
+
+        // SQLBuilder query doesn't support __clone, for that 
+        // we have to create two collection for two queries.
+        $totalItems = $this->getCollection()->queryCount();
+
+        $collection   = $this->getCollection();
+        $collection->page( $page, $pageSize );
+        $items = $collection->items();
+
+        $pager = new RegionPager;
+        $pager->currentPage = $page;
+        $pager->calculatePages( $totalItems , $pageSize );
+
+        // $pager = $collection->pager();
+        // $pagerDisplay = new RegionPagerDisplay( $pager );
         $data = array(
             'Object' => $this,
-            'Items' => $pager->items(),
-            'Pager' => $pagerDisplay,
+            'Items' => $items,
+            'Pager' => $pager,
             'Title' => $this->getListTitle(),
             'Columns' => $this->getListColumns(),
         );
