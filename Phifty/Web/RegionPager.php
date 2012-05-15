@@ -1,9 +1,9 @@
 <?php
 namespace Phifty\Web;
 
-use Phifty\Web\PagerDisplay;
+use Phifty\Web\Pager;
 
-class RegionPagerDisplay extends PagerDisplay
+class RegionPager extends Pager
 {
 
     function render_link( $num , $text = null , $moreclass = "" , $disabled = false )
@@ -26,6 +26,6 @@ EOF;
 <a class="pager-link pager-disabled $moreclass">$text</a>
 EOF;
     }
-}
 
+}
 
