@@ -7,7 +7,7 @@ class DatabaseService
     implements ServiceInterface
 {
 
-    public function getId() { return 'Database'; }
+    public function getId() { return 'database'; }
 
     public function register($kernel, $options = array() )
     {

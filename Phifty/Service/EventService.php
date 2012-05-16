@@ -6,7 +6,7 @@ class EventService
     implements ServiceInterface
 {
 
-    public function getId() { return 'Event'; }
+    public function getId() { return 'event'; }
 
     public function register($kernel, $options = array() )
     {
