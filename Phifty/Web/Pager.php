@@ -27,10 +27,10 @@ class Pager
 
     function __construct()
     {
-        $this->first_text = _('__pager.First');
-        $this->last_text  = _('__pager.Last');
-        $this->next_text  = _('__pager.Next');
-        $this->prev_text  = _('__pager.Previous');
+        $this->first_text = _('Page.First');
+        $this->last_text  = _('Page.Last');
+        $this->next_text  = _('Page.Next');
+        $this->prev_text  = _('Page.Previous');
     }
 
     /**
