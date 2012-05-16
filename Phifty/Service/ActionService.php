@@ -6,7 +6,7 @@ use ActionKit\ActionRunner;
 class ActionService
     implements ServiceInterface
 {
-    public function getId() { return 'Action'; }
+    public function getId() { return 'action'; }
 
     public function register($kernel, $options = array() )
     {
