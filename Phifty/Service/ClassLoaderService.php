@@ -6,7 +6,7 @@ class ClassLoaderService
 {
     public $classloader;
 
-    public function getId() { return 'Classloader'; }
+    public function getId() { return 'classloader'; }
 
     public function setClassLoader($classloader)
     {
