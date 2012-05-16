@@ -11,6 +11,10 @@ class MemcacheService
 
     public function register( $kernel , $options = array() )
     {
+        if( ! extension_loaded('memcache') ) {
+            throw new Exception('memcache extension is required');
+        }
+
         $kernel->memcache = function() use ($options) {
             $memcache = new Memcache;
 
