@@ -8,7 +8,7 @@ class MongodbService
     implements ServiceInterface
 {
 
-    public function getId() { return 'Mongodb'; }
+    public function getId() { return 'mongodb'; }
 
 
     /**
