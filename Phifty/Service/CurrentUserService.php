@@ -5,7 +5,7 @@ class CurrentUserService
 	implements ServiceInterface
 {
 
-    public function getId() { return 'CurrentUser'; } 
+    public function getId() { return 'current_user'; } 
 
 	public function register($kernel,$options = array() )
 	{

@@ -4,7 +4,7 @@ namespace Phifty\Service;
 class CoreService 
     implements ServiceInterface
 {
-    public function getId() { return 'Core'; }
+    public function getId() { return 'core'; }
 
     public function register($kernel, $options = array() )
     {

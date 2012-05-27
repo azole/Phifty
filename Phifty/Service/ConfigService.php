@@ -24,7 +24,7 @@ class ConfigService
         $this->manager = new ConfigManager;
     }
 
-    public function getId() { return 'Config'; }
+    public function getId() { return 'config'; }
 
     public function register($kernel, $options = array() )
     {
