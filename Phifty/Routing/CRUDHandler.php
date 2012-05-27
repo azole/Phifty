@@ -78,8 +78,13 @@ abstract class CRUDHandler extends Controller
         $parts = explode('\\', $this->modelClass );
         $refl = new \ReflectionClass( $this->modelClass );
 
-        $this->namespace = $parts[0];
-        $this->modelName = $refl->getShortName();
+        if( ! $this->namespace ) {
+            $this->namespace = $parts[0];
+        }
+
+        if( ! $this->modelName ) {
+            $this->modelName = $refl->getShortName();
+        }
 
         parent::init();
     }
