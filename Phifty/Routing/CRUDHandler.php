@@ -26,6 +26,7 @@ abstract class CRUDHandler extends Controller
 
     public $canDelete = true;
 
+    public $canBulkEdit = false;
 
     public $namespace; /* like News\... */
 
