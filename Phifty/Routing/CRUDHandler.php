@@ -28,12 +28,17 @@ abstract class CRUDHandler extends Controller
 
     public $canBulkEdit = false;
 
+
+    /** Namespace **/
     public $namespace; /* like News\... */
 
+    /** Must **/
     public $modelClass; /* full-qualified model class */
 
-    public $modelName;  /* model name */
+    /** model short class name, optional, can be extracted from full-qualified model class name **/
+    public $modelName;
 
+    /** model object: record */
     public $model;
 
     public $crudId;
@@ -68,6 +73,14 @@ abstract class CRUDHandler extends Controller
     {
         $this->vars['CRUD']['Object'] = $this;
         $this->vars['CRUD']['Title'] = $this->getListTitle();
+
+        // extract namespace from model class name
+        $parts = explode('\\', $this->modelClass );
+        $refl = new \ReflectionClass( $this->modelClass );
+
+        $this->namespace = $parts[0];
+        $this->modelName = $refl->getShortName();
+
         parent::init();
     }
 
