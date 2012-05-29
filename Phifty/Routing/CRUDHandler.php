@@ -75,7 +75,7 @@ abstract class CRUDHandler extends Controller
         $this->vars['CRUD']['Title'] = $this->getListTitle();
 
         // extract namespace from model class name
-        $parts = explode('\\', $this->modelClass );
+        $parts = explode('\\', ltrim($this->modelClass,'\\') );
         $refl = new \ReflectionClass( $this->modelClass );
 
         if( ! $this->namespace ) {
