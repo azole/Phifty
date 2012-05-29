@@ -165,7 +165,7 @@ class MicroApp extends \Phifty\Singleton
      */
     public function withCRUDAction( $model , $types )
     {
-        kernel()->action->addCRUD( $this->getNamespace() , $model , (array) $types );
+        kernel()->action->registerCRUD( $this->getNamespace() , $model , (array) $types );
     }
 
     public function getWebDir() 
