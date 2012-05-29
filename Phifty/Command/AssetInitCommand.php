@@ -2,14 +2,15 @@
 namespace Phifty\Command;
 use CLIFramework\Command;
 
-class AssetCommand extends Command
+/**
+ * When running asset:init command, we should simply register app/plugin assets 
+ * into .assetkit file.
+ *
+ * Then, By running asset:update command, phifty will install assets into webroot.
+ */
+class AssetInitCommand extends Command
 {
-    function options($opts)
-    {
-        $opts->add('l|link','use symbolic link');
-    }
-
-    function registerAsset($config,$installer,$dir)
+    function registerAsset($config,$dir)
     {
         $manifestPath = $dir  . DIRECTORY_SEPARATOR . 'manifest.yml';
         if( ! file_exists($manifestPath)) 
@@ -19,38 +20,31 @@ class AssetCommand extends Command
         $asset->config = $config;
         $asset->initResource(true); // update it
 
-        $installer->install( $asset );
+        // export config to assetkit file
+        $config->addAsset( $asset->name , $asset->export() );
 
-        $export = $asset->export();
-        $config->addAsset( $asset->name , $export );
-
-        $this->logger->info("Saving config...");
+        $this->logger->info("{$asset->name} added.", 1);
         $config->save();
     }
-
 
     function execute() 
     {
         $config = new \AssetKit\Config('.assetkit');
         $kernel = kernel();
 
-        if( $this->options->link ) {
-            $installer = new \AssetKit\LinkInstaller;
-        } else {
-            $installer = new \AssetKit\Installer;
-        }
-
         $this->logger->info("Finding assets from applications...");
         foreach( $kernel->applications as $application ) {
+            $this->logger->info( ' - ' . get_class($application) );
             foreach( $application->getAssetDirs() as $dir ) {
-                $this->registerAsset($config,$installer,$dir);
+                $this->registerAsset($config,$dir);
             }
         }
 
         $this->logger->info("Finding assets from plugins...");
         foreach( $kernel->plugins as $plugin ) {
+            $this->logger->info( ' - ' . get_class($plugin) );
             foreach( $plugin->getAssetDirs() as $dir ) {
-                $this->registerAsset($config,$installer,$dir);
+                $this->registerAsset($config,$dir);
             }
         }
     }

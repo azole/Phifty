@@ -26,7 +26,9 @@ class Console extends Application
         $this->registerCommand('locale');
         $this->registerCommand('console');
         $this->registerCommand('router');
-        $this->registerCommand('asset');
+
+        $this->registerCommand('asset:init', 'Phifty\Command\AssetInitCommand');
+        $this->registerCommand('asset:update', 'Phifty\Command\AssetUpdateCommand');
     }
 
 
