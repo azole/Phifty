@@ -63,7 +63,10 @@ class Controller extends \Roller\Controller
 
 
     /**
-     * create view object with custom view class
+     * Create view object with custom view class
+     *
+     * @param string $class
+     * @param array $options
      */
     public function createView($class,$options = null)
     {
@@ -87,7 +90,9 @@ class Controller extends \Roller\Controller
     */
 
 
-    /* web utils functions */
+    /**
+     * Web utils functions 
+     * */
     function redirect($url)
     {
         header( 'Location: ' . $url );
