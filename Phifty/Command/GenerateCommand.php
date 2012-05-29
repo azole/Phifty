@@ -2,19 +2,17 @@
 namespace Phifty\Command;
 use Phifty\FileUtils;
 use Phifty\CodeTemplate;
+use CLIFramework\Command;
 
-// xxx:
-
-class GenerateCommand extends \CLIFramework\Command
+class GenerateCommand extends Command
 {
-    function brief()
-    {
-        return 'generate files';
-    }
+    function brief() { return 'generator'; }
 
-    function run()
+    function init()
     {
-
+        $this->registerCommand('action','Phifty\Command\Generate\GenerateActionCommand');
+        $this->registerCommand('model','Phifty\Command\Generate\GenerateModelCommand');
+        $this->registerCommand('controller','Phifty\Command\Generate\GenerateControllerCommand');
     }
 }
 
