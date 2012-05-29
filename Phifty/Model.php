@@ -2,6 +2,7 @@
 namespace Phifty;
 use Phifty\Model\Column;
 use LazyRecord\BaseModel;
+use ActionKit\RecordAction\BaseRecordAction;
 
 class Model extends BaseModel 
 {
@@ -21,10 +22,11 @@ class Model extends BaseModel
         return $this->_newAction( 'Delete' );
     }
 
+    // XXX: Move to ActionKit
     private function _newAction($type)
     {
         $class = get_class($this);
-        $actionClass = \ActionKit\RecordAction\RecordAction::createCRUDClass( $class, $type);
+        $actionClass = BaseRecordAction::createCRUDClass( $class, $type);
         $action = new $actionClass( array(), $this );
         return $action;
     }

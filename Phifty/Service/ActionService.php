@@ -20,9 +20,9 @@ class ActionService
 
             // check if there is $_POST['action'] or $_GET['action']
             if( isset($_REQUEST['action']) ) {
-                try 
+                try
                 {
-                    $runner = $kernel->action;
+                    $runner = $kernel->action; // get runner
                     $result = $runner->run();
                     if( $result && $runner->isAjax() ) {
                         echo $result;
