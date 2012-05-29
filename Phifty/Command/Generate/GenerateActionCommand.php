@@ -29,8 +29,10 @@ class GenerateActionCommand extends Command
             $gen = new ActionGenerator(array( 'cache' => true ));
             $ret = $gen->generateActionClassCode( $ns , $actionName );
             file_put_contents( $classFile , "<?php\n" . $ret->code . "\n\n?>" );
-            $this->logger->info( $ret->action_class 
-                . ' is generated at ' . $relfilepath );
+
+            $this->logger->info( 'create ' . $ret->action_class . ' => ' . $relfilepath , 1 );
+
+            $this->logger->info( 'done' );
         } else {
             $this->logger->warn( $relfilepath . ' class file exists.' );
         }
