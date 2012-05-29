@@ -51,24 +51,6 @@ class MicroApp extends \Phifty\Singleton
         return dirname($object->getFilename());
     }
 
-    public function getAssetDirs()
-    {
-        $dir = $this->locate();
-        $assetDir = $dir . DIRECTORY_SEPARATOR . 'assets';
-
-        $dirs = array();
-        if( file_exists($assetDir) && $handle = opendir($assetDir) ) {
-            while (false !== ($entry = readdir($handle))) {
-                if( '.' === $entry || '..' === $entry ) 
-                    continue;
-                $path = $assetDir . DIRECTORY_SEPARATOR . $entry;
-                if( is_dir($path) )
-                    $dirs[] = $path;
-            }
-            closedir($handle);
-        }
-        return $dirs;
-    }
 
     /**
      * get the model in the namespace of current microapp 
@@ -175,7 +157,12 @@ class MicroApp extends \Phifty\Singleton
         kernel()->router->mount( $path , $routes );
     }
 
-    /* register CRUD actions */
+    /**
+     * Register/Generate CRUD actions 
+     *
+     * @param string $model model class
+     * @param array  $types action types (Create, Update, Delete...)
+     */
     public function withCRUDAction( $model , $types )
     {
         kernel()->action->addCRUD( $this->getNamespace() , $model , (array) $types );
@@ -189,5 +176,24 @@ class MicroApp extends \Phifty\Singleton
     public function getTemplateDir()
     {
         return $this->locate() . DS . 'template';
+    }
+
+    public function getAssetDirs()
+    {
+        $dir = $this->locate();
+        $assetDir = $dir . DIRECTORY_SEPARATOR . 'assets';
+
+        $dirs = array();
+        if( file_exists($assetDir) && $handle = opendir($assetDir) ) {
+            while (false !== ($entry = readdir($handle))) {
+                if( '.' === $entry || '..' === $entry ) 
+                    continue;
+                $path = $assetDir . DIRECTORY_SEPARATOR . $entry;
+                if( is_dir($path) )
+                    $dirs[] = $path;
+            }
+            closedir($handle);
+        }
+        return $dirs;
     }
 }
