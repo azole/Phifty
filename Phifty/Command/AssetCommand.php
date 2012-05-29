@@ -8,15 +8,8 @@ use CLIFramework\Command;
  *
  * Then, By running asset:update command, phifty will install assets into webroot.
  *
- *
- * Current command format:
- *
- *      phifty.php asset:init
- *      phifty.php asset:update
- *
- * Ideal command:
- *
  *      phifty.php asset init
+ *
  *      phifty.php asset update
  */
 class AssetCommand extends Command
