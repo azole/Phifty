@@ -2,12 +2,6 @@
 namespace Phifty\Command;
 use CLIFramework\Command;
 
-/**
- * When running asset:init command, we should simply register app/plugin assets 
- * into .assetkit file.
- *
- * Then, By running asset:update command, phifty will install assets into webroot.
- */
 class AssetInitCommand extends Command
 {
     function registerAsset($config,$dir)
