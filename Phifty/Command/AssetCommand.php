@@ -4,6 +4,10 @@ use CLIFramework\Command;
 
 class AssetCommand extends Command
 {
+    function options($opts)
+    {
+        $opts->add('l|link','use symbolic link');
+    }
 
     function registerAsset($config,$installer,$dir)
     {
@@ -30,7 +34,11 @@ class AssetCommand extends Command
         $config = new \AssetKit\Config('.assetkit');
         $kernel = kernel();
 
-        $installer = new \AssetKit\Installer;
+        if( $this->options->link ) {
+            $installer = new \AssetKit\LinkInstaller;
+        } else {
+            $installer = new \AssetKit\Installer;
+        }
 
         $this->logger->info("Finding assets from applications...");
         foreach( $kernel->applications as $application ) {
