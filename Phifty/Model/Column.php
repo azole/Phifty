@@ -8,8 +8,7 @@ class Column extends DeclareColumn
     public $widgetAttrs = array(); /* TODO: */
 
     public function renderAs( $type ) {
-        $this->widgetClass = $widgetClass = 
-            ( $type[0] == '\\' ) ? $type : '\Phifty\FormWidget\\' . $type;
+        $this->widgetClass = $type;
         return $this;
     }
 }
