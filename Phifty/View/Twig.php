@@ -5,6 +5,14 @@ use Phifty\View\Engine;
 use Phifty\FileUtils;
 use Phifty\ClassUtils;
 
+use Twig_Environment;
+use Twig_Loader_Filesystem;
+use Twig_Function_Function;
+use Twig_Extensions_Extension_Debug;
+use Twig_Extension_Optimizer;
+use Twig_Extensions_Extension_Text;
+use Twig_Extensions_Extension_I18n;
+
 class Twig extends \Phifty\View\Engine 
 //    implements \Phifty\View\EngineInterface
 {
@@ -14,8 +22,8 @@ class Twig extends \Phifty\View\Engine
     function newRenderer()
     {
         $cacheDir = $this->getCachePath();
-		$dirs = $this->getTemplateDirs();
-        $loader = new \Twig_Loader_Filesystem( $dirs );
+        $dirs = $this->getTemplateDirs();
+        $loader = new Twig_Loader_Filesystem( $dirs );
 
         $envOpts = array();
 
@@ -42,7 +50,7 @@ class Twig extends \Phifty\View\Engine
          * Env Options
          * http://www.twig-project.org/doc/api.html#environment-options
          * */
-        $twig = new \Twig_Environment($loader, $envOpts );
+        $twig = new Twig_Environment($loader, $envOpts );
 
         /* load extensions from config settings */
         if( $twigConfig ) {
@@ -84,21 +92,20 @@ class Twig extends \Phifty\View\Engine
 
             /* if twig config is not define, then use our dev default extensions */
             if( $isDev ) {
-                $debug = new \Twig_Extensions_Extension_Debug;
+                $debug = new Twig_Extensions_Extension_Debug;
                 $twig->addExtension( $debug );
             } else {
                 // for production
-                $optiz = new \Twig_Extension_Optimizer;
+                $optiz = new Twig_Extension_Optimizer;
                 $twig->addExtension( $optiz );
             }
 
-            $text = new \Twig_Extensions_Extension_Text;
+            $text = new Twig_Extensions_Extension_Text;
             $twig->addExtension( $text );
 
-            $i18n = new \Twig_Extensions_Extension_I18n;
+            $i18n = new Twig_Extensions_Extension_I18n;
             $twig->addExtension( $i18n );
         }
-
         $this->twigEnv = $twig;
         $this->twigLoader = $loader;
         $this->registerFunctions( $twig );
@@ -107,11 +114,12 @@ class Twig extends \Phifty\View\Engine
 
     function registerFunctions( $twig )
     {
-        $twig->addFunction('uniqid', new \Twig_Function_Function('uniqid'));
-        $twig->addFunction('md5', new \Twig_Function_Function('md5'));
-        $twig->addFunction('time', new \Twig_Function_Function('time'));
-        $twig->addFunction('sha1', new \Twig_Function_Function('sha1'));
-        $twig->addFunction('gettext', new \Twig_Function_Function('gettext'));
+        $twig->addFunction('uniqid', new Twig_Function_Function('uniqid'));
+        $twig->addFunction('md5', new Twig_Function_Function('md5'));
+        $twig->addFunction('time', new Twig_Function_Function('time'));
+        $twig->addFunction('sha1', new Twig_Function_Function('sha1'));
+        $twig->addFunction('gettext', new Twig_Function_Function('gettext'));
+        $twig->addFunction('_', new Twig_Function_Function('_'));
     }
 
     function newStringRenderer()
