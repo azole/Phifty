@@ -16,7 +16,7 @@ use Phifty\Controller;
  */
 
 abstract class CRUDHandler extends Controller
-    implements MountableInterface
+    implements ExpandableInterface
 {
     /**
      * configurations

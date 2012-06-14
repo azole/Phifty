@@ -1,5 +1,5 @@
 <?php
-interface MountableInterface {
+interface ExpandableInterface {
     static function expand();
 }
 
