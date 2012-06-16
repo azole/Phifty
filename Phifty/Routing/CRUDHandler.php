@@ -173,6 +173,9 @@ abstract class CRUDHandler extends Controller
     function renderCrudIndexTiles()
     {
         $tiles   = array();
+
+        // get the mounted path, and load the page through ajax region.
+        // ajaxTile returns a javascript code block.
         $tiles[] = Region::ajaxTile( 'crud-list',  $this->getRoute()->getPath() . '/crud/list' );
         return $tiles;
     }
