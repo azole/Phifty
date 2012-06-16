@@ -266,7 +266,6 @@ abstract class CRUDHandler extends Controller
         $record = $this->loadRecord();
         $isCreate = $record->id ? false : true;
 
-
         // if the record is not loaded, we can use predefined values
         if( $isCreate ) {
             foreach( $predefined as $k => $v ) {
