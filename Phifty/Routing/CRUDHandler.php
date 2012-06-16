@@ -64,7 +64,7 @@ abstract class CRUDHandler extends Controller
 
         $routeset->add( '/crud/list'   , $class . ':listRegionAction');
         $routeset->add( '/crud/edit'   , $class . ':editRegionAction');
-        $routeset->add( '/crud/create' , $class . ':crud_create');
+        $routeset->add( '/crud/create' , $class . ':createRegionAction');
 
         $routeset->add( '/edit'        , $class . ':editAction');
         $routeset->add( '/create'      , $class . ':createAction');
@@ -250,7 +250,7 @@ abstract class CRUDHandler extends Controller
     }
 
 
-    function crud_create() 
+    function createRegionAction() 
     { 
         return $this->editRegionAction();
     }
