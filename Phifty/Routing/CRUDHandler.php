@@ -14,7 +14,6 @@ use Phifty\Controller;
  *          {crudId}/edit.html
  *          {crudId}/list.html
  */
-
 abstract class CRUDHandler extends Controller
     implements ExpandableInterface
 {
@@ -61,12 +60,12 @@ abstract class CRUDHandler extends Controller
     {
         $class = get_called_class();
         $routeset = new \Roller\RouteSet;
-        $routeset->add( '/'            ,"$class:crud_index" );
-        $routeset->add( '/crud/list'   ,"$class:crud_list");
-        $routeset->add( '/crud/edit'   ,"$class:crud_edit");
-        $routeset->add( '/crud/create' ,"$class:crud_create");
-        $routeset->add( '/edit'        ,"$class:edit");
-        $routeset->add( '/create'      ,"$class:create");
+        $routeset->add( '/'            , $class . ':indexAction' );
+        $routeset->add( '/crud/list'   , $class . ':crud_list');
+        $routeset->add( '/crud/edit'   , $class . ':crud_edit');
+        $routeset->add( '/crud/create' , $class . ':crud_create');
+        $routeset->add( '/edit'        , $class . ':edit');
+        $routeset->add( '/create'      , $class . ':create');
         return $routeset;
     }
 
@@ -197,7 +196,7 @@ abstract class CRUDHandler extends Controller
     }
 
 
-    /*
+    /**
      * CRUD List Prepare Data
      */
     function crud_list_prepare()
@@ -242,11 +241,12 @@ abstract class CRUDHandler extends Controller
             - _order_column => {{column}}
             - _order_by     => {{asc|desc}}
     */
-    function crud_list( )
+    function crud_list()
     {
         $this->crud_list_prepare();
         return $this->renderCrudList();
     }
+
 
     function crud_create() 
     { 
@@ -254,6 +254,10 @@ abstract class CRUDHandler extends Controller
     }
 
 
+
+    /**
+     * @param array $predefined predefined record data
+     */
     function crud_edit_prepare($predefined = array())
     {
         $env = $this->env;
@@ -316,9 +320,9 @@ abstract class CRUDHandler extends Controller
 
 
 
-    /* crud_index is a tiled page,
+    /* indexAction is a tiled page,
      * you can use tile to push template blocks into it. */
-    public function crud_index()
+    public function indexAction()
     {
         $tiles = $this->renderCrudIndexTiles();
         return $this->renderCrudPage(array( 'tiles' => $tiles ));
