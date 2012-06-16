@@ -61,8 +61,14 @@ abstract class CRUDHandler extends Controller
         $class = get_called_class();
         $routeset = new \Roller\RouteSet;
         $routeset->add( '/'            , $class . ':indexAction' );
-        $routeset->add( '/crud/list'   , $class . ':crud_list');
+
+        // list region
+        $routeset->add( '/crud/list'   , $class . ':listAction');
+
+        // edit region
         $routeset->add( '/crud/edit'   , $class . ':crud_edit');
+
+        // create region (wrap edit handler)
         $routeset->add( '/crud/create' , $class . ':crud_create');
 
         $routeset->add( '/edit'        , $class . ':editAction');
@@ -200,7 +206,7 @@ abstract class CRUDHandler extends Controller
     /**
      * CRUD List Prepare Data
      */
-    function crud_list_prepare()
+    function listAction_prepare()
     {
 
         $env = $this->env;
@@ -236,15 +242,15 @@ abstract class CRUDHandler extends Controller
     }
 
     /*
-        crud_list:
+        listAction:
 
             builtin vars
             - _order_column => {{column}}
             - _order_by     => {{asc|desc}}
     */
-    function crud_list()
+    function listAction()
     {
-        $this->crud_list_prepare();
+        $this->listAction_prepare();
         return $this->renderCrudList();
     }
 
