@@ -64,8 +64,9 @@ abstract class CRUDHandler extends Controller
         $routeset->add( '/crud/list'   , $class . ':crud_list');
         $routeset->add( '/crud/edit'   , $class . ':crud_edit');
         $routeset->add( '/crud/create' , $class . ':crud_create');
-        $routeset->add( '/edit'        , $class . ':edit');
-        $routeset->add( '/create'      , $class . ':create');
+
+        $routeset->add( '/edit'        , $class . ':editAction');
+        $routeset->add( '/create'      , $class . ':createAction');
         return $routeset;
     }
 
@@ -304,14 +305,14 @@ abstract class CRUDHandler extends Controller
 
 
     // XXX: let admin page could be pushed by tiles.
-    public function create()
+    public function createAction()
     {
         $tiles = array();
         $tiles[] = $this->crud_edit();
         return $this->renderCrudPage(array( 'tiles' => $tiles ));
     }
 
-    public function edit()
+    public function editAction()
     {
         $tiles = array();
         $tiles[] = $this->crud_edit();
