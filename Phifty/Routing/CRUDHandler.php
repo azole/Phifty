@@ -206,7 +206,7 @@ abstract class CRUDHandler extends Controller
     /**
      * CRUD List Prepare Data
      */
-    function listAction_prepare()
+    function listActionPrepare()
     {
 
         $env = $this->env;
@@ -250,7 +250,7 @@ abstract class CRUDHandler extends Controller
     */
     function listAction()
     {
-        $this->listAction_prepare();
+        $this->listActionPrepare();
         return $this->renderCrudList();
     }
 
