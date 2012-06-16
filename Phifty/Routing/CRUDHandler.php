@@ -62,13 +62,8 @@ abstract class CRUDHandler extends Controller
         $routeset = new \Roller\RouteSet;
         $routeset->add( '/'            , $class . ':indexAction' );
 
-        // list region
         $routeset->add( '/crud/list'   , $class . ':listRegionAction');
-
-        // edit region
-        $routeset->add( '/crud/edit'   , $class . ':crud_edit');
-
-        // create region (wrap edit handler)
+        $routeset->add( '/crud/edit'   , $class . ':editRegionAction');
         $routeset->add( '/crud/create' , $class . ':crud_create');
 
         $routeset->add( '/edit'        , $class . ':editAction');
@@ -257,7 +252,7 @@ abstract class CRUDHandler extends Controller
 
     function crud_create() 
     { 
-        return $this->crud_edit();
+        return $this->editRegionAction();
     }
 
 
@@ -265,7 +260,7 @@ abstract class CRUDHandler extends Controller
     /**
      * @param array $predefined predefined record data
      */
-    function crud_edit_prepare($predefined = array())
+    function editRegionActionPrepare($predefined = array())
     {
         $env = $this->env;
         $record = $this->loadRecord();
@@ -301,11 +296,11 @@ abstract class CRUDHandler extends Controller
     }
 
 
-    /* crud_edit_{{ id }} template must be declare */
+    /* editRegionAction_{{ id }} template must be declare */
     // TODO: Support create with pre-defined value 
-    public function crud_edit()
+    public function editRegionAction()
     {
-        $this->crud_edit_prepare();
+        $this->editRegionActionPrepare();
         return $this->renderCrudEdit();
     }
 
@@ -314,14 +309,14 @@ abstract class CRUDHandler extends Controller
     public function createAction()
     {
         $tiles = array();
-        $tiles[] = $this->crud_edit();
+        $tiles[] = $this->editRegionAction();
         return $this->renderCrudPage(array( 'tiles' => $tiles ));
     }
 
     public function editAction()
     {
         $tiles = array();
-        $tiles[] = $this->crud_edit();
+        $tiles[] = $this->editRegionAction();
         return $this->renderCrudPage(array( 'tiles' => $tiles ));
     }
 
