@@ -3,6 +3,7 @@ namespace Phifty;
 use ActionKit\ActionRunner;
 use ReflectionClass;
 use ReflectionObject;
+use Exception;
 
 /**
  *  MicroApp is the base class of App, Core, {Plugin} class.
@@ -95,7 +96,9 @@ class MicroApp extends \Phifty\Singleton
      *
      * Mapping to actionNameAction method.
      *
-     * $this->route('/path/to', 'ControllerClass:actionName' )  
+     * $this->route('/path/to', 'ControllerClass:actionName' );
+     *
+     * $this->route('/path/to', '+App\Controller\IndexController:actionName' );
      *
      * $this->route('/path/to', array( 
      *          'template' => 'template_file.html', 
@@ -129,7 +132,7 @@ class MicroApp extends \Phifty\Singleton
             /**
              * If it's not full-qualified classname, we should prepend our base namespace. 
              */
-            if( 0 !== strpos( $class , '\\' ) )  {
+            if( $class[0] !== '+' ) {
                 $class = $this->getNamespace() . "\\Controller\\$class";
             }
 
@@ -140,7 +143,7 @@ class MicroApp extends \Phifty\Singleton
         }
         elseif( is_array($args) ) 
         {
-            // call template controller
+            // route to template controller ?
             if( isset($args['template']) ) {
                 $options['args'] = array( 
                     'template' => $args['template'],
@@ -148,8 +151,16 @@ class MicroApp extends \Phifty\Singleton
                 );
                 $router->add( $path , 'Phifty\Routing\TemplateController' , $options );
             }
+            // route to normal controller ?
             elseif( isset($args['controller']) ) {
                 $router->add( $path , $args['controller'], $options );
+            }
+            // simply treat it as a callback
+            elseif( isset($args[0]) && count($args) == 2 ) {
+                $router->add( $path , $args , $options );
+            }
+            else {
+                throw new Exception('Unsupport route argument.');
             }
         }
         else {
