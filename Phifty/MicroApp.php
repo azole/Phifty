@@ -33,12 +33,15 @@ class MicroApp extends \Phifty\Singleton
 
     /**
      * helper method, route path to template
+     *
+     * @param string $path
+     * @param string $template file
      */
-    function page( $path , $template  )
+    function page( $path , $template , $args = array() )
     {
         $this->add( $path , array( 
             'template' => $template,
-            'args' => array() ,
+            'args' => $args,  // template args
         ));
     }
 
@@ -73,7 +76,6 @@ class MicroApp extends \Phifty\Singleton
         return new $class;
     }
 
-
     public function getConfig()
     {
         return $this->config;
@@ -105,28 +107,18 @@ class MicroApp extends \Phifty\Singleton
         $router = kernel()->router;
 
         /* if args is string, it's a controller class */
-        if( is_array($args) ) 
+        if( is_string($args)  ) 
         {
-            // call template controller
-            if( isset($args['template']) ) {
-                $options[':args'] = array( 
-                    'template' => $args['template'],
-                    'args' => @$args['args'],
-                );
-                $router->add( $path , 'Phifty\Routing\TemplateController' , $options );
-            }
-            elseif( isset($args['controller']) ) {
-                $router->add( $path , $args['controller'], $options );
-            }
-        }
-        elseif( is_string($args)  ) 
-        {
-            /* extract action method name out, and set default to run method. */
+            /**
+             * Extract action method name out, and set default to run method. 
+             *
+             *      FooController:index => array(FooController, indexAction)
+             */
             $class = null;
             $action = 'indexAction';
             if( false !== ($pos = strrpos($args,':')) ) {
                 list($class,$action) = explode(':',$args);
-                if( false === strpos( $action , 'Action' ) )
+                if( false === strrpos( $action , 'Action' ) )
                     $action .= 'Action';
             }
             else {
@@ -134,7 +126,9 @@ class MicroApp extends \Phifty\Singleton
             }
 
 
-            /* If it's not full-qualified classname, we should prepend our base namespace. */
+            /**
+             * If it's not full-qualified classname, we should prepend our base namespace. 
+             */
             if( 0 !== strpos( $class , '\\' ) )  {
                 $class = $this->getNamespace() . "\\Controller\\$class";
             }
@@ -143,8 +137,23 @@ class MicroApp extends \Phifty\Singleton
                 $action = 'run';
             }
 
-            $args = $class . ':' . $action;
-            $router->add( $path , $args , $options );
+            // $args = $class . ':' . $action;
+            $cb = array($class, $action);
+            $router->add( $path, $cb, $options );
+        }
+        elseif( is_array($args) ) 
+        {
+            // call template controller
+            if( isset($args['template']) ) {
+                $options['args'] = array( 
+                    'template' => $args['template'],
+                    'args' => @$args['args'],
+                );
+                $router->add( $path , 'Phifty\Routing\TemplateController' , $options );
+            }
+            elseif( isset($args['controller']) ) {
+                $router->add( $path , $args['controller'], $options );
+            }
         }
         else {
             throw new Exception( "Unkown route argument." );

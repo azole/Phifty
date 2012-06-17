@@ -8,16 +8,23 @@ use SerializerKit\Serializer;
 use SerializerKit\YamlSerializer;
 use SerializerKit\XmlSerializer;
 use Exception;
+use Roller\Controller as BaseController;
 
 /*
     Synopsis
     $controller = new $class( $this );
 */
 
-class Controller extends \Roller\Controller
+class Controller extends BaseController
 {
-    /* env request object, handles post, get, request objects */
+    /**
+     * @var Request env request object, handles post, get, request objects 
+     */
     public $env;
+
+    /**
+     * @var HttpRequest
+     */
     public $request;
 
     public function init()
