@@ -29,6 +29,12 @@ abstract class CRUDHandler extends Controller
     public $canBulkEdit = false;
 
 
+    /**
+     * @var array predefined data for new record
+     */
+    public $predefined = array();
+
+
     /** Namespace **/
     public $namespace; /* like News\... */
 
@@ -259,11 +265,7 @@ abstract class CRUDHandler extends Controller
     }
 
 
-
-    /**
-     * @param array $predefined predefined record data
-     */
-    function editRegionActionPrepare($predefined = array())
+    function editRegionActionPrepare()
     {
         $env = $this->env;
         $record = $this->loadRecord();
@@ -271,7 +273,7 @@ abstract class CRUDHandler extends Controller
 
         // if the record is not loaded, we can use predefined values
         if( $isCreate ) {
-            foreach( $predefined as $k => $v ) {
+            foreach( $this->predefined as $k => $v ) {
                 $record->{ $k } = $v;
             }
         }
