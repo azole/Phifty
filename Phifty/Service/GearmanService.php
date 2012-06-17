@@ -24,9 +24,9 @@ class GearmanService
                     } elseif( is_array($servers) ) {
                         foreach( $servers as $server ) {
                             $parts = explode(':',$server);
-                            $success = $client->addServer( $parts[0] , @$parts[1] );
-                            if( false === $success ) 
+                            if( false === $client->addServer( $parts[0] , @$parts[1] ) ) {
                                 throw new Exception("Gearman client connect failed.");
+                            }
                         }
                     }
                 }
@@ -41,9 +41,9 @@ class GearmanService
                     } elseif( is_array($servers) ) {
                         foreach( $servers as $server ) {
                             $parts = explode(':',$server);
-                            $success = $worker->addServer( $parts[0] , @$parts[1] );
-                            if( false === $success ) 
+                            if( false === $worker->addServer( $parts[0] , @$parts[1] ) ) {
                                 throw new Exception("Gearman worker connect failed.");
+                            }
                         }
                     }
                 }
