@@ -198,6 +198,8 @@ class MicroApp
 
     public function getAssetDirs()
     {
+        // XXX: Here we got a absolute path,
+        // should return relative path here.
         $dir = $this->locate();
         $assetDir = $dir . DIRECTORY_SEPARATOR . 'assets';
 
