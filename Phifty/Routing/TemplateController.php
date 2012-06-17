@@ -11,7 +11,7 @@ class TemplateController extends Controller
     public function __construct($args) 
     {
         $this->template = $args['template'];
-        $this->args = @$args['args'];
+        $this->args = isset($args['args']) ? $args['args'] : null;
     }
 
     function run()
@@ -23,7 +23,6 @@ class TemplateController extends Controller
         /* get template engine */
         $engine = Engine::createEngine( $engineType );
         $viewClass = kernel()->config('View.Class') ?: 'Phifty\View';
-
         $view = new $viewClass( $engine );
         if( $args ) {
             $view->assign( $args );
