@@ -8,9 +8,10 @@ use Exception;
 /**
  *  MicroApp is the base class of App, Core, {Plugin} class.
  */
-class MicroApp extends \Phifty\Singleton
+class MicroApp
 {
     public $config;
+
 
     function init() { }
 
@@ -213,4 +214,12 @@ class MicroApp extends \Phifty\Singleton
         }
         return $dirs;
     }
+
+    static function getInstance() { 
+        static $instance;
+        if( $instance )
+            return $instance;
+        return $instance = new static;
+    }
+
 }
