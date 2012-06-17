@@ -136,10 +136,7 @@ class MicroApp extends \Phifty\Singleton
             if( ! method_exists($class,$action) ) {
                 $action = 'run';
             }
-
-            // $args = $class . ':' . $action;
-            $cb = array($class, $action);
-            $router->add( $path, $cb, $options );
+            $router->add( $path, array($class,$action), $options );
         }
         elseif( is_array($args) ) 
         {
