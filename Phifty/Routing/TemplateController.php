@@ -22,13 +22,12 @@ class TemplateController extends Controller
 
         /* get template engine */
         $engine = Engine::createEngine( $engineType );
-        $viewClass = kernel()->config('View.Class');
-        if( ! $viewClass )
-            $viewClass = '\Phifty\View';
+        $viewClass = kernel()->config('View.Class') ?: 'Phifty\View';
 
         $view = new $viewClass( $engine );
-        if( $args )
+        if( $args ) {
             $view->assign( $args );
+        }
         return $view->render( $template );
     }
 }
