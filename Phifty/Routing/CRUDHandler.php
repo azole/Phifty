@@ -59,7 +59,9 @@ abstract class CRUDHandler extends Controller
     /* vars to be export to template */
     public $vars = array();
 
-    /* collection order */
+    /** 
+     * Collection order 
+     */
     public $defaultOrder = array('id', 'desc');
 
     public $listColumns;
@@ -192,19 +194,25 @@ abstract class CRUDHandler extends Controller
     {
         return $this->render( 
             $this->namespace 
-            . '/template/' . $this->crudId . '/list.html' , $args );
+            . '/template/' 
+            . $this->crudId 
+            . '/list.html' , $args );
     }
 
     function renderCrudEdit( $args = array() )
     {
         return $this->render( 
             $this->namespace 
-            . '/template/' . $this->crudId . '/edit.html' , $args);
+            . '/template/' 
+            . $this->crudId 
+            . '/edit.html' , $args);
     }
 
     function renderCrudPage( $args = array() )
     {
-        return $this->render( 'CRUD/template/page.html' , $args );
+        return $this->render( 
+            'CRUD/template/page.html',
+            $args );
     }
 
 
@@ -221,9 +229,7 @@ abstract class CRUDHandler extends Controller
         // SQLBuilder query doesn't support __clone, for that 
         // we have to create two collection for two queries.
         $totalItems = $this->getCollection()->queryCount();
-
-        $collection   = $this->getCollection();
-        $collection->page( $page, $pageSize );
+        $collection   = $this->getCollection()->page( $page ,$pageSize );
         $items = $collection->items();
 
         $pager = new RegionPager;
@@ -291,7 +297,6 @@ abstract class CRUDHandler extends Controller
         $data = array(
             'Object'      => $this,
             'Title'       => $title,
-            'ActionClass' => $actionClass,
             'Action'      => $action,
             'Record'      => $record,
         );
