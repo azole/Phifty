@@ -1,6 +1,5 @@
 <?php
 namespace Phifty;
-
 use Phifty\Kernel;
 use Phifty\CurrentUser;
 use Phifty\Locale;

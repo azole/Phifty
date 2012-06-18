@@ -5,6 +5,8 @@ use Phifty\Web\RegionPager;
 use Phifty\Region;
 use Phifty\Controller;
 
+use ReflectionClass;
+
 
 /**
  * Current CRUD template structure:
@@ -84,7 +86,7 @@ abstract class CRUDHandler extends Controller
 
         // extract namespace from model class name
         $parts = explode('\\', ltrim($this->modelClass,'\\') );
-        $refl = new \ReflectionClass( $this->modelClass );
+        $refl = new ReflectionClass( $this->modelClass );
 
         if( ! $this->namespace ) {
             $this->namespace = $parts[0];
@@ -104,8 +106,7 @@ abstract class CRUDHandler extends Controller
 
     function assignVars( $args )
     {
-        foreach( $args as $k => $v )
-            $this->vars[ $k ] = $v;
+        $this->vars = array_merge( $this->vars , $args );
     }
 
     function getListTitle()

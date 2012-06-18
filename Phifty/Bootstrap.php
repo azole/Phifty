@@ -7,6 +7,7 @@ use Phifty\Kernel;
  * Script for phifty kernel bootstrap
  *
  * load config file and bootstrap
+ * and export $kernel to global.
  *
  * @author c9s <cornelius.howl@gmail.com>
  */
