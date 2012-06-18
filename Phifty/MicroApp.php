@@ -225,5 +225,4 @@ class MicroApp
             return $instance;
         return $instance = new static;
     }
-
 }

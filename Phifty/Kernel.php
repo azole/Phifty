@@ -69,7 +69,8 @@ class Kernel extends ObjectContainer
         $this->webroot            = PH_APP_ROOT . DS . 'webroot';
         $this->cacheDir           = PH_APP_ROOT . DS . 'cache';
 
-        define( 'CLI_MODE' , $this->isCLI );
+        defined('CLI_MODE') 
+            || define( 'CLI_MODE' , $this->isCLI );
         mb_internal_encoding('UTF-8');
         if( ! $this->isCLI )
             ob_start();
