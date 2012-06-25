@@ -133,7 +133,7 @@ class MicroApp
             /**
              * If it's not full-qualified classname, we should prepend our base namespace. 
              */
-            if( $class[0] === '+' ) {
+            if( $class[0] === '+' || $class[0] === '\\' ) {
                 $class = substr( $class , 1 );
             } else {
                 $class = $this->getNamespace() . "\\Controller\\$class";

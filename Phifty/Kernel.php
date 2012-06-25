@@ -86,6 +86,7 @@ class Kernel extends ObjectContainer
     {
         $this->event->trigger('phifty.before_init');
         $self = $this;
+
         $this->web = function() use($self) { 
             return new \Phifty\Web( $self );
         };
