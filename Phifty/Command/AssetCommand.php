@@ -17,7 +17,7 @@ class AssetCommand extends Command
     function init()
     {
         $this->registerCommand('init', 'Phifty\Command\AssetInitCommand');
-        $this->registerCommand('update', 'Phifty\Command\AssetUpdateCommand');
+        $this->registerCommand('install', 'Phifty\Command\AssetInstallCommand');
     }
 }
 
