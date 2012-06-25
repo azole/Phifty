@@ -3,7 +3,7 @@ namespace Phifty\Command;
 use CLIFramework\Command;
 use Phifty\FileUtils;
 use Symfony\Component\Finder\Finder;
-use Phifty::Kernel;
+use Phifty\Kernel;
 
 /**
  * XXX: deprecated, but reserved.
