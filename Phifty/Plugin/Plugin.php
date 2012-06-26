@@ -34,7 +34,7 @@ class Plugin extends MicroApp
 
 
     /**
-     * get config:
+     * Get plugin config
      *
      * @param string $key config key
      *
@@ -75,26 +75,6 @@ class Plugin extends MicroApp
 
     }
 
-    function getWebURL( $path )
-    {
-        $baseURL = 'ph/plugins/' . $this->getName() . '/' . $path;
-        return $baseURL;
-    }
-
-
-    function includeJs( $path )
-    {
-        $baseURL = $this->getWebURL( $path );
-        return '<script src="' . $baseURL . '">' . '</script>' ;
-    }
-
-    function includeCss( $path )
-    {
-        $baseURL = $this->getWebURL( $path );
-        return '<link rel="stylesheet" href="' . $baseURL . '" type="text/css" media="screen" charset="utf-8"/>';
-    }
-
-
     /* static method */
     static function locatePlugin( $name )
     {
@@ -106,7 +86,6 @@ class Plugin extends MicroApp
             if( file_exists( $path ) )
                 return $path;
     }
-
 
     function getExportWebDir()
     {

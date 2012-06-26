@@ -1,7 +1,6 @@
 <?php
 namespace Phifty\Command;
 use Phifty\FileUtils;
-use Phifty\Asset\AssetFinder;
 use CLIFramework\Command;
 
 
@@ -86,32 +85,6 @@ class ExportCommand extends Command
             if( ! file_exists( $target ) )
                 symlink( $pluginWebDir , $target );
         }
-
-
-        /*
-         * Export asset web dirs 
-         *
-         * Export assets/Galleria/web to PH_APP_ROOT/webroot/ph/assets/Galleria
-         */
-        $assets = AssetFinder::findAll();
-        // $webAssetDir;
-        $this->logger->info("Creating links for assets");
-        foreach( $assets as $name => $assetInfo ) {
-            $source = $assetInfo->web;
-            $target = FileUtils::path_join( $webAssetDir , $assetInfo->name );
-
-            if( file_exists( $target ) )
-                unlink( $target );
-
-            if( file_exists($source) ) {
-                $this->logger->info("\tcreate link $name\t\t$target");
-                symlink( $source, $target );
-            }
-            else {
-                throw new Exception( "$source does not exist. can not create $target." );
-            }
-        }
-
         $this->logger->info( "Done" );
     }
 }
