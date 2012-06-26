@@ -50,6 +50,23 @@ class InitCommand extends Command
             system("chmod -R {$mod[0]} {$mod[1]}");
         }
 
+        if( PH_ROOT !== PH_APP_ROOT ) {
+            symlink( 'phifty' . DIRECTORY_SEPARATOR . 'assets' , 'assets' );
+        }
+
+        $this->logger->info("Installing Assets");
+
+
+        // Add command factory to CLIFramework Command class.
+        $init = new AssetInitCommand;
+        $install = new AssetInstallCommand;
+        $init->application = $this->application;
+        $init->options = $this->options;
+        $init->executeWrapper(array());
+
+        $install->application = $this->application;
+        $install->options = $this->options;
+        $install->executeWrapper(array());
     }
 }
 
