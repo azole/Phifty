@@ -5,6 +5,9 @@ use Phifty\FileUtils;
 
 class InitCommand extends Command
 {
+    function brief() {
+        return 'Initialize phifty project files, directories and permissions.';
+    }
 
     function options($opts)
     {
