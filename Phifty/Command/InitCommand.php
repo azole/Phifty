@@ -23,6 +23,7 @@ class InitCommand extends Command
         $dirs[] = FileUtils::path_join( $kernel->rootDir , 'cache' , 'view' );
         $dirs[] = FileUtils::path_join( $kernel->rootDir , 'cache' , 'config' );
         $dirs[] = 'locale';
+        $dirs[] = 'plugins';
         $dirs[] = $kernel->webroot;
 
         $dirs[] = $kernel->webroot . DIRECTORY_SEPARATOR . 'ph' . DIRECTORY_SEPARATOR . 'plugins';
