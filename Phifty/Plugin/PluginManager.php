@@ -16,9 +16,15 @@ class PluginManager
      */
     public $plugins = array();
 
+    public $pluginDirs = array();
+
     public function isLoaded( $name )
     {
         return isset( $this->plugins[ $name ] );
+    }
+
+    public function registerPluginDir($dir) {
+        $this->pluginDirs[] = $dir;
     }
 
     public function getList()
@@ -49,17 +55,32 @@ class PluginManager
             return $this->plugins[ $name ];
     }
 
+    protected function _loadPlugin($name) {
+        # $name = '\\' . ltrim( $name , '\\' );
+        $class = "$name\\$name";
+        if( class_exists($class,true) ) {
+            return $class;
+        }
+        else {
+            // try to require plugin class from plugin path
+            $subpath = $name . DIRECTORY_SEPARATOR . $name . '.php';
+            foreach( $this->pluginDirs as $dir ) {
+                $path = $dir . DIRECTORY_SEPARATOR . $subpath;
+                if( file_exists($path) ) {
+                    require $path;
+                    return $class;
+                }
+            }
+        }
+    }
 
     /**
      * Load plugin
      */
     public function load( $name , $config = array() )
     {
-        # $name = '\\' . ltrim( $name , '\\' );
-        $class = "\\$name\\$name";
-        if( class_exists($class,true) ) {
+        if( $class = $this->_loadPlugin($name) ) {
             $plugin = $class::getInstance();
-
             // xxx: better solution
             $plugin->mergeWithDefaultConfig( $config );
             $plugin->init();
