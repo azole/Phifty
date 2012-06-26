@@ -22,6 +22,7 @@ class InitCommand extends Command
         $dirs = array();
         $dirs[] = FileUtils::path_join( $kernel->rootDir , 'cache' , 'view' );
         $dirs[] = FileUtils::path_join( $kernel->rootDir , 'cache' , 'config' );
+        $dirs[] = 'locale';
         $dirs[] = $kernel->webroot;
 
         $dirs[] = $kernel->webroot . DIRECTORY_SEPARATOR . 'ph' . DIRECTORY_SEPARATOR . 'plugins';
@@ -34,7 +35,7 @@ class InitCommand extends Command
 
         FileUtils::mkpath($dirs,true);
 
-// TODO: .htaccess file
+// TODO: create .htaccess file
 
         $this->logger->info( "Changing permissions..." );
         $chmods = array();
