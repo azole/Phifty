@@ -1,15 +1,5 @@
 <?php
-/*
- * This file is part of the {{ }} package.
- *
- * (c) Yo-An Lin <cornelius.howl@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- */
-namespace Phifty;
-
+namespace Phifty\Plugin;
 use Exception;
 use Phifty\FileUtils;
 use Phifty\Singleton;
@@ -17,7 +7,7 @@ use ArrayAccess;
 use IteratorAggregate;
 use ArrayIterator;
 
-class PluginManager extends Singleton
+class PluginManager
     implements ArrayAccess, IteratorAggregate
 {
 
@@ -107,6 +97,11 @@ class PluginManager extends Singleton
     public function getIterator() 
     {
         return new ArrayIterator( $this->plugins );
+    }
+
+    static function getInstance() {
+        static $instance;
+        return $instance ?: $instance = new static;
     }
 
 }

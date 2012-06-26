@@ -1,7 +1,7 @@
 <?php
 namespace Phifty;
 use Phifty\Kernel;
-
+use Universal\ClassLoader\SplClassLoader;
 
 /** 
  * Script for phifty kernel bootstrap
@@ -21,10 +21,11 @@ class Bootstrap
     static function bootstrap( $env = null )
     {
         // create spl classloader
-        $spl = new \Universal\ClassLoader\SplClassLoader;
+        $spl = new SplClassLoader;
         $spl->addNamespace(array( 
             'Phifty'     => PH_ROOT . '/src',
             'ActionKit'  => PH_ROOT . '/src',
+            'I18N'       => PH_ROOT . '/src',
             'AssetKit'   => PH_ROOT . '/vendor/assetkit/src',
             'LazyRecord' => PH_ROOT . '/vendor/lazyrecord/src',
             'FormKit'    => PH_ROOT . '/vendor/formkit/src',

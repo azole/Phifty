@@ -1,6 +1,5 @@
 <?php
-
-namespace Phifty;
+namespace Phifty\Plugin;
 use Phifty\MicroApp;
 use Phifty\Config\Accessor;
 
@@ -43,25 +42,25 @@ class Plugin extends MicroApp
      */
     public function config( $key ) 
     {
-		if( isset($this->config[ $key ]) ) {
-			if( is_array( $this->config[ $key ] ) )
-				return new Accessor($this->config[ $key ]);
+        if( isset($this->config[ $key ]) ) {
+            if( is_array( $this->config[ $key ] ) )
+                return new Accessor($this->config[ $key ]);
             return $this->config[ $key ];
-		}
+        }
 
-		if( strchr( $key , '.' ) !== false ) {
-			$parts = explode( '.' , $key );
-			$ref = $this->config;
-			while( $ref_key = array_shift( $parts ) ) {
-				if( ! isset($ref[ $ref_key ]) ) 
-					return null;
-					# throw new Exception( "Config key: $key not found.  '$ref_key'" );
-				$ref = & $ref[ $ref_key ];
-			}
-			return $ref;
-		}
-		return null;
-	}
+        if( strchr( $key , '.' ) !== false ) {
+            $parts = explode( '.' , $key );
+            $ref = $this->config;
+            while( $ref_key = array_shift( $parts ) ) {
+                if( ! isset($ref[ $ref_key ]) ) 
+                    return null;
+                    # throw new Exception( "Config key: $key not found.  '$ref_key'" );
+                $ref = & $ref[ $ref_key ];
+            }
+            return $ref;
+        }
+        return null;
+    }
 
 
 
@@ -148,5 +147,3 @@ class Plugin extends MicroApp
 
 }
 
-
-?>

@@ -1,6 +1,6 @@
 <?php
 namespace Phifty\Service;
-use Phifty\PluginManager;
+use Phifty\Plugin\PluginManager;
 
 class PluginService
     implements ServiceInterface
