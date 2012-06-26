@@ -25,7 +25,7 @@ class Bootstrap
         $spl->addNamespace(array( 
             'Phifty'     => PH_ROOT . '/src',
             'ActionKit'  => PH_ROOT . '/src',
-            'I18N'       => PH_ROOT . '/src',
+            'I18NKit'    => PH_ROOT . '/src',
             'AssetKit'   => PH_ROOT . '/vendor/assetkit/src',
             'LazyRecord' => PH_ROOT . '/vendor/lazyrecord/src',
             'FormKit'    => PH_ROOT . '/vendor/formkit/src',
