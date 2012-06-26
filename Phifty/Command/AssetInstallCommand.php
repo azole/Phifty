@@ -9,9 +9,9 @@ use AssetKit\LinkInstaller;
  * When running asset:init command, we should simply register app/plugin assets 
  * into .assetkit file.
  *
- * Then, By running asset:update command, phifty will install assets into webroot.
+ * Then, By running asset install command, phifty will install assets into webroot.
  */
-class AssetUpdateCommand extends Command
+class AssetInstallCommand extends Command
 {
     function options($opts)
     {
@@ -27,8 +27,8 @@ class AssetUpdateCommand extends Command
                 : new Installer;
 
         foreach( $config->getAssets() as $name => $asset ) {
-            $this->logger->info("Updating $name ...");
-            $asset->initResource(true); // update it
+            $this->logger->info("Installing $name ...");
+            $asset->initResource(true); // update/install it
 
             $this->logger->info( "Installing {$asset->name}" );
             $installer->install( $asset );

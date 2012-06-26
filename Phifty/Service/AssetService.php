@@ -33,6 +33,8 @@ class AssetService
                 $writer->name( $kernel->namespace );
             }
 
+            $writer->in('/assets');
+
             // cache
             if( isset($kernel->cache) ) {
                 $writer->cache( $kernel->cache );
