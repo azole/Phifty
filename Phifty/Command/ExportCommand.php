@@ -11,21 +11,17 @@ use CLIFramework\Command;
 class ExportCommand extends Command
 {
 
-    public function usage()
-    {
+    public function usage() {
         return 'export';
     }
 
-    public function brief()
-    {
-        return 'export application web paths to http webroot.';
+    public function brief() {
+        return 'export application/plugin web paths to webroot/.';
     }
 
     public function execute()
     {
-        $options = $this->getOptions();
-
-
+        $options = $this->options;
         $kernel       = kernel();
         $webroot      = $kernel->webroot;
         $webPluginDir = $kernel->getWebPluginDir();
