@@ -118,11 +118,5 @@ class Plugin extends MicroApp
     {
 
     }
-
-    /*
-    public function routing() { } 
-    public function view() { }
-    */
-
 }
 
