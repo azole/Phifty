@@ -55,6 +55,9 @@ class InitCommand extends Command
             system("chmod -R {$mod[0]} {$mod[1]}");
         }
 
+        if( PH_ROOT !== PH_APP_ROOT ) {
+            symlink( 'phifty' . DIRECTORY_SEPARATOR . 'assets' , 'assets' );
+        }
 
         $this->logger->info("Installing Assets");
 
