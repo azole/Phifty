@@ -1,6 +1,7 @@
 <?php
 namespace Phifty\Command;
 use Phifty\FileUtils;
+use Phifty\Plugin\Plugin;
 use CLIFramework\Command;
 
 
@@ -72,7 +73,7 @@ class ExportCommand extends Command
             $target = FileUtils::path_join( $webPluginDir , $name );
 
             // find source plugin path
-            $pluginDir = \Phifty\Plugin::locatePlugin( $name );
+            $pluginDir = Plugin::locatePlugin( $name );
             $pluginWebDir =  FileUtils::path_join( $pluginDir , 'web' );
             if( ! file_exists( $pluginWebDir ) ) 
                 continue;
