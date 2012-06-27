@@ -1,6 +1,6 @@
 <?php
 namespace Phifty;
-
+use Exception;
 use Phifty\View;
 use Phifty\WebUtils;
 use ActionKit\ActionRunner;
@@ -49,9 +49,11 @@ class Web
         $writer = $kernel->asset->writer;
         if( $name )
             $writer->name($name);
-
         $assets = array_map(function($n) use($kernel) {
-                    return $kernel->asset->loader->load($n);
+                    $a = $kernel->asset->loader->load($n);
+                    if( ! $a )
+                        throw new Exception("Asset $n can not be loaded, asset not found.");
+                    return $a;
                 },$assets);
         $manifest = $writer->write($assets);
         return $render->render($manifest);
