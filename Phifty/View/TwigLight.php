@@ -1,12 +1,11 @@
 <?php
 namespace Phifty\View;
 use Twig_Environment;
-use Twig_Extensions_Extension_Debug;
+use Twig_Extension_Debug;
 use Twig_Loader_String;
 
 class TwigLight 
 {
-
     static function getEngine()
     {
         static $engine;
@@ -18,8 +17,7 @@ class TwigLight
             # cache doesnt work here.
             # 'auto_reload' => true,
         ));
-        $debug = new \Twig_Extensions_Extension_Debug;
-        $twig->addExtension( $debug );
+        $twig->addExtension( new Twig_Extension_Debug );
         return $engine = $twig;
     }
 }
