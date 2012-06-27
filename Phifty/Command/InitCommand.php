@@ -56,11 +56,19 @@ class InitCommand extends Command
         }
 
         if( PH_ROOT !== PH_APP_ROOT ) {
-            symlink( 'phifty' . DIRECTORY_SEPARATOR . 'assets' , 'assets' );
+            // link 'assets/' to 'phifty/assets/'
+            if( ! file_exists('assets') )
+                symlink( 'phifty' . DIRECTORY_SEPARATOR . 'assets' , 'assets' );
+
+            // link 'vendor/' to 'phifty/vendor/'
+            if( ! file_exists('vendor') )
+                symlink( 'phifty' . DIRECTORY_SEPARATOR . 'vendor' , 'vendor' );
         }
 
-        $this->logger->info("Installing Assets");
 
+        // XXX: check if asset is enabled.
+
+        $this->logger->info("Installing Assets");
 
         // Add command factory to CLIFramework Command class.
         $init = new AssetInitCommand;
