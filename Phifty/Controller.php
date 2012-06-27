@@ -79,17 +79,6 @@ class Controller extends BaseController
         return new $class( $engine );  // pass 'Smarty' or 'Twig'
     }
 
-    /*
-    function run()
-    {
-        if( @$_POST )
-            return $this->post( $this->env );
-        else
-            return $this->get( $this->env );
-    }
-    */
-
-
     /**
      * Web utils functions 
      * */
