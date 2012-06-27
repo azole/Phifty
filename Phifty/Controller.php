@@ -1,6 +1,5 @@
 <?php
 namespace Phifty;
-use Phifty\Web\Request;
 use Universal\Http\HttpRequest;
 use ReflectionObject;
 use SerializerKit;
@@ -18,18 +17,12 @@ use Roller\Controller as BaseController;
 class Controller extends BaseController
 {
     /**
-     * @var Request env request object, handles post, get, request objects 
-     */
-    public $env;
-
-    /**
      * @var HttpRequest
      */
     public $request;
 
     public function init()
     {
-        $this->env   = new Request;
         $this->request = new HttpRequest;
     }
 
