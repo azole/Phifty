@@ -140,10 +140,9 @@ abstract class CRUDHandler extends Controller
         # make sure the model has defined lang column for I18N
         if( kernel()->plugin('I18N') && $langColumn = $model->getColumn('lang') )
         {
-            if( $this->request->param('_data_lang') ) {
-                if( $lang = $this->request->_data_lang ) 
-                    $collection->where()
-                        ->equal('lang', $lang);
+            if( $lang = $this->request->param('_data_lang') ) {
+                $collection->where()
+                    ->equal('lang', $lang);
             }
         }
 
@@ -163,7 +162,7 @@ abstract class CRUDHandler extends Controller
 
     function loadRecord()
     {
-        $id = $this->request->id;
+        $id = $this->request->param('id');
         $record = $this->getModel();
         $record->load( (int) $id );
         return $this->currentRecord = $record;
@@ -221,8 +220,8 @@ abstract class CRUDHandler extends Controller
      */
     function listRegionActionPrepare()
     {
-        $page = $this->request->page ?: 1;
-        $pageSize = $this->request->pagenum ?: $this->pageLimit;
+        $page = $this->request->param('page') ?: 1;
+        $pageSize = $this->request->param('pagenum') ?: $this->pageLimit;
 
         // SQLBuilder query doesn't support __clone, for that 
         // we have to create two collection for two queries.
