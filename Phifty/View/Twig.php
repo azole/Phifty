@@ -8,7 +8,7 @@ use Phifty\ClassUtils;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use Twig_Function_Function;
-use Twig_Extensions_Extension_Debug;
+use Twig_Extension_Debug;
 use Twig_Extension_Optimizer;
 use Twig_Extensions_Extension_Text;
 use Twig_Extensions_Extension_I18n;
@@ -92,7 +92,7 @@ class Twig extends \Phifty\View\Engine
 
             /* if twig config is not define, then use our dev default extensions */
             if( $isDev ) {
-                $debug = new Twig_Extensions_Extension_Debug;
+                $debug = new Twig_Extension_Debug;
                 $twig->addExtension( $debug );
             } else {
                 // for production
