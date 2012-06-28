@@ -139,7 +139,8 @@ class MicroApp
             }
 
             if( ! method_exists($class,$action) ) {
-                throw new Exception("Controller action <$class:$action>' does not exist.");
+                // FIXME, it's broken if class is not loaded.
+                // throw new Exception("Controller action <$class:$action>' does not exist.");
             }
             $router->add( $path, array($class,$action), $options );
         }
