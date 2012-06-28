@@ -129,7 +129,6 @@ class MicroApp
                 $class = $args;
             }
 
-
             /**
              * If it's not full-qualified classname, we should prepend our base namespace. 
              */
@@ -140,7 +139,7 @@ class MicroApp
             }
 
             if( ! method_exists($class,$action) ) {
-                $action = 'run';
+                throw new Exception("Controller action '$action' of '$class' does not exist.");
             }
             $router->add( $path, array($class,$action), $options );
         }
