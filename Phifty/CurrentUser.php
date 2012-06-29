@@ -30,6 +30,11 @@ class CurrentUser
 
 
     /**
+     * @var string model primary key
+     */
+    public $primaryKey = 'id';
+
+    /**
      * @var string session prefix string
      */
     public $sessionPrefix = '__user_';
@@ -54,8 +59,8 @@ class CurrentUser
         } else {
             // load from session, 
             // get current user record id, and find record from it.
-            if( $userId = $this->session->id ) {
-                $this->setRecord(new $this->userModelClass($userId));
+            if( $userId = $this->session->get( $this->primaryKey ) ) {
+                $this->setRecord(new $this->userModelClass(array( $this->primaryKey => $userId )));
             }
         }
     }
