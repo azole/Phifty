@@ -104,7 +104,7 @@ class CurrentUser
         return $this->session->role; // this will retrieve data from $this->data
     }
 
-    function getModelColumns() 
+    public function getModelColumns() 
     {
         $user = $this->newUserModel();
         return $user->getColumnNames();
