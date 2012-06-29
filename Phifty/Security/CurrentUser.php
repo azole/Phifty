@@ -85,10 +85,20 @@ class CurrentUser
             // load record from session, 
             // get current user record id, and find record from it.
             // 
-            // TODO: use virtual loading, 
-            //    do not manipulate database if we have data in session already.
+            // TODO: use virtual loading, do not manipulate database if we have 
+            // data in session already.
+            //
+            // TODO: provide a verify option to verify database item before 
+            // loading.
             if( $userId = $this->session->get( $this->primaryKey ) ) {
-                $this->setRecord(new $this->userModelClass(array( $this->primaryKey => $userId )));
+
+                $virtualRecord = new $this->userModelClass;
+                foreach( $virtualRecord->getColumnNames() as $name ) {
+                    $virtualRecord->$name = $this->session->get($name);
+                }
+                $this->record = $virtualRecord;
+
+                // $this->setRecord(new $this->userModelClass(array( $this->primaryKey => $userId )));
             }
         }
     }
