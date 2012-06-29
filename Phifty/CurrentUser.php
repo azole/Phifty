@@ -2,6 +2,7 @@
 namespace Phifty;
 use Phifty\Session;
 use Exception;
+use BadMethodCallException;
 
 /**
  * @package Phifty
@@ -71,16 +72,6 @@ class CurrentUser
     }
 
 
-    public function __set( $key , $value )
-    {
-        $this->session->set($key, $value);
-    }
-
-    public function __get( $key )
-    {
-        return $this->session->get($key);
-    }
-
     public function updateSession($record) 
     {
         $columns = $record->getColumnNames();
@@ -98,6 +89,33 @@ class CurrentUser
         }
         return false;
     }
+
+
+    public function __set( $key , $value )
+    {
+        if( $this->record ) {
+            $this->record->update(array($key => $value));
+            $this->session->set($key, $value);
+        }
+    }
+
+    public function __get( $key )
+    {
+        if( $this->record ) {
+            return $this->record->$key;
+            // return $this->session->get($key);
+        }
+    }
+
+    public function __call($method,$args) {
+        if( method_exists($this->record,$method) ) {
+            return call_user_func_array(array($this->record,$method), $args);
+        }
+        else {
+            throw new BadMethodCallException("$method not found.");
+        }
+    }
+
 
     public function getId()
     {
