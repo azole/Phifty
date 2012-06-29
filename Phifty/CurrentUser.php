@@ -104,43 +104,30 @@ class CurrentUser
         return $this->session->role; // this will retrieve data from $this->data
     }
 
-    public function getModelColumns() 
-    {
-        $user = $this->newUserModel();
-        return $user->getColumnNames();
-    }
-
-    function getCurrentRecord() 
+    public function getCurrentRecord() 
     {
         if( $this->record )
             return $this->record;
-
-        if( $this->getId() ) {
-            $user = $this->newUserModel( (int) $this->getId() );
-            if( $user->id )
-                return $this->record = $user;
-            else
-                throw new \Exception( 'CurrentUser data not found.' );
-        }
-        return null;
+        return false;
     }
 
-    function currentName()
+    public function currentName()
     {
-        $u = $this->getCurrentRecord();
-        if( $u ) {
+        if( $u = $this->getCurrentRecord() ) {
             if( method_exists( $u , 'currentName' ) )
                 return $u->currentName();
         }
         return $this->getId();
     }
 
-    function logout()
+    public function logout()
     {
         $this->session->clear();
     }
 
-    /* helper functions */
+    /*******************
+     * Helper functions 
+     *******************/
 
     /* is logged in ? */
     function isLogged() 
