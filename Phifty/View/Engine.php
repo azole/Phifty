@@ -11,7 +11,9 @@ abstract class Engine
     public $options = array();
     public $templateDirs = array();
     public $cacheDir;
-    public $renderer;
+
+
+    private $renderer;
 
     /*
      * Contructor 
@@ -50,8 +52,7 @@ abstract class Engine
             $this->kernel->frameworkDir,
         );
 
-        $configDirs = $this->kernel->config->get('framework','View.TemplateDirs');
-        if( $configDirs ) {
+        if( $configDirs = $this->kernel->config->get('framework','View.TemplateDirs') ) {
             foreach($configDirs as $dir) {
                 $dirs[] = PH_APP_ROOT . '/' . $dir;
             }
