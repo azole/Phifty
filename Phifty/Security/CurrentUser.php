@@ -52,10 +52,9 @@ class CurrentUser
             $record = $args;
         } 
         else {
-
             if( isset($args['record']) ) {
-                $this->record = $args['record'];
-                $this->userModelClass = get_class($this->record);
+                $record = $args['record'];
+                $this->userModelClass = get_class($record);
             }
             else {
                 $this->userModelClass = 
@@ -83,8 +82,11 @@ class CurrentUser
                 throw new Exception('CurrentUser can not be loaded from record.');
             }
         } else {
-            // load from session, 
+            // load record from session, 
             // get current user record id, and find record from it.
+            // 
+            // TODO: use virtual loading, 
+            //    do not manipulate database if we have data in session already.
             if( $userId = $this->session->get( $this->primaryKey ) ) {
                 $this->setRecord(new $this->userModelClass(array( $this->primaryKey => $userId )));
             }
@@ -153,9 +155,12 @@ class CurrentUser
     public function __get( $key )
     {
         if( $this->record ) {
+            if($val = $this->session->get($key)) {
+                return $val;
+            }
             return $this->record->$key;
-            // return $this->session->get($key);
         }
+        throw new Exception('Record is undefined.');
     }
 
 
@@ -174,12 +179,7 @@ class CurrentUser
 
     public function getId()
     {
-        return $this->session->id;
-    }
-
-    public function getRole()
-    {
-        return $this->session->role; // this will retrieve data from $this->data
+        return $this->id; // call __get
     }
 
     public function logout()
