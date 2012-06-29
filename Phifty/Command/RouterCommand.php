@@ -1,6 +1,7 @@
 <?php
 namespace Phifty\Command;
 use CLIFramework\Command;
+use Roller\Dumper\ConsoleDumper;
 
 class RouterCommand extends Command
 {
@@ -11,7 +12,8 @@ class RouterCommand extends Command
     {
         $router = kernel()->router;
         $router->compile();
-        $dumper = new \Roller\Dumper\ConsoleDumper;
+
+        $dumper = new ConsoleDumper;
         $dumper->dump( $router->routes );
     }
 }

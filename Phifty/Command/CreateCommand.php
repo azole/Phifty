@@ -34,7 +34,7 @@ class CreateCommand extends Command
         Utils::system("git submodule --quiet add -b $branch git@git.corneltek.com:phifty.git phifty");
 
         chdir('phifty');
-        Utils::system('onion bundle');
+        Utils::system('onion install');
         Utils::system('git submodule init');
         Utils::system('git submodule --quiet update');
         chdir($appdir);
@@ -84,8 +84,4 @@ EOS;
 
     }
 }
-
-
-
-
 
