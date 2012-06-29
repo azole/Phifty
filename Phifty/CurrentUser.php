@@ -99,15 +99,9 @@ class CurrentUser
         return $this->session->id;
     }
 
-    function getRole()
+    public function getRole()
     {
         return $this->session->role; // this will retrieve data from $this->data
-    }
-
-    function newUserModel()
-    {
-        $class = $this->userModelClass;
-        return new $class;
     }
 
     function getModelColumns() 
