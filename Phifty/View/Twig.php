@@ -8,8 +8,11 @@ use Phifty\ClassUtils;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use Twig_Function_Function;
+
 use Twig_Extension_Debug;
 use Twig_Extension_Optimizer;
+use Twig_Extension_Escaper;
+
 use Twig_Extensions_Extension_Text;
 use Twig_Extensions_Extension_I18n;
 
@@ -65,9 +68,8 @@ class Twig extends \Phifty\View\Engine
                         $extname = key($extension);
                         $options = $extension[ $extname ];
                     }
-                    $class = '\Twig_Extension_' . $extname;
-                    $ext = ClassUtils::new_class( $class , $options );
-                    $twig->addExtension($ext);
+                    $class = 'Twig_Extension_' . $extname;
+                    $twig->addExtension( ClassUtils::new_class( $class , $options ) );
                 }
             }
 
@@ -81,9 +83,8 @@ class Twig extends \Phifty\View\Engine
                         $extname = key($extension);
                         $options = $extension[ $extname ];
                     }
-                    $class = '\Twig_Extensions_Extension_' . $extname;
-                    $ext = ClassUtils::new_class( $class , $options );
-                    $twig->addExtension($ext);
+                    $class = 'Twig_Extensions_Extension_' . $extname;
+                    $twig->addExtension( ClassUtils::new_class( $class , $options ) );
                 }
             }
 
@@ -92,19 +93,14 @@ class Twig extends \Phifty\View\Engine
 
             /* if twig config is not define, then use our dev default extensions */
             if( $isDev ) {
-                $debug = new Twig_Extension_Debug;
-                $twig->addExtension( $debug );
+                $twig->addExtension( new Twig_Extension_Debug );
             } else {
-                // for production
-                $optiz = new Twig_Extension_Optimizer;
-                $twig->addExtension( $optiz );
+                // for production mode
+                $twig->addExtension( new Twig_Extension_Optimizer );
             }
 
-            $text = new Twig_Extensions_Extension_Text;
-            $twig->addExtension( $text );
-
-            $i18n = new Twig_Extensions_Extension_I18n;
-            $twig->addExtension( $i18n );
+            $twig->addExtension( new Twig_Extensions_Extension_Text );
+            $twig->addExtension( new Twig_Extensions_Extension_I18n );
         }
         $this->twigEnv = $twig;
         $this->twigLoader = $loader;
