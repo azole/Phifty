@@ -20,10 +20,10 @@ use Twig_Extensions_Extension_I18n;
 class Twig extends \Phifty\View\Engine 
 //    implements \Phifty\View\EngineInterface
 {
-    public $twigLoader;
-    public $twigEnv;
+    public $loader;
+    public $env;
 
-    function newRenderer()
+    public function newRenderer()
     {
         $cacheDir = $this->getCachePath();
         $dirs     = $this->getTemplateDirs();
@@ -54,7 +54,7 @@ class Twig extends \Phifty\View\Engine
          * Env Options
          * http://www.twig-project.org/doc/api.html#environment-options
          * */
-        $twig = new Twig_Environment($loader, $envOpts );
+        $this->env = new Twig_Environment($loader, $envOpts );
 
         /* load extensions from config settings */
         if( $twigConfig ) {
@@ -70,7 +70,7 @@ class Twig extends \Phifty\View\Engine
                         $options = $extension[ $extname ];
                     }
                     $class = 'Twig_Extension_' . $extname;
-                    $twig->addExtension( ClassUtils::new_class( $class , $options ) );
+                    $this->env->addExtension( ClassUtils::new_class( $class , $options ) );
                 }
             }
 
@@ -85,7 +85,7 @@ class Twig extends \Phifty\View\Engine
                         $options = $extension[ $extname ];
                     }
                     $class = 'Twig_Extensions_Extension_' . $extname;
-                    $twig->addExtension( ClassUtils::new_class( $class , $options ) );
+                    $this->env->addExtension( ClassUtils::new_class( $class , $options ) );
                 }
             }
 
@@ -94,29 +94,28 @@ class Twig extends \Phifty\View\Engine
 
             /* if twig config is not define, then use our dev default extensions */
             if( $isDev ) {
-                $twig->addExtension( new Twig_Extension_Debug );
+                $this->env->addExtension( new Twig_Extension_Debug );
             } else {
                 // for production mode
-                $twig->addExtension( new Twig_Extension_Optimizer );
+                $this->env->addExtension( new Twig_Extension_Optimizer );
             }
 
-            $twig->addExtension( new Twig_Extensions_Extension_Text );
-            $twig->addExtension( new Twig_Extensions_Extension_I18n );
+            $this->env->addExtension( new Twig_Extensions_Extension_Text );
+            $this->env->addExtension( new Twig_Extensions_Extension_I18n );
         }
-        $this->twigEnv = $twig;
-        $this->twigLoader = $loader;
-        $this->registerFunctions( $twig );
-        return $twig;
+        $this->loader = $loader;
+        $this->registerFunctions();
+        return $this->env;
     }
 
-    function registerFunctions( $twig )
+    function registerFunctions()
     {
-        $twig->addFunction('uniqid', new Twig_Function_Function('uniqid'));
-        $twig->addFunction('md5', new Twig_Function_Function('md5'));
-        $twig->addFunction('time', new Twig_Function_Function('time'));
-        $twig->addFunction('sha1', new Twig_Function_Function('sha1'));
-        $twig->addFunction('gettext', new Twig_Function_Function('gettext'));
-        $twig->addFunction('_', new Twig_Function_Function('_'));
+        $this->env->addFunction('uniqid'  , new Twig_Function_Function('uniqid'));
+        $this->env->addFunction('md5'     , new Twig_Function_Function('md5'));
+        $this->env->addFunction('time'    , new Twig_Function_Function('time'));
+        $this->env->addFunction('sha1'    , new Twig_Function_Function('sha1'));
+        $this->env->addFunction('gettext' , new Twig_Function_Function('gettext'));
+        $this->env->addFunction('_'       , new Twig_Function_Function('_'));
     }
 
     function newStringRenderer()
