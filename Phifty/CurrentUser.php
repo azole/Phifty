@@ -23,11 +23,20 @@ class CurrentUser
     /* User model class */
     public $userModelClass;
 
+    /**
+     * @var mixed User model record
+     */
     public $record; // user model record
 
+
+    /**
+     * @var string session prefix string
+     */
     public $sessionPrefix = '__user_';
 
-    /* Phifty\Session object */
+    /**
+     * @var Phifty\Session Session Manager
+     */
     public $session;
 
     function __construct($record = null)
@@ -39,13 +48,14 @@ class CurrentUser
 
         /* if record is specified, update session from record */
         if( $record ) {
-            if( ! $this->loadFromRecord( $record ) ) {
+            if( ! $this->setRecord( $record ) ) {
                 throw new Exception('CurrentUser can not be loaded from record.');
             }
         } else {
-            // load from session
+            // load from session, 
+            // get current user record id, and find record from it.
             if( $userId = $this->session->id ) {
-                $this->record = new $this->userModelClass($userId);
+                $this->setRecord(new $this->userModelClass($userId));
             }
         }
     }
@@ -74,7 +84,7 @@ class CurrentUser
         }
     }
 
-    public function loadFromRecord( $record )
+    public function setRecord( $record )
     {
         if( $record && $record->id ) {
             $this->updateSession($record);
@@ -84,7 +94,7 @@ class CurrentUser
         return false;
     }
 
-    function getId() 
+    public function getId()
     {
         return $this->session->id;
     }
