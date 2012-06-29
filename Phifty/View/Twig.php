@@ -12,6 +12,7 @@ use Twig_Function_Function;
 use Twig_Extension_Debug;
 use Twig_Extension_Optimizer;
 use Twig_Extension_Escaper;
+use Twig_Loader_String;
 
 use Twig_Extensions_Extension_Text;
 use Twig_Extensions_Extension_I18n;
@@ -25,8 +26,8 @@ class Twig extends \Phifty\View\Engine
     function newRenderer()
     {
         $cacheDir = $this->getCachePath();
-        $dirs = $this->getTemplateDirs();
-        $loader = new Twig_Loader_Filesystem( $dirs );
+        $dirs     = $this->getTemplateDirs();
+        $loader   = new Twig_Loader_Filesystem( $dirs );
 
         $envOpts = array();
 
@@ -120,35 +121,29 @@ class Twig extends \Phifty\View\Engine
 
     function newStringRenderer()
     {
-        $loader = new \Twig_Loader_String();
-        $twig = new \Twig_Environment($loader);
-        return $twig;
+        return new Twig_Environment( new Twig_Loader_String );
     }
 
     function render( $template,$args = array() )
     {
-        $template = $this->getRenderer()->loadTemplate( $template );
-        return $template->render( $args );
+        return $this->getRenderer()->loadTemplate( $template )->render( $args );
     }
 
     function display( $template , $args = array() )
     {
-        $template = $this->getRenderer()->loadTemplate( $template );
-        $template->display( $args );
+        $this->getRenderer()->loadTemplate( $template )->display($args);
     }
 
     function renderString( $stringTemplate , $args = array() )
     {
         $twig = $this->newStringRenderer();
-        $template = $twig->loadTemplate( $stringTemplate );
-        return $template->render( $args );
+        return $twig->loadTemplate( $stringTemplate )->render( $args );
     }
 
     function displayString( $stringTemplate , $args = array() )
     {
         $twig = $this->newStringRenderer();
-        $template = $twig->loadTemplate( $stringTemplate );
-        $template->display( $args );
+        $twig->loadTemplate( $stringTemplate )->display($args);
     }
 
 }
