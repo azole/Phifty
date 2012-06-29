@@ -45,11 +45,29 @@ class CurrentUser
      */
     public $session;
 
-    function __construct($record = null)
+    function __construct($args = array() )
     {
-        $this->userModelClass = kernel()->config->get( 'framework', 'CurrentUser.Model' );
+        $record = null;
+        if( is_object($args) ) {
+            $record = $args;
+        } 
+        else {
+            $this->userModelClass = 
+                isset($args['model_class']) 
+                ? $args['model_class']
+                : kernel()->config->get( 'framework', 'CurrentUser.Model' );
 
-        /* create a session pool with prefix 'user_' */
+            if( isset($args['session_prefix']) ) {
+                $this->sessionPrefix = $args['session_prefix'];
+            }
+            if( isset($args['primary_key']) ) {
+                $this->primaryKey = $args['primary_key'];
+            }
+        }
+
+        /**
+         * Initialize a session pool with prefix 'user_' 
+         */
         $this->session = new Session( $this->sessionPrefix );
 
         /* if record is specified, update session from record */
@@ -66,20 +84,39 @@ class CurrentUser
         }
     }
 
-    public function setUserModelClass( $class )
+
+    /**
+     * Set user model class
+     *
+     * @param string $class user model class
+     */
+    public function setUserModelClass($class)
     {
         $this->userModelClass = $class;
     }
 
 
+
+    /**
+     * Update session data from record
+     *
+     * @param mixed User record object
+     */
     public function updateSession($record) 
     {
-        $columns = $record->getColumnNames();
-        foreach( $columns as $name ) {
+        foreach( $record->getColumnNames() as $name ) {
             $this->session->set( $name, $record->$name );
         }
     }
 
+
+    /**
+     * Set current user record 
+     *
+     * @param mixed User record object
+     *
+     * @return bool
+     */
     public function setRecord( $record )
     {
         if( $record && $record->id ) {
@@ -91,6 +128,10 @@ class CurrentUser
     }
 
 
+
+    /**
+     * Integrate setter with model record object
+     */
     public function __set( $key , $value )
     {
         if( $this->record ) {
@@ -99,6 +140,9 @@ class CurrentUser
         }
     }
 
+    /**
+     * Integrate getter with model record object
+     */
     public function __get( $key )
     {
         if( $this->record ) {
@@ -107,6 +151,10 @@ class CurrentUser
         }
     }
 
+
+    /**
+     * Mixin with user record object.
+     */
     public function __call($method,$args) {
         if( method_exists($this->record,$method) ) {
             return call_user_func_array(array($this->record,$method), $args);
@@ -127,22 +175,6 @@ class CurrentUser
         return $this->session->role; // this will retrieve data from $this->data
     }
 
-    public function getCurrentRecord() 
-    {
-        if( $this->record )
-            return $this->record;
-        return false;
-    }
-
-    public function currentName()
-    {
-        if( $u = $this->getCurrentRecord() ) {
-            if( method_exists( $u , 'currentName' ) )
-                return $u->currentName();
-        }
-        return $this->getId();
-    }
-
     public function logout()
     {
         $this->session->clear();
@@ -153,25 +185,24 @@ class CurrentUser
      *******************/
 
     /* is logged in ? */
-    function isLogged() 
+    public function isLogged() 
     {
         return $this->getId();
     }
 
-    function isAdmin() 
+    public function isAdmin() 
     {
         return $this->role === "admin";
     }
 
-    function isStaff()
+    public function isStaff()
     {
         return $this->role === "staff";
     }
 
-    function isUser() 
+    public function isUser() 
     {
         return $this->role === "user";
     }
-
 }
 
