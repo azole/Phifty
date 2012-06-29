@@ -52,10 +52,17 @@ class CurrentUser
             $record = $args;
         } 
         else {
-            $this->userModelClass = 
-                isset($args['model_class']) 
-                ? $args['model_class']
-                : kernel()->config->get( 'framework', 'CurrentUser.Model' );
+
+            if( isset($args['record']) ) {
+                $this->record = $args['record'];
+                $this->userModelClass = get_class($this->record);
+            }
+            else {
+                $this->userModelClass = 
+                    isset($args['model_class']) 
+                    ? $args['model_class']
+                    : kernel()->config->get( 'framework', 'CurrentUser.Model' );
+            }
 
             if( isset($args['session_prefix']) ) {
                 $this->sessionPrefix = $args['session_prefix'];

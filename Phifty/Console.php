@@ -18,7 +18,6 @@ class Console extends Application
     function init()
     {
         parent::init();
-
         $this->registerCommand('init');
         $this->registerCommand('create');
         $this->registerCommand('build-conf');
@@ -26,11 +25,9 @@ class Console extends Application
         $this->registerCommand('locale');
         $this->registerCommand('console');
         $this->registerCommand('router');
-
         $this->registerCommand('asset');
         $this->registerCommand('generate');
     }
-
 
     static function getInstance()
     {
