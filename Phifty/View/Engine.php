@@ -8,10 +8,10 @@ use ActionKit\Runner as ActionRunner;
 abstract class Engine
 {
     public $kernel;
-	public $options = array();
+    public $options = array();
     public $templateDirs = array();
     public $cacheDir;
-	public $renderer;
+    public $renderer;
 
     /*
      * Contructor 
@@ -22,11 +22,11 @@ abstract class Engine
     {
         $this->kernel = kernel();
 
-		/* save options */
-		$this->options = $options;
+        /* save options */
+        $this->options = $options;
 
 
-		/* preprocess options */
+        /* preprocess options */
         if( isset( $options['template_dirs'] ) )
             $this->templateDirs = (array) $options['template_dirs'];
 
@@ -112,7 +112,7 @@ abstract class Engine
         /* default template paths */
         $paths = array();
 
-		/* framework core view template dir */
+        /* framework core view template dir */
         $frameT = kernel()->app('Core')->getTemplateDir();
         if( file_exists($frameT) ) {
             $paths[] = $frameT;
