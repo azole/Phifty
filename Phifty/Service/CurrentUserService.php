@@ -12,13 +12,25 @@ class CurrentUserService
         // current user builder
         $kernel->currentUser = function() use ($kernel,$options) {
             // framework.CurrentUser.Class is for backward compatible.
-            $modelClass = isset($options['Model'])
+            $args = array();
+
+            $args['model_class'] = isset($options['Model'])
                 ? $options['Model']
                 : $kernel->config->get('framework','CurrentUser.Model');
+
+            if( isset($args['PrimaryKey']) ) {
+                $args['primary_key'] = $args['PrimaryKey'];
+            }
+
+            if( isset($args['SessionPrefix']) ) {
+                $args['session_prefix'] = $args['SessionPrefix'];
+            }
+
             $currentUserClass = isset($options['Class'])
                 ? $options['Class']
                 : $kernel->config->get('framework','CurrentUser.Class') ?: 'Phifty\Security\CurrentUser';
-            return new $currentUserClass;
+
+            return new $currentUserClass($args);
         };
     }
 }

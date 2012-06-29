@@ -18,6 +18,10 @@ use BadMethodCallException;
  * TODO: support login from cookie
  *
  *   $currentUser = new CurrentUser;  // load current user from session data
+ *
+ *   $currentUser = new CurrentUser(array( 
+ *       'model_class' => 'User\Model\User',
+ *   ));
 */
 class CurrentUser 
 {
