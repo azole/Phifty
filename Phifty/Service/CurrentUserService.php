@@ -17,7 +17,7 @@ class CurrentUserService
                 : $kernel->config->get('framework','CurrentUser.Model');
             $currentUserClass = isset($options['Class'])
                 ? $options['Class']
-                : $kernel->config->get('framework','CurrentUser.Class') ?: 'Phifty\CurrentUser';
+                : $kernel->config->get('framework','CurrentUser.Class') ?: 'Phifty\Security\CurrentUser';
             return new $currentUserClass;
         };
     }
