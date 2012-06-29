@@ -1,7 +1,7 @@
 <?php
 namespace Phifty;
 use Phifty\Kernel;
-use Phifty\CurrentUser;
+use Phifty\Security\CurrentUser;
 use Phifty\Locale;
 use Phifty\Web;
 use Phifty\FileUtils;
