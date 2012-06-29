@@ -18,7 +18,7 @@ abstract class Engine
      *   template_dirs
      *   cache_dir
      */
-    function __construct( $options = array() )
+    public function __construct( $options = array() )
     {
         $this->kernel = kernel();
 
@@ -50,7 +50,7 @@ abstract class Engine
             $this->kernel->frameworkDir,
         );
 
-        $configDirs = kernel()->config->get('framework','View.TemplateDirs');
+        $configDirs = $this->kernel->config->get('framework','View.TemplateDirs');
         if( $configDirs ) {
             foreach($configDirs as $dir) {
                 $dirs[] = PH_APP_ROOT . '/' . $dir;
@@ -100,8 +100,8 @@ abstract class Engine
         if( $this->cacheDir )
             return $this->cacheDir;
 
-        return kernel()->config->get( 'framework', 'View.CacheDir' )
-            ?: FileUtils::path_join( kernel()->rootDir , 'cache' );
+        return $this->kernel->config->get( 'framework', 'View.CacheDir' )
+            ?: FileUtils::path_join( $this->kernel->rootDir , 'cache' );
     }
 
     function getTemplateDirs()
@@ -113,24 +113,24 @@ abstract class Engine
         $paths = array();
 
         /* framework core view template dir */
-        $frameT = kernel()->app('Core')->getTemplateDir();
+        $frameT = $this->kernel->app('Core')->getTemplateDir();
         if( file_exists($frameT) ) {
             $paths[] = $frameT;
         }
 
-        if( $dirs = kernel()->config->get( 'framework', 'View.TemplateDirs' ) ) {
+        if( $dirs = $this->kernel->config->get( 'framework', 'View.TemplateDirs' ) ) {
             foreach( $dirs as $dir )
-                $paths[] = kernel()->rootDir  . DIRECTORY_SEPARATOR . $dir;
+                $paths[] = $this->kernel->rootDir  . DIRECTORY_SEPARATOR . $dir;
         }
-        $paths[] = kernel()->rootPluginDir;
-        $paths[] = kernel()->frameworkPluginDir;
+        $paths[] = $this->kernel->rootPluginDir;
+        $paths[] = $this->kernel->frameworkPluginDir;
         return $paths;
     }
 
 
     /* render method should be defined,
      * we should just call render method by default. */
-    function display( $template , $args = null )
+    public function display( $template , $args = null )
     {
         echo $this->render( $template , $args );
     }
