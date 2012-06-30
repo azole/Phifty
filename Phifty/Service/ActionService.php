@@ -16,7 +16,7 @@ class ActionService
         };
 
         $kernel->event->register('view.init', function($view) {
-            $this->args['Action'] = ActionRunner::getInstance();
+            $view->args['Action'] = ActionRunner::getInstance();
         });
 
         $kernel->classloader->addNamespace(array( 'ActionKit' => array( $kernel->frameworkDir . DIRECTORY_SEPARATOR . 'src' ) ));
