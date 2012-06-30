@@ -9,6 +9,10 @@ class CurrentUserService
 
     public function register($kernel,$options = array() )
     {
+
+        $kernel->event->register('view.init', function($view) {
+            $view->args['currentUser'] = $kernel->currentUser;
+        });
         // current user builder
         $kernel->currentUser = function() use ($kernel,$options) {
             // framework.CurrentUser.Class is for backward compatible.

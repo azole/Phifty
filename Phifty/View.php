@@ -14,6 +14,7 @@ class View
         $this->init();
         $this->exporter = new \Phifty\Web\Exporter;
         $this->args = array_merge( $this->args , $this->exporter->vars );
+        kernel()->event->trigger('view.init', $this);
     }
 
     function init()

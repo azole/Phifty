@@ -10,7 +10,7 @@ class Exporter
 {
     public $vars = array();
 
-    public function __construct( ) 
+    public function __construct( )
     {
         $this->vars['Request'] = new HttpRequest;
         $this->vars['Env'] = array( 
