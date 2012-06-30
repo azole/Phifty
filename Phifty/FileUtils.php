@@ -1,5 +1,4 @@
 <?php
-
 namespace Phifty;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;

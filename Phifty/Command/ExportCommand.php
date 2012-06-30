@@ -1,7 +1,7 @@
 <?php
 namespace Phifty\Command;
 use Phifty\FileUtils;
-use Phifty\Asset\AssetFinder;
+use Phifty\Plugin\Plugin;
 use CLIFramework\Command;
 
 
@@ -11,21 +11,17 @@ use CLIFramework\Command;
 class ExportCommand extends Command
 {
 
-    public function usage()
-    {
+    public function usage() {
         return 'export';
     }
 
-    public function brief()
-    {
-        return 'export application web paths to http webroot.';
+    public function brief() {
+        return 'export application/plugin web paths to webroot/.';
     }
 
     public function execute()
     {
-        $options = $this->getOptions();
-
-
+        $options = $this->options;
         $kernel       = kernel();
         $webroot      = $kernel->webroot;
         $webPluginDir = $kernel->getWebPluginDir();
@@ -73,7 +69,7 @@ class ExportCommand extends Command
             $target = FileUtils::path_join( $webPluginDir , $name );
 
             // find source plugin path
-            $pluginDir = \Phifty\Plugin::locatePlugin( $name );
+            $pluginDir = Plugin::locatePlugin( $name );
             $pluginWebDir =  FileUtils::path_join( $pluginDir , 'web' );
             if( ! file_exists( $pluginWebDir ) ) 
                 continue;
@@ -86,32 +82,6 @@ class ExportCommand extends Command
             if( ! file_exists( $target ) )
                 symlink( $pluginWebDir , $target );
         }
-
-
-        /*
-         * Export asset web dirs 
-         *
-         * Export assets/Galleria/web to PH_APP_ROOT/webroot/ph/assets/Galleria
-         */
-        $assets = AssetFinder::findAll();
-        // $webAssetDir;
-        $this->logger->info("Creating links for assets");
-        foreach( $assets as $name => $assetInfo ) {
-            $source = $assetInfo->web;
-            $target = FileUtils::path_join( $webAssetDir , $assetInfo->name );
-
-            if( file_exists( $target ) )
-                unlink( $target );
-
-            if( file_exists($source) ) {
-                $this->logger->info("\tcreate link $name\t\t$target");
-                symlink( $source, $target );
-            }
-            else {
-                throw new Exception( "$source does not exist. can not create $target." );
-            }
-        }
-
         $this->logger->info( "Done" );
     }
 }

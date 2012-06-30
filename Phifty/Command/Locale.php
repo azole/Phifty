@@ -15,7 +15,7 @@ class Locale extends Command
     {
         $kernel      = kernel();
 
-        $frameworkId = Kernel::FRAMEWORK_ID;
+        $frameworkId = $kernel::FRAMEWORK_ID;
         $appId       = $kernel->config->framework->ApplicationID;
 
         /* merge/update framework locale into app locale dir */

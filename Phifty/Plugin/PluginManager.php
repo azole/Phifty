@@ -1,15 +1,5 @@
 <?php
-/*
- * This file is part of the {{ }} package.
- *
- * (c) Yo-An Lin <cornelius.howl@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- */
-namespace Phifty;
-
+namespace Phifty\Plugin;
 use Exception;
 use Phifty\FileUtils;
 use Phifty\Singleton;
@@ -17,7 +7,7 @@ use ArrayAccess;
 use IteratorAggregate;
 use ArrayIterator;
 
-class PluginManager extends Singleton
+class PluginManager
     implements ArrayAccess, IteratorAggregate
 {
 
@@ -26,9 +16,15 @@ class PluginManager extends Singleton
      */
     public $plugins = array();
 
+    public $pluginDirs = array();
+
     public function isLoaded( $name )
     {
         return isset( $this->plugins[ $name ] );
+    }
+
+    public function registerPluginDir($dir) {
+        $this->pluginDirs[] = $dir;
     }
 
     public function getList()
@@ -59,17 +55,32 @@ class PluginManager extends Singleton
             return $this->plugins[ $name ];
     }
 
+    protected function _loadPlugin($name) {
+        # $name = '\\' . ltrim( $name , '\\' );
+        $class = "$name\\$name";
+        if( class_exists($class,true) ) {
+            return $class;
+        }
+        else {
+            // try to require plugin class from plugin path
+            $subpath = $name . DIRECTORY_SEPARATOR . $name . '.php';
+            foreach( $this->pluginDirs as $dir ) {
+                $path = $dir . DIRECTORY_SEPARATOR . $subpath;
+                if( file_exists($path) ) {
+                    require $path;
+                    return $class;
+                }
+            }
+        }
+    }
 
     /**
      * Load plugin
      */
     public function load( $name , $config = array() )
     {
-        # $name = '\\' . ltrim( $name , '\\' );
-        $class = "\\$name\\$name";
-        if( class_exists($class,true) ) {
+        if( $class = $this->_loadPlugin($name) ) {
             $plugin = $class::getInstance();
-
             // XXX: better solution
             $plugin->init( $plugin->mergeWithDefaultConfig( $config ) );
             return $this->plugins[ $name ] = $plugin;
@@ -106,6 +117,11 @@ class PluginManager extends Singleton
     public function getIterator() 
     {
         return new ArrayIterator( $this->plugins );
+    }
+
+    static function getInstance() {
+        static $instance;
+        return $instance ?: $instance = new static;
     }
 
 }

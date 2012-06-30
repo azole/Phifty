@@ -1,6 +1,6 @@
 <?php
 namespace Phifty\Service;
-use Phifty\PluginManager;
+use Phifty\Plugin\PluginManager;
 
 class PluginService
     implements ServiceInterface
@@ -19,6 +19,10 @@ class PluginService
         // plugin manager depends on classloader,
         // register plugin namespace to classloader.
         $manager = PluginManager::getInstance();
+        if( PH_APP_ROOT !== PH_ROOT )
+            $manager->registerPluginDir( PH_APP_ROOT . DIRECTORY_SEPARATOR . 'plugins' );
+        $manager->registerPluginDir( PH_ROOT . DIRECTORY_SEPARATOR . 'plugins' );
+
         foreach( $config as $pluginName => $config ) {
             $kernel->classloader->addNamespace(array( 
                 $pluginName => array( 

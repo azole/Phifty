@@ -1,7 +1,7 @@
 <?php
-
-namespace Phifty;
+namespace Phifty\Plugin;
 use Phifty\MicroApp;
+use Phifty\FileUtils;
 use Phifty\Config\Accessor;
 
 class Plugin extends MicroApp
@@ -35,7 +35,7 @@ class Plugin extends MicroApp
 
 
     /**
-     * get config:
+     * Get plugin config
      *
      * @param string $key config key
      *
@@ -43,25 +43,25 @@ class Plugin extends MicroApp
      */
     public function config( $key ) 
     {
-		if( isset($this->config[ $key ]) ) {
-			if( is_array( $this->config[ $key ] ) )
-				return new Accessor($this->config[ $key ]);
+        if( isset($this->config[ $key ]) ) {
+            if( is_array( $this->config[ $key ] ) )
+                return new Accessor($this->config[ $key ]);
             return $this->config[ $key ];
-		}
+        }
 
-		if( strchr( $key , '.' ) !== false ) {
-			$parts = explode( '.' , $key );
-			$ref = $this->config;
-			while( $ref_key = array_shift( $parts ) ) {
-				if( ! isset($ref[ $ref_key ]) ) 
-					return null;
-					# throw new Exception( "Config key: $key not found.  '$ref_key'" );
-				$ref = & $ref[ $ref_key ];
-			}
-			return $ref;
-		}
-		return null;
-	}
+        if( strchr( $key , '.' ) !== false ) {
+            $parts = explode( '.' , $key );
+            $ref = $this->config;
+            while( $ref_key = array_shift( $parts ) ) {
+                if( ! isset($ref[ $ref_key ]) ) 
+                    return null;
+                    # throw new Exception( "Config key: $key not found.  '$ref_key'" );
+                $ref = & $ref[ $ref_key ];
+            }
+            return $ref;
+        }
+        return null;
+    }
 
 
 
@@ -76,26 +76,6 @@ class Plugin extends MicroApp
 
     }
 
-    function getWebURL( $path )
-    {
-        $baseURL = 'ph/plugins/' . $this->getName() . '/' . $path;
-        return $baseURL;
-    }
-
-
-    function includeJs( $path )
-    {
-        $baseURL = $this->getWebURL( $path );
-        return '<script src="' . $baseURL . '">' . '</script>' ;
-    }
-
-    function includeCss( $path )
-    {
-        $baseURL = $this->getWebURL( $path );
-        return '<link rel="stylesheet" href="' . $baseURL . '" type="text/css" media="screen" charset="utf-8"/>';
-    }
-
-
     /* static method */
     static function locatePlugin( $name )
     {
@@ -107,7 +87,6 @@ class Plugin extends MicroApp
             if( file_exists( $path ) )
                 return $path;
     }
-
 
     function getExportWebDir()
     {
@@ -140,13 +119,5 @@ class Plugin extends MicroApp
     {
 
     }
-
-    /*
-    public function routing() { } 
-    public function view() { }
-    */
-
 }
 
-
-?>
