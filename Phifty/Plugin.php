@@ -16,7 +16,7 @@ class Plugin extends MicroApp
 
     public function mergeWithDefaultConfig( $config = array() )
     {
-        $this->config = array_merge( $this->defaultConfig() , $config ?: array() );
+        return $this->config = array_merge( $this->defaultConfig() , $config ?: array() );
     }
 
     /*

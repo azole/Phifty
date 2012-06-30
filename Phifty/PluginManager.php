@@ -70,9 +70,8 @@ class PluginManager extends Singleton
         if( class_exists($class,true) ) {
             $plugin = $class::getInstance();
 
-            // xxx: better solution
-            $plugin->mergeWithDefaultConfig( $config );
-            $plugin->init();
+            // XXX: better solution
+            $plugin->init( $plugin->mergeWithDefaultConfig( $config ) );
             return $this->plugins[ $name ] = $plugin;
         }
         throw new Exception("Plugin $class is not found.");
@@ -83,22 +82,22 @@ class PluginManager extends Singleton
     {
         $this->plugins[ $name ] = $plugin;
     }
-    
+
     public function offsetSet($name,$value)
     {
         $this->plugins[ $name ] = $value;
     }
-    
+
     public function offsetExists($name)
     {
         return isset($this->plugins[ $name ]);
     }
-    
+
     public function offsetGet($name)
     {
         return $this->plugins[ $name ];
     }
-    
+
     public function offsetUnset($name)
     {
         unset($this->plugins[$name]);
