@@ -11,7 +11,7 @@ class CurrentUserService
     {
 
         $kernel->event->register('view.init', function($view) {
-            $view->args['CurrentUser'] = $kernel->currentUser;
+            $view->args['CurrentUser'] = kernel()->currentUser;
         });
         // current user builder
         $kernel->currentUser = function() use ($kernel,$options) {
