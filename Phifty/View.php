@@ -2,8 +2,11 @@
 namespace Phifty;
 use Exception;
 use ArrayAccess;
+use ArrayIterator;
 use IteratorAggregate;
 use Universal\Http\HttpRequest;
+use InvalidArgumentException;
+use Phifty\Web;
 
 class View
     implements ArrayAccess, IteratorAggregate
@@ -12,18 +15,20 @@ class View
 
     protected $engine;
 
-    protected $defaultEngine = 'smarty';
+    protected $defaultEngine = 'twig';
 
     function __construct( $engine = null , $engineOpts = null ) 
     {
-        $this->setupEngine( $engine , $engineOpts );
+        $this->initEngine( $engine , $engineOpts );
         $this->init();
 
         // register args
         $this->args['Kernel']      = kernel();
         $this->args['Request'] = new HttpRequest;
 
-        $this->args['Web']         = new \Phifty\Web;
+        // helper functions
+        // TODO: refactor to event
+        $this->args['Web']         = new Web;
 
         kernel()->event->trigger('view.init', $this);
     }
@@ -33,14 +38,15 @@ class View
 
     }
 
-    function setupEngine( $engine = null , $engineOpts = null )
+    function initEngine( $engine = null , $engineOpts = null )
     {
         if( $engine ) {
             /* if it's an engine object already, just save it */
-            if( is_object( $engine ) )
+            if( is_object( $engine ) ) {
                 $this->engine = $engine;
-            else
+            } else {
                 $this->engine = \Phifty\View\Engine::createEngine( $engine , $engineOpts );
+            }
         } else {
             /* get default engine from config */
             $backend = kernel()->config->get('framework','View.Backend') ?: 'twig';
@@ -48,28 +54,30 @@ class View
         }
     }
 
-    function __set( $name , $value )
+    public function __set( $name , $value )
     {
         $this->args[ $name ] = $value;
     }
 
-    function __get( $name )
+    public function __get( $name )
     {
-        return $this->args[ $name ];
+        if( isset($this->args[$name]) ) {
+            return $this->args[ $name ];
+        }
     }
 
 
     /*
      * Assign template variable
      *
-     * ->assign( array( .... ) );
+     * ->assign( array( key => value , key2 => value2 ) );
      * ->assign( key , value );
      *
      */
     function assign()
     {
         $args = func_get_args();
-		if( is_array( $args[0] ) ) {
+        if( is_array( $args[0] ) ) {
             foreach( $args[0] as $k => $v ) {
                 $this->args[ $k ] = $v;
             }
@@ -78,7 +86,7 @@ class View
             list($name,$value) = $args;
             $this->args[ $name ] = $value;
         } else {
-            throw new Exception( "Unknown assignment of " . __CLASS__ );
+            throw new InvalidArgumentException( "Unknown assignment of " . __CLASS__ );
         }
     }
 
