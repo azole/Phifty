@@ -1,19 +1,30 @@
 <?php
 namespace Phifty;
 use Exception;
+use ArrayAccess;
+use IteratorAggregate;
+use Universal\Http\HttpRequest;
 
-class View 
+class View
+    implements ArrayAccess, IteratorAggregate
 {
-    protected $args = array();
+    public $args = array();
+
     protected $engine;
+
     protected $defaultEngine = 'smarty';
 
     function __construct( $engine = null , $engineOpts = null ) 
     {
         $this->setupEngine( $engine , $engineOpts );
         $this->init();
-        $this->exporter = new \Phifty\Web\Exporter;
-        $this->args = array_merge( $this->args , $this->exporter->vars );
+
+        // register args
+        $this->args['Kernel']      = kernel();
+        $this->args['Request'] = new HttpRequest;
+
+        $this->args['Web']         = new \Phifty\Web;
+
         kernel()->event->trigger('view.init', $this);
     }
 
@@ -127,6 +138,32 @@ class View
     {
         return $this->render();
     }
+
+    public function offsetSet($name,$value)
+    {
+        $this->args[ $name ] = $value;
+    }
+
+    public function offsetExists($name)
+    {
+        return isset($this->args[ $name ]);
+    }
+
+    public function offsetGet($name)
+    {
+        return $this->args[ $name ];
+    }
+
+    public function offsetUnset($name)
+    {
+        unset($this->args[$name]);
+    }
+
+    public function getIterator() 
+    {
+        return new ArrayIterator( $this->args );
+    }
+
 
 }
 

@@ -10,6 +10,10 @@ class ActionService
 
     public function register($kernel, $options = array() )
     {
+        $kernel->event->register('view.init', function($view) {
+            $this->args['Action'] = ActionRunner::getInstance();
+        });
+
         $kernel->action = function() use ($options) {
             return \ActionKit\ActionRunner::getInstance();
         };
