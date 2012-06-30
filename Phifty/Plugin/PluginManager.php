@@ -1,5 +1,5 @@
 <?php
-namespace Phifty\Plugin;
+namespace Phifty\Plugin\Plugin;
 use Exception;
 use Phifty\FileUtils;
 use Phifty\Singleton;

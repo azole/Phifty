@@ -1,5 +1,5 @@
 <?php
-namespace Phifty\Plugin;
+namespace Phifty\Plugin\Plugin;
 use Phifty\MicroApp;
 use Phifty\FileUtils;
 use Phifty\Config\Accessor;
