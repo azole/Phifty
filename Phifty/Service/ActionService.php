@@ -10,9 +10,11 @@ class ActionService
 
     public function register($kernel, $options = array() )
     {
+        $action = ActionRunner::getInstance();
+        $action->registerAutoloader();
 
-        $kernel->action = function() use ($options) {
-            return ActionRunner::getInstance();
+        $kernel->action = function() use ($options,$action) {
+            return $action;
         };
 
         $kernel->event->register('view.init', function($view) {
