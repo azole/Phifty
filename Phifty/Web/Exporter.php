@@ -27,6 +27,8 @@ class Exporter
         /* register action result */
         $this->vars['Action']      = array( 'results' => ActionRunner::getInstance()->results );
         $this->vars['Kernel']      = kernel();
+
+        // TODO: let this can be registered from Service
         $this->vars['CurrentUser'] = kernel()->currentUser;
         $this->vars['Web']         = new \Phifty\Web;
     }
@@ -43,7 +45,9 @@ class Exporter
 
     public function __get( $name ) 
     {
-        return @$this->vars[ $name ];
+        if( isset($this->vars[$name]) ) {
+            return $this->vars[ $name ];
+        }
     }
 
     public function getVars()
