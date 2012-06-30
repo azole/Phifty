@@ -4,6 +4,8 @@ use CLIFramework\Command;
 
 class GenerateTestCommand extends Command
 {
-
+    function execute() {
+        die('not implemented yet');
+    }
 }
 
