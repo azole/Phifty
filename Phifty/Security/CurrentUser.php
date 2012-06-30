@@ -181,7 +181,7 @@ class CurrentUser
             }
             return $this->record->$key;
         }
-        throw new Exception('Record is undefined.');
+        // throw new Exception('CurrentUser Record is undefined.');
     }
 
 
