@@ -151,6 +151,13 @@ class CurrentUser
     }
 
 
+    public function getRecord() 
+    {
+        if( $this->record && $this->record->id ) {
+            return $this->record;
+        }
+    }
+
 
     /**
      * Integrate setter with model record object
