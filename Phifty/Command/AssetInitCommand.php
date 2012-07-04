@@ -2,6 +2,8 @@
 namespace Phifty\Command;
 use CLIFramework\Command;
 use Exception;
+use AssetKit\Asset;
+use AssetKit\Config;
 
 class AssetInitCommand extends Command
 {
@@ -12,7 +14,7 @@ class AssetInitCommand extends Command
         if( ! file_exists($manifestPath)) 
             throw new Exception( "$manifestPath does not exist." );
 
-        $asset = new \AssetKit\Asset($manifestPath);
+        $asset = new Asset($manifestPath);
         $asset->config = $config;
         $asset->initResource(true); // update it
 
@@ -25,7 +27,7 @@ class AssetInitCommand extends Command
 
     function execute() 
     {
-        $config = new \AssetKit\Config('.assetkit');
+        $config = new Config('.assetkit');
         $kernel = kernel();
 
         $this->logger->info("Finding assets from applications...");
