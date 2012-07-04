@@ -63,8 +63,9 @@ class CurrentUser
             else {
                 $this->userModelClass = 
                     isset($args['model_class']) 
-                    ? $args['model_class']
-                    : kernel()->config->get( 'framework', 'CurrentUser.Model' );
+                        ? $args['model_class']
+                        : kernel()->config->get( 'framework', 'CurrentUser.Model' ) 
+                            ?: 'User\Model\User';  // default user model (User\Model\User)
             }
 
             if( isset($args['session_prefix']) ) {
@@ -95,13 +96,12 @@ class CurrentUser
             // TODO: provide a verify option to verify database item before 
             // loading.
             if( $userId = $this->session->get( $this->primaryKey ) ) {
-
-                $virtualRecord = new $this->userModelClass;
+                $class = $this->userModelClass;
+                $virtualRecord = new $class;
                 foreach( $virtualRecord->getColumnNames() as $name ) {
                     $virtualRecord->$name = $this->session->get($name);
                 }
                 $this->record = $virtualRecord;
-
                 // $this->setRecord(new $this->userModelClass(array( $this->primaryKey => $userId )));
             }
         }
