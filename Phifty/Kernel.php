@@ -59,6 +59,7 @@ class Kernel extends ObjectContainer
         // detect development mode 
         $this->isDev = $this->environment === 'development';
 
+
         // build path info
         $this->frameworkDir       = PH_ROOT;
         $this->frameworkAppDir    = PH_ROOT . DS . 'applications';

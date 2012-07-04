@@ -68,14 +68,14 @@ class Controller extends BaseController
      * @param string $class
      * @param array $options
      */
-    public function createView($class,$options = null)
+    public function createView($viewClass = null,$options = null)
     {
         $templateEngine = kernel()->config->get('framework','View.Backend');
-        $viewClass      = kernel()->config->get('framework','View.Class');
-        if( ! $viewClass )
+        $class      = $viewClass ?: kernel()->config->get('framework','View.Class');
+        if( ! $class )
             throw new Exception('view.class config is not defined.');
 
-        $engine         = \Phifty\View\Engine::createEngine( $templateEngine , $options );
+        $engine = \Phifty\View\Engine::createEngine( $templateEngine , $options );
         return new $class( $engine );  // pass 'Smarty' or 'Twig'
     }
 
