@@ -9,8 +9,10 @@ class AssetInitCommand extends Command
 {
     function registerAsset($config,$dir)
     {
-        $manifestPath = $dir  . DIRECTORY_SEPARATOR . 'manifest.yml';
-        $manifestPath = substr( $manifestPath , strlen(PH_APP_ROOT) + 1 );
+        $manifestPath = substr(
+            $dir  . DIRECTORY_SEPARATOR . 'manifest.yml', 
+            strlen(PH_APP_ROOT) + 1 );
+
         if( ! file_exists($manifestPath)) 
             throw new Exception( "$manifestPath does not exist." );
 

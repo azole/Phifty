@@ -16,6 +16,10 @@ use Phifty\Console;
 class AssetCommand extends Command
 {
 
+
+    function brief() { return 'register and install assets'; }
+
+
     function options($opts)
     {
         $init = new AssetInstallCommand;
