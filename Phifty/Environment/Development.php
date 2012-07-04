@@ -10,25 +10,29 @@
  */
 namespace Phifty\Environment;
 use Universal\Requirement\Requirement;
+use Exception;
+use ErrorException;
 
+function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+}
 
 class Development 
 {
 
-	static function exception_handler($e)
-	{
-		var_dump( $e ); 
-	}
+    static function exception_handler($e)
+    {
+        var_dump( $e ); 
+    }
 
 
-	/**
-	 * @link http://www.php.net/manual/en/function.set-error-handler.php
-	 */
-	static function error_handler($errno, $errstr, $errfile, $errline, $errcontext)
-	{
-		echo "$errno: $errstr @ $errfile:$errline\n";
-		var_dump( $errcontext ); 
-	}
+    /**
+     * @link http://www.php.net/manual/en/function.set-error-handler.php
+     */
+    static function error_handler($errno, $errstr, $errfile, $errline, $errcontext)
+    {
+        echo "$errno: $errstr @ $errfile:$errline\n";
+    }
 
     static function init($kernel)
     {
@@ -37,6 +41,8 @@ class Development
             throw new Exception('ReflectionObject class is not defined. Seems you are running an oooold php.');
 
         error_reporting(E_ALL | E_STRICT | E_ERROR | E_NOTICE | E_WARNING | E_PARSE);
+
+        set_error_handler('Phifty\Environment\exception_error_handler');
 
 
         // xxx: Can use universal requirement checker.
@@ -56,8 +62,8 @@ class Development
             }
         }
 
-		set_exception_handler( array(__CLASS__,'exception_handler') );
-		// set_error_handler( array(__CLASS__,'error_handler') );
+        set_exception_handler( array(__CLASS__,'exception_handler') );
+        // set_error_handler( array(__CLASS__,'error_handler') );
 
         // if firebug supports
         $kernel->event->register('phifty.after_run', function() use ($kernel) {
