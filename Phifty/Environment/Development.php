@@ -13,12 +13,13 @@ use Universal\Requirement\Requirement;
 use Exception;
 use ErrorException;
 
-function exception_error_handler($errno, $errstr, $errfile, $errline ) {
-    throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
-}
 
 class Development 
 {
+
+    static function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+        throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+    }
 
     static function exception_handler($e)
     {
@@ -34,7 +35,7 @@ class Development
         error_reporting(E_ALL | E_STRICT | E_ERROR | E_NOTICE | E_WARNING | E_PARSE);
 
         // @link http://www.php.net/manual/en/function.set-error-handler.php
-        set_error_handler('Phifty\Environment\exception_error_handler');
+        set_error_handler(array(__CLASS__,'exception_error_handler'));
 
 
         // xxx: Can use universal requirement checker.
@@ -54,7 +55,7 @@ class Development
             }
         }
 
-        set_exception_handler( array(__CLASS__,'exception_handler') );
+        set_exception_handler(array(__CLASS__,'exception_handler') );
 
         // if firebug supports
         $kernel->event->register('phifty.after_run', function() use ($kernel) {
