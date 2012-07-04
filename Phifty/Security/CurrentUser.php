@@ -218,6 +218,10 @@ class CurrentUser
         return $this->getId();
     }
 
+    public function isLogin() {  
+        return $this->getId();
+    }
+
     public function isAdmin() 
     {
         return $this->role === "admin";

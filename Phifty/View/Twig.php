@@ -58,7 +58,6 @@ class Twig extends \Phifty\View\Engine
 
         /* load extensions from config settings */
         if( $twigConfig ) {
-
             if( isset($twigConfig['CoreExtensions'] ) ) {
                 foreach( $twigConfig['CoreExtensions'] as $extension ) {
                     $extname = null;
