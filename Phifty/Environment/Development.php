@@ -37,7 +37,6 @@ class Development
         // @link http://www.php.net/manual/en/function.set-error-handler.php
         set_error_handler(array(__CLASS__,'exception_error_handler'));
 
-
         // xxx: Can use universal requirement checker.
         //
         // $req = new Universal\Requirement\Requirement;
