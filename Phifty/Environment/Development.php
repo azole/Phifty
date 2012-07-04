@@ -25,15 +25,6 @@ class Development
         var_dump( $e ); 
     }
 
-
-    /**
-     * @link http://www.php.net/manual/en/function.set-error-handler.php
-     */
-    static function error_handler($errno, $errstr, $errfile, $errline, $errcontext)
-    {
-        echo "$errno: $errstr @ $errfile:$errline\n";
-    }
-
     static function init($kernel)
     {
         // use Universal\Requirement\Requirement checker
@@ -42,6 +33,7 @@ class Development
 
         error_reporting(E_ALL | E_STRICT | E_ERROR | E_NOTICE | E_WARNING | E_PARSE);
 
+        // @link http://www.php.net/manual/en/function.set-error-handler.php
         set_error_handler('Phifty\Environment\exception_error_handler');
 
 
@@ -63,7 +55,6 @@ class Development
         }
 
         set_exception_handler( array(__CLASS__,'exception_handler') );
-        // set_error_handler( array(__CLASS__,'error_handler') );
 
         // if firebug supports
         $kernel->event->register('phifty.after_run', function() use ($kernel) {
