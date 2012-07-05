@@ -232,9 +232,6 @@ abstract class CRUDHandler extends Controller
         $pager = new RegionPager;
         $pager->currentPage = $page;
         $pager->calculatePages( $totalItems , $pageSize );
-
-        // $pager = $collection->pager();
-        // $pagerDisplay = new RegionPagerDisplay( $pager );
         $data = array(
             'Object' => $this,
             'Items' => $items,
