@@ -46,8 +46,9 @@ class LibraryLoader {
                 if( ! file_exists( $initFile ) ) {
                     throw new Exception("$initFile not found.");
                 }
-                require $initFile;
-                return $dir;
+                $return = require($initFile) ?: $dir;
+                $this->loaded[ $name ] = $return;
+                return $return;
             }
         }
 
