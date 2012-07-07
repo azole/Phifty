@@ -25,6 +25,15 @@ class Development
         // var_dump( $e ); 
     }
 
+
+    // XXX: does not work with E_PARSE error
+    // register_shutdown_function(array(__CLASS__,'shutdown_handler')); 
+    static function shutdown_handler() {
+        if(is_null($e = error_get_last()) === false) { 
+            print_r($e);
+        }
+    }
+
     static function init($kernel)
     {
         // use Universal\Requirement\Requirement checker
@@ -34,7 +43,8 @@ class Development
         error_reporting(E_ALL);
 
         // @link http://www.php.net/manual/en/function.set-error-handler.php
-        set_error_handler(array(__CLASS__,'exception_error_handler'), E_ERROR | E_PARSE | E_WARNING);
+        set_error_handler(array(__CLASS__,'exception_error_handler'), E_ALL & ~E_NOTICE );
+
 
         // xxx: Can use universal requirement checker.
         //

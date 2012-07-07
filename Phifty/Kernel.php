@@ -73,8 +73,9 @@ class Kernel extends ObjectContainer
         defined('CLI_MODE') 
             || define( 'CLI_MODE' , $this->isCLI );
         mb_internal_encoding('UTF-8');
-        if( ! $this->isCLI )
+        if( ! $this->isCLI ) {
             ob_start();
+        }
     }
 
     public function registerService( ServiceInterface $service, $options = array() )
