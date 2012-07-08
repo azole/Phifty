@@ -109,12 +109,26 @@ class Twig extends \Phifty\View\Engine
 
     function registerFunctions()
     {
-        $this->env->addFunction('uniqid'  , new Twig_Function_Function('uniqid'));
-        $this->env->addFunction('md5'     , new Twig_Function_Function('md5'));
-        $this->env->addFunction('time'    , new Twig_Function_Function('time'));
-        $this->env->addFunction('sha1'    , new Twig_Function_Function('sha1'));
-        $this->env->addFunction('gettext' , new Twig_Function_Function('gettext'));
-        $this->env->addFunction('_'       , new Twig_Function_Function('_'));
+        $exports = array(
+            'uniqid' => 'uniqid',
+            'md5' => 'md5',
+            'time' => 'time',
+            'sha1' => 'sha1',
+            'gettext' => 'gettext',
+            '_' => '_',
+        );
+        foreach( $exports as $export => $func ) {
+            $this->env->addFunction( $export , new Twig_Function_Function( $func ));
+        }
+
+        // auto-register all native PHP functions as Twig functions
+        $this->env->registerUndefinedFunctionCallback(function($name) {
+            // use functions with prefix 'array_' and 'str'
+            if (function_exists($name) && ( strpos($name,'array_') === 0 || strpos($name,'str') === 0 ) ) {
+                return new Twig_Function_Function($name);
+            }
+            return false;
+        });
     }
 
     function newStringRenderer()
