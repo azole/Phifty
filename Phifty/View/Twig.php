@@ -122,6 +122,7 @@ class Twig extends \Phifty\View\Engine
             'sha1' => 'sha1',
             'gettext' => 'gettext',
             '_' => '_',
+            'count' => 'count',
         );
         foreach( $exports as $export => $func ) {
             $this->env->addFunction( $export , new Twig_Function_Function( $func ));
