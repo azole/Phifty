@@ -56,7 +56,13 @@ class Twig extends \Phifty\View\Engine
          * */
         $this->env = new Twig_Environment($loader, $envOpts );
 
-        /* load extensions from config settings */
+        /**
+         * Load extensions from config settings 
+         *
+         * Twig:
+         *   CoreExtensions:
+         *   Extensions:
+         */
         if( $twigConfig ) {
             if( isset($twigConfig['CoreExtensions'] ) ) {
                 foreach( $twigConfig['CoreExtensions'] as $extension ) {
