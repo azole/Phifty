@@ -43,7 +43,7 @@ class Development
         error_reporting(E_ALL);
 
         // @link http://www.php.net/manual/en/function.set-error-handler.php
-        set_error_handler(array(__CLASS__,'exception_error_handler'), E_ALL );
+        set_error_handler(array(__CLASS__,'exception_error_handler'), E_ALL & ~E_NOTICE );
 
 
         // xxx: Can use universal requirement checker.

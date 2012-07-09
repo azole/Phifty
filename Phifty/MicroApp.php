@@ -150,7 +150,7 @@ class MicroApp
             if( isset($args['template']) ) {
                 $options['args'] = array( 
                     'template' => $args['template'],
-                    'args' => @$args['args'],
+                    'args' => ( isset($args['args']) ? $args['args'] : null),
                 );
                 $router->add( $path , 'Phifty\Routing\TemplateController' , $options );
             }
