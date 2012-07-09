@@ -1,6 +1,6 @@
 <?php
-
 namespace Phifty\View;
+use Exception;
 
 class Heredoc
 {
@@ -15,7 +15,7 @@ class Heredoc
     function render($args = array() )
     {
         if( ! $this->content )
-            throw new \Exception( 'template content is not defined.' );
+            throw new Exception( 'template content is not defined.' );
         return $this->engine->renderString( $this->content , $args );
     }
 }

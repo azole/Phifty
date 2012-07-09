@@ -155,7 +155,7 @@ class Twig extends \Phifty\View\Engine
 
     function renderString( $stringTemplate , $args = array() )
     {
-        $this->newStringRenderer()->loadTemplate( $stringTemplate )->render( $args );
+        return $this->newStringRenderer()->loadTemplate( $stringTemplate )->render( $args );
     }
 
     function displayString( $stringTemplate , $args = array() )
