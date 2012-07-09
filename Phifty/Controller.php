@@ -43,7 +43,16 @@ class Controller extends BaseController
         return true;
     }
 
-    public function view( $options = null )
+
+
+    /**
+     * Create/Get view object with rendering engine options
+     *
+     * @param array $options
+     *
+     * @return Phifty\View
+     */
+    public function view( $options = array() )
     {
         static $view;
         if( $view ) {
@@ -52,11 +61,9 @@ class Controller extends BaseController
             return $view;
         }
 
-        if( ! $options )
-            $options = array();
-
         $templateEngine = kernel()->config->get('framework','View.Backend') ?: 'twig';
         $viewClass      = kernel()->config->get('framework','View.Class') ?: 'Phifty\View';
+
         $engine = \Phifty\View\Engine::createEngine( $templateEngine , $options );
         return $view = new $viewClass( $engine );  // pass 'Smarty' or 'Twig'
     }

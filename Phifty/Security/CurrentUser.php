@@ -119,19 +119,26 @@ class CurrentUser
     }
 
 
+    public function updateSession()
+    {
+        if( ! $this->record ) {
+            throw new Exception("Record is empty, Can not update session.");
+        }
+        $this->record->reload();
+        $this->updateSessionFromRecord($this->record);
+    }
 
     /**
      * Update session data from record
      *
      * @param mixed User record object
      */
-    public function updateSession($record) 
+    public function updateSessionFromRecord($record) 
     {
         foreach( $record->getColumnNames() as $name ) {
             $this->session->set( $name, $record->$name );
         }
     }
-
 
     /**
      * Set current user record 
@@ -143,7 +150,7 @@ class CurrentUser
     public function setRecord( $record )
     {
         if( $record && $record->id ) {
-            $this->updateSession($record);
+            $this->updateSessionFromRecord($record);
             $this->record = $record;
             return true;
         }
