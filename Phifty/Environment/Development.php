@@ -55,7 +55,7 @@ class Development
 
         /* check configs */
         /* check php required extensions */
-        $configExt = $kernel->config->get('php.extension');
+        $configExt = $kernel->config->get('Requirement.Extensions');
         if( $configExt ) {
             foreach( $configExt as $extName ) {
                 if( ! extension_loaded( $extName ) )
