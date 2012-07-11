@@ -73,10 +73,11 @@ class Web
     public function render_result( $resultName )
     {
         $runner = ActionRunner::getInstance();
-        $result = $runner->getResult( $resultName );
-        $view = new \Phifty\View;
-        $view->result = $result;
-        return $view->render('Core/template/phifty/action_result_box.html');
+        if( $result = $runner->getResult( $resultName ) ) {
+            $view = new \Phifty\View;
+            $view->result = $result;
+            return $view->render('Core/template/phifty/action_result_box.html');
+        }
     }
 
 }
