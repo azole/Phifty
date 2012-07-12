@@ -7,28 +7,34 @@ use ActionKit\RecordAction\BaseRecordAction;
 class Model extends BaseModel 
 {
 
-    public function asCreateAction()
+
+    function asCreateAction()
     {
         return $this->_newAction( 'Create' );
     }
 
-    public function asUpdateAction()
+    function asUpdateAction()
     {
         return $this->_newAction( 'Update' );
     }
 
-    public function asDeleteAction()
+    function asDeleteAction()
     {
         return $this->_newAction( 'Delete' );
     }
 
-    // XXX: Move to ActionKit
+    /**
+     * Create an action from existing record object
+     *
+     * @param string $type 'create','update','delete'
+     *
+     * TODO: Move to ActionKit
+     */
     private function _newAction($type)
     {
         $class = get_class($this);
-        $actionClass = BaseRecordAction::createCRUDClass( $class, $type);
-        $action = new $actionClass( array(), $this );
-        return $action;
+        $actionClass = BaseRecordAction::createCRUDClass($class,$type);
+        return new $actionClass( array(), $this );
     }
 }
 
