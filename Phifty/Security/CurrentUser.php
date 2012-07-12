@@ -177,15 +177,21 @@ class CurrentUser
         }
     }
 
+    function __isset($key) 
+    {
+        return $this->session->has($key) 
+             || $this->record->__isset($key);
+    }
+
     /**
      * Integrate getter with model record object
      */
-    public function __get( $key )
+    function __get( $key )
     {
+        if($val = $this->session->get($key)) {
+            return $val;
+        }
         if( $this->record ) {
-            if($val = $this->session->get($key)) {
-                return $val;
-            }
             return $this->record->$key;
         }
         // throw new Exception('CurrentUser Record is undefined.');
