@@ -7,6 +7,10 @@ use ActionKit\RecordAction\BaseRecordAction;
 class Model extends BaseModel 
 {
 
+    function getCurrentUser() 
+    {
+        return kernel()->currentUser;
+    }
 
     function asCreateAction()
     {
