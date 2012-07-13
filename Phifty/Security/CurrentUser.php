@@ -180,7 +180,7 @@ class CurrentUser
     function __isset($key) 
     {
         return $this->session->has($key) 
-             || $this->record->__isset($key);
+             || ($this->record && $this->record->__isset($key));
     }
 
     /**
