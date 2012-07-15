@@ -85,7 +85,7 @@ class PluginManager
             $plugin->init( $plugin->mergeWithDefaultConfig( $config ) );
             return $this->plugins[ $name ] = $plugin;
         }
-        throw new Exception("Plugin $class is not found.");
+        throw new Exception("Plugin $name not found.");
         return false;
     }
 
