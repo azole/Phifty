@@ -25,22 +25,38 @@ class Pager
     public $pageSize = 20;
     public $currentPage = 1;
 
+
+    /**
+     *
+     * @param integer current page
+     * @param integer total size
+     * @param integer page size (optional)
+     */
     function __construct()
     {
         $this->first_text = _('Page.First');
         $this->last_text  = _('Page.Last');
         $this->next_text  = _('Page.Next');
         $this->prev_text  = _('Page.Previous');
+        if( $args = func_get_args() ) {
+            if( 2 === count($args) ) {
+                $this->currentPage = $args[0];
+                $this->calculatePages($args[1]);
+            }
+            elseif( 3 === count($args) ) {
+                $this->currentPage = $args[0];
+                $this->calculatePages($args[1],$args[2]);
+            }
+        }
     }
 
     /**
      * @param integer $total
      * @param integer $size = null  (optional)
      */
-    function calculatePages($total,$size = null)
+    function calculatePages($total,$size = 20)
     {
-        if( $size )
-            $this->pageSize = $size;
+        $this->pageSize = $size;
         $this->totalPages = $total > 0 ? (int) ($total / $this->pageSize) + 1 : 0;
     }
 
