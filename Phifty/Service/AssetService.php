@@ -1,6 +1,7 @@
 <?php
 namespace Phifty\Service;
 use AssetKit;
+use Exception;
 
 class AssetService
     implements ServiceInterface
