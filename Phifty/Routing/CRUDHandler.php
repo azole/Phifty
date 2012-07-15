@@ -146,17 +146,15 @@ abstract class CRUDHandler extends Controller
             }
         }
 
-        if( $this->defaultOrder ) {
-            $collection->order( $this->defaultOrder[0] , $this->defaultOrder[1] );
-        } else {
-            $order_column = $this->request->param('_order_column');
-            $order_by     = $this->request->param('_order_by');
-            if( ! $order_column )
-                $order_column = 'id';
-            if( ! $order_by )
-                $order_by = 'desc';
-            $collection->order( $order_column , $order_by );
+        $orderColumn = $this->request->param('_order_column');
+        $orderBy     = $this->request->param('_order_by');
+
+        if( $orderColumn && $orderBy ) {
+            $collection->order( $orderColumn , $orderBy );
         }
+        elseif( $this->defaultOrder ) {
+            $collection->order( $this->defaultOrder[0] , $this->defaultOrder[1] );
+        } 
         return $collection;
     }
 
