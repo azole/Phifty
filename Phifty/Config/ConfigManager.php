@@ -31,7 +31,7 @@ class ConfigManager
         else {
             throw new Exception('Unsupported config file format.');
         }
-        $this->stashes[ $section ] = $config;
+        return $this->stashes[ $section ] = $config;
     }
 
 
