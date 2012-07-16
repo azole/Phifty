@@ -52,6 +52,12 @@ class ConfigManager
     }
 
 
+
+    /**
+     * get section stash, returns stash in pure php array.
+     *
+     * @return array
+     */
     function getSection($name)
     {
         if( isset( $this->stashes[$name] )) {
