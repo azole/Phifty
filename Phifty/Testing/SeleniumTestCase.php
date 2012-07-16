@@ -8,10 +8,8 @@ class SeleniumTestCase extends PHPUnit_Extensions_Selenium2TestCase
 
     function setUp() {
         $this->kernel = kernel();
-
-        $config = $this->kernel->config('framework');
-
-        $this->setBrowserUrl('http://www.example.com/');
+        $config = $this->kernel->config('testing');
+        // $this->setBrowserUrl('http://www.example.com/');
     }
 
 }
