@@ -54,6 +54,14 @@ class Bootstrap
         if( $dbLoaded = file_exists( PH_APP_ROOT . '/config/database.php') )
             $configService->load('database', PH_APP_ROOT . '/config/database.php');
 
+        // Only load testing configuration when environment 
+        // is 'testing'
+        if( getenv('PHIFTY_ENV') === 'testing' ) {
+            if( file_exists( PH_APP_ROOT . '/config/testing.php' ) ) {
+                $configService->load('testing', PH_APP_ROOT . '/config/testing.php' );
+            }
+        }
+
         // Config for application, services does not depends on this config file.
         if( $appLoaded = file_exists( PH_APP_ROOT . '/config/application.php') )
             $configService->load('application', PH_APP_ROOT . '/config/application.php' );

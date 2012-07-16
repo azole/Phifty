@@ -29,6 +29,7 @@ class BuildConfCommand extends Command
                     'config/application.yml',
                     'config/framework.yml',
                     'config/database.yml' 
+                    'config/testing.yml' 
                 ), function($file) {
                             return file_exists($file);
                         });
