@@ -40,11 +40,11 @@ class Pager
         $this->prev_text  = _('Page.Previous');
         if( $args = func_get_args() ) {
             if( 2 === count($args) ) {
-                $this->currentPage = $args[0];
+                $this->currentPage = $args[0] ?: 1;
                 $this->calculatePages($args[1]);
             }
             elseif( 3 === count($args) ) {
-                $this->currentPage = $args[0];
+                $this->currentPage = $args[0] ?: 1;
                 $this->calculatePages($args[1],$args[2]);
             }
         }
@@ -132,7 +132,7 @@ TWIG;
 
 
         if( $this->showHeader )
-            $output .= '<div class="pager-current">' . _('__pager.page') .': ' . $this->currentPage . '</div>';
+            $output .= '<div class="pager-current">' . _('Pager.page') .': ' . $this->currentPage . '</div>';
     
         if( $this->showNavigator ) {
 
@@ -140,7 +140,7 @@ TWIG;
                 $output .= $this->render_link( 1       , $this->first_text , 'pager-first' , $cur == 1 );
 
             if( $cur > 5 )
-                $output .= $this->render_link( $cur - 5 , _("__pager.Prev 5 Pages") , 'pager-number' );
+                $output .= $this->render_link( $cur - 5 , _("Pager.Prev 5 Pages") , 'pager-number' );
 
             if( $cur > 1 )
                 $output .= $this->render_link( $cur -1 , $this->prev_text  , 'pager-prev'  , $cur == 1 );
@@ -168,7 +168,7 @@ TWIG;
 
             if( $cur + 5 < $total_pages )
                 $output .= $this->render_link( $cur + 5, 
-                            _("__pager.Next 5 Pages") , 'pager-number' );
+                            _("Pager.Next 5 Pages") , 'pager-number' );
 
             if( $total_pages > 1 && $cur < $total_pages )
                 $output .= $this->render_link( $this->totalPages,

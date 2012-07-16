@@ -1,6 +1,5 @@
 <?php
 namespace Phifty\Routing;
-use Phifty\Web\RegionPagerDisplay;
 use Phifty\Web\RegionPager;
 use Phifty\Region;
 use Phifty\Controller;
@@ -227,9 +226,7 @@ abstract class CRUDHandler extends Controller
         $collection   = $this->getCollection()->page( $page ,$pageSize );
         $items = $collection->items();
 
-        $pager = new RegionPager;
-        $pager->currentPage = $page;
-        $pager->calculatePages( $totalItems , $pageSize );
+        $pager = new RegionPager( $page, $totalItems, $pageSize );
         $data = array(
             'Object' => $this,
             'Items' => $items,

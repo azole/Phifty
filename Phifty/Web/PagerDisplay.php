@@ -151,7 +151,7 @@ TWIG;
 
             if( $cur + 5 < $total_pages )
                 $output .= $this->render_link( $cur + 5, 
-                            _("__pager.Next 5 Pages") , 'pager-number' );
+                            _("Pager.Next 5 Pages") , 'pager-number' );
 
             if( $total_pages > 1 && $cur < $total_pages )
                 $output .= $this->render_link( $this->pager->totalPages,
