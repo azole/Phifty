@@ -154,6 +154,7 @@ abstract class CRUDHandler extends Controller
         elseif( $this->defaultOrder ) {
             $collection->order( $this->defaultOrder[0] , $this->defaultOrder[1] );
         } 
+
         return $collection;
     }
 
@@ -219,17 +220,14 @@ abstract class CRUDHandler extends Controller
     {
         $page = $this->request->param('page') ?: 1;
         $pageSize = $this->request->param('pagenum') ?: $this->pageLimit;
+        $collection = $this->getCollection();
+        $count = $collection->queryCount();
+        $collection->page( $page ,$pageSize );
+        $pager = new RegionPager( $page, $count, $pageSize );
 
-        // SQLBuilder query doesn't support __clone, for that 
-        // we have to create two collection for two queries.
-        $totalItems = $this->getCollection()->queryCount();
-        $collection   = $this->getCollection()->page( $page ,$pageSize );
-        $items = $collection->items();
-
-        $pager = new RegionPager( $page, $totalItems, $pageSize );
         $data = array(
             'Object' => $this,
-            'Items' => $items,
+            'Items' => $collection->items(),
             'Pager' => $pager,
             'Title' => $this->getListTitle(),
             'Columns' => $this->getListColumns(),
