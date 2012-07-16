@@ -56,8 +56,8 @@ class Pager
      */
     function calculatePages($total,$size = 20)
     {
-        $this->pageSize = $size;
-        $this->totalPages = $total > 0 ? (int) ($total / $this->pageSize) + 1 : 0;
+        $this->pageSize = $size ?: 20;
+        $this->totalPages = $total > 0 ? (int) ($total / $this->pageSize ) + 1 : 0;
     }
 
 
