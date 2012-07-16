@@ -16,10 +16,13 @@ use Roller\Controller as BaseController;
 
 class Controller extends BaseController
 {
+
     /**
      * @var HttpRequest
      */
     public $request;
+
+    public $defaultViewClass;
 
     public function init()
     {
@@ -62,7 +65,7 @@ class Controller extends BaseController
         }
 
         $templateEngine = kernel()->config->get('framework','View.Backend') ?: 'twig';
-        $viewClass      = kernel()->config->get('framework','View.Class') ?: 'Phifty\View';
+        $viewClass      = $this->defaultViewClass ?: kernel()->config->get('framework','View.Class') ?: 'Phifty\View';
 
         $engine = \Phifty\View\Engine::createEngine( $templateEngine , $options );
         return $view = new $viewClass( $engine );  // pass 'Smarty' or 'Twig'
@@ -78,7 +81,7 @@ class Controller extends BaseController
     public function createView($viewClass = null,$options = null)
     {
         $templateEngine = kernel()->config->get('framework','View.Backend');
-        $class      = $viewClass ?: kernel()->config->get('framework','View.Class');
+        $class      = $viewClass ?: $this->defaultViewClass ?: kernel()->config->get('framework','View.Class');
         if( ! $class )
             throw new Exception('view.class config is not defined.');
 
