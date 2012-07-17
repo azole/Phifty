@@ -1,17 +1,31 @@
 <?php
 namespace Phifty\Testing;
-use PHPUnit_Extensions_Selenium2TestCase;
+use PHPUnit_Extensions_SeleniumTestCase;
 
-class SeleniumTestCase extends PHPUnit_Extensions_Selenium2TestCase
+
+abstract class SeleniumTestCase extends PHPUnit_Extensions_SeleniumTestCase 
 {
-    public $kernel;
+    protected function setUp()
+    {
+        $kernel = kernel();
+        $kernel->config->load('testing','config/testing.yml');
+        $config = $kernel->config->get('testing');
+        if($config && $config->Selenium) {
+            if($config->Selenium->Host)
+                $this->setHost($config->Selenium->Host);
 
-    function setUp() {
-        $this->kernel = kernel();
-        $config = $this->kernel->config('testing');
-        // $this->setBrowserUrl('http://www.example.com/');
+            if($config->Selenium->Port) 
+                $this->setPort($config->Selenium->Port);
+
+            if($config->Selenium->Browser)
+                $this->setBrowser($config->Selenium->Browser);
+
+            if($config->Selenium->BrowserUrl)
+                $this->setBrowserUrl($config->Selenium->BrowserUrl);
+
+            if($config->Selenium->Speed)
+                $this->setBrowser($config->Selenium->Speed);
+        }
     }
-
 }
-
 

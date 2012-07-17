@@ -32,8 +32,12 @@ class Accessor
     
     public function offsetGet($name)
     {
-        if( isset($this->config[$name]) )
+        if( isset($this->config[$name]) ) {
+            if( is_array($this->config[$name]) ) {
+                return new Accessor($this->config[$name]);
+            }
             return $this->config[ $name ];
+        }
     }
     
     public function offsetUnset($name)
