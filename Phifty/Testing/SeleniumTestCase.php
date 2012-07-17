@@ -23,8 +23,9 @@ abstract class SeleniumTestCase extends PHPUnit_Extensions_SeleniumTestCase
             if($config->Selenium->BrowserUrl)
                 $this->setBrowserUrl($config->Selenium->BrowserUrl);
 
-            if($config->Selenium->Speed)
-                $this->setBrowser($config->Selenium->Speed);
+            if($config->Selenium->Speed) {
+                $this->setSpeed($config->Selenium->Speed);
+            }
         }
     }
 }
