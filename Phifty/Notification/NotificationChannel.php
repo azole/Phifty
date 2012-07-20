@@ -44,7 +44,7 @@ class NotificationChannel
         $requester->connect($bind);
 
         //  Socket to talk to server
-        $requester->send( $this->id . ' ' . $message );
+        $requester->send( $this->id . ' ' . $payload);
         $string = $requester->recv();
         return $string === '1';
     }
