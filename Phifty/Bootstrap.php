@@ -1,5 +1,5 @@
 <?php
-namespace Phifty;
+namespace Phifty {
 use Phifty\Kernel;
 use Universal\ClassLoader\SplClassLoader;
 
@@ -13,13 +13,7 @@ use Universal\ClassLoader\SplClassLoader;
  */
 class Bootstrap
 {
-
-    /**
-     *
-     * @param string $env Environment type
-     */
-    static function bootstrap( $env = null )
-    {
+    static function initClassLoader() {
         // create spl classloader
         $spl = new SplClassLoader;
         $spl->addNamespace(array( 
@@ -35,14 +29,14 @@ class Bootstrap
         $spl->addFallback( PH_ROOT . '/vendor/pear' );
         $spl->useIncludePath(true);
         $spl->register();
+        return $spl;
+    }
 
-        global $kernel;
+    static function bootKernel($kernel,$spl) {
 
-        $kernel = new Kernel( $env );
         $classloaderService = new \Phifty\Service\ClassLoaderService;
         $classloaderService->setClassLoader($spl);
         $kernel->registerService( $classloaderService );
-
 
         // We load other services from the definitions in config file
         // Simple load three config files (framework.yml, database.yml, application.yml)
@@ -89,11 +83,38 @@ class Bootstrap
                 $kernel->registerService( new \Phifty\Service\DatabaseService );
             }
         }
-        return $kernel;
+    }
+
+    /**
+     * @param string $env Environment type
+     */
+    static function createKernel($env = null)
+    {
+        return new Kernel( $env );
     }
 }
 
 
+}
+namespace {
+    use Phifty\Bootstrap;
 
+    global $kernel;
 
+    /**
+    * kernel() is a global shorter helper function to get Phifty\Kernel instance.
+    *
+    * Initialize kernel instance, classloader, plugins and services.
+    */
+    function kernel() 
+    {
+        global $kernel;
+        if( $kernel )
+            return $kernel;
 
+        $classloader = Bootstrap::initClassLoader();
+        $kernel      = Bootstrap::createKernel();
+        Bootstrap::bootKernel($kernel,$classloader);
+        return $kernel;
+    }
+}
