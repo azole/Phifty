@@ -4,6 +4,7 @@ use ZMQ;
 use ZMQSocket;
 use ZMQContext;
 use ZMQSocketException;
+use Exception;
 
 class NotificationServer
 {
@@ -38,7 +39,6 @@ class NotificationServer
             } catch ( Exception $e ) {
                 $this->responder->send('0');
                 echo $e;
-
             }
             //  Send reply back to client
             $this->responder->send('1');

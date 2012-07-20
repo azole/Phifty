@@ -23,8 +23,10 @@ class NotificationQueue
         if( ! $id )
             throw new Exception('Undefined channel ID');
 
+        $filter = sprintf('% 10s',$id);
+
         //  Subscribe to zipcode, default is NYC, 10001
-        $this->subscriber->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, $id );
+        $this->subscriber->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, $filter);
     }
 
     function listen($callback) { 
