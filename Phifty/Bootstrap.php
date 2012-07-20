@@ -13,6 +13,13 @@ use Universal\ClassLoader\SplClassLoader;
  */
 class Bootstrap
 {
+
+    static function initConstants() {
+        defined( 'PH_ROOT' )     || define( 'PH_ROOT' , dirname(dirname(__DIR__)) );
+        defined( 'PH_APP_ROOT' ) || define( 'PH_APP_ROOT' , PH_ROOT );
+        defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
+    }
+
     static function initClassLoader() {
         // create spl classloader
         $spl = new SplClassLoader;
@@ -112,6 +119,7 @@ namespace {
         if( $kernel )
             return $kernel;
 
+        Bootstrap::initConstants();
         $classloader = Bootstrap::initClassLoader();
         $kernel      = Bootstrap::createKernel();
         Bootstrap::bootKernel($kernel,$classloader);
