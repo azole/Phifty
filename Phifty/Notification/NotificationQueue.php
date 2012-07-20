@@ -4,6 +4,7 @@ use ZMQ;
 use ZMQSocket;
 use ZMQContext;
 use ZMQSocketException;
+use Exception;
 
 class NotificationQueue
 {
@@ -19,6 +20,9 @@ class NotificationQueue
     function subscribe($channel) {
         $id = is_string($channel) ? $channel : $channel->id;
 
+        if( ! $id )
+            throw new Exception('Undefined channel ID');
+
         //  Subscribe to zipcode, default is NYC, 10001
         $this->subscriber->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, $id );
     }
@@ -27,7 +31,7 @@ class NotificationQueue
         while(true) {
             $string = $subscriber->recv();
             list($id,$payload) = explode(' ',$string,2);
-            echo $payload, "\n";
+            call_user_func($callback,$id,$payload);
         }
     }
 }
