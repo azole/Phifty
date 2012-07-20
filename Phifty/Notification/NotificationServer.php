@@ -13,19 +13,7 @@ class NotificationServer
 
     public $publiser;
 
-    public $decoder = 'json_encode';
-
-    public $encoder = 'json_decode';
-
-    function __construct($options = array())
-    {
-        if( isset($options['decoder']) ) {
-            $this->decoder = $options['decoder'];
-        }
-        if( isset($options['encoder']) ) {
-            $this->encoder = $options['encoder'];
-        }
-    }
+    function __construct() { }
 
     function connect($bind,$publishPoint) {
         $this->context = new ZMQContext(1);
@@ -40,15 +28,20 @@ class NotificationServer
 
     function start() {
         while(true) {
-            //  Wait for next request from client
-            $msg = $this->responder->recv();
+            try {
+                //  Wait for next request from client
+                $msg = $this->responder->recv();
 
-            // printf("Received request: [%s]%s", $msg, PHP_EOL);
+                // printf("Received request: [%s]%s", $msg, PHP_EOL);
+                $this->publisher->send($msg);
 
-            $this->publisher->send($msg);
+            } catch ( Exception $e ) {
+                $this->responder->send('0');
+                echo $e;
 
+            }
             //  Send reply back to client
-            $this->responder->send('{"success":1}');
+            $this->responder->send('1');
         }
     }
 }
