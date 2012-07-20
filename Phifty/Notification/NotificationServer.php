@@ -13,8 +13,18 @@ class NotificationServer
 
     public $publiser;
 
-    function __construct()
+    public $decoder = 'json_encode';
+
+    public $encoder = 'json_decode';
+
+    function __construct($options = array())
     {
+        if( isset($options['decoder']) ) {
+            $this->decoder = $options['decoder'];
+        }
+        if( isset($options['encoder']) ) {
+            $this->encoder = $options['encoder'];
+        }
     }
 
     function connect($bind,$publishPoint) {
@@ -32,7 +42,8 @@ class NotificationServer
         while(true) {
             //  Wait for next request from client
             $msg = $this->responder->recv();
-            printf("Received request: [%s]%s", $msg, PHP_EOL);
+
+            // printf("Received request: [%s]%s", $msg, PHP_EOL);
 
             $this->publisher->send($msg);
 
