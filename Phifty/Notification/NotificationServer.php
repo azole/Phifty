@@ -24,6 +24,9 @@ class NotificationServer
         $this->responder->bind($bind);
 
         $this->publisher = new ZMQSocket($this->context, ZMQ::SOCKET_PUB);
+
+        // Configure the maximium queue (buffer limit)
+        $this->publisher->setSockOpt(ZMQ::SOCKOPT_HWM, 100);
         $this->publisher->bind($publishPoint);
     }
 
