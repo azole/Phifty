@@ -123,6 +123,7 @@ namespace {
         $classloader = Bootstrap::initClassLoader();
         $kernel      = Bootstrap::createKernel();
         Bootstrap::bootKernel($kernel,$classloader);
+        $kernel->init();
         return $kernel;
     }
 }

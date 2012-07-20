@@ -84,6 +84,10 @@ class Kernel extends ObjectContainer
         $this->services[ $service->getId() ] = $service;
     }
 
+
+    /**
+     * Run initialize after services were registered.
+     */
     public function init()
     {
         $this->event->trigger('phifty.before_init');
@@ -110,8 +114,7 @@ class Kernel extends ObjectContainer
             $this->locale;
         }
 
-        $appconfigs = $this->config->get('framework','Applications');
-        if( $appconfigs ) {
+        if( $appconfigs = $this->config->get('framework','Applications') ) {
             foreach( $appconfigs as $appname => $appconfig ) {
                 $this->classloader->addNamespace( array( 
                     $appname => array( PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' )
