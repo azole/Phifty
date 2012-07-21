@@ -41,9 +41,8 @@ class NotificationServer
             try {
                 //  Wait for next request from client
                 $msg = $this->pull->recv();
-
-                printf("Received request: [%s]%s", $msg, PHP_EOL);
-                $this->publisher->send($msg);
+                printf("Received request: [%s]\n", $msg);
+                $this->publisher->send($msg); // send messages to channels
 
             } catch ( Exception $e ) {
                 echo $e;
