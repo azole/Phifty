@@ -1,5 +1,6 @@
 <?php
 namespace Phifty\Notification;
+use Exception;
 
 class NotificationCenter
 {
@@ -29,7 +30,10 @@ class NotificationCenter
     }
 
     function createFilter($id) {
-        return sprintf('% 10s',$id);
+        if( strlen($id) > 13 ) {
+            throw new Exception('Filter string length exceed.');
+        }
+        return sprintf('% 13s',$id); // 13 chars for uniqid
     }
 
     function getEncoder() { 
