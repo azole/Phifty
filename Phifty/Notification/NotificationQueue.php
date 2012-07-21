@@ -8,24 +8,44 @@ use Exception;
 
 class NotificationQueue
 {
+
+    /**
+     * @var string Subscriber Identity
+     */
+    public $id;
+
+    /**
+     * @var ZMQContext
+     */
     public $context;
+
+    /**
+     * @var ZMQSocket
+     */
     public $subscriber;
 
-    function __construct() {
+    function __construct($id = null, $center = null) {
+        $this->id = $id ?: uniqid();
+        $this->center = $center ?: NotificationCenter::getInstance();
         $this->context = new ZMQContext();
         $this->subscriber = new ZMQSocket($context, ZMQ::SOCKET_SUB);
-        $this->subscriber->connect("tcp://localhost:5556");
+        $this->subscriber->setSockOpt( ZMQ::SOCKOPT_IDENTITY , $this->id );
+        $this->subscriber->connect( $this->center->subscribePoint );
+    }
+
+    function unsubscribe($channel) {
+        $id = is_string($channel) ? $channel : $channel->id;
+        if( ! $id )
+            throw new Exception('Undefined channel ID');
+        $filter = $this->center->createFilter($id);
+        $this->subscriber->setSockOpt(ZMQ::SOCKOPT_UNSUBSCRIBE, $filter);
     }
 
     function subscribe($channel) {
         $id = is_string($channel) ? $channel : $channel->id;
-
         if( ! $id )
             throw new Exception('Undefined channel ID');
-
-        $filter = sprintf('% 10s',$id);
-
-        //  Subscribe to zipcode, default is NYC, 10001
+        $filter = $this->center->createFilter($id);
         $this->subscriber->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, $filter);
     }
 
