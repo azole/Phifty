@@ -9,23 +9,21 @@ class NotificationChannel
 {
     public $id;
     public $encoder;
+    public $center;
+    public $filter;
+    public $requester;
 
-    function __construct($channelId, $encoder = null) 
+    function __construct($channelId = null, $encoder = null) 
     {
-        $this->id = $channelId;
+        $this->id = $channelId ?: uniqid();
+        $this->center = NotificationCenter::getInstance();
+        $this->encoder = $encoder ?: $this->center->getEncoder();
+        $this->filter = $this->center->createFilter($this->id);
 
-        if( $encoder ) {
-            $this->encoder = $encoder;
-        }
-
-        if( ! $encoder ) {
-            if( extension_loaded('mongo') ) {
-                $this->encoder = 'bson_encode';
-            }
-            elseif( extension_loaded('json') ) {
-                $this->encoder = 'json_encode';
-            }
-        }
+        $bind = 'tcp://localhost:5555';
+        $context = new ZMQContext(1);
+        $this->requester = new ZMQSocket($context, ZMQ::SOCKET_REQ);
+        $this->requester->connect($bind);
     }
 
     function publish($message) {
@@ -33,15 +31,8 @@ class NotificationChannel
                     ? $message 
                     : call_user_func($this->encoder,$message); 
 
-        $bind = 'ipc://ntf-server';
-        $context = new ZMQContext(1);
-        $requester = new ZMQSocket($context, ZMQ::SOCKET_REQ);
-        $requester->connect($bind);
-
-        $filter = sprintf('% 10s',$id);
-
-        //  Socket to talk to server
-        $requester->send( $filter . ' ' . $payload);
+        //  Socket to talk to server (REP-REQ)
+        $this->requester->send( $this->filter . ' ' . $payload);
         return $requester->recv() === '1';
     }
 }
