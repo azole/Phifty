@@ -27,6 +27,11 @@ class NotificationQueue
         $this->subscriber = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_SUB);
         $this->subscriber->setSockOpt( ZMQ::SOCKOPT_IDENTITY , $this->id );
         $this->subscriber->connect( $this->center->getSubscribePoint() );
+
+        // TODO, 
+        //    when connected, pop messages from buffered queue.
+        //    when a queue is newly created, copy messages 
+        //    from channels.
     }
 
     function unsubscribe($channel) {
@@ -48,7 +53,6 @@ class NotificationQueue
     function listen($callback) { 
         while(true) {
             $string = $this->subscriber->recv();
-
             $id = substr($string,0,13);
             $binary = substr($string,13);
             $payload = $this->center->decode($binary);
