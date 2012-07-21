@@ -119,6 +119,9 @@ class CurrentUser
     }
 
 
+    /**
+     * Reload record and update session
+     */
     public function updateSession()
     {
         if( ! $this->record ) {
