@@ -10,7 +10,7 @@ class NotificationServer
 {
     public $center;
 
-    public $responder;
+    public $pull;
 
     public $publiser;
 
@@ -25,10 +25,10 @@ class NotificationServer
     function connectDevice($bind,$publishEndPoint) {
         //  Socket to talk to clients
         // $this->responder = new ZMQSocket($this->center->context, ZMQ::SOCKET_REP);
-        $this->responder = new ZMQSocket($this->center->context, ZMQ::SOCKET_PULL);
-        $this->responder->bind($bind);
+        $this->pull = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_PULL);
+        $this->pull->bind($bind);
 
-        $this->publisher = new ZMQSocket($this->center->context, ZMQ::SOCKET_PUB);
+        $this->publisher = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_PUB);
 
         // High Water Mark
         // Configure the maximium queue (buffer limit)
@@ -40,7 +40,7 @@ class NotificationServer
         while(true) {
             try {
                 //  Wait for next request from client
-                $msg = $this->responder->recv();
+                $msg = $this->pull->recv();
 
                 printf("Received request: [%s]%s", $msg, PHP_EOL);
                 $this->publisher->send($msg);

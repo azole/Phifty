@@ -19,12 +19,14 @@ class NotificationQueue
      */
     public $subscriber;
 
+    public $center;
+
     function __construct($id = null, $center = null) {
         $this->id = $id ?: uniqid();
         $this->center = $center ?: NotificationCenter::getInstance();
-        $this->subscriber = new ZMQSocket($this->center->context, ZMQ::SOCKET_SUB);
+        $this->subscriber = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_SUB);
         $this->subscriber->setSockOpt( ZMQ::SOCKOPT_IDENTITY , $this->id );
-        $this->subscriber->connect( $this->center->subscribePoint );
+        $this->subscriber->connect( $this->center->getSubscribePoint() );
     }
 
     function unsubscribe($channel) {
@@ -45,8 +47,11 @@ class NotificationQueue
 
     function listen($callback) { 
         while(true) {
-            $string = $subscriber->recv();
-            list($id,$payload) = explode(' ',$string,2);
+            $string = $this->subscriber->recv();
+
+            $id = substr($string,0,13);
+            $binary = substr($string,13);
+            $payload = $this->center->decode($binary);
             call_user_func($callback,$id,$payload);
         }
     }
