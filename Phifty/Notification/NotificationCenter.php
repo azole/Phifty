@@ -23,7 +23,6 @@ class NotificationCenter
             $this->encoder = 'json_encode';
             $this->decoder = 'json_decode';
         }
-
         $this->config = kernel()->config->framework->Notification;
         $this->publishPoint = $this->config->PublishPoint ?: 'tcp://*:5555';
         $this->subscribePoint = $this->config->subscribePoint ?: 'tcp://*:5556';
