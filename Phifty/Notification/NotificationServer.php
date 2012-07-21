@@ -24,7 +24,8 @@ class NotificationServer
 
     function connectDevice($bind,$publishEndPoint) {
         //  Socket to talk to clients
-        $this->responder = new ZMQSocket($this->center->context, ZMQ::SOCKET_REP);
+        // $this->responder = new ZMQSocket($this->center->context, ZMQ::SOCKET_REP);
+        $this->responder = new ZMQSocket($this->center->context, ZMQ::SOCKET_PULL);
         $this->responder->bind($bind);
 
         $this->publisher = new ZMQSocket($this->center->context, ZMQ::SOCKET_PUB);
@@ -45,11 +46,8 @@ class NotificationServer
                 $this->publisher->send($msg);
 
             } catch ( Exception $e ) {
-                $this->responder->send('0');
                 echo $e;
             }
-            //  Send reply back to client
-            $this->responder->send('1');
         }
     }
 }

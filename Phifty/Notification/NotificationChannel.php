@@ -18,7 +18,8 @@ class NotificationChannel
         $this->center = $center ?: NotificationCenter::getInstance();
         $this->encoder = $this->center->getEncoder();
         $this->filter = $this->center->createFilter($this->id);
-        $this->requester = new ZMQSocket($this->center->context, ZMQ::SOCKET_REQ);
+        // $this->requester = new ZMQSocket($this->center->context, ZMQ::SOCKET_REQ);
+        $this->requester = new ZMQSocket($this->center->context, ZMQ::SOCKET_PUSH);
         $this->requester->connect( $this->center->getPublishPoint() );
     }
 
@@ -26,8 +27,10 @@ class NotificationChannel
         $payload = $this->center->encode($message);
 
         //  Socket to talk to server (REP-REQ)
-        $this->requester->send( $this->filter . ' ' . $payload);
-        return $this->requester->recv() === '1';
+        return $this->requester->send( $this->filter . ' ' . $payload);
+
+        // For REQ MODE
+        // return $this->requester->recv() === '1';
     }
 }
 
