@@ -50,7 +50,7 @@ class NotificationServer
             try {
                 // Wait for next request from client
                 $msg = $this->responder->recv();
-                $this->responder->send('1');
+                $result = 0;
 
                 printf("Received request: [%s]\n", $msg);
 
@@ -59,17 +59,20 @@ class NotificationServer
                     list($cmd,$topicId) = explode(' ',$msg,2);
                     if( ! isset($topics[$topicId]) ) {
                         $topics[ $topicId ] = array(); // empty message queue
+                        $result = 1;
                     }
                 }
                 // unregister subscriber from a topci
                 elseif( strpos($msg,'unreg') === 0 ) { 
                     list($cmd,$topicId) = explode(' ',$msg,2);
                     unset($topics[$topicId]);
+                    $result = 1;
                 }
                 elseif( strpos($msg,'unsub') === 0 ) {
                     list($cmd,$topicId,$sId) = explode(' ',$msg,3);
                     if( isset($subscribers[$topicId][$sId]) ) {
                         unset($subscribers[$topicId][$sId]);
+                        $result = 1;
                     }
                 }
                 elseif( strpos($msg,'sub') === 0 ) {
@@ -81,6 +84,7 @@ class NotificationServer
 
                     if( ! isset($subscribers[$topicId][$sId]) ) {
                         $subscribers[ $topicId ][ $sId ] = array();
+                        $result = 1;
                     }
                 }
                 elseif( strpos($msg,'blog') === 0 ) {
@@ -92,6 +96,7 @@ class NotificationServer
                             printf("Publish backlog: [%s]\n", $sId . ' ' . $topicId . ' ' . $msg);
                             $this->publisher->send($sId . ' ' . $topicId . ' ' . $msg); // send messages to channels
                         }
+                        $result = 1;
                     }
                 }
                 else {
@@ -115,7 +120,9 @@ class NotificationServer
 
                     // save the message
                     $topics[$topicId][] = $binary;
+                    $result = 1;
                 }
+                $this->responder->send($result);
             } 
             catch ( Exception $e ) {
                 echo $e;
