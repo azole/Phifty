@@ -8,9 +8,7 @@ use Exception;
 
 class NotificationServer
 {
-    public $frontendPoint;
-
-    public $backendPoint;
+    public $center;
 
     public $context;
 
@@ -18,23 +16,24 @@ class NotificationServer
 
     public $publiser;
 
-    function __construct() { }
+    function __construct($center = null) {
+        $this->center = $center ?: NotificationCenter::getInstance();
+        $this->connect( $this->center->publishPoint, $this->center->subscribePoint );
+    }
 
     function connect($bind,$publishEndPoint) {
-        $this->frontendPoint = $bind;
-        $this->backendPoint = $publishEndPoint;
-
         $this->context = new ZMQContext(1);
 
         //  Socket to talk to clients
         $this->responder = new ZMQSocket($this->context, ZMQ::SOCKET_REP);
-        $this->responder->bind($this->frontendPoint);
+        $this->responder->bind($bind);
 
         $this->publisher = new ZMQSocket($this->context, ZMQ::SOCKET_PUB);
 
+        // High Water Mark
         // Configure the maximium queue (buffer limit)
         $this->publisher->setSockOpt(ZMQ::SOCKOPT_HWM, 100);
-        $this->publisher->bind($this->backendPoint);
+        $this->publisher->bind($publishEndPoint);
     }
 
     function start() {

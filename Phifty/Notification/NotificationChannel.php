@@ -13,17 +13,16 @@ class NotificationChannel
     public $filter;
     public $requester;
 
-    function __construct($channelId = null, $encoder = null) 
+    function __construct($channelId = null, $center = null) 
     {
         $this->id = $channelId ?: uniqid();
-        $this->center = NotificationCenter::getInstance();
-        $this->encoder = $encoder ?: $this->center->getEncoder();
+        $this->center = $center ?: NotificationCenter::getInstance();
+        $this->encoder = $this->center->getEncoder();
         $this->filter = $this->center->createFilter($this->id);
 
-        $bind = 'tcp://localhost:5555';
         $context = new ZMQContext(1);
         $this->requester = new ZMQSocket($context, ZMQ::SOCKET_REQ);
-        $this->requester->connect($bind);
+        $this->requester->connect( $this->center->publishPoint );
     }
 
     function publish($message) {
