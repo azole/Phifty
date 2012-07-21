@@ -18,7 +18,10 @@ class NotificationServer
 
     function __construct($center = null) {
         $this->center = $center ?: NotificationCenter::getInstance();
-        $this->connectDevice( $this->center->publishPoint, $this->center->subscribePoint );
+        $this->connectDevice( 
+            $this->center->getPublishPoint(true), 
+            $this->center->getSubscribePoint(true)
+        );
     }
 
     function connectDevice($bind,$publishEndPoint) {
@@ -42,7 +45,7 @@ class NotificationServer
                 //  Wait for next request from client
                 $msg = $this->responder->recv();
 
-                // printf("Received request: [%s]%s", $msg, PHP_EOL);
+                printf("Received request: [%s]%s", $msg, PHP_EOL);
                 $this->publisher->send($msg);
 
             } catch ( Exception $e ) {

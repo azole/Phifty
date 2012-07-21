@@ -27,10 +27,38 @@ class NotificationCenter
         $this->config = kernel()->config->framework->Notification;
         $this->publishPoint = $this->config && $this->config->PublishPoint 
                                 ? $this->config->PublishPoint  
-                                : 'tcp://*:55555';
+                                : 'tcp://localhost:55555';
         $this->subscribePoint = $this->config && $this->config->subscribePoint 
                                 ? $this->config->subscribePoint
-                                : 'tcp://*:55556';
+                                : 'tcp://localhost:55556';
+    }
+
+    function encode($payload) {
+        return call_user_func($this->encoder,$payload);
+    }
+
+    function decode($payload) {
+        return call_user_func($this->decoder,$payload);
+    }
+
+    function getSubscribePoint($forListen = false) {
+        if( $forListen ) {
+            preg_match('#^(\w+)://(.*?):(\d+)$#',$this->subscribePoint,$regs);
+            return "{$regs[1]}://*:{$regs[3]}";
+        }
+        else {
+            return $this->subscribePoint;
+        }
+    }
+
+    function getPublishPoint($forListen = false) { 
+        if( $forListen ) {
+            preg_match('#^(\w+)://(.*?):(\d+)$#',$this->publishPoint,$regs);
+            return "{$regs[1]}://*:{$regs[3]}";
+        }
+        else {
+            return $this->publishPoint;
+        }
     }
 
     function createFilter($id) {

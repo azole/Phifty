@@ -22,17 +22,15 @@ class NotificationChannel
 
         $context = new ZMQContext(1);
         $this->requester = new ZMQSocket($context, ZMQ::SOCKET_REQ);
-        $this->requester->connect( $this->center->publishPoint );
+        $this->requester->connect( $this->center->getPublishPoint() );
     }
 
     function publish($message) {
-        $payload = is_string($message) 
-                    ? $message 
-                    : call_user_func($this->encoder,$message); 
+        $payload = $this->center->encode($message);
 
         //  Socket to talk to server (REP-REQ)
         $this->requester->send( $this->filter . ' ' . $payload);
-        return $requester->recv() === '1';
+        return $this->requester->recv() === '1';
     }
 }
 
