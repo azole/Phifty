@@ -25,8 +25,12 @@ class NotificationCenter
             $this->decoder = 'json_decode';
         }
         $this->config = kernel()->config->framework->Notification;
-        $this->publishPoint = $this->config->PublishPoint ?: 'tcp://*:5555';
-        $this->subscribePoint = $this->config->subscribePoint ?: 'tcp://*:5556';
+        $this->publishPoint = $this->config && $this->config->PublishPoint 
+                                ? $this->config->PublishPoint  
+                                : 'tcp://*:55555';
+        $this->subscribePoint = $this->config && $this->config->subscribePoint 
+                                ? $this->config->subscribePoint
+                                : 'tcp://*:55556';
     }
 
     function createFilter($id) {
@@ -48,7 +52,7 @@ class NotificationCenter
         return $this->encoder;
     }
 
-    function getInstance() { 
+    static function getInstance() { 
         static $ins;
         if( $ins )
             return $ins;

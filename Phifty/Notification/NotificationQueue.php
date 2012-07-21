@@ -27,7 +27,7 @@ class NotificationQueue
     function __construct($id = null, $center = null) {
         $this->id = $id ?: uniqid();
         $this->center = $center ?: NotificationCenter::getInstance();
-        $this->context = new ZMQContext();
+        $this->context = new ZMQContext(1);
         $this->subscriber = new ZMQSocket($context, ZMQ::SOCKET_SUB);
         $this->subscriber->setSockOpt( ZMQ::SOCKOPT_IDENTITY , $this->id );
         $this->subscriber->connect( $this->center->subscribePoint );

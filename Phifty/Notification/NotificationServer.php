@@ -18,10 +18,10 @@ class NotificationServer
 
     function __construct($center = null) {
         $this->center = $center ?: NotificationCenter::getInstance();
-        $this->connect( $this->center->publishPoint, $this->center->subscribePoint );
+        $this->connectDevice( $this->center->publishPoint, $this->center->subscribePoint );
     }
 
-    function connect($bind,$publishEndPoint) {
+    function connectDevice($bind,$publishEndPoint) {
         $this->context = new ZMQContext(1);
 
         //  Socket to talk to clients
