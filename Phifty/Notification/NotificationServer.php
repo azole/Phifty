@@ -8,9 +8,9 @@ use Exception;
 
 class NotificationServer
 {
-    public $listenEndPoint;
+    public $frontendPoint;
 
-    public $publishEndPoint;
+    public $backendPoint;
 
     public $context;
 
@@ -21,20 +21,20 @@ class NotificationServer
     function __construct() { }
 
     function connect($bind,$publishEndPoint) {
-        $this->listenEndPoint = $bind;
-        $this->publishEndPoint = $publishEndPoint;
+        $this->frontendPoint = $bind;
+        $this->backendPoint = $publishEndPoint;
 
         $this->context = new ZMQContext(1);
 
         //  Socket to talk to clients
         $this->responder = new ZMQSocket($this->context, ZMQ::SOCKET_REP);
-        $this->responder->bind($bind);
+        $this->responder->bind($this->frontendPoint);
 
         $this->publisher = new ZMQSocket($this->context, ZMQ::SOCKET_PUB);
 
         // Configure the maximium queue (buffer limit)
         $this->publisher->setSockOpt(ZMQ::SOCKOPT_HWM, 100);
-        $this->publisher->bind($publishEndPoint);
+        $this->publisher->bind($this->backendPoint);
     }
 
     function start() {
