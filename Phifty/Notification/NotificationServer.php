@@ -8,6 +8,10 @@ use Exception;
 
 class NotificationServer
 {
+    public $listenPoint;
+
+    public $publishPoint;
+
     public $context;
 
     public $responder;
@@ -17,6 +21,9 @@ class NotificationServer
     function __construct() { }
 
     function connect($bind,$publishPoint) {
+        $this->listenPoint = $bind;
+        $this->publishPoint = $publishPoint;
+
         $this->context = new ZMQContext(1);
 
         //  Socket to talk to clients
