@@ -14,6 +14,8 @@ class NotificationCenter
     public $publishPoint;
     public $subscribePoint;
 
+    public $linger = 1000;
+
     /**
      * Notification config stash
      */
@@ -29,6 +31,11 @@ class NotificationCenter
             $this->decoder = 'json_decode';
         }
         $this->config = kernel()->config->framework->Notification;
+
+        if( $this->config && $this->config->Linger ) {
+            $this->linger = $this->config->Linger;
+        }
+
         $this->publishPoint = $this->config && $this->config->PublishPoint 
                                 ? $this->config->PublishPoint  
                                 : 'tcp://localhost:55555';
@@ -42,6 +49,7 @@ class NotificationCenter
         // $this->requester = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_PUSH);
         $requester = new ZMQSocket($this->getContext(), ZMQ::SOCKET_REQ);
         $requester->connect( $this->getPublishPoint() );
+        $requester->setSockOpt(ZMQ::SOCKET_LINGER, $this->linger );
         return $requester;
     }
 
