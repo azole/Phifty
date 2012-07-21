@@ -10,8 +10,6 @@ class NotificationServer
 {
     public $center;
 
-    public $context;
-
     public $responder;
 
     public $publiser;
@@ -25,13 +23,11 @@ class NotificationServer
     }
 
     function connectDevice($bind,$publishEndPoint) {
-        $this->context = new ZMQContext(1);
-
         //  Socket to talk to clients
-        $this->responder = new ZMQSocket($this->context, ZMQ::SOCKET_REP);
+        $this->responder = new ZMQSocket($this->center->context, ZMQ::SOCKET_REP);
         $this->responder->bind($bind);
 
-        $this->publisher = new ZMQSocket($this->context, ZMQ::SOCKET_PUB);
+        $this->publisher = new ZMQSocket($this->center->context, ZMQ::SOCKET_PUB);
 
         // High Water Mark
         // Configure the maximium queue (buffer limit)

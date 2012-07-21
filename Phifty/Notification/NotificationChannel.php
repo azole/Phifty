@@ -2,7 +2,6 @@
 namespace Phifty\Notification;
 use ZMQ;
 use ZMQSocket;
-use ZMQContext;
 use ZMQSocketException;
 
 class NotificationChannel
@@ -19,9 +18,7 @@ class NotificationChannel
         $this->center = $center ?: NotificationCenter::getInstance();
         $this->encoder = $this->center->getEncoder();
         $this->filter = $this->center->createFilter($this->id);
-
-        $context = new ZMQContext(1);
-        $this->requester = new ZMQSocket($context, ZMQ::SOCKET_REQ);
+        $this->requester = new ZMQSocket($this->center->context, ZMQ::SOCKET_REQ);
         $this->requester->connect( $this->center->getPublishPoint() );
     }
 

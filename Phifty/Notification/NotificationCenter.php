@@ -1,6 +1,7 @@
 <?php
 namespace Phifty\Notification;
 use Exception;
+use ZMQContext;
 
 class NotificationCenter
 {
@@ -31,6 +32,7 @@ class NotificationCenter
         $this->subscribePoint = $this->config && $this->config->subscribePoint 
                                 ? $this->config->subscribePoint
                                 : 'tcp://localhost:55556';
+        $this->context = new ZMQContext(1);
     }
 
     function encode($payload) {
@@ -49,6 +51,10 @@ class NotificationCenter
         else {
             return $this->subscribePoint;
         }
+    }
+
+    function getContext() {
+        return $this->context;
     }
 
     function getPublishPoint($forListen = false) { 
