@@ -4,6 +4,7 @@ use ZMQ;
 use ZMQSocket;
 use ZMQContext;
 use ZMQSocketException;
+use ZMQDevice;
 use Exception;
 
 class NotificationServer
@@ -37,17 +38,8 @@ class NotificationServer
     }
 
     function start() {
-        while(true) {
-            try {
-                //  Wait for next request from client
-                $msg = $this->pull->recv();
-                printf("Received request: [%s]\n", $msg);
-                $this->publisher->send($msg); // send messages to channels
-
-            } catch ( Exception $e ) {
-                echo $e;
-            }
-        }
+        $device = new ZMQDevice($this->pull, $this->publisher);
+        // never get here
     }
 }
 
