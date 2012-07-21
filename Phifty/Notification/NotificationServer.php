@@ -11,7 +11,7 @@ class NotificationServer
 {
     public $center;
 
-    public $pull;
+    public $responder;
 
     public $publiser;
 
@@ -26,8 +26,8 @@ class NotificationServer
     function connectDevice($bind,$publishEndPoint) {
         //  Socket to talk to clients
         // $this->responder = new ZMQSocket($this->center->context, ZMQ::SOCKET_REP);
-        $this->pull = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_PULL);
-        $this->pull->bind($bind);
+        $this->responder = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_REP);
+        $this->responder->bind($bind);
 
         $this->publisher = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_PUB);
 
@@ -38,8 +38,89 @@ class NotificationServer
     }
 
     function start() {
-        $device = new ZMQDevice($this->pull, $this->publisher);
-        // never get here
+        // new ZMQDevice($this->pull, $this->publisher);
+        $subscribers = array(
+            /* topicId => array( subscriberId => queue ) */
+        );
+        $topics = array(
+            /* topic => message queue */
+        );
+
+        while(true) {
+            try {
+                // Wait for next request from client
+                $msg = $this->responder->recv();
+                $this->responder->send('1');
+
+                printf("Received request: [%s]\n", $msg);
+
+                // register subscriber a topic
+                if( strpos($msg,'reg') === 0 ) {
+                    list($cmd,$topicId) = explode(' ',$msg,2);
+                    if( ! isset($topics[$topicId]) ) {
+                        $topics[ $topicId ] = array(); // empty message queue
+                    }
+                }
+                // unregister subscriber from a topci
+                elseif( strpos($msg,'unreg') === 0 ) { 
+                    list($cmd,$topicId) = explode(' ',$msg,2);
+                    unset($topics[$topicId]);
+                }
+                elseif( strpos($msg,'unsub') === 0 ) {
+                    list($cmd,$topicId,$sId) = explode(' ',$msg,3);
+                    if( isset($subscribers[$topicId][$sId]) ) {
+                        unset($subscribers[$topicId][$sId]);
+                    }
+                }
+                elseif( strpos($msg,'sub') === 0 ) {
+                    list($cmd,$topicId,$sId) = explode(' ',$msg,3);
+
+                    if( ! isset($subscribers[$topicId]) ) {
+                        $subscribers[$topicId] = array();
+                    }
+
+                    if( ! isset($subscribers[$topicId][$sId]) ) {
+                        $subscribers[ $topicId ][ $sId ] = array();
+                    }
+                }
+                elseif( strpos($msg,'blog') === 0 ) {
+                    list($cmd,$topicId,$sId) = explode(' ',$msg,3);
+                    // send backlog to subscriber
+
+                    if( isset( $topics[$topicId] ) ) {
+                        foreach( $topics[$topicId] as $msg ) {
+                            printf("Publish backlog: [%s]\n", $sId . ' ' . $topicId . ' ' . $msg);
+                            $this->publisher->send($sId . ' ' . $topicId . ' ' . $msg); // send messages to channels
+                        }
+                    }
+                }
+                else {
+                    list($topicId,$binary) = explode(' ',$msg,2);
+
+                    if( ! isset($topics[$topicId]) )
+                        $topics[$topicId] = array();
+
+                    // Delivery to a registered client
+                    if( isset($topics[$topicId]) ) {
+                        // get subscribers and publish to 
+                        // them
+                        if( isset($subscribers[$topicId]) ) {
+                            foreach( $subscribers[$topicId] as $sId => $q ) {
+                                printf("Publish message: [%s]\n", $sId . ' ' . $topicId . ' ' . $binary);
+                                $this->publisher->send($sId . ' ' . $topicId . ' ' . $binary); // send messages to channels
+                            }
+                            print_r($subscribers);
+                        }
+                    }
+
+                    // save the message
+                    $topics[$topicId][] = $binary;
+                }
+            } 
+            catch ( Exception $e ) {
+                echo $e;
+            }
+        }
     }
 }
 
