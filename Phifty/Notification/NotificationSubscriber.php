@@ -19,44 +19,45 @@ class NotificationSubscriber
      */
     public $subscriber;
 
+    public $requester;
+
     public $center;
 
     function __construct($id = null, $center = null) {
-        $this->id = $id ?: uniqid();
         $this->center = $center ?: NotificationCenter::getInstance();
+        $this->id = $this->center->getSubscriberId($id);
         $this->subscriber = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_SUB);
-        $this->subscriber->setSockOpt( ZMQ::SOCKOPT_IDENTITY , $this->id );
+        $this->subscriber->setSockOpt(ZMQ::SOCKOPT_IDENTITY, $this->id); // prevent break
+        $this->subscriber->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, $this->id); // subscribe by client Id
         $this->subscriber->connect( $this->center->getSubscribePoint() );
 
-        // TODO, 
-        //    when connected, pop messages from buffered queue.
-        //    when a queue is newly created, copy messages 
-        //    from channels.
+        $this->requester = $this->center->createRequester();
     }
 
-    function unsubscribe($channel) {
-        $id = is_string($channel) ? $channel : $channel->id;
-        if( ! $id )
-            throw new Exception('Undefined channel ID');
-        $filter = $this->center->createFilter($id);
-        $this->subscriber->setSockOpt(ZMQ::SOCKOPT_UNSUBSCRIBE, $filter);
+    function askBacklog($topic) {
+        $tId = is_string($topic) ? $topic : $topic->id;
+        $this->requester->send( 'blog ' . $tId . ' ' . $this->id );
+        return $this->requester->recv();
     }
 
-    function subscribe($channel) {
-        $id = is_string($channel) ? $channel : $channel->id;
-        if( ! $id )
-            throw new Exception('Undefined channel ID');
-        $filter = $this->center->createFilter($id);
-        $this->subscriber->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, $filter);
+    function unsubscribe($topic) {
+        $tId = is_string($topic) ? $topic : $topic->id;
+        $this->requester->send( 'unsub ' . $tId . ' ' . $this->id );
+        return $this->requester->recv();
+    }
+
+    function subscribe($topic) {
+        $tId = is_string($topic) ? $topic : $topic->id;
+        $this->requester->send( 'sub ' . $tId . ' ' . $this->id );
+        return $this->requester->recv();
     }
 
     function listen($callback) { 
         while(true) {
             $string = $this->subscriber->recv();
-            $id = substr($string,0,13);
-            $binary = substr($string,13);
+            list($sId,$topicId,$binary) = explode(' ',$string,3);
             $payload = $this->center->decode($binary);
-            call_user_func($callback,$id,$payload);
+            call_user_func($callback,$topicId,$payload,$this);
         }
     }
 }

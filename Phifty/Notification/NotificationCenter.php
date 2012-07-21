@@ -1,7 +1,10 @@
 <?php
 namespace Phifty\Notification;
 use Exception;
+use ZMQ;
+use ZMQSocket;
 use ZMQContext;
+use ZMQSocketException;
 
 class NotificationCenter
 {
@@ -35,6 +38,25 @@ class NotificationCenter
         $this->context = new ZMQContext(1);
     }
 
+    function createRequester() {
+        // $this->requester = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_PUSH);
+        $requester = new ZMQSocket($this->getContext(), ZMQ::SOCKET_REQ);
+        $requester->connect( $this->getPublishPoint() );
+        return $requester;
+    }
+
+
+    function parseFilter($string) {
+        return substr($string,0,13);
+    }
+
+    function splitMessage($string) {
+        $filter = substr($string,0,13);
+        $binary = substr($string,13);
+        return array($filter,$binary);
+    }
+
+
     function encode($payload) {
         return call_user_func($this->encoder,$payload);
     }
@@ -67,11 +89,19 @@ class NotificationCenter
         }
     }
 
+    /**
+     * Create a subscriber Id
+     */
+    function getSubscriberId($id = null) {
+        $id = $id ?: uniqid();
+        return $id;
+    }
+
     function createFilter($id) {
         if( strlen($id) > 13 ) {
             throw new Exception('Filter string length exceed.');
         }
-        return sprintf('% 13s',$id); // 13 chars for uniqid
+        return sprintf('%_13s',$id); // 13 chars for uniqid
     }
 
     function getEncoder() { 
