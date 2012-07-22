@@ -114,7 +114,6 @@ class NotificationServer
                                 printf("Publish message: [%s]\n", $sId . ' ' . $topicId . ' ' . $binary);
                                 $this->publisher->send($sId . ' ' . $topicId . ' ' . $binary); // send messages to channels
                             }
-                            print_r($subscribers);
                         }
                     }
 
