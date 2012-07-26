@@ -55,8 +55,7 @@ class Development
 
         /* check configs */
         /* check php required extensions */
-        $configExt = $kernel->config->get('Requirement.Extensions');
-        if( $configExt ) {
+        if( $configExt = $kernel->config->get('Requirement.Extensions') ) {
             foreach( $configExt as $extName ) {
                 if( ! extension_loaded( $extName ) )
                     throw new \Exception("Extension $extName is not loaded.");
