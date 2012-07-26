@@ -63,8 +63,8 @@ class Development
         // if firebug supports
         if( $kernel->isCLI ) {
             $kernel->event->register('phifty.after_run', function() use ($kernel) {
-                echo 'Memory Usage:', (int) (memory_get_usage() / 1024  ) , ' KB', PHP_EOL;
-                echo 'Memory Peak Usage:', (int) (memory_get_peak_usage() / 1024 ) , ' KB' . PHP_EOL;
+                echo 'memory usage:', (int) (memory_get_usage() / 1024  ) , ' KB', PHP_EOL;
+                echo 'memory peak usage:', (int) (memory_get_peak_usage() / 1024 ) , ' KB' . PHP_EOL;
                 echo ceil((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000000 ) , ' microseconds' ;
             });
         }
