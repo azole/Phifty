@@ -4,9 +4,10 @@ use SplFileInfo;
 use Exception;
 use SerializerKit\Serializer;
 
-class ConfigManager
+class ConfigLoader
 {
     public $stashes = array();
+
 
     public function load($section,$file) 
     {
@@ -117,6 +118,10 @@ class ConfigManager
             return $ref;
         }
         return null;
+    }
+
+    public function isLoaded($sectionId) {
+        return isset($this->stashes[$sectionId]);
     }
 
 }

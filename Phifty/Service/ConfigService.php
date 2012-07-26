@@ -1,8 +1,6 @@
 <?php
 namespace Phifty\Service;
-use Phifty\Config\ConfigManager;
-
-
+use Phifty\Config\ConfigLoader;
 
 /**
  * Config service usage
@@ -17,11 +15,11 @@ class ConfigService
     implements ServiceInterface
 {
 
-    public $manager;
+    public $loader;
 
-    public function __construct()
+    public function __construct( $loader = null )
     {
-        $this->manager = new ConfigManager;
+        $this->loader = $loader ?: new ConfigLoader;
     }
 
     public function getId() { return 'config'; }
@@ -30,12 +28,12 @@ class ConfigService
     {
         $self = $this;
         $kernel->config = function() use ($self) {  
-            return $self->manager;
+            return $self->loader;
         };
     }
 
     public function load($section,$file) {
-        return $this->manager->load($section,$file);
+        return $this->loader->load($section,$file);
     }
 }
 

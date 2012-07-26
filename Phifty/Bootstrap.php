@@ -2,6 +2,7 @@
 namespace Phifty {
 use Phifty\Kernel;
 use Universal\ClassLoader\SplClassLoader;
+use Universal\ClassLoader\ApcClassLoader;
 
 /** 
  * Script for phifty kernel bootstrap
@@ -20,10 +21,19 @@ class Bootstrap
         defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
     }
 
-    static function initClassLoader() {
+    static function initClassLoader() 
+    {
+        $loader = null;
+        if( extension_loaded('apc') ) {
+            require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/ApcClassLoader.php';
+            $loader = new ApcClassLoader( PH_ROOT );
+        } else {
+            require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/SplClassLoader.php';
+            $loader = new SplClassLoader;
+        }
+
         // create spl classloader
-        $spl = new SplClassLoader;
-        $spl->addNamespace(array( 
+        $loader->addNamespace(array( 
             'Phifty'     => PH_ROOT . '/src',
             'ActionKit'  => PH_ROOT . '/src',
             'I18NKit'    => PH_ROOT . '/src',
@@ -34,40 +44,48 @@ class Bootstrap
             'FormKit'    => PH_ROOT . '/vendor/formkit/src',
             'Roller'     => PH_ROOT . '/vendor/roller/src',
         ));
-        $spl->addFallback( PH_ROOT . '/vendor/pear' );
-        $spl->useIncludePath(true);
-        $spl->register();
-        return $spl;
+        $loader->addFallback( PH_ROOT . '/vendor/pear' );
+        $loader->useIncludePath(true);
+        $loader->register();
+        return $loader;
     }
 
-    static function bootKernel($kernel,$spl) {
-
-        $classloaderService = new \Phifty\Service\ClassLoaderService;
-        $classloaderService->setClassLoader($spl);
-        $kernel->registerService( $classloaderService );
-
+    static function initConfigLoader() 
+    {
         // We load other services from the definitions in config file
         // Simple load three config files (framework.yml, database.yml, application.yml)
-        $configService = new \Phifty\Service\ConfigService;
 
-        if( $frameworkLoaded = file_exists( PH_APP_ROOT . '/config/framework.php') )
-            $configService->load('framework', PH_APP_ROOT . '/config/framework.php');
+        $loader = new \Phifty\Config\ConfigLoader;
+        if( file_exists( PH_APP_ROOT . '/config/framework.php') )
+            $loader->load('framework', PH_APP_ROOT . '/config/framework.php');
 
         // This is for DatabaseService
-        if( $dbLoaded = file_exists( PH_APP_ROOT . '/config/database.php') )
-            $configService->load('database', PH_APP_ROOT . '/config/database.php');
+        if( file_exists( PH_APP_ROOT . '/config/database.php') ) {
+            $loader->load('database', PH_APP_ROOT . '/config/database.php');
+        }
 
         // Only load testing configuration when environment 
         // is 'testing'
         if( getenv('PHIFTY_ENV') === 'testing' ) {
             if( file_exists( PH_APP_ROOT . '/config/testing.php' ) ) {
-                $configService->load('testing', PH_APP_ROOT . '/config/testing.php' );
+                $loader->load('testing', PH_APP_ROOT . '/config/testing.php' );
             }
         }
 
         // Config for application, services does not depends on this config file.
-        if( $appLoaded = file_exists( PH_APP_ROOT . '/config/application.php') )
-            $configService->load('application', PH_APP_ROOT . '/config/application.php' );
+        if( file_exists( PH_APP_ROOT . '/config/application.php') )
+            $loader->load('application', PH_APP_ROOT . '/config/application.php' );
+        return $loader;
+    }
+
+    static function bootKernel($kernel,$classloader) {
+
+        $classloaderService = new \Phifty\Service\ClassLoaderService;
+        $classloaderService->setClassLoader($classloader);
+        $kernel->registerService( $classloaderService );
+
+        $configLoader = self::initConfigLoader();
+        $configService = new \Phifty\Service\ConfigService($configLoader);
 
         // load config service first.
         $kernel->registerService( $configService );
@@ -78,7 +96,7 @@ class Bootstrap
         $kernel->registerService( new \Phifty\Service\EventService );
 
         // if the framework config is defined.
-        if( $frameworkLoaded ) {
+        if( $configLoader->isLoaded('framework') ) {
             if( $services = $kernel->config->get('framework','Services') ) {
                 foreach( $services as $name => $options ) {
                     // not full qualified classname
@@ -87,7 +105,7 @@ class Bootstrap
                 }
             }
 
-            if( $dbLoaded ) {
+            if( $configLoader->isLoaded('database') ) {
                 $kernel->registerService( new \Phifty\Service\DatabaseService );
             }
         }
