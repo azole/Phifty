@@ -36,10 +36,6 @@ class Development
 
     static function init($kernel)
     {
-        // use Universal\Requirement\Requirement checker
-        if( ! class_exists( 'ReflectionObject' ) )
-            throw new Exception('ReflectionObject class is not defined. Seems you are running an oooold php.');
-
         error_reporting(E_ALL);
 
         // @link http://www.php.net/manual/en/function.set-error-handler.php
@@ -58,7 +54,7 @@ class Development
         if( $configExt = $kernel->config->get('Requirement.Extensions') ) {
             foreach( $configExt as $extName ) {
                 if( ! extension_loaded( $extName ) )
-                    throw new \Exception("Extension $extName is not loaded.");
+                    throw new Exception("Extension $extName is not loaded.");
             }
         }
 
