@@ -1,8 +1,6 @@
 <?php
 namespace Phifty {
 use Phifty\Kernel;
-use Universal\ClassLoader\SplClassLoader;
-use Universal\ClassLoader\ApcClassLoader;
 
 /** 
  * Script for phifty kernel bootstrap
@@ -25,11 +23,12 @@ class Bootstrap
     {
         $loader = null;
         if( extension_loaded('apc') ) {
+            require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/SplClassLoader.php';
             require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/ApcClassLoader.php';
-            $loader = new ApcClassLoader( PH_ROOT );
+            $loader = new \Universal\ClassLoader\ApcClassLoader( PH_ROOT );
         } else {
             require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/SplClassLoader.php';
-            $loader = new SplClassLoader;
+            $loader = new \Universal\ClassLoader\SplClassLoader;
         }
 
         // create spl classloader
@@ -112,6 +111,8 @@ class Bootstrap
     }
 
     /**
+     * Create Kernel object with environment type, production or development
+     *
      * @param string $env Environment type
      */
     static function createKernel($env = null)
