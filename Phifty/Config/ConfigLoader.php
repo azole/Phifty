@@ -2,7 +2,6 @@
 namespace Phifty\Config;
 use SplFileInfo;
 use Exception;
-use SerializerKit\Serializer;
 
 class ConfigLoader
 {
@@ -22,17 +21,21 @@ class ConfigLoader
 
         $config = array();
         if( $ext === 'yaml' || $ext === 'yml' ) {
-            $ser = new Serializer('yaml');
-            $config = $ser->decode(file_get_contents($file));
+            // if we have yaml extension, just decode config file with extension
+            if( extension_loaded('yaml') ) {
+                return $this->stashes[ $section ] = yaml_parse_file($file);
+            } else {
+                $ser = new \SerializerKit\Serializer('yaml');
+                return $this->stashes[ $section ] = $ser->decode(file_get_contents($file));
+            }
         }
         elseif( $ext === 'php' ) {
             // load php config directly.
-            $config = require $file;
+            return $this->stashes[ $section ] = require $file;
         }
         else {
             throw new Exception('Unsupported config file format.');
         }
-        return $this->stashes[ $section ] = $config;
     }
 
 
