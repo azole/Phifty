@@ -14,9 +14,6 @@ class Bootstrap
 {
 
     static function initConstants() {
-        defined( 'PH_ROOT' )     || define( 'PH_ROOT' , dirname(dirname(__DIR__)) );
-        defined( 'PH_APP_ROOT' ) || define( 'PH_APP_ROOT' , PH_ROOT );
-        defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
     }
 
     static function initClassLoader() 
@@ -124,7 +121,14 @@ class Bootstrap
 
 }
 namespace {
+    defined( 'PH_ROOT' )     || define( 'PH_ROOT' , dirname(dirname(__DIR__)) );
+    defined( 'PH_APP_ROOT' ) || define( 'PH_APP_ROOT' , PH_ROOT );
+    defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
+    require PH_ROOT . '/src/Phifty/Config/Accessor.php';
+    require PH_ROOT . '/src/Phifty/Config/ConfigLoader.php';
+
     use Phifty\Bootstrap;
+
 
     global $kernel;
 
@@ -139,11 +143,13 @@ namespace {
         if( $kernel )
             return $kernel;
 
-        Bootstrap::initConstants();
+
         $classloader = Bootstrap::initClassLoader();
         $kernel      = Bootstrap::createKernel();
         Bootstrap::bootKernel($kernel,$classloader);
         $kernel->init();
         return $kernel;
     }
+
+
 }
