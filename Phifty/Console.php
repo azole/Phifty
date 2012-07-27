@@ -27,6 +27,7 @@ class Console extends Application
         $this->registerCommand('router');
         $this->registerCommand('asset');
         $this->registerCommand('generate');
+        $this->registerCommand('requirement');
     }
 
     static function getInstance()

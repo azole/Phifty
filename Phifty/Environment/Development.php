@@ -40,29 +40,11 @@ class Development
 
         // @link http://www.php.net/manual/en/function.set-error-handler.php
         set_error_handler(array(__CLASS__,'exception_error_handler'), E_ALL & ~E_NOTICE );
-
-
-        // xxx: Can use universal requirement checker.
-        //
-        // $req = new Universal\Requirement\Requirement;
-        // $req->extensions( 'apc','mbstring' );
-        // $req->classes( 'ClassName' , 'ClassName2' );
-        // $req->functions( 'func1' , 'func2' , 'function3' )
-
-        /* check configs */
-        /* check php required extensions */
-        if( $configExt = $kernel->config->get('Requirement.Extensions') ) {
-            foreach( $configExt as $extName ) {
-                if( ! extension_loaded( $extName ) )
-                    throw new Exception("Extension $extName is not loaded.");
-            }
-        }
-
         // set_exception_handler(array(__CLASS__,'exception_handler') );
 
         // if firebug supports
         if( $kernel->isCLI ) {
-            $kernel->event->register('phifty.after_run', function() use ($kernel) {
+            $kernel->event->register('phifty.console.finish', function() use ($kernel) {
                 echo 'phifty-', $kernel::VERSION, PHP_EOL;
                 echo 'memory usage: ', (int) (memory_get_usage() / 1024  ) , ' KB', PHP_EOL;
                 echo 'memory peak usage: ', (int) (memory_get_peak_usage() / 1024 ) , ' KB' . PHP_EOL;
