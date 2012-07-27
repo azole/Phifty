@@ -74,11 +74,11 @@ class Bootstrap
         return $loader;
     }
 
-    static function bootKernel($kernel,$classloader) {
-
-        $classloaderService = new \Phifty\Service\ClassLoaderService;
-        $classloaderService->setClassLoader($classloader);
-        $kernel->registerService( $classloaderService );
+    static function bootKernel($kernel,$classloader) 
+    {
+        $kernel->registerService(
+            new \Phifty\Service\ClassLoaderService($classloader)
+        );
 
         $configLoader = self::initConfigLoader();
         $configService = new \Phifty\Service\ConfigService($configLoader);
@@ -131,7 +131,6 @@ namespace {
     // Load Kernel so we don't need to load by classloader.
     require PH_ROOT . '/src/Phifty/Kernel.php';
 
-
     require PH_ROOT . '/src/Phifty/Config/Accessor.php';
     require PH_ROOT . '/src/Phifty/Config/ConfigLoader.php';
 
@@ -150,7 +149,6 @@ namespace {
         global $kernel;
         if( $kernel )
             return $kernel;
-
 
         $classloader = Bootstrap::initClassLoader();
         $kernel      = Bootstrap::createKernel();
