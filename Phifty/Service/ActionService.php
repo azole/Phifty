@@ -23,7 +23,7 @@ class ActionService
 
         $kernel->classloader->addNamespace(array( 'ActionKit' => array( $kernel->frameworkDir . DIRECTORY_SEPARATOR . 'src' ) ));
 
-        $kernel->event->register('phifty.run',function() use ($kernel) {
+        $kernel->event->register('phifty.before_path_dispatch',function() use ($kernel) {
 
             // check if there is $_POST['action'] or $_GET['action']
             if( isset($_REQUEST['action']) ) {
