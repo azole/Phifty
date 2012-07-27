@@ -124,6 +124,14 @@ namespace {
     defined( 'PH_ROOT' )     || define( 'PH_ROOT' , dirname(dirname(__DIR__)) );
     defined( 'PH_APP_ROOT' ) || define( 'PH_APP_ROOT' , PH_ROOT );
     defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
+
+    // ObjectContainer is required by Kernel
+    require PH_ROOT . '/vendor/universal/src/Universal/Container/ObjectContainer.php';
+
+    // Load Kernel so we don't need to load by classloader.
+    require PH_ROOT . '/src/Phifty/Kernel.php';
+
+
     require PH_ROOT . '/src/Phifty/Config/Accessor.php';
     require PH_ROOT . '/src/Phifty/Config/ConfigLoader.php';
 
