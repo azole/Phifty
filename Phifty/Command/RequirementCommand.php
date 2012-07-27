@@ -19,6 +19,8 @@ class RequirementCommand extends Command
         $this->printResult('reflection', class_exists('ReflectionObject') );
         $this->printResult('lazyrecord', class_exists('LazyRecord\BaseModel',true));
         $this->printResult('assetkit',   class_exists('AssetKit\AssetLoader',true));
+        $this->printResult('roller',     class_exists('Roller\Router',true));
+        $this->printResult('roller extension', extension_loaded('roller') );
 
         $kernel = kernel();
         if( $configext = $kernel->config->get('Requirement.Extensions') ) {
