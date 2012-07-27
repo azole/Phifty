@@ -244,14 +244,6 @@ class Kernel extends ObjectContainer
         return self::FRAMEWORK_ID;
     }
 
-    public function run() 
-    {
-        $this->event->trigger('phifty.before_run');
-        $this->event->trigger('phifty.run');
-        $this->event->trigger('phifty.after_run');
-    }
-
-
     /**
      * get Phifty\Web object
      * XXX: refactor this
