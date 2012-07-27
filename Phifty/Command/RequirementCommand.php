@@ -21,8 +21,7 @@ class RequirementCommand extends Command
         $kernel = kernel();
         if( $configext = $kernel->config->get('Requirement.Extensions') ) {
             foreach( $configext as $extname ) {
-                $ret = extension_loaded( $extname );
-                $this->printResult("$extname extension", $ret );
+                $this->printResult("$extname extension", extension_loaded($extname) );
             }
         }
 
