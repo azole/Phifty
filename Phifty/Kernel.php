@@ -245,15 +245,6 @@ class Kernel extends ObjectContainer
     }
 
     /**
-     * get Phifty\Web object
-     * XXX: refactor this
-     */
-    public function web()
-    {
-        return $this->web;
-    }
-
-    /**
      * get Template Engine
      * XXX: not used ?
      **/
