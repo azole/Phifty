@@ -17,6 +17,14 @@ use Twig_Loader_String;
 use Twig_Extensions_Extension_Text;
 use Twig_Extensions_Extension_I18n;
 
+/**
+    * {% set obj = new('InputSystem\\Model\\Patient') %}
+    * {% set obj = new('InputSystem\\Model\\PatientSchema') %}
+    */
+function newObject($class) {
+    return new $class;
+}
+
 class Twig extends \Phifty\View\Engine 
 //    implements \Phifty\View\EngineInterface
 {
@@ -114,13 +122,6 @@ class Twig extends \Phifty\View\Engine
     }
 
 
-    /**
-     * {% set obj = new('InputSystem\\Model\\Patient') %}
-     * {% set obj = new('InputSystem\\Model\\PatientSchema') %}
-     */
-    function newObject($class) {
-        return new $class;
-    }
 
     function registerFunctions()
     {
@@ -132,7 +133,7 @@ class Twig extends \Phifty\View\Engine
             'gettext' => 'gettext',
             '_' => '_',
             'count' => 'count',
-            'new' => array($this,'newObject'),
+            'new' => 'Phifty\View\newObject',
         );
 
         foreach( $exports as $export => $func ) {
