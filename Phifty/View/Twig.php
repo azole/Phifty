@@ -113,6 +113,15 @@ class Twig extends \Phifty\View\Engine
         return $this->env;
     }
 
+
+    /**
+     * {% set obj = new('InputSystem\\Model\\Patient') %}
+     * {% set obj = new('InputSystem\\Model\\PatientSchema') %}
+     */
+    function newObject($class) {
+        return new $class;
+    }
+
     function registerFunctions()
     {
         $exports = array(
@@ -123,7 +132,9 @@ class Twig extends \Phifty\View\Engine
             'gettext' => 'gettext',
             '_' => '_',
             'count' => 'count',
+            'new' => array($this,'newObject'),
         );
+
         foreach( $exports as $export => $func ) {
             $this->env->addFunction( $export , new Twig_Function_Function( $func ));
         }
