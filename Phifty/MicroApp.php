@@ -150,9 +150,9 @@ class MicroApp
             if( isset($args['template']) ) {
                 $options['args'] = array( 
                     'template' => $args['template'],
-                    'args' => ( isset($args['args']) ? $args['args'] : null),
+                    'template_args' => ( isset($args['args']) ? $args['args'] : null),
                 );
-                $router->add( $path , 'Phifty\Routing\TemplateController' , $options );
+                $router->add( $path , '\Phifty\Routing\TemplateController' , $options );
             }
             // route to normal controller ?
             elseif( isset($args['controller']) ) {
