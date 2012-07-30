@@ -32,6 +32,7 @@ class InitCommand extends Command
         $dirs[] = FileUtils::path_join( PH_APP_ROOT , 'cache' , 'view' );
         $dirs[] = FileUtils::path_join( PH_APP_ROOT , 'cache' , 'config' );
         $dirs[] = 'locale';
+        $dirs[] = 'applications';
         $dirs[] = 'bin';
         $dirs[] = 'plugins';
         $dirs[] = 'config';
