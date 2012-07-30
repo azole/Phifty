@@ -3,6 +3,12 @@ namespace Phifty\Command;
 use CLIFramework\Command;
 use Phifty\FileUtils;
 
+function copy_if_not_exists($source,$dest) {
+    if( ! file_exists($dest) ) {
+        copy($source,$dest);
+    }
+}
+
 class InitCommand extends Command
 {
     function brief() {
@@ -65,9 +71,12 @@ class InitCommand extends Command
 
         # init config
         $this->logger->info("Copying config files");
-        copy(FileUtils::path_join(PH_ROOT,'config','framework.app.yml'), FileUtils::path_join(PH_APP_ROOT,'config','framework.yml') );
-        copy(FileUtils::path_join(PH_ROOT,'config','application.dev.yml'), FileUtils::path_join(PH_APP_ROOT,'config','application.yml') );
-        copy(FileUtils::path_join(PH_ROOT,'config','database.app.yml'), FileUtils::path_join(PH_APP_ROOT,'config','database.yml') );
+        copy_if_not_exists(FileUtils::path_join(PH_ROOT,'config','framework.app.yml'), FileUtils::path_join(PH_APP_ROOT,'config','framework.yml') );
+        copy_if_not_exists(FileUtils::path_join(PH_ROOT,'config','application.dev.yml'), FileUtils::path_join(PH_APP_ROOT,'config','application.yml') );
+        copy_if_not_exists(FileUtils::path_join(PH_ROOT,'config','database.app.yml'), FileUtils::path_join(PH_APP_ROOT,'config','database.yml') );
+
+        copy_if_not_exists(FileUtils::path_join(PH_ROOT,'webroot','index.php'), FileUtils::path_join(PH_APP_ROOT,'webroot','index.php') );
+        copy_if_not_exists(FileUtils::path_join(PH_ROOT,'webroot','.htaccess'), FileUtils::path_join(PH_APP_ROOT,'webroot','.htaccess') );
 
         if( PH_ROOT !== PH_APP_ROOT ) {
             // link 'assets/' to 'phifty/assets/'
