@@ -86,6 +86,7 @@ class InitCommand extends Command
     $ bin/phifty build-conf
     $ bin/phifty asset
 
+    $ lazy build-conf config/database.yml
 
 DOC;
     }
