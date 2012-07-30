@@ -59,14 +59,15 @@ class InitCommand extends Command
         }
 
         $this->logger->info("Linking bin/phifty");
-        if( ! file_exists('bin/phifty') )
-            symlink(  'bin/phifty', 'phifty/bin/phifty' );
+        if( ! file_exists('bin/phifty') ) {
+            symlink(  '../phifty/bin/phifty', 'bin/phifty' );
+        }
 
         # init config
         $this->logger->info("Copying config files");
-        copy(FileUtils::path_join(PH_ROOT,'config','framework.dev.yml'), FileUtils::path_join(PH_APP_ROOT,'config','framework.yml') );
+        copy(FileUtils::path_join(PH_ROOT,'config','framework.app.yml'), FileUtils::path_join(PH_APP_ROOT,'config','framework.yml') );
         copy(FileUtils::path_join(PH_ROOT,'config','application.dev.yml'), FileUtils::path_join(PH_APP_ROOT,'config','application.yml') );
-        copy(FileUtils::path_join(PH_ROOT,'config','database.default.yml'), FileUtils::path_join(PH_APP_ROOT,'config','database.yml') );
+        copy(FileUtils::path_join(PH_ROOT,'config','database.app.yml'), FileUtils::path_join(PH_APP_ROOT,'config','database.yml') );
 
         if( PH_ROOT !== PH_APP_ROOT ) {
             // link 'assets/' to 'phifty/assets/'
