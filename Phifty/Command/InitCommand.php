@@ -23,20 +23,21 @@ class InitCommand extends Command
         $this->logger->info( "Webroot: " . $kernel->webroot );
 
         $dirs = array();
-        $dirs[] = FileUtils::path_join( $kernel->rootDir , 'cache' , 'view' );
-        $dirs[] = FileUtils::path_join( $kernel->rootDir , 'cache' , 'config' );
+        $dirs[] = FileUtils::path_join( PH_APP_ROOT , 'cache' , 'view' );
+        $dirs[] = FileUtils::path_join( PH_APP_ROOT , 'cache' , 'config' );
         $dirs[] = 'locale';
+        $dirs[] = 'bin';
         $dirs[] = 'plugins';
-        $dirs[] = $kernel->webroot;
+        $dirs[] = 'config';
+        $dirs[] = 'webroot';
 
-        $dirs[] = $kernel->webroot . DIRECTORY_SEPARATOR . 'ph' . DIRECTORY_SEPARATOR . 'plugins';
+        $dirs[] = 'webroot' . DIRECTORY_SEPARATOR . 'ph' . DIRECTORY_SEPARATOR . 'plugins';
 
         /* for hard links */
-        $dirs[] = $kernel->webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'images';
-        $dirs[] = $kernel->webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'css';
-        $dirs[] = $kernel->webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'js';
-        $dirs[] = $kernel->webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload';
-
+        $dirs[] = 'webroot' . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'images';
+        $dirs[] = 'webroot' . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'css';
+        $dirs[] = 'webroot' . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'js';
+        $dirs[] = 'webroot' . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload';
         FileUtils::mkpath($dirs,true);
 
 // TODO: create .htaccess file
@@ -57,6 +58,16 @@ class InitCommand extends Command
             system("chmod -R {$mod[0]} {$mod[1]}");
         }
 
+        $this->logger->info("Linking bin/phifty");
+        if( ! file_exists('bin/phifty') )
+            symlink(  'bin/phifty', 'phifty/bin/phifty' );
+
+        # init config
+        $this->logger->info("Copying config files");
+        copy(FileUtils::path_join(PH_ROOT,'config','framework.dev.yml'), FileUtils::path_join(PH_APP_ROOT,'config','framework.yml') );
+        copy(FileUtils::path_join(PH_ROOT,'config','application.dev.yml'), FileUtils::path_join(PH_APP_ROOT,'config','application.yml') );
+        copy(FileUtils::path_join(PH_ROOT,'config','database.default.yml'), FileUtils::path_join(PH_APP_ROOT,'config','database.yml') );
+
         if( PH_ROOT !== PH_APP_ROOT ) {
             // link 'assets/' to 'phifty/assets/'
             if( ! file_exists('assets') )
@@ -67,21 +78,15 @@ class InitCommand extends Command
                 symlink( 'phifty' . DIRECTORY_SEPARATOR . 'vendor' , 'vendor' );
         }
 
+        $this->logger->info('Application is initialized, please edit your config files and run:');
 
-        // XXX: check if asset is enabled.
+        echo <<<DOC
 
-        $this->logger->info("Installing Assets");
+    $ bin/phifty build-conf
+    $ bin/phifty asset
 
-        // Add command factory to CLIFramework Command class.
-        $init = new AssetInitCommand;
-        $install = new AssetInstallCommand;
-        $init->application = $this->application;
-        $init->options = $this->options;
-        $init->executeWrapper(array());
 
-        $install->application = $this->application;
-        $install->options = $this->options;
-        $install->executeWrapper(array());
+DOC;
     }
 }
 
