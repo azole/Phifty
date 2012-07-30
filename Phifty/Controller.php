@@ -29,6 +29,16 @@ class Controller extends BaseController
         $this->request = new HttpRequest;
     }
 
+	public function getMethod()
+	{
+		return $_SERVER['REQUEST_METHOD'];
+	}
+
+	public function getInputContent()
+	{
+		return file_get_contents('php://input');
+	}
+
     public function getCurrentUser()
     {
         return kernel()->currentUser;
@@ -141,6 +151,11 @@ class Controller extends BaseController
         return json_encode($data);
     }
 
+	public function toJson($data)
+	{
+		return $this->renderJson($data);
+	}
+
     /* 
      * Render yaml
      *
@@ -152,6 +167,11 @@ class Controller extends BaseController
         $yaml = new YamlSerializer;
         return $yaml->encode($data);
     }
+
+	public function toYaml($data)
+	{
+		return $this->renderYaml( $data );
+	}
 
 
     /**
