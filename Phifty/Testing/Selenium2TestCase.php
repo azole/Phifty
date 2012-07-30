@@ -1,9 +1,9 @@
 <?php
 namespace Phifty\Testing;
-use PHPUnit_Extensions_SeleniumTestCase;
+use PHPUnit_Extensions_Selenium2TestCase;
 
 
-abstract class SeleniumTestCase extends PHPUnit_Extensions_SeleniumTestCase 
+abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase 
 {
     protected function setUp()
     {
@@ -22,10 +22,6 @@ abstract class SeleniumTestCase extends PHPUnit_Extensions_SeleniumTestCase
 
             if($config->Selenium->BrowserUrl)
                 $this->setBrowserUrl($config->Selenium->BrowserUrl);
-
-            if($config->Selenium->Speed) {
-                $this->setSpeed($config->Selenium->Speed);
-            }
         }
     }
 }
