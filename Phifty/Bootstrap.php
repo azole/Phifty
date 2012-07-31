@@ -20,11 +20,9 @@ class Bootstrap
     {
         $loader = null;
         if( extension_loaded('apc') ) {
-            require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/SplClassLoader.php';
             require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/ApcClassLoader.php';
             $loader = new \Universal\ClassLoader\ApcClassLoader( PH_ROOT );
         } else {
-            require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/SplClassLoader.php';
             $loader = new \Universal\ClassLoader\SplClassLoader;
         }
 
@@ -126,6 +124,7 @@ namespace {
     defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
 
     // ObjectContainer is required by Kernel
+    require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/SplClassLoader.php';
     require PH_ROOT . '/vendor/universal/src/Universal/Container/ObjectContainer.php';
 
     // Load Kernel so we don't need to load by classloader.
@@ -157,5 +156,6 @@ namespace {
         return $kernel;
     }
 
-
+    // bootstrap here
+    kernel();
 }
