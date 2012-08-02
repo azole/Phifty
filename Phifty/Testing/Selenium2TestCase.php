@@ -6,7 +6,10 @@ use PHPUnit_Extensions_Selenium2TestCase;
 abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase 
 {
 
-    protected $urlOf;
+    protected $urlOf = [
+        'login' => 'http://phifty.dev/bs/login',
+        'news' => 'http://phifty.dev/bs/news'
+    ];
 
     protected function setUp()
     {
