@@ -11,18 +11,25 @@ class TemplateController extends Controller
     public function __construct($args) 
     {
         $this->template = $args['template'];
-        $this->args = isset($args['args']) ? $args['args'] : null;
+        $this->args = isset($args['template_args']) ? $args['args'] : null;
     }
 
     function run()
     {
         $template   = $this->template;
         $args       = $this->args;
-        $engineType = kernel()->config('View.Backend');
+
+# Get config from framework.yml
+#  View:
+#    Backend: twig
+#    Class: \Phifty\View
+#    TemplateDirs: {  }
+
+        $engineType = kernel()->config->get('framework','View.Backend');
 
         /* get template engine */
         $engine = Engine::createEngine( $engineType );
-        $viewClass = kernel()->config('View.Class') ?: 'Phifty\View';
+        $viewClass = kernel()->config->get('framework','View.Class') ?: 'Phifty\View';
         $view = new $viewClass( $engine );
         if( $args ) {
             $view->assign( $args );
