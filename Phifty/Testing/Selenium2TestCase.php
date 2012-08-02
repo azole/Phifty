@@ -5,6 +5,9 @@ use PHPUnit_Extensions_Selenium2TestCase;
 
 abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase 
 {
+
+    protected $urlOf;
+
     protected function setUp()
     {
         $kernel = kernel();
@@ -23,6 +26,24 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
             if($config->Selenium->BrowserUrl)
                 $this->setBrowserUrl($config->Selenium->BrowserUrl);
         }
+    }
+
+    protected function login( $transferTo='' ) 
+    {
+        $this->url( $this->urlOf['login'] );
+
+        $accountInput = get('input[name=account]');
+        $accountInput->value('admin');
+
+        $passwordInput = get('input[name=password]');
+        $passwordInput->value('admin');
+
+        get('.submit')->click();
+
+        if ( '' !== $transferTo  )
+            $this->url( $this->urlOf[ $transferTo ] );
+
+        wait();
     }
 }
 
