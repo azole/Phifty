@@ -10,7 +10,7 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
         'login' => 'http://phifty.dev/bs/login',
         'news' => 'http://phifty.dev/bs/news',
         'contacts' => 'http://phifty.dev/bs/contacts',
-        'contactGroup' => 'http://phifty.dev/bs/contact_groups'
+        'contactGroups' => 'http://phifty.dev/bs/contact_groups'
     ];
 
     protected function setUp()
