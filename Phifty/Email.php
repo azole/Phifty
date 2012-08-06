@@ -23,7 +23,7 @@ class Email
     var $cc = array();
     var $bcc = array();
     var $subject;
-	var $replyTo;
+    var $replyTo;
 
     var $template;
     var $templateVars = array();
@@ -62,15 +62,15 @@ class Email
         return $this;
     }
 
-	function replyTo( $replies ) {
-		$this->replyTo = $replies;
-		return $this;
-	}
+    function replyTo( $replies ) {
+        $this->replyTo = $replies;
+        return $this;
+    }
 
     function encodeColumns($data)
     {
-		if( empty( $data ) )
-			return;
+        if( empty( $data ) )
+            return;
 
         if( is_array($data) ) {
             $cols = array();
@@ -109,8 +109,9 @@ class Email
     function template( $template , $vars = array() , $engineOpts = array() ) 
     {
         $this->template = $template;
-        if( $vars )
+        if( $vars ) {
             $this->templateVars = $vars;
+        }
         $this->templateEngineOpts = $engineOpts;
         $this->contentType = 'html';
         return $this;
@@ -155,15 +156,15 @@ class Email
         $to   = $this->encodeColumns($this->to);
         $cc   = $this->encodeColumns($this->cc);
         $bcc     = $this->encodeColumns($this->bcc);
-		$replyTo = $this->encodeColumns($this->replyTo);
+        $replyTo = $this->encodeColumns($this->replyTo);
 
         $headers = "MIME-Version: 1.0\r\n";
         $headers .= "From: $from\r\n";
         $headers .= "To: $to\r\n";
 
-        if( $cc )			$headers .= "CC: $cc\r\n";
-        if( $bcc )			$headers .= "BCC: $bcc\r\n";
-		if( $replyTo )      $headers .= "REPLY-TO: $replyTo\r\n";
+        if( $cc )           $headers .= "CC: $cc\r\n";
+        if( $bcc )          $headers .= "BCC: $bcc\r\n";
+        if( $replyTo )      $headers .= "REPLY-TO: $replyTo\r\n";
 
         return $headers;
     }
@@ -202,25 +203,8 @@ class Email
         if( ! $content ) 
             throw new \Exception("mail content is not defined.");
 
-        // XXX: should also log
-        //
         $subject = $this->encode($subject);
-
-
-
-
-        $debug = false;
-		if( $debug ) {
-			$fh = fopen( PH_APP_ROOT . '/mail.log' , 'a+');
-			flock( $fh , LOCK_EX );
-			fwrite( $fh , "To: " . $this->encodeColumns($this->to) );
-			fwrite( $fh , "Subject: " . $subject );
-			fwrite( $fh , print_r( $headers , true ) );
-			fwrite( $fh , print_r( $this , true ) );
-			fclose( $fh );
-		}
-
-        return mail( 
+        return mail(
             $this->encodeColumns($this->to),
             $subject,
             $content,
