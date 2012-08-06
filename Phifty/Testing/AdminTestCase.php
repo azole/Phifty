@@ -6,6 +6,7 @@ class AdminTestCase extends Selenium2TestCase
     protected $urlOf = [
         'login' => '',
         'news' => 'http://phifty.dev/bs/news',
+        'newsCategory' => 'http://phifty.dev/bs/news_category',
         'contacts' => 'http://phifty.dev/bs/contacts',
         'contactGroups' => 'http://phifty.dev/bs/contact_groups'
     ];
