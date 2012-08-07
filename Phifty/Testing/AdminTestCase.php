@@ -38,24 +38,33 @@ class AdminTestCase extends Selenium2TestCase
         wait();
     }
 
-    protected function isCreated() {
-
+    protected function isCreated() 
+    {
         $msg = get('.message.success', 5)->text();
         $o = get_obj(4); 
         $o->assertContains('created', $msg );
     }
 
-    protected function isUpdated() {
+    protected function isUpdated() 
+    {
 
         $msg = get('.message.success', 5)->text();
         $o = get_obj(4); 
         $o->assertContains('updated', $msg );
     }
 
-    protected function isDeleted() {
+    protected function isDeleted() 
+    {
 
         $msg = get('.jGrowl-message', 5)->text();
         $o = get_obj(4);
         $o->assertRegExp('/(deleted|刪除成功)/', $msg );
+    }
+
+    protected function isUploaded() 
+    {
+        $msg = get('.jGrowl-message', 5)->text();
+        $o = get_obj(4); 
+        $o->assertContains('created', $msg );
     }
 }
