@@ -8,7 +8,8 @@ class AdminTestCase extends Selenium2TestCase
         'news' => 'http://phifty.dev/bs/news',
         'newsCategory' => 'http://phifty.dev/bs/news_category',
         'contacts' => 'http://phifty.dev/bs/contacts',
-        'contactGroups' => 'http://phifty.dev/bs/contact_groups'
+        'contactGroups' => 'http://phifty.dev/bs/contact_groups',
+        'product' => 'http://phifty.dev/bs/product'
     ];
 
     protected function login( $transferTo='' ) 
