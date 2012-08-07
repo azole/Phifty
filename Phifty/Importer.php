@@ -1,7 +1,7 @@
 <?php
 namespace Phifty;
-
 use Phifty\Logger;
+
 abstract class Importer 
 {
     public $logger;
