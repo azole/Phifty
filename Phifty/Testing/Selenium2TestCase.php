@@ -5,6 +5,7 @@ use PHPUnit_Extensions_Selenium2TestCase;
 
 abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase 
 {
+    public $testData;
 
     protected function setUp()
     {
@@ -24,6 +25,8 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
 
             if($config->Selenium->BrowserUrl)
                 $this->setBrowserUrl($config->Selenium->BrowserUrl);
+
+            $this->testEnvSettings = $config->TestEnvSettings;
         }
     }
 
