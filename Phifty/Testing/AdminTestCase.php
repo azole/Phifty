@@ -46,7 +46,6 @@ class AdminTestCase extends Selenium2TestCase
 
     protected function isUpdated() 
     {
-
         $msg = get('.message.success', 5)->text();
         $this->assertContains('updated', $msg );
     }
