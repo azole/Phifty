@@ -5,8 +5,6 @@ use PHPUnit_Extensions_Selenium2TestCase;
 
 abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase 
 {
-    public $testData;
-
     protected function setUp()
     {
         $kernel = kernel();
@@ -26,9 +24,31 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
             if($config->Selenium->BrowserUrl)
                 $this->setBrowserUrl($config->Selenium->BrowserUrl);
 
-            $this->testEnvSettings = $config->TestEnvSettings;
+            if($config->TestEnvSettings)
+                $this->testEnvSettings = $config->TestEnvSettings;
         }
     }
 
+    protected function takeScreenShot() {
+
+        if($this->testEnvSettings 
+                && $this->testEnvSettings['screenShot'] 
+                    && $this->testEnvSettings['screenShot']['with_screenShot'] == true ) {
+
+            $this->screenshotPath = $this->testEnvSettings['screenShot']['screenShotPath'];
+            $this->screenshotUrl = $this->testEnvSettings['screenShot']['screenShotURL'];
+
+            $screenShot = $this->currentScreenshot();
+            $screenShotName = md5(rand()) . '.png'; // Create an unique file name
+            $screenShotPath = $this->testEnvSettings['screenShot']['screenShotPath'] . $screenShotName; 
+
+
+            if ( !is_string( $screenShot )) {
+                throw 'Take ScreenShot failed'; 
+            }
+
+            file_put_contents( $screenShotPath, $screenShot );
+        }
+    }
 }
 
