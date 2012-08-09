@@ -29,7 +29,13 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
         }
     }
 
-    protected function takeScreenShot() {
+    public function onNotSuccessfulTest(\Exception $e) 
+    {
+        $this->takeScreenShot();
+        parent::onNotSuccessfulTest($e);
+    }
+
+    private function takeScreenShot() {
 
         if($this->testEnvSettings 
                 && $this->testEnvSettings['screenShot'] 
@@ -41,7 +47,6 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
             $screenShot = $this->currentScreenshot();
             $screenShotName = md5(rand()) . '.png'; // Create an unique file name
             $screenShotPath = $this->testEnvSettings['screenShot']['screenShotPath'] . $screenShotName; 
-
 
             if ( !is_string( $screenShot )) {
                 throw 'Take ScreenShot failed'; 
