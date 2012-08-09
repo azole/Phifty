@@ -1,10 +1,12 @@
 <?php
 namespace Phifty\Testing;
 use PHPUnit_Extensions_Selenium2TestCase;
+use Exception;
 
 
 abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase 
 {
+    
     protected function setUp()
     {
         $kernel = kernel();
@@ -35,7 +37,7 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
         parent::onNotSuccessfulTest($e);
     }
 
-    private function takeScreenShot() 
+    public function takeScreenShot() 
     {
         if($this->testEnvSettings 
                 && $this->testEnvSettings['screenShot'] 
@@ -45,13 +47,12 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
             $this->screenshotUrl = $this->testEnvSettings['screenShot']['screenShotURL'];
 
             $screenShot = $this->currentScreenshot();
-            $screenShotName = md5(rand()) . '.png'; // Create an unique file name
-            $screenShotPath = $this->testEnvSettings['screenShot']['screenShotPath'] . $screenShotName; 
 
-            if ( !is_string( $screenShot )) {
+            if ( !is_string( $screenShot ) || ! $screenShot ) {
                 throw new Exception('Take ScreenShot failed');
             }
-
+            $screenShotName = md5(rand()) . '.png'; // Create an unique file name
+            $screenShotPath = $this->testEnvSettings['screenShot']['screenShotPath'] . $screenShotName; 
             file_put_contents( $screenShotPath, $screenShot );
         }
     }
