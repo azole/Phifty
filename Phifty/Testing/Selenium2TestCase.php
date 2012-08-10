@@ -31,6 +31,7 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
         }
     }
 
+    // Override the original method and tell Selenium to take screen shot when test fails
     public function onNotSuccessfulTest(\Exception $e) 
     {
         $this->takeScreenShot();
@@ -39,22 +40,19 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
 
     public function takeScreenShot() 
     {
-        if($this->testEnvSettings 
-                && $this->testEnvSettings['screenShot'] 
-                    && $this->testEnvSettings['screenShot']['with_screenShot'] == true ) {
+        $this->screenshotPath = PH_ROOT . '/tests/screenshots/'; 
 
-            $this->screenshotPath = $this->testEnvSettings['screenShot']['screenShotPath'];
-            $this->screenshotUrl = $this->testEnvSettings['screenShot']['screenShotURL'];
+        $screenShot = $this->currentScreenshot();
 
-            $screenShot = $this->currentScreenshot();
-
-            if ( !is_string( $screenShot ) || ! $screenShot ) {
-                throw new Exception('Take ScreenShot failed');
-            }
-            $screenShotName = md5(rand()) . '.png'; // Create an unique file name
-            $screenShotPath = $this->testEnvSettings['screenShot']['screenShotPath'] . $screenShotName; 
-            file_put_contents( $screenShotPath, $screenShot );
+        if ( !is_string( $screenShot ) || ! $screenShot ) {
+            throw new Exception('Take ScreenShot failed');
         }
+        
+        $filePath1 = $this->screenshotPath . md5(rand()) . '.png'; // Create an unique file name
+        $filePath2 = $this->screenshotPath . 'now.png'; // Create the easily recognized file name
+
+        file_put_contents( $filePath1, $screenShot );
+        file_put_contents( $filePath2, $screenShot );
     }
 }
 
