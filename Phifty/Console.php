@@ -13,7 +13,10 @@ use CLIFramework\Application;
 class Console extends Application
 {
     const name = 'phifty';
-    const version = '2.3.1';
+
+    function getVersion() {
+        return Kernel::VERSION;
+    }
 
     function init()
     {
