@@ -6,7 +6,11 @@ use Exception;
 
 abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase 
 {
-    public $Environment;
+
+    /**
+     * @var array environment configuration for selenium testing
+     */
+    public $environment;
     
     protected function setUp()
     {
@@ -28,7 +32,7 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
                 $this->setBrowserUrl($config->Selenium->BrowserUrl);
 
             if($config->Environment)
-                $this->Environment = $config->Environment;
+                $this->environment = $config->Environment;
         }
 
         // XXX: SeleniumTestCase (1.0) seems don't support screenshotPath ?
