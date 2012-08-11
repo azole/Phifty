@@ -29,6 +29,9 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
             if($config->Environment)
                 $this->Environment = $config->Environment;
         }
+
+        // XXX: SeleniumTestCase (1.0) seems don't support screenshotPath ?
+        $this->screenshotPath = $this->getScreenshotDir();
     }
 
     // Override the original method and tell Selenium to take screen shot when test fails
@@ -38,9 +41,13 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
         parent::onNotSuccessfulTest($e);
     }
 
+    public function getScreenshotDir() {
+        return PH_ROOT . '/tests/screenshots'; 
+    }
+
     public function takeScreenShot() 
     {
-        $this->screenshotPath = PH_ROOT . '/tests/screenshots/'; 
+        $screenshotPath = $this->getScreenshotDir();
 
         $screenShot = $this->currentScreenshot();
 
@@ -48,8 +55,8 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
             throw new Exception('Take ScreenShot failed');
         }
         
-        $filePath1 = $this->screenshotPath . md5(rand()) . '.png'; // Create an unique file name
-        $filePath2 = $this->screenshotPath . 'now.png'; // Create the easily recognized file name
+        $filePath1 = $screenshotPath . DIRECTORY_SEPARATOR . md5(rand()) . '.png'; // Create an unique file name
+        $filePath2 = $screenshotPath . DIRECTORY_SEPARATOR . 'now.png'; // Create the easily recognized file name
 
         file_put_contents( $filePath1, $screenShot );
         file_put_contents( $filePath2, $screenShot );
