@@ -1,21 +1,26 @@
 <?php
 namespace Phifty\Testing;
+use Exception;
 
 class AdminTestCase extends Selenium2TestCase 
 {
     protected $urlOf = array(
-        'login' => '',
-        'news' => 'http://phifty.dev/bs/news',
-        'newsCategory' => 'http://phifty.dev/bs/news_category',
-        'contacts' => 'http://phifty.dev/bs/contacts',
-        'contactGroups' => 'http://phifty.dev/bs/contact_groups',
-        'product' => 'http://phifty.dev/bs/product'
+        'login' => '/bs/login',
+        'news' => '/bs/news',
+        'newsCategory' => '/bs/news_category',
+        'contacts' => '/bs/contacts',
+        'contactGroups' => '/bs/contact_groups',
+        'product' => '/bs/product'
     );
+
+    public function gotoLoginPage()
+    {
+        $this->url( $this->getBaseUrl() . $this->urlOf['login'] );
+    }
 
     protected function login( $transferTo = null ) 
     {
-        // hard code here
-        $this->url('http://phifty.dev/bs/login');
+        $this->gotoLoginPage();
 
         $accountInput = get('input[name=account]');
         $accountInput->value('admin');
@@ -25,8 +30,12 @@ class AdminTestCase extends Selenium2TestCase
 
         get('.submit')->click();
 
-        if ( ! $transferTo ) {
-            $this->url( $this->urlOf[ $transferTo ] );
+        if ( $transferTo ) {
+            if( isset($this->urlOf[ $transferTo ]) )
+                $this->url( $this->getBaseUrl() . $this->urlOf[ $transferTo ] );
+            else {
+                throw new Exception("Url of $transferTo is not defined.");
+            }
         }
         wait();
     }

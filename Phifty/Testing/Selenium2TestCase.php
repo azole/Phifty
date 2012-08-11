@@ -18,7 +18,6 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
         $kernel->config->load('testing','config/testing.yml');
         $config = $kernel->config->get('testing');
         if($config && $config->Selenium) {
-
             if($config->Selenium->Host)
                 $this->setHost($config->Selenium->Host);
 
@@ -27,7 +26,6 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
 
             if($config->Selenium->Browser)
                 $this->setBrowser($config->Selenium->Browser);
-
 
             if($config->Environment)
                 $this->environment = $config->Environment;
