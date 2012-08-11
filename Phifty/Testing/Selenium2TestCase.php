@@ -6,6 +6,7 @@ use Exception;
 
 abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase 
 {
+    public $Environment;
     
     protected function setUp()
     {
