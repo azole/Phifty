@@ -3,14 +3,14 @@ namespace Phifty\Testing;
 
 class AdminTestCase extends Selenium2TestCase 
 {
-    protected $urlOf = [
+    protected $urlOf = array(
         'login' => '',
         'news' => 'http://phifty.dev/bs/news',
         'newsCategory' => 'http://phifty.dev/bs/news_category',
         'contacts' => 'http://phifty.dev/bs/contacts',
         'contactGroups' => 'http://phifty.dev/bs/contact_groups',
         'product' => 'http://phifty.dev/bs/product'
-    ];
+    );
 
     protected function login( $transferTo='' ) 
     {
