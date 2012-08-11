@@ -26,8 +26,8 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
             if($config->Selenium->BrowserUrl)
                 $this->setBrowserUrl($config->Selenium->BrowserUrl);
 
-            if($config->TestEnvSettings)
-                $this->testEnvSettings = $config->TestEnvSettings;
+            if($config->Environment)
+                $this->Environment = $config->Environment;
         }
     }
 
