@@ -28,15 +28,20 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
             if($config->Selenium->Browser)
                 $this->setBrowser($config->Selenium->Browser);
 
-            if($config->Selenium->BrowserUrl)
-                $this->setBrowserUrl($config->Selenium->BrowserUrl);
 
             if($config->Environment)
                 $this->environment = $config->Environment;
+
+            $this->setBrowserUrl( $this->getBaseUrl() );
         }
 
         // XXX: SeleniumTestCase (1.0) seems don't support screenshotPath ?
         // $this->screenshotPath = $this->getScreenshotDir();
+    }
+
+    public function getBaseUrl() {
+        $domain = kernel()->config->get('framework','Domain');
+        return 'http://' . $domain;
     }
 
     // Override the original method and tell Selenium to take screen shot when test fails
@@ -46,7 +51,7 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
 
         // use unix-timestamp so that we can sort file by name
         $this->takeScreenshot( str_replace('.','_',microtime(true)) . '.png' );
-        parent::onNotSuccessfulTest($e);
+        return parent::onNotSuccessfulTest($e);
     }
 
     public function getScreenshotDir() {

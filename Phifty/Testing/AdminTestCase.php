@@ -12,7 +12,7 @@ class AdminTestCase extends Selenium2TestCase
         'product' => 'http://phifty.dev/bs/product'
     );
 
-    protected function login( $transferTo='' ) 
+    protected function login( $transferTo = null ) 
     {
         // hard code here
         $this->url('http://phifty.dev/bs/login');
@@ -25,10 +25,9 @@ class AdminTestCase extends Selenium2TestCase
 
         get('.submit')->click();
 
-        if ( '' !== $transferTo  ) {
+        if ( ! $transferTo ) {
             $this->url( $this->urlOf[ $transferTo ] );
         }
-
         wait();
     }
 
