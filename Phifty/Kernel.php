@@ -25,6 +25,7 @@ class Kernel extends ObjectContainer
     public $rootDir;  // application root dir
     public $rootAppDir;   // application dir (./applications)
     public $rootPluginDir;
+    public $webroot;
 
 
     /* application namespace */
