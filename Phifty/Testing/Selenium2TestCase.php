@@ -49,7 +49,7 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
         if( $this->takeScreenshot('now.png') === false 
             || $this->takeScreenshot( str_replace('.','_',microtime(true)) . '.png' ) === false ) 
         {
-            throw new Exception('screenshot failed, empty result.', 0 , $e);
+            throw new Exception('screenshot failed with: ' . $e->getMessage() , 0 , $e);
         }
         return parent::onNotSuccessfulTest($e);
     }
