@@ -47,7 +47,7 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
     {
         // use unix-timestamp so that we can sort file by name
         if( $this->takeScreenshot('now.png') === false 
-            || $this->takeScreenshot( str_replace('.','_',microtime(true)) . '.png' ) ) 
+            || $this->takeScreenshot( str_replace('.','_',microtime(true)) . '.png' ) === false ) 
         {
             throw new Exception('screenshot failed, empty result.', 0 , $e);
         }
