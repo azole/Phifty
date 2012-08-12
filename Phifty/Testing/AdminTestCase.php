@@ -67,7 +67,7 @@ class AdminTestCase extends Selenium2TestCase
 
     protected function isUploaded() 
     {
-        $msg = get('.jGrowl-message', 5)->text();
+        $msg = get('.jGrowl-message')->text();
         $this->assertContains('created', $msg );
     }
 }
