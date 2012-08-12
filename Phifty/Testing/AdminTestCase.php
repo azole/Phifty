@@ -48,20 +48,20 @@ class AdminTestCase extends Selenium2TestCase
 
     protected function isCreated() 
     {
-        $msg = get('.message.success', 5)->text();
+        $msg = get('.message.success')->text();
         $this->assertContains('created', $msg );
     }
 
     protected function isUpdated() 
     {
-        $msg = get('.message.success', 5)->text();
+        $msg = get('.message.success')->text();
         $this->assertRegExp('/updated|已經更新/', $msg );
     }
 
     protected function isDeleted() 
     {
 
-        $msg = get('.jGrowl-message', 5)->text();
+        $msg = get('.jGrowl-message')->text();
         $this->assertRegExp('/(deleted|刪除成功)/', $msg );
     }
 
