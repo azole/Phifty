@@ -29,6 +29,10 @@ class Locale
         return $this;
     }
 
+    function getDefault() {
+        return $this->defaultLang;
+    }
+
     function init( $force_lang = null  )
     {
         $lang = null;
@@ -41,10 +45,10 @@ class Locale
         if( ! $lang && isset($_POST[ L10N_LOCALE_KEY ]) )
             $lang = $_POST[ L10N_LOCALE_KEY ];
         if( ! $lang && isset( $_SESSION[ L10N_LOCALE_KEY ] ) )
-            $lang = $_SESSION[ L10N_LOCALE_KEY ];
+            $lang = @$_SESSION[ L10N_LOCALE_KEY ];
         
         if( ! $lang && isset( $_COOKIE['locale'] ) )
-            $lang = $_COOKIE['locale'];
+            $lang = @$_COOKIE['locale'];
 
         if( ! $lang )
             $lang = $this->defaultLang;

@@ -28,7 +28,9 @@ class MetadataSchema extends MixinSchemaDeclare
             ->integer()
             ->refer( kernel()->currentUser->userModelClass )
             ->default(function() { 
-                return kernel()->currentUser->id; 
+                if( isset($_SESSION) ) {
+                    return kernel()->currentUser->id; 
+                }
             })
             ->renderAs('SelectInput')
             ->label('建立者')
@@ -39,7 +41,9 @@ class MetadataSchema extends MixinSchemaDeclare
             ->integer()
             ->refer( kernel()->currentUser->userModelClass )
             ->default(function() { 
-                return kernel()->currentUser->id; 
+                if( isset($_SESSION) ) {
+                    return kernel()->currentUser->id; 
+                }
             })
             ->renderAs('SelectInput')
             ->label('更新者')
