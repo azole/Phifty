@@ -71,4 +71,8 @@ class AdminTestCase extends Selenium2TestCase
         $msg = waitFor('.jGrowl-message')->text();
         $this->assertContains('created', $msg );
     }
+
+    public function uploadFile( $sel, $filepath ) {
+        get($sel)->value( realpath( $filepath ));
+    }
 }
