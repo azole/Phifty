@@ -30,6 +30,8 @@ class AdminTestCase extends Selenium2TestCase
 
         get('.submit')->click();
 
+        // ok( ! get('.message.error') , 'login error' );
+
         if ( $transferTo ) {
             if( isset($this->urlOf[ $transferTo ]) )
                 $this->url( $this->getBaseUrl() . $this->urlOf[ $transferTo ] );
@@ -60,15 +62,13 @@ class AdminTestCase extends Selenium2TestCase
 
     protected function isDeleted() 
     {
-        wait();
-        $msg = get('.jGrowl-message')->text();
+        $msg = waitFor('.jGrowl-message')->text();
         $this->assertRegExp('/(deleted|刪除成功)/', $msg );
     }
 
     protected function isUploaded() 
     {
-        wait();
-        $msg = get('.jGrowl-message')->text();
+        $msg = waitFor('.jGrowl-message')->text();
         $this->assertContains('created', $msg );
     }
 }
