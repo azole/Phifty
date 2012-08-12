@@ -45,10 +45,12 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
     // Override the original method and tell Selenium to take screen shot when test fails
     public function onNotSuccessfulTest(\Exception $e) 
     {
-        $this->takeScreenshot('now.png');
-
         // use unix-timestamp so that we can sort file by name
-        $this->takeScreenshot( str_replace('.','_',microtime(true)) . '.png' );
+        if( $this->takeScreenshot('now.png') === false 
+            || $this->takeScreenshot( str_replace('.','_',microtime(true)) . '.png' ) ) 
+        {
+            throw new Exception('screenshot failed, empty result.', 0 , $e);
+        }
         return parent::onNotSuccessfulTest($e);
     }
 
@@ -60,12 +62,13 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
     {
         $image = $this->currentScreenshot();
         if ( !is_string( $image ) || ! $image ) {
-            throw new Exception('screenshot failed, empty result.');
+            return false;
         }
         $path = $this->getScreenshotDir() . DIRECTORY_SEPARATOR . $filename;
         if( file_put_contents( $path , $image ) === false ) {
-            throw new Exception("can not write screenshot image file $path");
+            return false;
         }
+        return true;
     }
 }
 
