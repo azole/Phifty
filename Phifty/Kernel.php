@@ -105,13 +105,11 @@ class Kernel extends ObjectContainer
             \Phifty\Environment\Production::init($this);
         }
 
+        // build session
+        $this->session;
+        $this->locale;
         if( $this->isCLI ) {
             \Phifty\Environment\CommandLine::init($this);
-        }
-        else {
-            // build session
-            $this->session;
-            $this->locale;
         }
 
         if( $appconfigs = $this->config->get('framework','Applications') ) {
