@@ -62,13 +62,15 @@ class AdminTestCase extends Selenium2TestCase
 
     protected function isDeleted() 
     {
-        $msg = waitFor('.jGrowl-message')->text();
+        wait();
+        $msg = get('.jGrowl-message')->text();
         $this->assertRegExp('/(deleted|刪除成功)/', $msg );
     }
 
     protected function isUploaded() 
     {
-        $msg = waitFor('.jGrowl-message')->text();
+        wait();
+        $msg = get('.jGrowl-message')->text();
         $this->assertContains('created', $msg );
     }
 }
