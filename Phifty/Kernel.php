@@ -108,9 +108,11 @@ class Kernel extends ObjectContainer
         if( $this->isCLI ) {
             \Phifty\Environment\CommandLine::init($this);
         }
-        else {
-            // build session
+
+        if( isset($this->session) ) {
             $this->session;
+        }
+        if( isset($this->locale) ) {
             $this->locale;
         }
 
@@ -163,7 +165,10 @@ class Kernel extends ObjectContainer
 
 
     /**
-     * get service object
+     * Get service object by its identifier
+     *
+     * @param string $id
+     * @return Service object
      */
     public function service($id) 
     {
@@ -184,6 +189,8 @@ class Kernel extends ObjectContainer
 
     /**
      * Get current application name from config
+     *
+     * @return string Application name
      */
     public function getApplicationName()
     {
@@ -193,6 +200,8 @@ class Kernel extends ObjectContainer
 
     /**
      * Get application UUID from config
+     *
+     * @return string Application UUID
      */
     public function getApplicationUUID()
     {
