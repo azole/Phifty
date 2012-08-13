@@ -22,15 +22,15 @@ class AdminTestCase extends Selenium2TestCase
     {
         $this->gotoLoginPage();
 
-        $accountInput = get('input[name=account]');
+        $accountInput = find_element('input[name=account]');
         $accountInput->value('admin');
 
-        $passwordInput = get('input[name=password]');
+        $passwordInput = find_element('input[name=password]');
         $passwordInput->value('admin');
 
-        get('.submit')->click();
+        find_element('.submit')->click();
 
-        // ok( ! get('.message.error') , 'login error' );
+        // ok( ! find_element('.message.error') , 'login error' );
 
         if ( $transferTo ) {
             if( isset($this->urlOf[ $transferTo ]) )
@@ -44,19 +44,19 @@ class AdminTestCase extends Selenium2TestCase
 
     protected function logout()
     {
-        get('#operation .buttons a[href]')->click();
+        find_element('#operation .buttons a[href]')->click();
         wait();
     }
 
     protected function isCreated() 
     {
-        $msg = get('.message.success')->text();
+        $msg = find_element('.message.success')->text();
         $this->assertContains('created', $msg );
     }
 
     protected function isUpdated() 
     {
-        $msg = get('.message.success')->text();
+        $msg = find_element('.message.success')->text();
         $this->assertRegExp('/updated|已經更新/', $msg );
     }
 
@@ -73,6 +73,6 @@ class AdminTestCase extends Selenium2TestCase
     }
 
     public function uploadFile( $sel, $filepath ) {
-        get($sel)->value( realpath( $filepath ));
+        find_element($sel)->value( realpath( $filepath ));
     }
 }
