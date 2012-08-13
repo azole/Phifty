@@ -216,7 +216,7 @@ abstract class CRUDHandler extends Controller
     {
         $page     = $this->request->param('page') ?: 1;
         $pageSize = $this->request->param('pagenum') ?: $this->pageLimit;
-        $count = $collection->queryCount();
+        $count    = $collection->queryCount();
         $collection->page( $page ,$pageSize );
         return new RegionPager( $page, $count, $pageSize );
     }
