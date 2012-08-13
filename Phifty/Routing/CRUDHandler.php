@@ -212,27 +212,29 @@ abstract class CRUDHandler extends Controller
             $args );
     }
 
+    function createCollectionPager($collection) 
+    {
+        $page = $this->request->param('page') ?: 1;
+        $pageSize = $this->request->param('pagenum') ?: $this->pageLimit;
+        $count = $collection->queryCount();
+        $collection->page( $page ,$pageSize );
+        $pager = new RegionPager( $page, $count, $pageSize );
+        return $pager;
+    }
 
     /**
      * CRUD List Prepare Data
      */
     function listRegionActionPrepare()
     {
-        $page = $this->request->param('page') ?: 1;
-        $pageSize = $this->request->param('pagenum') ?: $this->pageLimit;
         $collection = $this->getCollection();
-        $count = $collection->queryCount();
-        $collection->page( $page ,$pageSize );
-        $pager = new RegionPager( $page, $count, $pageSize );
-
+        $pager = $this->createCollectionPager($collection);
         $data = array(
-            'Object' => $this,
             'Items' => $collection->items(),
             'Pager' => $pager,
             'Title' => $this->getListTitle(),
             'Columns' => $this->getListColumns(),
         );
-
         // var_dump( $collection->getLastSQL() , $collection->getVars() ); 
         foreach( $data as $k => $v ) {
             $this->vars['CRUD'][ $k ] = $v;
