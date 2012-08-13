@@ -214,12 +214,11 @@ abstract class CRUDHandler extends Controller
 
     function createCollectionPager($collection) 
     {
-        $page = $this->request->param('page') ?: 1;
+        $page     = $this->request->param('page') ?: 1;
         $pageSize = $this->request->param('pagenum') ?: $this->pageLimit;
         $count = $collection->queryCount();
         $collection->page( $page ,$pageSize );
-        $pager = new RegionPager( $page, $count, $pageSize );
-        return $pager;
+        return new RegionPager( $page, $count, $pageSize );
     }
 
     /**
@@ -230,6 +229,7 @@ abstract class CRUDHandler extends Controller
         $collection = $this->getCollection();
         $pager = $this->createCollectionPager($collection);
         $data = array(
+            'Object' => $this,
             'Items' => $collection->items(),
             'Pager' => $pager,
             'Title' => $this->getListTitle(),
