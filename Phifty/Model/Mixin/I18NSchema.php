@@ -9,10 +9,12 @@ class I18NSchema extends MixinSchemaDeclare
         $this->column('lang')
             ->varchar(12)
             ->validValues(function() {
-                 return array_flip( kernel()->locale->available() );
+                return array_flip( kernel()->locale->available() );
             })
             ->label('語言')
-            ->default('en')
+            ->default( function() { 
+                return kernel()->locale->getDefault();
+            })
             ->renderAs('SelectInput')
             ;
     }
