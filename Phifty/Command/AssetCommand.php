@@ -43,6 +43,7 @@ class AssetCommand extends Command
         $install = new AssetInstallCommand;
         $install->application = $app;
         $install->options = $this->options;
+        $install->logger = $this->logger;
         $install->executeWrapper(array());
     }
 }
