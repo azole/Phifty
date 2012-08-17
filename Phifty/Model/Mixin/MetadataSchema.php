@@ -8,6 +8,7 @@ class MetadataSchema extends MixinSchemaDeclare
     {
         $this->column( 'created_on' )
             ->timestamp()
+            ->null()
             ->renderAs('DateTimeInput')
             ->label( _('Created on') )
             ->default(function() {
@@ -17,6 +18,7 @@ class MetadataSchema extends MixinSchemaDeclare
 
         $this->column( 'updated_on' )
             ->timestamp()
+            ->null()
             ->renderAs('DateTimeInput')
             ->default(function() {
                 return date('c');
