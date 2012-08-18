@@ -31,6 +31,7 @@ class Bootstrap
             'Phifty'     => PH_ROOT . '/src',
             'ActionKit'  => PH_ROOT . '/src',
             'I18NKit'    => PH_ROOT . '/src',
+            'ConfigKit'  => PH_ROOT . '/src',
             'Universal'  => PH_ROOT . '/vendor/universal/src',
             'SQLBuilder' => PH_ROOT . '/vendor/sqlbuilder/src',
             'AssetKit'   => PH_ROOT . '/vendor/assetkit/src',
