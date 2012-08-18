@@ -132,10 +132,9 @@ namespace {
 
     // Load Kernel so we don't need to load by classloader.
     require PH_ROOT . '/src/ConfigKit/ConfigCompiler.php';
+    require PH_ROOT . '/src/ConfigKit/ConfigLoader.php';
+    require PH_ROOT . '/src/ConfigKit/Accessor.php';
     require PH_ROOT . '/src/Phifty/Kernel.php';
-
-    require PH_ROOT . '/src/Phifty/Config/Accessor.php';
-    require PH_ROOT . '/src/Phifty/Config/ConfigLoader.php';
 
     use Phifty\Bootstrap;
 

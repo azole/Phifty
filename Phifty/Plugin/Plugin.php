@@ -2,7 +2,7 @@
 namespace Phifty\Plugin;
 use Phifty\MicroApp;
 use Phifty\FileUtils;
-use Phifty\Config\Accessor;
+use ConfigKit\Accessor;
 
 class Plugin extends MicroApp
 {
