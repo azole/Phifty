@@ -1,6 +1,7 @@
 <?php
 namespace Phifty {
 use Phifty\Kernel;
+use ConfigKit\ConfigCompiler;
 
 /** 
  * Script for phifty kernel bootstrap
@@ -51,25 +52,25 @@ class Bootstrap
         // Simple load three config files (framework.yml, database.yml, application.yml)
 
         $loader = new \Phifty\Config\ConfigLoader;
-        if( file_exists( PH_APP_ROOT . '/config/framework.php') )
-            $loader->load('framework', PH_APP_ROOT . '/config/framework.php');
+        if( file_exists( PH_APP_ROOT . '/config/framework.yml') )
+            $loader->load('framework', ConfigCompiler::compile(PH_APP_ROOT . '/config/framework.yml') );
 
         // This is for DatabaseService
-        if( file_exists( PH_APP_ROOT . '/config/database.php') ) {
-            $loader->load('database', PH_APP_ROOT . '/config/database.php');
+        if( file_exists( PH_APP_ROOT . '/config/database.yml') ) {
+            $loader->load('database', ConfigCompiler::compile(PH_APP_ROOT . '/config/database.yml') );
         }
+
+        // Config for application, services does not depends on this config file.
+        if( file_exists( PH_APP_ROOT . '/config/application.yml') )
+            $loader->load('application', ConfigCompiler::compile( PH_APP_ROOT . '/config/application.yml') );
 
         // Only load testing configuration when environment 
         // is 'testing'
         if( getenv('PHIFTY_ENV') === 'testing' ) {
-            if( file_exists( PH_APP_ROOT . '/config/testing.php' ) ) {
-                $loader->load('testing', PH_APP_ROOT . '/config/testing.php' );
+            if( file_exists( PH_APP_ROOT . '/config/testing.yml' ) ) {
+                $loader->load('testing', ConfigCompiler::compile(PH_APP_ROOT . '/config/testing.yml') );
             }
         }
-
-        // Config for application, services does not depends on this config file.
-        if( file_exists( PH_APP_ROOT . '/config/application.php') )
-            $loader->load('application', PH_APP_ROOT . '/config/application.php' );
         return $loader;
     }
 
@@ -129,7 +130,7 @@ namespace {
     require PH_ROOT . '/vendor/universal/src/Universal/Container/ObjectContainer.php';
 
     // Load Kernel so we don't need to load by classloader.
-    require PH_ROOT . '/src/ConfigKit/ConfigLoader.php';
+    require PH_ROOT . '/src/ConfigKit/ConfigCompiler.php';
     require PH_ROOT . '/src/Phifty/Kernel.php';
 
     require PH_ROOT . '/src/Phifty/Config/Accessor.php';
