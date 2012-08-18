@@ -1,43 +1,15 @@
 <?php
-namespace Phifty\Config;
-use SplFileInfo;
-use Exception;
+namespace ConfigKit;
+use ConfigKit\ConfigCompiler;
 
 class ConfigLoader
 {
     public $stashes = array();
 
-    public function load($section,$file) 
+    public function load($section,$file)
     {
-        if( ! file_exists($file) ) {
-            throw new Exception("config file $file doesn't exist.");
-        }
-        $info = new SplFileInfo($file);
-        // $ext = $info->getExtension();
-
-        $parts = explode('.',$file);
-        $ext = end($parts);
-
-        $config = array();
-        if( $ext === 'yaml' || $ext === 'yml' ) {
-            // if we have yaml extension, just decode config file with extension
-            if( extension_loaded('yaml') ) {
-                return $this->stashes[ $section ] = yaml_parse_file($file);
-            } else {
-                $ser = new \SerializerKit\Serializer('yaml');
-                return $this->stashes[ $section ] = $ser->decode(file_get_contents($file));
-            }
-        }
-        elseif( $ext === 'php' ) {
-            // load php config directly.
-            return $this->stashes[ $section ] = require $file;
-        }
-        else {
-            throw new Exception('Unsupported config file format.');
-        }
+        return $this->stashes[ $section ] = ConfigCompiler::load($file);
     }
-
-
 
     /**
      * Allow more useful getter
@@ -54,6 +26,10 @@ class ConfigLoader
         }
     }
 
+    function __isset($name) 
+    {
+        return isset($this->stashes[$name]);
+    }
 
 
     /**
@@ -125,6 +101,7 @@ class ConfigLoader
     public function isLoaded($sectionId) {
         return isset($this->stashes[$sectionId]);
     }
-
 }
+
+
 

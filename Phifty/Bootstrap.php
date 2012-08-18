@@ -2,6 +2,7 @@
 namespace Phifty {
 use Phifty\Kernel;
 use ConfigKit\ConfigCompiler;
+use ConfigKit\ConfigLoader;
 
 /** 
  * Script for phifty kernel bootstrap
@@ -51,18 +52,18 @@ class Bootstrap
         // We load other services from the definitions in config file
         // Simple load three config files (framework.yml, database.yml, application.yml)
 
-        $loader = new \Phifty\Config\ConfigLoader;
+        $loader = new ConfigLoader;
         if( file_exists( PH_APP_ROOT . '/config/framework.yml') )
-            $loader->load('framework', ConfigCompiler::compile(PH_APP_ROOT . '/config/framework.yml') );
+            $loader->load('framework', PH_APP_ROOT . '/config/framework.yml');
 
         // This is for DatabaseService
         if( file_exists( PH_APP_ROOT . '/config/database.yml') ) {
-            $loader->load('database', ConfigCompiler::compile(PH_APP_ROOT . '/config/database.yml') );
+            $loader->load('database', PH_APP_ROOT . '/config/database.yml');
         }
 
         // Config for application, services does not depends on this config file.
         if( file_exists( PH_APP_ROOT . '/config/application.yml') )
-            $loader->load('application', ConfigCompiler::compile( PH_APP_ROOT . '/config/application.yml') );
+            $loader->load('application', PH_APP_ROOT . '/config/application.yml');
 
         // Only load testing configuration when environment 
         // is 'testing'
