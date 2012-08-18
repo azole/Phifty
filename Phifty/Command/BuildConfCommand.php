@@ -7,7 +7,6 @@ use ConfigKit\ConfigCompiler;
 
 class BuildConfCommand extends Command
 {
-
     public function brief()
     {
         return 'build PHP configuration file from YAML.';
@@ -43,7 +42,6 @@ class BuildConfCommand extends Command
             $this->logger->info( "Building config file $path" );
             ConfigCompiler::compile($path);
         }
-
         $this->logger->info('Done');
     }
 }
