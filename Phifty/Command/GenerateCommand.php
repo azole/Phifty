@@ -16,12 +16,14 @@ class GenerateCommand extends Command
             PH_ROOT . '/src/Phifty/Flavors'
         ));
         if( $flavor = $loader->load($flavor) ) {
+            $generator = $flavor->getGenerator();
+            $generator->setLogger($this->logger);
             $runner = new \GenPHP\GeneratorRunner;
             $runner->run($generator,$args);
         } else {
             throw new Exception("Flavor $flavor not found.");
         }
-        $this->info('Done');
+        $this->logger->info('Done');
     }
 }
 
