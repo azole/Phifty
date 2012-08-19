@@ -24,8 +24,6 @@ class Generator extends BaseGenerator
             mkdir($actionDir, 0755, true);
         }
 
-        $this->logger->info("Found action directory: $actionDir");
-
         if( file_exists($classFile) ) {
             $this->logger->info("Found existing $classFile, skip");
             return;
