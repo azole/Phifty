@@ -8,14 +8,6 @@ class GenerateCommand extends Command
 {
     function brief() { return 'template generator command'; }
 
-#      function init()
-#      {
-#  #          $this->registerCommand('action','Phifty\Command\Generate\GenerateActionCommand');
-#  #          $this->registerCommand('model','Phifty\Command\Generate\GenerateModelCommand');
-#  #          $this->registerCommand('controller','Phifty\Command\Generate\GenerateControllerCommand');
-#  #          $this->registerCommand('test','Phifty\Command\Generate\GenerateTestCommand');
-#      }
-
     function execute($flavor) {
         $args = func_get_args();
         array_shift($args);
