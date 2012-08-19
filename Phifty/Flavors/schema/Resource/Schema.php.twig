@@ -5,7 +5,12 @@ use LazyRecord\Schema\SchemaDeclare;
 class {{schemaName}} extends SchemaDeclare
 {
     function schema() {
+{% for column in schemaColumns %}
 
+        $this->column('{{ column.name }}')
+            ->{{ column.type }}();
+
+{% endfor %}
     }
 }
 
