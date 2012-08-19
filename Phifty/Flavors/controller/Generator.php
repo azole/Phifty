@@ -16,8 +16,16 @@ class Generator extends BaseGenerator
 
         $this->logger->info("Found $ns");
 
+
         if( strrpos($controllerName,'Controller') === false ) {
             $controllerName .= 'Controller';
+        }
+
+        $args = func_get_args();
+        $args = array_splice($args,2);
+        $controllerActions = array('indexAction');
+        foreach( $args as $arg ) {
+            $controllerActions[] = $arg . 'Action';
         }
 
         $dir = $app->locate();
@@ -34,12 +42,6 @@ class Generator extends BaseGenerator
             return;
         }
 
-        $args = func_get_args();
-        $args = array_splice($args,2);
-        $controllerActions = array('indexAction');
-        foreach( $args as $arg ) {
-            $controllerActions[] = $arg . 'Action';
-        }
 
         $this->render('Controller.php.twig',$classFile,array( 
             'namespace' => $ns,
