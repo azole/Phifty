@@ -29,7 +29,7 @@ class Console extends Application
         $this->registerCommand('console');
         $this->registerCommand('router');
         $this->registerCommand('asset');
-        $this->registerCommand('generate');
+        $this->registerCommand('new','Phifty\Command\GenerateCommand');
         $this->registerCommand('requirement');
     }
 
