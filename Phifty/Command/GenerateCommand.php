@@ -6,7 +6,7 @@ use CLIFramework\Command;
 
 class GenerateCommand extends Command
 {
-    function brief() { return 'generator'; }
+    function brief() { return 'template generator command'; }
 
     function init()
     {
