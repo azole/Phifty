@@ -31,6 +31,9 @@ class Console extends Application
         $this->registerCommand('asset');
         $this->registerCommand('new','Phifty\Command\GenerateCommand');
         $this->registerCommand('requirement');
+
+        $this->registerCommand('build-schema','LazyRecord\Command\BuildSchemaCommand');
+        $this->registerCommand('build-sql','LazyRecord\Command\BuildSqlCommand');
     }
 
     static function getInstance()
