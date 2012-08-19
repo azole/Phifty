@@ -24,8 +24,8 @@ class Generator extends BaseGenerator
         $args = array_splice($args,2);
         $schemaColumns = array();
         foreach( $args as $arg ) {
-            list($columnName,$type) = explode(':',$arg);
-            $schemaColumns[] = array('name' => $columnName, 'type' => $type );
+            $list = explode(':',$arg);
+            $schemaColumns[] = array('name' => $list[0], 'type' => $list[1], 'var' => @$list[2]);
         }
 
         $dir = $app->locate();
