@@ -22,9 +22,10 @@ class Generator extends BaseGenerator
 
         $args = func_get_args();
         $args = array_splice($args,2);
-        $schemaActions = array('indexAction');
+        $schemaColumns = array();
         foreach( $args as $arg ) {
-            $schemaActions[] = $arg . 'Action';
+            list($columnName,$type) = explode(':',$arg);
+            $schemaColumns[] = array('name' => $columnName, 'type' => $type );
         }
 
         $dir = $app->locate();
@@ -44,7 +45,7 @@ class Generator extends BaseGenerator
         $this->render('Schema.php.twig',$classFile,array( 
             'namespace' => $ns,
             'schemaName' => $schemaName,
-            // 'schemaColumns' => $schemaActions,
+            'schemaColumns' => $schemaColumns,
         ));
     }
 
