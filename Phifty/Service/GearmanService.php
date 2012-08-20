@@ -2,7 +2,7 @@
 namespace Phifty\Service;
 use GearmanClient;
 use GearmanWorker;
-use Phifty\Config\Accessor;
+use ConfigKit\Accessor;
 use Universal\Container\ObjectContainer;
 use Exception;
 
