@@ -134,7 +134,8 @@ class CurrentUser
     public function updateSessionFromRecord($record)
     {
         foreach ( $record->getColumnNames() as $name ) {
-            $this->session->set( $name, $record->$name );
+            $val = $record->$name;
+            $this->session->set( $name, is_object($val) ? $val->__toString() : $val );
         }
     }
 
