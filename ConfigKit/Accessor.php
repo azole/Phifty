@@ -1,5 +1,5 @@
 <?php
-namespace Phifty\Config;
+namespace ConfigKit;
 use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
@@ -61,8 +61,4 @@ class Accessor
     }
     
 }
-
-
-
-
 

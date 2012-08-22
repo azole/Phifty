@@ -12,13 +12,15 @@ class GenerateActionCommand extends Command
 
     function execute($ns,$actionName) 
     {
-        if( $app = kernel()->app($ns) ) { } 
-        elseif( $app = kernel()->plugin($ns) ) { }
+        $app = kernel()->app($ns) ?: kernel()->plugin($ns);
+        if( ! $app ) {
+            throw new Exception("$ns application or plugin not found.");
+        }
 
         $dir = $app->locate();
         $className = $ns . '\\Action\\' . $actionName;
         $actionDir = $dir . DIRECTORY_SEPARATOR . 'Action';
-        $classFile = $dir . DIRECTORY_SEPARATOR . 'Action' . DIRECTORY_SEPARATOR . $actionName . '.php';
+        $classFile = $actionDir . DIRECTORY_SEPARATOR . $actionName . '.php';
 
         if( ! file_exists($actionDir) ) {
             mkdir($actionDir, 0755, true);
@@ -29,16 +31,11 @@ class GenerateActionCommand extends Command
             $gen = new ActionGenerator(array( 'cache' => true ));
             $ret = $gen->generateActionClassCode( $ns , $actionName );
             file_put_contents( $classFile , "<?php\n" . $ret->code . "\n\n?>" );
-
             $this->logger->info( 'create ' . $ret->action_class . ' => ' . $relfilepath , 1 );
-
             $this->logger->info( 'done' );
         } else {
             $this->logger->warn( $relfilepath . ' class file exists.' );
         }
     }
-
-
-
 }
 
