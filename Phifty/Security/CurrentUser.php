@@ -278,4 +278,7 @@ class CurrentUser
     {
         return $this->getId();
     }
+
 }
+
+
