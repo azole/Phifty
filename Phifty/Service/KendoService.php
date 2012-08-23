@@ -23,7 +23,7 @@ class KendoService
             foreach( $options->Rules as $ruleClass ) {
                 $loader->load($ruleClass);
             }
-            $acl = new Acl($loader);
+            $acl = Acl::getInstance($loader);
             return $acl;
         };
     }
