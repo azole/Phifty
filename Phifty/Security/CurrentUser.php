@@ -214,6 +214,29 @@ class CurrentUser
         } 
     }
 
+    public function getRoles() 
+    {
+        if( $roles = $this->session->get('roles') ) {
+            return $roles;
+        }
+        if( $this->record && $this->record->id ) {
+            return $this->record->getRoles();
+        }
+        return array();
+    }
+
+    public function hasRole($roleId) 
+    {
+        if( $roles = $this->session->get('roles') ) {
+            if( is_object($roleId) )
+                return in_array($roleId->__toString(), $roles );
+            return in_array($roleId , $roles);
+        }
+        if( $this->record && $this->record->id ) {
+            return $this->record->hasRole($roleId);
+        }
+    }
+
     public function getId()
     {
         return $this->id; // call __get
