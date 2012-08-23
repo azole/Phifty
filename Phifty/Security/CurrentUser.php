@@ -205,11 +205,13 @@ class CurrentUser
      */
     public function __call($method,$args)
     {
-        if ( method_exists($this->record,$method) ) {
-            return call_user_func_array(array($this->record,$method), $args);
-        } else {
-            throw new BadMethodCallException("$method not found.");
-        }
+        if ( $this->record ) {
+            if( method_exists($this->record,$method) ) {
+                return call_user_func_array(array($this->record,$method), $args);
+            } else { 
+                throw new BadMethodCallException("Record $method not found.");
+            }
+        } 
     }
 
     public function getId()
