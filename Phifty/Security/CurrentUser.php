@@ -137,6 +137,7 @@ class CurrentUser
             $val = $record->$name;
             $this->session->set( $name, is_object($val) ? $val->__toString() : $val );
         }
+        $this->session->set( 'roles' , $record->getRoles() );
     }
 
     /**
