@@ -183,14 +183,17 @@ class CurrentUser
     }
 
     /**
-     * Integrate getter with model record object
+     * Mixin getter with model record object
+     *
+     * @param string $key session key
+     * @return mixed
      */
     public function __get( $key )
     {
         if ($val = $this->session->get($key)) {
             return $val;
         }
-        if ($this->record) {
+        if ($this->record && isset($this->record->$key) ) {
             return $this->record->$key;
         }
         // throw new Exception('CurrentUser Record is undefined.');
@@ -232,6 +235,8 @@ class CurrentUser
     {
         return $this->getId();
     }
+
+
 
     public function isAdmin()
     {
