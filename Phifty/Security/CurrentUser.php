@@ -235,21 +235,4 @@ class CurrentUser
     {
         return $this->getId();
     }
-
-
-
-    public function isAdmin()
-    {
-        return $this->role === "admin";
-    }
-
-    public function isStaff()
-    {
-        return $this->role === "staff";
-    }
-
-    public function isUser()
-    {
-        return $this->role === "user";
-    }
 }
