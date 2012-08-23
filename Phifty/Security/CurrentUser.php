@@ -214,6 +214,12 @@ class CurrentUser
         } 
     }
 
+
+    /**
+     * Returns role identities
+     *
+     * @return string[] returns role identities
+     */
     public function getRoles() 
     {
         if( $roles = $this->session->get('roles') ) {
@@ -225,6 +231,13 @@ class CurrentUser
         return array();
     }
 
+
+    /**
+     * Check if a role exists.
+     *
+     * @param string $roleId
+     * @return boolean
+     */
     public function hasRole($roleId) 
     {
         if( $roles = $this->session->get('roles') ) {
@@ -237,6 +250,10 @@ class CurrentUser
         }
     }
 
+
+    /**
+     * @return string
+     */
     public function getId()
     {
         return $this->id; // call __get
