@@ -17,7 +17,7 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
         $kernel = kernel();
 
         if( ! file_exists('config/testing.yml') ) {
-            die("config/testing.yml is not defined, please copy the config file from config/testing.dev.yml");
+            throw new Exception("config/testing.yml is not defined, please copy the config file from config/testing.dev.yml");
         }
 
         $kernel->config->load('testing','config/testing.yml');
