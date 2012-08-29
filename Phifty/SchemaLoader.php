@@ -9,4 +9,4 @@ foreach( kernel()->plugins->getPlugins() as $plugin ) {
 }
 
 $finder->loadFiles();
-return $finder->getSchemaClasses();
+return $finder->getSchemas();
