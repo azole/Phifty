@@ -10,8 +10,9 @@ class SessionService
 
     public function register($kernel, $options = array())
     {
+        // XXX: customize this for $options
         $kernel->session = function() {
-            $session = new SessionKit\Session(array(  
+            $session = new SessionKit\Session(array(
                 'state'   => new SessionKit\State\NativeState,
                 'storage' => new SessionKit\Storage\NativeStorage,
             ));

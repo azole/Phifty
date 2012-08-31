@@ -28,7 +28,7 @@ class Session
 	function set($name,$value)
 	{
         $key = $this->sessionPrefix . $name;
-		$_SESSION[ $key ] = $value;
+		@$_SESSION[ $key ] = $value;
 	}
 
 	function get($name)
@@ -60,7 +60,7 @@ class Session
 	function setArgs( $args )
 	{
 		foreach( $args as $key => $value ) {
-			$_SESSION[ $this->sessionPrefix . $key ] = $value;
+			@$_SESSION[ $this->sessionPrefix . $key ] = $value;
 		}
 	}
 
@@ -99,7 +99,7 @@ class Session
 
 	function destroy()
 	{
-		session_destroy();
+		@session_destroy();
         $this->clear();
 	}
 }

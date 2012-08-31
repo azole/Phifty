@@ -26,6 +26,8 @@ class AssetInstallCommand extends Command
                 ? new LinkInstaller
                 : new Installer;
 
+        $installer->logger = $this->logger;
+
         foreach( $config->getAssets() as $name => $asset ) {
             $this->logger->info("Installing $name ...");
             $asset->initResource(true); // update/install it

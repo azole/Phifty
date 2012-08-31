@@ -57,7 +57,7 @@ class Pager
     function calculatePages($total,$size = 20)
     {
         $this->pageSize = $size ?: 20;
-        $this->totalPages = $total > 0 ? (int) ($total / $this->pageSize ) + 1 : 0;
+        $this->totalPages = $total > 0 ? (int) ceil($total / $this->pageSize ) : 0;
     }
 
 
@@ -114,8 +114,6 @@ TWIG;
 
     function render()
     {
-
-
         $cur = $this->currentPage;
         $total_pages = $this->totalPages;
 
