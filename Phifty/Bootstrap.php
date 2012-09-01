@@ -133,9 +133,11 @@ namespace {
     require PH_ROOT . '/vendor/universal/src/Universal/Container/ObjectContainer.php';
 
     // Load Kernel so we don't need to load by classloader.
-    require PH_ROOT . '/src/ConfigKit/ConfigCompiler.php';
-    require PH_ROOT . '/src/ConfigKit/Accessor.php';
-    require PH_ROOT . '/src/ConfigKit/ConfigLoader.php';
+    if( ! class_exists('ConfigKit\ConfigLoader') ) {
+        require PH_ROOT . '/src/ConfigKit/ConfigCompiler.php';
+        require PH_ROOT . '/src/ConfigKit/Accessor.php';
+        require PH_ROOT . '/src/ConfigKit/ConfigLoader.php';
+    }
     require PH_ROOT . '/src/Phifty/Kernel.php';
 
     use Phifty\Bootstrap;
