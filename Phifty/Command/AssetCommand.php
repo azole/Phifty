@@ -23,6 +23,7 @@ class AssetCommand extends Command
     function options($opts)
     {
         $init = new AssetInstallCommand;
+        $init->logger = $this->logger;
         $init->options($opts);
     }
 

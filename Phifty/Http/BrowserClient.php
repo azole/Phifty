@@ -74,15 +74,16 @@ class BrowserClient
         }
 
         // get extended informations
-        if( $this->ip && extension_loaded('geoip') ) {
-            if( $record = geoip_record_by_name($this->ip) ) {
-                $this->continent = $record['continent_code'];
-                $this->countryCode = $record['country_code'];
-                $this->country = $record['country_name'];
-                $this->city = $record['city'];
-                $this->latitude = $record['latitude'];
-                $this->longitude = $record['longitude'];
-                $this->geoipSupports = true;
+        if( extension_loaded('geoip') )
+            $this->geoipSupports = true;
+        if( $this->ip && $this->geoipSupports ) {
+            if( $record = @geoip_record_by_name($this->ip) ) {
+                $this->continent     = $record['continent_code'];
+                $this->countryCode   = $record['country_code'];
+                $this->country       = $record['country_name'];
+                $this->city          = $record['city'];
+                $this->latitude      = $record['latitude'];
+                $this->longitude     = $record['longitude'];
             }
         }
 

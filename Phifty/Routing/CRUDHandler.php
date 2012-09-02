@@ -35,6 +35,8 @@ abstract class CRUDHandler extends Controller
      */
     public $predefined = array();
 
+    public $templatePage = 'CRUD/template/page.html';
+
 
     /** Namespace **/
     public $namespace; /* like News\... */
@@ -207,9 +209,7 @@ abstract class CRUDHandler extends Controller
 
     function renderCrudPage( $args = array() )
     {
-        return $this->render( 
-            'CRUD/template/page.html',
-            $args );
+        return $this->render($this->templatePage,$args);
     }
 
     function createCollectionPager($collection) 

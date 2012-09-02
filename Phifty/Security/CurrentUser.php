@@ -134,8 +134,10 @@ class CurrentUser
     public function updateSessionFromRecord($record)
     {
         foreach ( $record->getColumnNames() as $name ) {
-            $this->session->set( $name, $record->$name );
+            $val = $record->$name;
+            $this->session->set( $name, is_object($val) ? $val->__toString() : $val );
         }
+        $this->session->set( 'roles' , $record->getRoles() );
     }
 
     /**
@@ -182,14 +184,17 @@ class CurrentUser
     }
 
     /**
-     * Integrate getter with model record object
+     * Mixin getter with model record object
+     *
+     * @param string $key session key
+     * @return mixed
      */
     public function __get( $key )
     {
         if ($val = $this->session->get($key)) {
             return $val;
         }
-        if ($this->record) {
+        if ($this->record && isset($this->record->$key) ) {
             return $this->record->$key;
         }
         // throw new Exception('CurrentUser Record is undefined.');
@@ -200,13 +205,55 @@ class CurrentUser
      */
     public function __call($method,$args)
     {
-        if ( method_exists($this->record,$method) ) {
-            return call_user_func_array(array($this->record,$method), $args);
-        } else {
-            throw new BadMethodCallException("$method not found.");
+        if ( $this->record ) {
+            if( method_exists($this->record,$method) ) {
+                return call_user_func_array(array($this->record,$method), $args);
+            } else { 
+                throw new BadMethodCallException("Record $method not found.");
+            }
+        } 
+    }
+
+
+    /**
+     * Returns role identities
+     *
+     * @return string[] returns role identities
+     */
+    public function getRoles() 
+    {
+        if( $roles = $this->session->get('roles') ) {
+            return $roles;
+        }
+        if( $this->record && $this->record->id ) {
+            return $this->record->getRoles();
+        }
+        return array();
+    }
+
+
+    /**
+     * Check if a role exists.
+     *
+     * @param string $roleId
+     * @return boolean
+     */
+    public function hasRole($roleId) 
+    {
+        if( $roles = $this->session->get('roles') ) {
+            if( is_object($roleId) )
+                return in_array($roleId->__toString(), $roles );
+            return in_array($roleId , $roles);
+        }
+        if( $this->record && $this->record->id ) {
+            return $this->record->hasRole($roleId);
         }
     }
 
+
+    /**
+     * @return string
+     */
     public function getId()
     {
         return $this->id; // call __get
@@ -232,18 +279,6 @@ class CurrentUser
         return $this->getId();
     }
 
-    public function isAdmin()
-    {
-        return $this->role === "admin";
-    }
-
-    public function isStaff()
-    {
-        return $this->role === "staff";
-    }
-
-    public function isUser()
-    {
-        return $this->role === "user";
-    }
 }
+
+
