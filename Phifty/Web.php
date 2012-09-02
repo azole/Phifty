@@ -40,7 +40,7 @@ class Web
      * @param string[] $assets asset names
      * @param string $name name
      *
-     * {{ Web.include_assets ['jquery','jquery-ui'], 'page_name' }}
+     * {{ Web.include_assets(['jquery','jquery-ui'], 'page_name')|raw}}
      */
     public function include_assets($assets, $name = null)
     {
