@@ -134,9 +134,9 @@ namespace {
 
     // Load Kernel so we don't need to load by classloader.
     if( ! class_exists('ConfigKit\ConfigLoader') ) {
-        require PH_ROOT . '/src/ConfigKit/ConfigCompiler.php';
-        require PH_ROOT . '/src/ConfigKit/Accessor.php';
-        require PH_ROOT . '/src/ConfigKit/ConfigLoader.php';
+        require PH_ROOT . '/vendor/pear/ConfigKit/ConfigCompiler.php';
+        require PH_ROOT . '/vendor/pear/ConfigKit/Accessor.php';
+        require PH_ROOT . '/vendor/pear/ConfigKit/ConfigLoader.php';
     }
     require PH_ROOT . '/src/Phifty/Kernel.php';
 
