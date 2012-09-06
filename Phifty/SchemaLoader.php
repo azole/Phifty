@@ -10,4 +10,4 @@ foreach( kernel()->plugins->getPlugins() as $plugin ) {
 
 $finder->addPath( PH_ROOT . DIRECTORY_SEPARATOR . 'src' );
 $finder->loadFiles();
-return $finder->getSchemaClasses();
+return $finder->getSchemas();
