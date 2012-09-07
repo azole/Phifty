@@ -72,7 +72,7 @@ class BrowserClient
 
     function __construct($ip = null, $userAgentStr = null)
     {
-        $this->ip = $ip ? $ip ? $this->getIp();
+        $this->ip = $ip ? $ip : $this->getIp();
 
         if( $userAgentStr ) {
             $this->userAgent = $userAgent;
