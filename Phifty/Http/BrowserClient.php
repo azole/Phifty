@@ -47,15 +47,8 @@ class BrowserClient
     {
         if( $ip ) {
             $this->ip = $ip;
-        }
-        elseif ( isset( $_SERVER['HTTP_CLIENT_IP']) ) {
-            $this->ip = $_SERVER['HTTP_CLIENT_IP'];
-        }
-        elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $this->ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        }
-        else {
-            $this->ip = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $this->ip = $this->getIp();
         }
 
         if( $userAgentStr ) {
@@ -94,6 +87,19 @@ class BrowserClient
         else {
             $browscap = new Browscap( kernel()->cacheDir );
             $this->browser = (object) $browscap->getBrowser( $userAgentStr , true);
+        }
+    }
+
+    public function getIp()
+    {
+        if ( isset( $_SERVER['HTTP_CLIENT_IP']) ) {
+            return $_SERVER['HTTP_CLIENT_IP'];
+        }
+        elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            return $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+        elseif( isset($_SERVER['REMOTE_ADDR']) ) {
+            return $_SERVER['REMOTE_ADDR'];
         }
     }
 }
