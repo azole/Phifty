@@ -74,7 +74,14 @@ class BrowserClient
      */
     public $browser = array();
 
-    function __construct($ip = null, $userAgentStr = null)
+
+
+    /**
+     *
+     * @param string $ip user ip address
+     * @param string $userAgentStr user agent string
+     */
+    public function __construct($ip = null, $userAgentStr = null)
     {
         $this->ip = $ip ? $ip : $this->getIp();
 
