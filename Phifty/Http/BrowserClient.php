@@ -9,8 +9,15 @@ use Phifty\Http\Browscap;
  */
 class BrowserClient
 {
+
+    /**
+     * @var string Client IP address
+     */
     public $ip;
 
+    /**
+     * @var string Client host name
+     */
     public $host;
 
 
@@ -27,18 +34,38 @@ class BrowserClient
 
     public $countryCode;
 
+
+    /**
+     * @var string Country name, only available when geoip extension is enabled.
+     */
     public $country;
 
+
+    /**
+     * @var string City name, only available when geoip extension is enabled.
+     */
     public $city;
 
+
+    /**
+     * @var string latitude
+     */
     public $latitude;
 
     public $longitude;
 
     public $geoipSupports = false;
 
+
+    /**
+     * @var string User agent string
+     */
     public $userAgent;
 
+
+    /**
+     * @var string Referer
+     */
     public $refer;
 
     public $browser = array();
@@ -53,8 +80,7 @@ class BrowserClient
 
         if( $userAgentStr ) {
             $this->userAgent = $userAgent;
-        }
-        elseif( isset($_SERVER['HTTP_USER_AGENT']) ) {
+        } elseif( isset($_SERVER['HTTP_USER_AGENT']) ) {
             $this->userAgent = $_SERVER['HTTP_USER_AGENT'];
         }
 
@@ -67,8 +93,10 @@ class BrowserClient
         }
 
         // get extended informations
-        if( extension_loaded('geoip') )
+        if( extension_loaded('geoip') ) {
             $this->geoipSupports = true;
+        }
+
         if( $this->ip && $this->geoipSupports ) {
             if( $record = @geoip_record_by_name($this->ip) ) {
                 $this->continent     = $record['continent_code'];
