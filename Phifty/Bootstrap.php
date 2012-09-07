@@ -59,7 +59,10 @@ class Bootstrap
             $loader->load('framework', PH_APP_ROOT . '/config/framework.yml');
 
         // This is for DatabaseService
-        if( file_exists( PH_APP_ROOT . '/config/database.yml') ) {
+        if( file_exists( PH_APP_ROOT . '/db/config/database.yml') ) {
+            $loader->load('database', PH_APP_ROOT . '/db/config/database.yml');
+        }
+        elseif( file_exists( PH_APP_ROOT . '/config/database.yml') ) {
             $loader->load('database', PH_APP_ROOT . '/config/database.yml');
         }
 
