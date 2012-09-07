@@ -72,11 +72,7 @@ class BrowserClient
 
     function __construct($ip = null, $userAgentStr = null)
     {
-        if( $ip ) {
-            $this->ip = $ip;
-        } else {
-            $this->ip = $this->getIp();
-        }
+        $this->ip = $ip ? $ip ? $this->getIp();
 
         if( $userAgentStr ) {
             $this->userAgent = $userAgent;
@@ -84,12 +80,10 @@ class BrowserClient
             $this->userAgent = $_SERVER['HTTP_USER_AGENT'];
         }
 
-        if( $this->ip && function_exists('gethostbyaddr') ) {
-            $this->host = gethostbyaddr( $this->ip );
-        }
+        $this->host = $this->getHostname();
 
         if( isset($_SERVER['HTTP_REFERER']) ) {
-            $this->refer = $_SERVER['HTTP_REFERER'];
+            $this->referer = $_SERVER['HTTP_REFERER'];
         }
 
         // get extended informations
@@ -130,5 +124,13 @@ class BrowserClient
             return $_SERVER['REMOTE_ADDR'];
         }
     }
+
+    public function getHostname()
+    {
+        if( $this->ip && function_exists('gethostbyaddr') ) {
+            return gethostbyaddr( $this->ip );
+        }
+    }
+
 }
 
