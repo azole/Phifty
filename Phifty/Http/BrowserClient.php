@@ -104,12 +104,12 @@ class BrowserClient
 
         if( $this->ip && $this->geoipSupports ) {
             if( $record = @geoip_record_by_name($this->ip) ) {
-                $this->continent     = $record['continent_code'];
-                $this->countryCode   = $record['country_code'];
-                $this->country       = $record['country_name'];
-                $this->city          = $record['city'];
-                $this->latitude      = $record['latitude'];
-                $this->longitude     = $record['longitude'];
+                $this->continent     = @$record['continent_code'];
+                $this->countryCode   = @$record['country_code'];
+                $this->country       = @$record['country_name'];
+                $this->city          = @$record['city'];
+                $this->latitude      = @$record['latitude'];
+                $this->longitude     = @$record['longitude'];
             }
         }
 
