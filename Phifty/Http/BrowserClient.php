@@ -68,6 +68,10 @@ class BrowserClient
      */
     public $referer;
 
+
+    /**
+     * @var array browser info array
+     */
     public $browser = array();
 
     function __construct($ip = null, $userAgentStr = null)
