@@ -89,6 +89,13 @@ class PluginManager
         return false;
     }
 
+
+    /**
+     * Register plugin to the plugin pool.
+     * 
+     * @param string $name plugin id
+     * @param Phifty\Plugin\Plugin $plugin plugin object
+     */
     public function add($name,$plugin) 
     {
         $this->plugins[ $name ] = $plugin;

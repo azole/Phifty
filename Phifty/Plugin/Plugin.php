@@ -88,7 +88,7 @@ class Plugin extends MicroApp
                 return $path;
     }
 
-    function getExportWebDir()
+    public function getExportWebDir()
     {
         $name = $this->getName();
         return '/ph/plugins/' . $name;
