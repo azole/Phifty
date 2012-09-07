@@ -66,7 +66,7 @@ class BrowserClient
     /**
      * @var string Referer
      */
-    public $refer;
+    public $referer;
 
     public $browser = array();
 
