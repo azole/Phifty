@@ -9,11 +9,11 @@ class Generator extends BaseGenerator
     function generate($pluginName) 
     {
         $pluginDir = PH_APP_ROOT . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $pluginName;
-        $this->mkdir( $pluginDir );
-        $this->mkdir( $pluginDir . DIRECTORY_SEPARATOR . 'Model' );
-        $this->mkdir( $pluginDir . DIRECTORY_SEPARATOR . 'Controller' );
-        $this->mkdir( $pluginDir . DIRECTORY_SEPARATOR . 'Action' );
-        $this->mkdir( $pluginDir . DIRECTORY_SEPARATOR . 'template' );
-        $this->mkdir( $pluginDir . DIRECTORY_SEPARATOR . 'assets' );
+        $this->createDir( $pluginDir );
+        $this->createDir( $pluginDir . DIRECTORY_SEPARATOR . 'Model' );
+        $this->createDir( $pluginDir . DIRECTORY_SEPARATOR . 'Controller' );
+        $this->createDir( $pluginDir . DIRECTORY_SEPARATOR . 'Action' );
+        $this->createDir( $pluginDir . DIRECTORY_SEPARATOR . 'template' );
+        $this->createDir( $pluginDir . DIRECTORY_SEPARATOR . 'assets' );
     }
 }
