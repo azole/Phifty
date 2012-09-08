@@ -18,7 +18,7 @@ class ServerCommand extends Command
         $host = $this->options->host ?: 'localhost';
         $port = $this->options->port ?: '8000';
         chdir(PH_APP_ROOT . DIRECTORY_SEPARATOR . 'webroot');
-        if( extension_loaded('pcntl_exec') ) {
+        if( extension_loaded('pcntl') ) {
             pcntl_exec($php, array('-S', "$host:$port", 'server.php'));
         } else {
             $this->logger->info("Starting server at http://$host:$port");
