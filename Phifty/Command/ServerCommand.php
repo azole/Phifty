@@ -6,11 +6,24 @@ class ServerCommand extends Command
 {
     function brief() { return 'run http server'; }
     
+    function options($opts) 
+    {
+        $opts->add('h|host:','host');
+        $opts->add('p|port:','port');
+    }
+
     function execute()
     {
         $php = $_SERVER['_'];
+        $host = $this->options->host ?: 'localhost';
+        $port = $this->options->port ?: '8000';
         chdir(PH_APP_ROOT . DIRECTORY_SEPARATOR . 'webroot');
-        pcntl_exec($php, array('-S', 'localhost:8000', 'server.php'));
+        if( extension_loaded('pcntl_exec') ) {
+            pcntl_exec($php, array('-S', "$host:$port", 'server.php'));
+        } else {
+            $this->logger->info("Starting server at http://$host:$port");
+            passthru($php . ' ' . join(' ',array('-S', "$host:$port", 'server.php')));
+        }
     }
 }
 
