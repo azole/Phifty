@@ -14,7 +14,9 @@ class ServerCommand extends Command
 
     function execute()
     {
-        $php = $_SERVER['_'];
+        while (@ob_end_flush());
+
+        $php  = $_SERVER['_'];
         $host = $this->options->host ?: 'localhost';
         $port = $this->options->port ?: '8000';
         chdir(PH_APP_ROOT . DIRECTORY_SEPARATOR . 'webroot');
