@@ -16,10 +16,10 @@ class UploadFile
     public $size;
     public $tmp_name;
     public $error;
-	public $saved_path;
+    public $saved_path;
 
-	public function __construct( $name , $index = null )  
-	{
+    public function __construct( $name , $index = null )  
+    {
         $this->column = $name;
 
         $hasFile = (bool) @$_FILES[$name]['tmp_name'];
@@ -35,8 +35,8 @@ class UploadFile
         }
     }
 
-	function __destruct() 
-	{
+    function __destruct() 
+    {
 
     }
 
@@ -53,84 +53,87 @@ class UploadFile
         return end($parts);
     }
 
-	/* size: kbytes */
-	function validateSize( $size )
-	{
-		return ($this->size / 1024) < $size;
-	}
+    /* size: kbytes */
+    function validateSize( $size )
+    {
+        return ($this->size / 1024) < $size;
+    }
 
-	function validateExtension( $exts )
-	{
-		$ext = strtolower($this->getExtension());
-		return in_array( $ext, $exts );
-	}
+    function validateExtension( $exts )
+    {
+        $ext = strtolower($this->getExtension());
+        return in_array( $ext, $exts );
+    }
 
-	function getSavedPath() { return $this->saved_path; }
-	function getType() { return $this->type; }
+    function getSavedPath() { return $this->saved_path; }
+    function getType() { return $this->type; }
     function getSize() { return $this->size; }
 
 
 
-
-	function putIn( $targetDir , $targetFileName = null, $useCopy = false ) 
-	{
-		/* source file */
+    /**
+     * In this method, we don't modify tmp_name attribute
+     * rather than that, we set the saved_path attribute 
+     * for location of these moved files.
+     */
+    function putIn( $targetDir , $targetFileName = null )
+    {
+        /* source file */
         $file = $this->tmp_name;
 
-		if( ! file_exists($file) && isset( $_FILES[ $this->column ]['saved_path'] ) ) {
-			$useCopy = true;
-			$file = $_FILES[ $this->column ]['saved_path'];
-		}
+        if( ! file_exists($file) && isset( $_FILES[ $this->column ]['saved_path'] ) ) {
+            $file = $_FILES[ $this->column ]['saved_path'];
+        }
 
+
+        // if targetFilename is not given, 
+        // we should take the filename from original filename by using basename.
         if( ! $targetFileName )
             $targetFileName = basename( $this->name );
 
-        if( ! file_exists( $targetDir ) ) {
-			\Phifty\FileUtils::mkpath( $targetDir );
+        // make sure we have the directory exists.
+        if( ! file_exists( $targetDir ) )
+            FileUtils::mkpath( $targetDir );
+
+        // relative file path.
+        $newPath = FileUtils::path_join( $targetDir , $targetFileName );
+
+        /* avoid file name duplication */
+        $fileCnt = 1;
+        while( file_exists($newPath) ) {
+            $newPath = FileUtils::path_join( $targetDir , 
+                FileUtils::filename_suffix( $targetFileName , '_' . $fileCnt++ ) );
+                // substr(md5_file( $file ),0,5) . '_' . $targetFileName );
         }
 
-		$newPath = FileUtils::path_join( $targetDir , $targetFileName );
-
-		/* avoid file name duplication */
-		$fileCnt = 1;
-		while( file_exists($newPath) ) {
-			$newPath = FileUtils::path_join( $targetDir , 
-				FileUtils::filename_suffix( $targetFileName , '_' . $fileCnt++ ) );
-				// substr(md5_file( $file ),0,5) . '_' . $targetFileName );
-		}
-
-		/* register to $_FILES[ name ][ savedpath ]
-		 *
-		 * in CRUD action, we need to validate if a action file column's value is a real upload file.
-		 * */
-		$this->saved_path = $newPath;
-
-		if( $useCopy )
-			copy( $file , $newPath );
-		else
-			$this->move( $file , $newPath );
-
-		$_FILES[ $this->column ]['saved_path'] = $newPath;
-		return $newPath;
+        /* register to $_FILES[ name ][ savedpath ]
+         *
+         * in CRUD action, we need to validate if a action file column's value 
+         * is a real upload file.
+         * */
+        $this->saved_path = $newPath;
+        $this->move( $file , $newPath );
+        $_FILES[ $this->column ]['saved_path'] = $newPath;
+        return $newPath;
     }
 
-	function move( $from , $to ) 
-	{
-		if( ! $from || ! file_exists( $from ) )
-			throw new \Exception('Source file not found.');
+    function move( $from , $to ) 
+    {
+        if( ! $from || ! file_exists( $from ) )
+            throw new \Exception('Source file not found.');
 
         $ret = move_uploaded_file( $from , $to );
-		if( $ret === false )
-			throw new \Exception('File Upload Error, Can not move the uploaded file, which is not valid.');
+        if( $ret === false )
+            throw new \Exception('File Upload Error, Can not move the uploaded file, which is not valid.');
     }
 
-	function deleteTmp() 
-	{
+    function deleteTmp() 
+    {
         unlink( $this->tmp_name );
     }
 
-	function found() 
-	{
+    function found() 
+    {
         return $this->name ? true : false;
     }
 
