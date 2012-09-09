@@ -42,7 +42,8 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
         // $this->screenshotPath = $this->getScreenshotDir();
     }
 
-    public function getBaseUrl() {
+    public function getBaseUrl() 
+    {
         $domain = kernel()->config->get('framework','Domain');
         return 'http://' . $domain;
     }
