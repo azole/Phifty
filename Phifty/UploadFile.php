@@ -76,12 +76,12 @@ class UploadFile
      * rather than that, we set the saved_path attribute 
      * for location of these moved files.
      */
-    function putIn( $targetDir , $targetFileName = null )
+    function putIn( $targetDir , $targetFileName = null, $useCopy = false )
     {
         /* source file */
         $file = $this->tmp_name;
-
         if( ! file_exists($file) && isset( $_FILES[ $this->column ]['saved_path'] ) ) {
+            $useCopy = true;
             $file = $_FILES[ $this->column ]['saved_path'];
         }
 
@@ -112,7 +112,12 @@ class UploadFile
          * is a real upload file.
          * */
         $this->saved_path = $newPath;
-        $this->move( $file , $newPath );
+
+        if( $useCopy ) {
+            copy($file, $newPath);
+        } else {
+            $this->move( $file , $newPath );
+        }
         $_FILES[ $this->column ]['saved_path'] = $newPath;
         return $newPath;
     }
