@@ -9,7 +9,7 @@ class UploadFile
 {
 
     // file data object
-    var $column;  // file column name
+    public $column;  // file column name
 
     public $name;
     public $type;
@@ -127,9 +127,10 @@ class UploadFile
         if( ! $from || ! file_exists( $from ) )
             throw new \Exception('Source file not found.');
 
-        $ret = move_uploaded_file( $from , $to );
-        if( $ret === false )
-            throw new \Exception('File Upload Error, Can not move the uploaded file, which is not valid.');
+		if( $this->error != 0 )
+            throw new \Exception('File Upload Error:' . $this->getErrorMessage() );
+		if( false === move_uploaded_file( $from , $to ) )
+            throw new \Exception('File Upload Error: Move uploaded file failed.');
     }
 
     function deleteTmp() 
@@ -146,7 +147,7 @@ class UploadFile
         return (bool) $this->error;
     }
 
-    function errorMessage() {
+    function getErrorMessage() {
         $error = $this->error;
 
         // error messages for normal users.
