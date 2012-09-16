@@ -74,7 +74,7 @@ class InitCommand extends Command
         $this->logger->info("Copying config files");
         copy_if_not_exists(FileUtils::path_join(PH_ROOT,'config','framework.app.yml'), FileUtils::path_join(PH_APP_ROOT,'config','framework.yml') );
         copy_if_not_exists(FileUtils::path_join(PH_ROOT,'config','application.dev.yml'), FileUtils::path_join(PH_APP_ROOT,'config','application.yml') );
-        copy_if_not_exists(FileUtils::path_join(PH_ROOT,'db','config','database.app.yml'), FileUtils::path_join(PH_APP_ROOT,'db','config','database.yml') );
+        copy_if_not_exists(FileUtils::path_join(PH_ROOT,'config','database.app.yml'), FileUtils::path_join(PH_APP_ROOT,'db','config','database.yml') );
 
         copy_if_not_exists(FileUtils::path_join(PH_ROOT,'webroot','index.php'), FileUtils::path_join(PH_APP_ROOT,'webroot','index.php') );
         copy_if_not_exists(FileUtils::path_join(PH_ROOT,'webroot','.htaccess'), FileUtils::path_join(PH_APP_ROOT,'webroot','.htaccess') );
