@@ -2,7 +2,7 @@
 namespace Phifty\Service;
 use Swift_MailTransport;
 use Swift_Mailer;
-use Phifty\Config\Accessor;
+use ConfigKit\Accessor;
 
 class MailerService implements ServiceInterface
 {
@@ -62,10 +62,14 @@ class MailerService implements ServiceInterface
     */
     public function register($kernel, $options = array() )
     {
-        $kernel->classloader->addPrefix(array(
-            'Swift' => $kernel->frameworkDir . '/vendor/pear',
-        ));
-        require $kernel->frameworkDir . '/vendor/pear/swift_required.php';
+
+        # XXX: version 4.1.8 is fine, we should use it from PEAR,
+        # since onion can not install specific versino for now.
+#          $kernel->classloader->addPrefix(array(
+#              'Swift' => $kernel->frameworkDir . '/vendor/pear',
+#          ));
+#          require $kernel->frameworkDir . '/vendor/pear/swift_required.php';
+        require 'swift_required.php';
 
         $kernel->mailer = function() use ($kernel,$options) {
             $accessor = new Accessor( $options );
@@ -81,8 +85,10 @@ class MailerService implements ServiceInterface
 
                 case 'SendmailTransport':
                     // sendmail transport has defined a built-in default command.
-                    $command = $accessor->Command ?: '/usr/sbin/sendmail -bs';
-                    $transport = $transportClass::newInstance($command); 
+                    if( $command = $accessor->Command )
+                        $transport = $transportClass::newInstance($command);
+                    else
+                        $transport = $transportClass::newInstance();
                 break;
 
                 case 'SmtpTransport':
