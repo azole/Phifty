@@ -50,8 +50,7 @@ class AdminTestCase extends Selenium2TestCase
 
     protected function isCreated() 
     {
-        $msg = get_result_message();
-        $this->assertRegExp('/created|已經建立/', $msg );
+        message_like('/created|已經建立/');
     }
 
     protected function isUpdated() 
