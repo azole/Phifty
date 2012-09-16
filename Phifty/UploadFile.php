@@ -9,7 +9,7 @@ class UploadFile
 {
 
     // file data object
-    var $column;  // file column name
+    public $column;  // file column name
 
     public $name;
     public $type;
@@ -76,12 +76,12 @@ class UploadFile
      * rather than that, we set the saved_path attribute 
      * for location of these moved files.
      */
-    function putIn( $targetDir , $targetFileName = null )
+    function putIn( $targetDir , $targetFileName = null, $useCopy = false )
     {
         /* source file */
         $file = $this->tmp_name;
-
         if( ! file_exists($file) && isset( $_FILES[ $this->column ]['saved_path'] ) ) {
+            $useCopy = true;
             $file = $_FILES[ $this->column ]['saved_path'];
         }
 
@@ -112,7 +112,12 @@ class UploadFile
          * is a real upload file.
          * */
         $this->saved_path = $newPath;
-        $this->move( $file , $newPath );
+
+        if( $useCopy ) {
+            copy($file, $newPath);
+        } else {
+            $this->move( $file , $newPath );
+        }
         $_FILES[ $this->column ]['saved_path'] = $newPath;
         return $newPath;
     }
@@ -122,9 +127,10 @@ class UploadFile
         if( ! $from || ! file_exists( $from ) )
             throw new \Exception('Source file not found.');
 
-        $ret = move_uploaded_file( $from , $to );
-        if( $ret === false )
-            throw new \Exception('File Upload Error, Can not move the uploaded file, which is not valid.');
+		if( $this->error != 0 )
+            throw new \Exception('File Upload Error:' . $this->getErrorMessage() );
+		if( false === move_uploaded_file( $from , $to ) )
+            throw new \Exception('File Upload Error: Move uploaded file failed.');
     }
 
     function deleteTmp() 
@@ -141,7 +147,7 @@ class UploadFile
         return (bool) $this->error;
     }
 
-    function errorMessage() {
+    function getErrorMessage() {
         $error = $this->error;
 
         // error messages for normal users.

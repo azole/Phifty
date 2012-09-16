@@ -28,7 +28,8 @@ abstract class CRUDHandler extends Controller
     public $canDelete = true;
 
     public $canBulkEdit = false;
-
+    public $canBulkCopy = false;
+    public $canBulkDelete = false;
 
     /**
      * @var array predefined data for new record

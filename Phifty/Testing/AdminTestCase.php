@@ -13,7 +13,7 @@ class AdminTestCase extends Selenium2TestCase
         'product' => '/bs/product'
     );
 
-    public function gotoLoginPage()
+    protected function gotoLoginPage()
     {
         $this->url( $this->getBaseUrl() . $this->urlOf['login'] );
     }
@@ -50,29 +50,27 @@ class AdminTestCase extends Selenium2TestCase
 
     protected function isCreated() 
     {
-        $msg = find_element('.message.success')->text();
-        $this->assertContains('created', $msg );
+        message_like('/created|已經建立/');
     }
 
     protected function isUpdated() 
     {
         $msg = find_element('.message.success')->text();
-        $this->assertRegExp('/updated|已經更新/', $msg );
+        jgrowl_like('/updated|已經更新/');
     }
 
     protected function isDeleted() 
     {
-        $msg = wait_for('.jGrowl-message')->text();
-        $this->assertRegExp('/(deleted|刪除成功)/', $msg );
+        jgrowl_like('/(deleted|刪除成功)/');
     }
 
-    protected function isUploaded() 
+    public function isUploaded() 
     {
-        $msg = wait_for('.jGrowl-message')->text();
-        $this->assertContains('created', $msg );
+        jgrowl_like('/(created|已經建立)/');
     }
 
-    public function uploadFile( $sel, $filepath ) {
+    public function uploadFile( $sel, $filepath ) 
+    {
         find_element($sel)->value( realpath( $filepath ));
     }
 }
