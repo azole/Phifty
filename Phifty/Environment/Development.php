@@ -43,12 +43,11 @@ class Development
         // set_exception_handler(array(__CLASS__,'exception_handler') );
 
         // if firebug supports
-        if( $kernel->isCLI ) {
+        if( $kernel->isCLI && get_env('PHIFTY_PROFILE') ) {
             $kernel->event->register('phifty.console.finish', function() use ($kernel) {
-                echo 'phifty-', $kernel::VERSION, PHP_EOL;
-                echo 'memory usage: ', (int) (memory_get_usage() / 1024  ) , ' KB', PHP_EOL;
-                echo 'memory peak usage: ', (int) (memory_get_peak_usage() / 1024 ) , ' KB' . PHP_EOL;
-                echo 'duration: ', ceil((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000000 ) , ' microseconds' ;
+                // echo 'memory usage: ', (int) (memory_get_usage() / 1024  ) , ' KB', PHP_EOL;
+                echo 'Memory peak usage: ', (int) (memory_get_peak_usage() / 1024 ) , ' KB' . PHP_EOL;
+                echo 'Duration: ', ceil((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) * 1000000 ) , ' microseconds' ;
             });
         }
         // when exception found, forward output to exception render controller.
