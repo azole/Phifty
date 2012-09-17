@@ -21,7 +21,6 @@ class AdminTestCase extends Selenium2TestCase
     protected function login( $transferTo = null ) 
     {
         $this->gotoLoginPage();
-
         $accountInput = find_element('input[name=account]');
         $accountInput->value('admin');
 
