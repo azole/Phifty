@@ -86,7 +86,7 @@ class BrowserClient
         $this->ip = $ip ? $ip : $this->getIp();
 
         if( $userAgentStr ) {
-            $this->userAgent = $userAgent;
+            $this->userAgent = $userAgentStr;
         } elseif( isset($_SERVER['HTTP_USER_AGENT']) ) {
             $this->userAgent = $_SERVER['HTTP_USER_AGENT'];
         }
