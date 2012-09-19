@@ -28,8 +28,11 @@ abstract class CRUDHandler extends Controller
     public $canDelete = true;
 
     public $canBulkEdit = false;
+
     public $canBulkCopy = false;
+
     public $canBulkDelete = false;
+
 
     /**
      * @var array predefined data for new record
@@ -68,7 +71,7 @@ abstract class CRUDHandler extends Controller
 
     public $listColumns;
 
-    static function expand()
+    public static function expand()
     {
         $class = get_called_class();
         $routeset = new \Roller\RouteSet;
@@ -83,23 +86,21 @@ abstract class CRUDHandler extends Controller
         return $routeset;
     }
 
-    function init()
+    public function init()
     {
         $this->vars['CRUD']['Object'] = $this;
         $this->vars['CRUD']['Title'] = $this->getListTitle();
 
-        // extract namespace from model class name
-        $parts = explode('\\', ltrim($this->modelClass,'\\') );
-        $refl = new ReflectionClass( $this->modelClass );
-
         if( ! $this->namespace ) {
+            // extract namespace from model class name
+            $parts = explode('\\', ltrim($this->modelClass,'\\') );
             $this->namespace = $parts[0];
         }
 
         if( ! $this->modelName ) {
+            $refl = new ReflectionClass( $this->modelClass );
             $this->modelName = $refl->getShortName();
         }
-
         parent::init();
     }
 
