@@ -256,21 +256,25 @@ abstract class CRUDHandler extends Controller
         return $this->renderCrudList();
     }
 
-
-    function createRegionAction() 
+    public function createRegionAction() 
     { 
         return $this->editRegionAction();
     }
 
+    public function getDefaultData()
+    {
+        return $this->predefined;
+    }
 
-    function editRegionActionPrepare()
+
+    public function editRegionActionPrepare()
     {
         $record = $this->loadRecord();
         $isCreate = $record->id ? false : true;
 
         // if the record is not loaded, we can use predefined values
         if( $isCreate ) {
-            foreach( $this->predefined as $k => $v ) {
+            foreach( $this->getDefaultData() as $k => $v ) {
                 $record->{ $k } = $v;
             }
         }
