@@ -250,7 +250,7 @@ abstract class CRUDHandler extends Controller
             - _order_column => {{column}}
             - _order_by     => {{asc|desc}}
     */
-    function listRegionAction()
+    public function listRegionAction()
     {
         $this->listRegionActionPrepare();
         return $this->renderCrudList();
