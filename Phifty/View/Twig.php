@@ -21,8 +21,8 @@ use Twig_Extensions_Extension_I18n;
     * {% set obj = new('InputSystem\\Model\\Patient') %}
     * {% set obj = new('InputSystem\\Model\\PatientSchema') %}
     */
-function newObject($class) {
-    return new $class;
+function newObject($class,$args = null) {
+    return new $class($args);
 }
 
 class Twig extends \Phifty\View\Engine 

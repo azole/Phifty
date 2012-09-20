@@ -28,9 +28,12 @@ abstract class CRUDHandler extends Controller
     public $canDelete = true;
 
     public $canBulkEdit = false;
+
     public $canBulkCopy = false;
+
     public $canBulkDelete = false;
     public $canEditInNewWindow = false;
+
 
     /**
      * @var array predefined data for new record
@@ -69,7 +72,7 @@ abstract class CRUDHandler extends Controller
 
     public $listColumns;
 
-    static function expand()
+    public static function expand()
     {
         $class = get_called_class();
         $routeset = new \Roller\RouteSet;
@@ -84,23 +87,21 @@ abstract class CRUDHandler extends Controller
         return $routeset;
     }
 
-    function init()
+    public function init()
     {
         $this->vars['CRUD']['Object'] = $this;
         $this->vars['CRUD']['Title'] = $this->getListTitle();
 
-        // extract namespace from model class name
-        $parts = explode('\\', ltrim($this->modelClass,'\\') );
-        $refl = new ReflectionClass( $this->modelClass );
-
         if( ! $this->namespace ) {
+            // extract namespace from model class name
+            $parts = explode('\\', ltrim($this->modelClass,'\\') );
             $this->namespace = $parts[0];
         }
 
         if( ! $this->modelName ) {
+            $refl = new ReflectionClass( $this->modelClass );
             $this->modelName = $refl->getShortName();
         }
-
         parent::init();
     }
 
@@ -250,27 +251,31 @@ abstract class CRUDHandler extends Controller
             - _order_column => {{column}}
             - _order_by     => {{asc|desc}}
     */
-    function listRegionAction()
+    public function listRegionAction()
     {
         $this->listRegionActionPrepare();
         return $this->renderCrudList();
     }
 
-
-    function createRegionAction() 
+    public function createRegionAction() 
     { 
         return $this->editRegionAction();
     }
 
+    public function getDefaultData()
+    {
+        return $this->predefined;
+    }
 
-    function editRegionActionPrepare()
+
+    public function editRegionActionPrepare()
     {
         $record = $this->loadRecord();
         $isCreate = $record->id ? false : true;
 
         // if the record is not loaded, we can use predefined values
         if( $isCreate ) {
-            foreach( $this->predefined as $k => $v ) {
+            foreach( $this->getDefaultData() as $k => $v ) {
                 $record->{ $k } = $v;
             }
         }
@@ -282,7 +287,7 @@ abstract class CRUDHandler extends Controller
         $action = $isCreate ? $record->asCreateAction() : $record->asUpdateAction();
         $title = $isCreate
             ?  __('Create %1' , $record->getLabel() )
-            :  __('Edit %1 %2', $record->getLabel() , (int) $record->id );
+            :  __('Edit %1: %2', $record->getLabel() , $record->dataLabel() );
 
         $data = array(
             'Object'      => $this,

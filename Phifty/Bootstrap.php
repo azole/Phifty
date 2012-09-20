@@ -82,6 +82,14 @@ class Bootstrap
 
     static function bootKernel($kernel,$classloader) 
     {
+        /*
+         * Load important services by sequence:
+         *
+         * 1. ClassLoaderService
+         * 2. ConfigService
+         * 3. DatabaseService
+         *
+         */
         $kernel->registerService(
             new \Phifty\Service\ClassLoaderService($classloader)
         );
@@ -97,18 +105,30 @@ class Bootstrap
         // performance than pure PHP class.
         $kernel->registerService( new \Phifty\Service\EventService );
 
+
         // if the framework config is defined.
         if( $configLoader->isLoaded('framework') ) {
+            // we should load database service before other services
+            // because other services might need database service
+            if( $configLoader->isLoaded('database') ) {
+                $kernel->registerService( new \Phifty\Service\DatabaseService );
+            }
+
+            if ( $appconfigs = $kernel->config->get('framework','Applications') ) {
+                foreach ($appconfigs as $appname => $appconfig) {
+                    $kernel->classloader->addNamespace( array(
+                        $appname => array( PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' )
+                    ));
+                }
+            }
+
+
             if( $services = $kernel->config->get('framework','Services') ) {
                 foreach( $services as $name => $options ) {
                     // not full qualified classname
                     $class = ( false === strpos($name,'\\') ) ? ('Phifty\\Service\\' . $name) : $name;
                     $kernel->registerService( new $class , $options );
                 }
-            }
-
-            if( $configLoader->isLoaded('database') ) {
-                $kernel->registerService( new \Phifty\Service\DatabaseService );
             }
         }
     }
@@ -153,7 +173,7 @@ namespace {
     *
     * Initialize kernel instance, classloader, plugins and services.
     */
-    function kernel() 
+    function kernel()
     {
         global $kernel;
         if( $kernel )
