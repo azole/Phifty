@@ -286,7 +286,7 @@ abstract class CRUDHandler extends Controller
         $action = $isCreate ? $record->asCreateAction() : $record->asUpdateAction();
         $title = $isCreate
             ?  __('Create %1' , $record->getLabel() )
-            :  __('Edit %1 %2', $record->getLabel() , (int) $record->id );
+            :  __('Edit %1: %2', $record->getLabel() , $record->dataLabel() );
 
         $data = array(
             'Object'      => $this,
