@@ -13,6 +13,7 @@ class CRUDTestCase extends AdminTestCase
     {
         find_element('input.record-create-btn')->click();
         wait_for('div[id^=record-div]');
+        wait_for_tinymce();
     }
 
     public function clickRecordCloseBtn()
@@ -53,6 +54,7 @@ class CRUDTestCase extends AdminTestCase
         find_element_ok(".result tbody tr:nth-child($i) input.record-edit-btn")->click();
         wait_for('.crud-edit');
         wait_for('div[id^=record-div]');
+        wait_for_tinymce();
         wait();
     }
 
