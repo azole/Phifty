@@ -4,12 +4,16 @@ use ReflectionClass;
 
 class ClassUtils 
 {
-    static function new_class( $class , $args = null )
+    public static function new_class( $class , $args = null )
     {
-        $rc = new ReflectionClass( $class );
-        if( $args )
+        if( $args ) {
+            $rc = new ReflectionClass( $class );
+            // return $rc->newInstance();
             return $rc->newInstanceArgs( $args );
-        return $rc->newInstance();
+        } 
+        else {
+            return new $class;
+        }
     }
 
 }
