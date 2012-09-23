@@ -32,6 +32,8 @@ class ActionService
                     $runner = $kernel->action; // get runner
                     $result = $runner->run();
                     if( $result && $runner->isAjax() ) {
+                        // it's JSON
+                        header('Content-Type: application/json; Charset=utf-8');
                         echo $result;
                         exit(0);
                     }
