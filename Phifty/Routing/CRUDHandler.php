@@ -28,9 +28,7 @@ abstract class CRUDHandler extends Controller
     public $canDelete = true;
 
     public $canBulkEdit = false;
-
     public $canBulkCopy = false;
-
     public $canBulkDelete = false;
     public $canEditInNewWindow = false;
 
