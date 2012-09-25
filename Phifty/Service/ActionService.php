@@ -21,7 +21,13 @@ class ActionService
             $view->args['Action'] = ActionRunner::getInstance();
         });
 
-        $kernel->classloader->addNamespace(array( 'ActionKit' => array( $kernel->frameworkDir . DIRECTORY_SEPARATOR . 'src' ) ));
+        if( $kernel->hasBuilder('classloader') ) {
+            $kernel->classloader->addNamespace(array( 
+                'ActionKit' => array( 
+                    $kernel->frameworkDir . DIRECTORY_SEPARATOR . 'src' 
+                )
+            ));
+        }
 
         $kernel->event->register('phifty.before_path_dispatch',function() use ($kernel) {
 
