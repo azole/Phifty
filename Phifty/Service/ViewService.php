@@ -1,6 +1,12 @@
 <?php
 namespace Phifty\Service;
 
+/**
+ * Usage:
+ *
+ *    $view = kernel()->view;
+ */
+
 class ViewService
     implements ServiceInterface
 {
