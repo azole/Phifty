@@ -251,5 +251,4 @@ class Kernel extends ObjectContainer
             return $one;
         return $one = new static;
     }
-
 }

@@ -24,7 +24,6 @@ class TemplateController extends Controller
 #    Backend: twig
 #    Class: \Phifty\View
 #    TemplateDirs: {  }
-
         $engineType = kernel()->config->get('framework','View.Backend');
 
         /* get template engine */

@@ -82,15 +82,10 @@ abstract class Engine
         {
             case "smarty":
                 return new \Phifty\View\Smarty( $opts );
-                break;
-
             case "twig":
                 return new \Phifty\View\Twig( $opts );
-                break;
-
             case "php":
                 return new \Phifty\View\Php( $opts );
-
             default:
                 throw new \Exception("Engine type $backend is not supported.");
         }
