@@ -1,6 +1,7 @@
 <?php
 namespace Phifty\Routing;
-interface ExpandableInterface {
+interface ExpandableController 
+{
     static function expand();
 }
 

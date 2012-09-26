@@ -16,7 +16,7 @@ use ReflectionClass;
  *          {crudId}/list.html
  */
 abstract class CRUDHandler extends Controller
-    implements ExpandableInterface
+    implements ExpandableController
 {
     /**
      * configurations
