@@ -144,10 +144,13 @@ class CurrentUser
             $this->session->set( $name, is_object($val) ? $val->__toString() : $val );
         }
         if( $record instanceof CurrentUserRole ) {
-            $this->session->set( 'roles' , $record->getRoles() );
+            $this->session->set('roles', $record->getRoles() );
+        }
+        elseif ( method_exists($record,'getRoles') ) {
+            $this->session->set('roles', $record->getRoles() );
         }
         else {
-            $this->session->set( 'roles' , array() );
+            $this->session->set('roles', array() );
         }
     }
 
@@ -238,6 +241,9 @@ class CurrentUser
         }
         if( $this->record && $this->record->id ) {
             if( $this->record instanceof CurrentUserRole ) {
+                return $this->record->getRoles();
+            }
+            elseif ( method_exists($this->record,'getRoles') ) {
                 return $this->record->getRoles();
             }
         }
