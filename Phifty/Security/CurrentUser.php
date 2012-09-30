@@ -4,6 +4,12 @@ use Phifty\Session;
 use Exception;
 use BadMethodCallException;
 
+
+/**
+ * CurrentUserRole interface, for getting roles from model.
+ */
+use Phifty\Security\CurrentUserRole;
+
 /**
  * @package Phifty
  *
@@ -137,7 +143,15 @@ class CurrentUser
             $val = $record->$name;
             $this->session->set( $name, is_object($val) ? $val->__toString() : $val );
         }
-        $this->session->set( 'roles' , $record->getRoles() );
+        if( $record instanceof CurrentUserRole ) {
+            $this->session->set('roles', $record->getRoles() );
+        }
+        elseif ( method_exists($record,'getRoles') ) {
+            $this->session->set('roles', $record->getRoles() );
+        }
+        else {
+            $this->session->set('roles', array() );
+        }
     }
 
     /**
@@ -226,7 +240,12 @@ class CurrentUser
             return $roles;
         }
         if( $this->record && $this->record->id ) {
-            return $this->record->getRoles();
+            if( $this->record instanceof CurrentUserRole ) {
+                return $this->record->getRoles();
+            }
+            elseif ( method_exists($this->record,'getRoles') ) {
+                return $this->record->getRoles();
+            }
         }
         return array();
     }
