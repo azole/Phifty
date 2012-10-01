@@ -117,37 +117,56 @@ abstract class CRUDHandler extends Controller
         parent::init();
     }
 
-    function assign( $name , $value )
+    public function assign( $name , $value )
     {
         $this->vars[ $name ] = $value;
     }
 
-    function assignVars( $args )
+    public function assignVars( $args )
     {
         $this->vars = array_merge( $this->vars , $args );
     }
 
-    function getListTitle()
+    /**
+     * Returns edit form label
+     *
+     * @return string Label
+     */
+    public function getEditTitle()
+    {
+        $record = $this->getCurrentRecord();
+        return $record->id
+            ?  __('Create %1' , $record->getLabel() )
+            :  __('Edit %1: %2', $record->getLabel() , $record->dataLabel() );
+    }
+
+    public function getListTitle()
     {
         return __('%1 Management' , $this->getModel()->getLabel() );
     }
 
     /* Return column names for CRUD List table */
-    function getListColumns()
+    public function getListColumns()
     {
         if( $this->listColumns )
             return $this->listColumns;
         return $this->getModel()->getColumnNames();
     }
 
-    function getModel()
+
+    /**
+     * Get model object.
+     *
+     * @return Phifty\Model
+     */
+    public function getModel()
     {
         if( $this->model )
             return $this->model;
         return $this->model = new $this->modelClass;
     }
 
-    function getCollection()
+    public function getCollection()
     {
         $model = $this->getModel();
         $collection = $model->asCollection();
@@ -306,20 +325,6 @@ abstract class CRUDHandler extends Controller
             ? $record->asUpdateAction()
             : $record->asCreateAction();
         return $action;
-    }
-
-
-    /**
-     * Returns edit form label
-     *
-     * @return string Label
-     */
-    public function getEditTitle()
-    {
-        $record = $this->getCurrentRecord();
-        return $record->id
-            ?  __('Create %1' , $record->getLabel() )
-            :  __('Edit %1: %2', $record->getLabel() , $record->dataLabel() );
     }
 
     /**
