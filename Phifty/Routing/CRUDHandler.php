@@ -18,8 +18,12 @@ use ReflectionClass;
 abstract class CRUDHandler extends Controller
     implements ExpandableController
 {
-    /**
-     * configurations
+    /*
+     * Configurations:
+     *
+     * canCreate: display create button.
+     * canUpdate: display edit button.
+     * canDelete: display delete button.
      */
     public $canCreate = true;
 
@@ -28,8 +32,11 @@ abstract class CRUDHandler extends Controller
     public $canDelete = true;
 
     public $canBulkEdit = false;
+
     public $canBulkCopy = false;
+
     public $canBulkDelete = false;
+
     public $canEditInNewWindow = false;
 
 
@@ -60,28 +67,52 @@ abstract class CRUDHandler extends Controller
      */
     public $currentAction;
 
+
+    /**
+     * Default edit action view class
+     */
     public $actionViewClass = 'AdminUI\\Action\\View\\StackView';
 
+    /**
+     * Default action view options
+     */
     public $actionViewOptions = array( 
         'ajax' => true,
         'close_button' => true,
     );
 
+
+    /**
+     * @var string CRUD ID, which is for template path
+     */
     public $crudId;
 
+    /**
+     * @var Phifty\Model
+     */
     public $currentRecord;
 
+
+    /**
+     * @var integer Record Limit per page
+     */
     public $pageLimit = 15;
 
 
-    /* vars to be export to template */
+    /* 
+     * vars to be export to template 
+     */
     public $vars = array();
 
     /** 
      * Collection order 
      */
-    public $defaultOrder = array('id', 'desc');
+    public $defaultOrder = array('id', 'DESC');
 
+
+    /**
+     * @var array column id list for crud list page.
+     */
     public $listColumns;
 
     public static function expand()
@@ -318,13 +349,22 @@ abstract class CRUDHandler extends Controller
      *
      * @return ActionKit\RecordAction
      */
-    public function getRecordAction()
+    public function getRecordAction($record)
     {
-        $record = $this->getCurrentRecord();
         $action = $record->id 
             ? $record->asUpdateAction()
             : $record->asCreateAction();
         return $action;
+    }
+
+    public function getCurrentAction()
+    {
+        if( $this->currentAction )
+            return $this->currentAction;
+
+        $record = $this->getCurrentRecord();
+        $action = $this->getRecordAction( $record );
+        return $this->currentAction = $action;
     }
 
     /**
