@@ -133,7 +133,6 @@ abstract class CRUDHandler extends Controller
     public function init()
     {
         $this->vars['CRUD']['Object'] = $this;
-        $this->vars['CRUD']['Title'] = $this->getListTitle();
 
         if( ! $this->namespace ) {
             // extract namespace from model class name
@@ -322,12 +321,11 @@ abstract class CRUDHandler extends Controller
     public function listRegionActionPrepare()
     {
         $collection = $this->getCollection();
-        $pager = $this->createCollectionPager($collection);
         $data = array(
-            'Object' => $this,
-            'Items' => $collection->items(),
-            'Pager' => $pager,
-            'Title' => $this->getListTitle(),
+            'Object'  => $this,
+            'Items'   => $collection->items(),
+            'Pager'   => $this->createCollectionPager($collection),
+            'Title'   => $this->getListTitle(),
             'Columns' => $this->getListColumns(),
         );
         // var_dump( $collection->getLastSQL() , $collection->getVars() ); 
