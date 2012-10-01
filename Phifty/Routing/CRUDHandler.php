@@ -53,6 +53,20 @@ abstract class CRUDHandler extends Controller
     /** model object: record */
     public $model;
 
+
+
+    /**
+     * Current action object. (created from currentRecord)
+     */
+    public $currentAction;
+
+    public $actionViewClass = 'AdminUI\\Action\\View\\StackView';
+
+    public $actionViewOptions = array( 
+        'ajax' => true,
+        'close_button' => true,
+    );
+
     public $crudId;
 
     public $currentRecord;
@@ -174,10 +188,10 @@ abstract class CRUDHandler extends Controller
         $id = $this->request->param('id');
         $record = $this->getModel();
         $record->load( (int) $id );
-        return $this->currentRecord = $record;
+        return $record;
     }
 
-    function render( $template , $args = array() , $engineOpts = array() )
+    public function render( $template , $args = array() , $engineOpts = array() )
     {
         // merge export vars
         $args = array_merge( $this->vars , $args );
@@ -187,7 +201,7 @@ abstract class CRUDHandler extends Controller
     }
 
     /* renderer helpers */
-    function renderCrudIndexTiles()
+    public function renderCrudIndexTiles()
     {
         $tiles   = array();
 
@@ -198,7 +212,7 @@ abstract class CRUDHandler extends Controller
     }
 
     /* this method should take a collection to render */
-    function renderCrudList( $args = array() )
+    public function renderCrudList( $args = array() )
     {
         return $this->render( 
             $this->namespace 
@@ -207,7 +221,7 @@ abstract class CRUDHandler extends Controller
             . '/list.html' , $args );
     }
 
-    function renderCrudEdit( $args = array() )
+    public function renderCrudEdit( $args = array() )
     {
         return $this->render( 
             $this->namespace 
@@ -216,12 +230,12 @@ abstract class CRUDHandler extends Controller
             . '/edit.html' , $args);
     }
 
-    function renderCrudPage( $args = array() )
+    public function renderCrudPage( $args = array() )
     {
         return $this->render($this->templatePage,$args);
     }
 
-    function createCollectionPager($collection) 
+    public function createCollectionPager($collection) 
     {
         $page     = $this->request->param('page') ?: 1;
         $pageSize = $this->request->param('pagenum') ?: $this->pageLimit;
@@ -233,7 +247,7 @@ abstract class CRUDHandler extends Controller
     /**
      * CRUD List Prepare Data
      */
-    function listRegionActionPrepare()
+    public function listRegionActionPrepare()
     {
         $collection = $this->getCollection();
         $pager = $this->createCollectionPager($collection);
@@ -273,6 +287,13 @@ abstract class CRUDHandler extends Controller
         return $this->predefined;
     }
 
+    public function getCurrentRecord()
+    {
+        if( $this->currentRecord )
+            return $this->currentRecord;
+        return $this->currentRecord = $this->loadRecord();
+    }
+
     /**
      * Create record action object from record
      *
@@ -286,9 +307,26 @@ abstract class CRUDHandler extends Controller
         return $action;
     }
 
+    public function getActionView()
+    {
+        return $this->createActionView($action);
+    }
+
+    /**
+     * Create Action View from Action object.
+     *
+     * @param ActionKit\RecordAction
+     */
+    public function createActionView($action)
+    {
+        // {{ CRUD.Action.asView('AdminUI\\Action\\View\\StackView',{ ajax: true, close_button: true }).render|raw}}
+        $view = $action->asView($this->actionViewClass,$this->actionViewOptions);
+        return $view;
+    }
+
     public function editRegionActionPrepare()
     {
-        $record = $this->loadRecord();
+        $record = $this->getCurrentRecord();
         $isCreate = $record->id ? false : true;
 
         // if the record is not loaded, we can use predefined values
@@ -298,8 +336,8 @@ abstract class CRUDHandler extends Controller
             }
         }
 
-        $action = $this->getRecordAction($record);
-        $actionClass = get_class($action);
+        $this->currentAction = $this->getRecordAction($record);
+        $actionClass = get_class($this->currentAction);
         $title = $isCreate
             ?  __('Create %1' , $record->getLabel() )
             :  __('Edit %1: %2', $record->getLabel() , $record->dataLabel() );
@@ -307,7 +345,7 @@ abstract class CRUDHandler extends Controller
         $data = array(
             'Object'      => $this,
             'Title'       => $title,
-            'Action'      => $action,
+            'Action'      => $this->currentAction,
             'ActionClass' => $actionClass,
             'Record'      => $record,
         );
