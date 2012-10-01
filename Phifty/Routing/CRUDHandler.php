@@ -314,9 +314,9 @@ abstract class CRUDHandler extends Controller
      *
      * @return string Label
      */
-    public function getEditLabel()
+    public function getEditTitle()
     {
-        $record = $this->currentRecord();
+        $record = $this->getCurrentRecord();
         return $record->id
             ?  __('Create %1' , $record->getLabel() )
             :  __('Edit %1: %2', $record->getLabel() , $record->dataLabel() );
