@@ -117,7 +117,7 @@ TWIG;
         $cur = $this->currentPage;
         $total_pages = $this->totalPages;
 
-        if( $this->whenOverflow && $this->totalPages == 1 ) {
+        if( $this->whenOverflow && $this->totalPages <= 1 ) {
             return "";
         }
 

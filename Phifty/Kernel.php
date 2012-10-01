@@ -73,6 +73,11 @@ class Kernel extends ObjectContainer
         }
     }
 
+    public function getVersion()
+    {
+        return self::VERSION;
+    }
+
     public function registerService( ServiceInterface $service, $options = array() )
     {
         $service->register( $this , $options );

@@ -1,6 +1,5 @@
 <?php
 namespace Phifty\Web;
-
 use Phifty\Web\Pager;
 
 class RegionPager extends Pager
