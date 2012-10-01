@@ -299,17 +299,35 @@ abstract class CRUDHandler extends Controller
      *
      * @return ActionKit\RecordAction
      */
-    public function getRecordAction($record)
+    public function getRecordAction()
     {
+        $record = $this->getCurrentRecord();
         $action = $record->id 
             ? $record->asUpdateAction()
             : $record->asCreateAction();
         return $action;
     }
 
+
+    /**
+     * Returns edit form label
+     *
+     * @return string Label
+     */
+    public function getEditLabel()
+    {
+        $record = $this->currentRecord();
+        return $record->id
+            ?  __('Create %1' , $record->getLabel() )
+            :  __('Edit %1: %2', $record->getLabel() , $record->dataLabel() );
+    }
+
+    /**
+     *
+     */
     public function getActionView()
     {
-        return $this->createActionView($action);
+        return $this->createActionView($this->currentAction);
     }
 
     /**
@@ -320,8 +338,7 @@ abstract class CRUDHandler extends Controller
     public function createActionView($action)
     {
         // {{ CRUD.Action.asView('AdminUI\\Action\\View\\StackView',{ ajax: true, close_button: true }).render|raw}}
-        $view = $action->asView($this->actionViewClass,$this->actionViewOptions);
-        return $view;
+        return $action->asView($this->actionViewClass,$this->actionViewOptions);
     }
 
     public function editRegionActionPrepare()
@@ -336,17 +353,12 @@ abstract class CRUDHandler extends Controller
             }
         }
 
+        $title = $this->getEditTitle();
         $this->currentAction = $this->getRecordAction($record);
-        $actionClass = get_class($this->currentAction);
-        $title = $isCreate
-            ?  __('Create %1' , $record->getLabel() )
-            :  __('Edit %1: %2', $record->getLabel() , $record->dataLabel() );
-
         $data = array(
             'Object'      => $this,
             'Title'       => $title,
             'Action'      => $this->currentAction,
-            'ActionClass' => $actionClass,
             'Record'      => $record,
         );
         foreach( $data as $k => $v ) {
