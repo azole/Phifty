@@ -145,6 +145,10 @@ abstract class CRUDHandler extends Controller
             $refl = new ReflectionClass( $this->modelClass );
             $this->modelName = $refl->getShortName();
         }
+
+        if( ! $this->crudId ) {
+            $this->crudId = strtolower($this->modelName);
+        }
         parent::init();
     }
 
