@@ -161,8 +161,16 @@ abstract class CRUDHandler extends Controller
         return $collection;
     }
 
-    function loadRecord()
+
+    /**
+     * Load record by primary key (id)
+     *
+     * @return mixed Record object.
+     */
+    public function loadRecord()
     {
+        if( $this->currentRecord )
+            return $this->currentRecord;
         $id = $this->request->param('id');
         $record = $this->getModel();
         $record->load( (int) $id );
@@ -265,6 +273,18 @@ abstract class CRUDHandler extends Controller
         return $this->predefined;
     }
 
+    /**
+     * Create record action object from record
+     *
+     * @return ActionKit\RecordAction
+     */
+    public function getRecordAction($record)
+    {
+        $action = $record->id 
+            ? $record->asUpdateAction()
+            : $record->asCreateAction();
+        return $action;
+    }
 
     public function editRegionActionPrepare()
     {
@@ -278,11 +298,8 @@ abstract class CRUDHandler extends Controller
             }
         }
 
-        $actionClass = ( $isCreate 
-            ? $this->namespace . '::Action::Create' . $this->modelName 
-            : $this->namespace . '::Action::Update' . $this->modelName );
-
-        $action = $isCreate ? $record->asCreateAction() : $record->asUpdateAction();
+        $action = $this->getRecordAction($record);
+        $actionClass = get_class($action);
         $title = $isCreate
             ?  __('Create %1' , $record->getLabel() )
             :  __('Edit %1: %2', $record->getLabel() , $record->dataLabel() );
@@ -291,6 +308,7 @@ abstract class CRUDHandler extends Controller
             'Object'      => $this,
             'Title'       => $title,
             'Action'      => $action,
+            'ActionClass' => $actionClass,
             'Record'      => $record,
         );
         foreach( $data as $k => $v ) {
