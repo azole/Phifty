@@ -175,6 +175,18 @@ abstract class CRUDHandler extends Controller
     }
 
     /**
+     * Assign CRUD Vars
+     *
+     * @param array $args
+     */
+    public function assignCRUDVars($args)
+    {
+        foreach( $args as $k => $v ) {
+            $this->vars['CRUD'][ $k ] = $v;
+        }
+    }
+
+    /**
      * Returns edit form title
      *
      * @return string title string for edit view.
@@ -361,15 +373,11 @@ abstract class CRUDHandler extends Controller
     public function listRegionActionPrepare()
     {
         $collection = $this->getCollection();
-        $data = array(
+        $this->assignCRUDVars(array(
             'Items'   => $collection->items(),
             'Pager'   => $this->createCollectionPager($collection),
             'Columns' => $this->getListColumns(),
-        );
-        // var_dump( $collection->getLastSQL() , $collection->getVars() ); 
-        foreach( $data as $k => $v ) {
-            $this->vars['CRUD'][ $k ] = $v;
-        }
+        ));
     }
 
     /*
@@ -453,14 +461,10 @@ abstract class CRUDHandler extends Controller
                 $record->{ $k } = $v;
             }
         }
-
-        $data = array(
-            'Action'      => $this->getCurrentAction(),
-            'Record'      => $record,
-        );
-        foreach( $data as $k => $v ) {
-            $this->vars['CRUD'][$k] = $v;
-        }
+        $this->assignCRUDVars(array(
+            'Action' => $this->getCurrentAction(),
+            'Record' => $record,
+        ));
     }
 
 
@@ -497,7 +501,5 @@ abstract class CRUDHandler extends Controller
         $tiles = $this->renderCrudIndexTiles();
         return $this->renderCrudPage(array( 'tiles' => $tiles ));
     }
-
-
 
 }
