@@ -361,10 +361,8 @@ abstract class CRUDHandler extends Controller
     {
         if( $this->currentAction )
             return $this->currentAction;
-
         $record = $this->getCurrentRecord();
-        $action = $this->getRecordAction( $record );
-        return $this->currentAction = $action;
+        return $this->currentAction = $this->getRecordAction( $record );
     }
 
     /**
@@ -398,12 +396,10 @@ abstract class CRUDHandler extends Controller
             }
         }
 
-        $title = $this->getEditTitle();
-        $this->currentAction = $this->getRecordAction($record);
         $data = array(
             'Object'      => $this,
-            'Title'       => $title,
-            'Action'      => $this->currentAction,
+            'Title'       => $this->getEditTitle(),
+            'Action'      => $this->getCurrentAction(),
             'Record'      => $record,
         );
         foreach( $data as $k => $v ) {
