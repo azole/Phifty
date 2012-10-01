@@ -148,11 +148,24 @@ abstract class CRUDHandler extends Controller
         parent::init();
     }
 
+
+    /**
+     * Assign variable to template engine.
+     *
+     * @param string $name template variable name.
+     * @param mixed $value template variable value.
+     */
     public function assign( $name , $value )
     {
         $this->vars[ $name ] = $value;
     }
 
+
+    /**
+     * Assign multiple variables and merge current variables.
+     *
+     * @param array $args
+     */
     public function assignVars( $args )
     {
         $this->vars = array_merge( $this->vars , $args );
@@ -176,7 +189,9 @@ abstract class CRUDHandler extends Controller
         return __('%1 Management' , $this->getModel()->getLabel() );
     }
 
-    /* Return column names for CRUD List table */
+    /**
+     * Get list columns for list view.
+     */
     public function getListColumns()
     {
         if( $this->listColumns )
@@ -212,17 +227,20 @@ abstract class CRUDHandler extends Controller
             }
         }
 
+        $this->orderCollection($collection);
+        return $collection;
+    }
+
+    public function orderCollection($collection)
+    {
         $orderColumn = $this->request->param('_order_column');
         $orderBy     = $this->request->param('_order_by');
-
         if( $orderColumn && $orderBy ) {
             $collection->order( $orderColumn , $orderBy );
         }
         elseif( $this->defaultOrder ) {
-            $collection->order( $this->defaultOrder[0] , $this->defaultOrder[1] );
+            $collection->order( $this->defaultOrder[0], $this->defaultOrder[1]);
         } 
-
-        return $collection;
     }
 
 
