@@ -175,9 +175,9 @@ abstract class CRUDHandler extends Controller
     }
 
     /**
-     * Returns edit form label
+     * Returns edit form title
      *
-     * @return string Label
+     * @return string title string for edit view.
      */
     public function getEditTitle()
     {
@@ -187,6 +187,11 @@ abstract class CRUDHandler extends Controller
             :  __('Edit %1: %2', $record->getLabel() , $record->dataLabel() );
     }
 
+    /**
+     * Returns list title
+     *
+     * @return string title string for list view.
+     */
     public function getListTitle()
     {
         return __('%1 Management' , $this->getModel()->getLabel() );
@@ -229,7 +234,6 @@ abstract class CRUDHandler extends Controller
                     ->equal('lang', $lang);
             }
         }
-
         $this->orderCollection($collection);
         return $collection;
     }
@@ -246,7 +250,6 @@ abstract class CRUDHandler extends Controller
         } 
     }
 
-
     /**
      * Load record by primary key (id)
      *
@@ -262,13 +265,37 @@ abstract class CRUDHandler extends Controller
         return $record;
     }
 
-    public function render( $template , $args = array() , $engineOpts = array() )
+
+    /**
+     * Create collection pager object from collection.
+     *
+     * @param LazyRecord\BaseCollection collection object.
+     * @return RegionPager
+     */
+    public function createCollectionPager($collection) 
     {
-        // merge export vars
+        $page     = $this->request->param('page') ?: 1;
+        $pageSize = $this->request->param('pagenum') ?: $this->pageLimit;
+        $count    = $collection->queryCount();
+        $collection->page( $page ,$pageSize );
+        return new RegionPager( $page, $count, $pageSize );
+    }
+
+
+    /**
+     * Render template
+     *
+     * @param string $template template path name.
+     * @param array $args template arguments.
+     * @param array $engineOptions engine options.
+     */
+    public function render( $template , $args = array() , $engineOptions = array() )
+    {
+        // merge variables
         $args = array_merge( $this->vars , $args );
 
-        // var_dump( $args['CRUD']['Edit']['record']->data ); 
-        return parent::render( $template , $args , $engineOpts );
+        // render template file
+        return parent::render( $template , $args , $engineOptions );
     }
 
     /* renderer helpers */
@@ -282,7 +309,12 @@ abstract class CRUDHandler extends Controller
         return $tiles;
     }
 
-    /* this method should take a collection to render */
+    /**
+     * Render list region template.
+     *
+     * @param array $args template arguments
+     * @return string template content.
+     */
     public function renderCrudList( $args = array() )
     {
         return $this->render( 
@@ -292,6 +324,13 @@ abstract class CRUDHandler extends Controller
             . '/list.html' , $args );
     }
 
+
+    /**
+     * Render edit region template.
+     *
+     * @param arary $args template arguments.
+     * @return string template content.
+     */
     public function renderCrudEdit( $args = array() )
     {
         return $this->render( 
@@ -301,31 +340,30 @@ abstract class CRUDHandler extends Controller
             . '/edit.html' , $args);
     }
 
+
+    /**
+     * Render base page content.
+     *
+     * current base page content is an empty region page.
+     *
+     * @param array $args template arguments.
+     * @return string template content
+     */
     public function renderCrudPage( $args = array() )
     {
         return $this->render($this->templatePage,$args);
     }
 
-    public function createCollectionPager($collection) 
-    {
-        $page     = $this->request->param('page') ?: 1;
-        $pageSize = $this->request->param('pagenum') ?: $this->pageLimit;
-        $count    = $collection->queryCount();
-        $collection->page( $page ,$pageSize );
-        return new RegionPager( $page, $count, $pageSize );
-    }
 
     /**
-     * CRUD List Prepare Data
+     * Prepare default/build-in template variable for list region.
      */
     public function listRegionActionPrepare()
     {
         $collection = $this->getCollection();
         $data = array(
-            'Object'  => $this,
             'Items'   => $collection->items(),
             'Pager'   => $this->createCollectionPager($collection),
-            'Title'   => $this->getListTitle(),
             'Columns' => $this->getListColumns(),
         );
         // var_dump( $collection->getLastSQL() , $collection->getVars() ); 
@@ -417,8 +455,6 @@ abstract class CRUDHandler extends Controller
         }
 
         $data = array(
-            'Object'      => $this,
-            'Title'       => $this->getEditTitle(),
             'Action'      => $this->getCurrentAction(),
             'Record'      => $record,
         );
