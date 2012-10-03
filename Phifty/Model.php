@@ -17,19 +17,19 @@ class Model extends BaseModel
         return kernel()->currentUser;
     }
 
-    function asCreateAction()
+    public function asCreateAction($args = array())
     {
-        return $this->_newAction( 'Create' );
+        return $this->_newAction('Create',$args);
     }
 
-    function asUpdateAction()
+    public function asUpdateAction($args = array())
     {
-        return $this->_newAction( 'Update' );
+        return $this->_newAction('Update',$args);
     }
 
-    function asDeleteAction()
+    public function asDeleteAction($args = array())
     {
-        return $this->_newAction( 'Delete' );
+        return $this->_newAction('Delete',$args);
     }
 
     /**
@@ -39,11 +39,11 @@ class Model extends BaseModel
      *
      * TODO: Move to ActionKit
      */
-    private function _newAction($type)
+    private function _newAction($type, $args = array() )
     {
         $class = get_class($this);
         $actionClass = BaseRecordAction::createCRUDClass($class,$type);
-        return new $actionClass( array(), $this );
+        return new $actionClass( $args , $this );
     }
 }
 

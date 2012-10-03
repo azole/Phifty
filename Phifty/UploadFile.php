@@ -21,7 +21,6 @@ class UploadFile
     public function __construct( $name , $index = null )  
     {
         $this->column = $name;
-
         $hasFile = (bool) @$_FILES[$name]['tmp_name'];
         if( $hasFile ) {
             $keys = array_keys( @$_FILES[ $name ] );
