@@ -51,7 +51,7 @@ class Pygmentize
         return join(',', $pairs);
     }
 
-    function findBin() 
+    public function findBin()
     {
         $paths = explode( PATH_SEPARATOR, getenv('PATH'));
         foreach( $paths as $path ) {
@@ -62,16 +62,16 @@ class Pygmentize
         return 'pygmentize';
     }
 
-    function getBin() 
+    public function getBin() 
     {
         return $this->bin;
     }
 
-    function isSupported()  {
+    public function isSupported()  {
         return $this->bin ? true : false;
     }
 
-    function runProcess($command,$input = null) {
+    public function runProcess($command,$input = null) {
         $desc = array(
             0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
             1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
@@ -102,8 +102,13 @@ class Pygmentize
         // It is important that you close any pipes before calling
         // proc_close in order to avoid a deadlock
         $return_value = proc_close($process);
+
+        // pygmentize not found.
+        if( $return_value === 127 ) {
+            return '<pre>' . htmlentities($input) . '</pre>';
+        }
         if( $return_value !== 0 ) {
-            throw new RuntimeException('Pygmentize error.');
+            throw new RuntimeException("Pygmentize error, command: $command, return: $return_value");
         }
         return $output;
 
