@@ -11,7 +11,7 @@ class Web
 
     public function render_all_results()
     {
-        $runner = ActionRunner::getInstance();
+        $runner = kernel()->action;
         $results = $runner->getResults();
         $html = '';
         foreach( $results as $key => $value ) {
