@@ -52,12 +52,13 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
 
     // XXX: since we use screenshot test listener, we don't need this to get screenshots
     // Override the original method and tell Selenium to take screen shot when test fails
-    /*
     public function onNotSuccessfulTest(\Exception $e) 
     {
         // use unix-timestamp so that we can sort file by name
-        if( $this->takeScreenshot('now.png') === false 
-            || $this->takeScreenshot( str_replace('.','_',microtime(true)) . '.png' ) === false ) 
+        if( $this->takeScreenshot('last.png') === false
+            || $this->takeScreenshot(
+                str_replace('\\','_',get_class($this)) . '_' .
+                str_replace('.','_',time(true)) . '.png' ) === false )
         {
             throw $e;
         }
@@ -66,7 +67,7 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
 
     public function getScreenshotDir() 
     {
-        return PH_ROOT . '/tests/screenshots'; 
+        return PH_ROOT . '/build/screenshots';
     }
 
     public function takeScreenshot($filename = null)
@@ -81,6 +82,5 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
         }
         return true;
     }
-    */
 }
 
