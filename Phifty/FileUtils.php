@@ -181,15 +181,15 @@ class FileUtils {
     static function mimetype( $file )
     {
         $fi = new \finfo( FILEINFO_MIME );
-        return $fi->buffer(file_get_contents($file));
+        $info = $fi->buffer(file_get_contents($file));
+        $attrs = explode(';',$info);
+        return $attrs[0];
     }
 
     static function is_cache_expired( $cacheFile , $targetFile )
     {
         return filemtime($targetFile) > filemtime($cacheFile);
     }
+}
 
-    }
 
-
-?>
