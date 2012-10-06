@@ -38,6 +38,8 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
             $this->setBrowserUrl( $this->getBaseUrl() );
         }
 
+        $this->setSeleniumServerRequestsTimeout(10);
+
         // XXX: SeleniumTestCase (1.0) seems don't support screenshotPath ?
         // $this->screenshotPath = $this->getScreenshotDir();
     }
