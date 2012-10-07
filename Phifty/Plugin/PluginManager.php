@@ -82,11 +82,22 @@ class PluginManager
         if( $class = $this->_loadPlugin($name) ) {
             $plugin = $class::getInstance();
             // XXX: better solution
-            $plugin->init( $plugin->mergeWithDefaultConfig( $config ) );
+            $plugin->mergeWithDefaultConfig( $config );
             return $this->plugins[ $name ] = $plugin;
         }
         throw new Exception("Plugin $name not found.");
         return false;
+    }
+
+    /**
+     * initialize all loaded plugins
+     */
+    public function init()
+    {
+        // TODO: initialize by config ordering
+        foreach( $this->plugins as $name => $plugin ) {
+            $plugin->init();
+        }
     }
 
 

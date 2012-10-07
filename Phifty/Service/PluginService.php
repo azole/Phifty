@@ -37,6 +37,9 @@ class PluginService
             ));
             $manager->load( $pluginName , $config );
         }
+
+        // initialize all loaded plugin
+        $manager->init();
     }
 
 }
