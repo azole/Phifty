@@ -10,7 +10,8 @@ class AdminTestCase extends Selenium2TestCase
         'newsCategory' => '/bs/news_category',
         'contacts' => '/bs/contacts',
         'contactGroups' => '/bs/contact_groups',
-        'product' => '/bs/product'
+        'product' => '/bs/product',
+        'pages' => '/bs/pages'
     );
 
     protected function gotoLoginPage()
