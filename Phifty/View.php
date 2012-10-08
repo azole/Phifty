@@ -17,7 +17,7 @@ class View
 
     protected $defaultEngine = 'twig';
 
-    function __construct( $engine = null , $engineOpts = null ) 
+    public function __construct( $engine = null , $engineOpts = null ) 
     {
         $this->initEngine( $engine , $engineOpts );
         $this->init();
@@ -33,12 +33,12 @@ class View
         kernel()->event->trigger('view.init', $this);
     }
 
-    function init()
+    public function init()
     {
 
     }
 
-    function initEngine( $engine = null , $engineOpts = null )
+    public function initEngine( $engine = null , $engineOpts = null )
     {
         if( $engine ) {
             /* if it's an engine object already, just save it */
