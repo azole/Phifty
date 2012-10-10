@@ -93,7 +93,7 @@ class Controller extends BaseController
         $templateEngine = kernel()->config->get('framework','View.Backend');
         $class      = $viewClass ?: $this->defaultViewClass ?: kernel()->config->get('framework','View.Class');
         if( ! $class )
-            throw new Exception('view.class config is not defined.');
+            throw new Exception('View.Class config is not defined.');
 
         $engine = \Phifty\View\Engine::createEngine( $templateEngine , $options );
         return new $class( $engine );  // pass 'Smarty' or 'Twig'
