@@ -31,7 +31,9 @@ use Phifty\Security\CurrentUserRole;
 */
 class CurrentUser
 {
-    /* User model class */
+    /**
+     * User model class 
+     */
     public $userModelClass;
 
     /**
@@ -148,6 +150,9 @@ class CurrentUser
         }
         elseif ( method_exists($record,'getRoles') ) {
             $this->session->set('roles', $record->getRoles() );
+        }
+        elseif ( isset($record->role) ) {
+            $this->session->set('roles', array($record->role) );
         }
         else {
             $this->session->set('roles', array() );
