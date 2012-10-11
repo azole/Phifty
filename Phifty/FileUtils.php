@@ -166,10 +166,10 @@ class FileUtils {
         return $filename . $suffix;
     }
 
-    static function filename_suffix( $filename , $suffix )
+    static public function filename_suffix( $filename , $suffix )
     {
         $pos = strrpos( $filename , '.' );
-        if( $pos ) {
+        if( $pos !== false ) {
             return 
                 substr( $filename , 0 , $pos )
                 . $suffix 
