@@ -4,11 +4,12 @@ namespace Phifty\Service;
 class WKHtmlToPdf {
 
     public $bin;
-    public $pageSize = 'A4';
+    public $pageSize;
 
-    public function __construct($bin)
+    public function __construct($bin,$pageSize = 'A4')
     {
         $this->bin = $bin;
+        $this->pageSize = $pageSize;
     }
 
     public function convert($url,$target)
@@ -43,7 +44,7 @@ class WKHtmlToPdfService
     public function register( $kernel , $options = array() )
     {
         $kernel->wkHtmlToPdf = function() use($kernel,$options) {
-            return new WKHtmlToPdf($options['bin']);
+            return new WKHtmlToPdf($options['Bin'], @$options['PageSize']);
         };
     }
 }
