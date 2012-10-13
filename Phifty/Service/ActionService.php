@@ -49,11 +49,10 @@ class ActionService
                      */
                     header('HTTP/1.0 403');
                     if( $runner->isAjax() ) {
-                        die(json_encode(
-                            array(
-                                'error' => 1, 
+                        die(json_encode(array(
+                                'error' => 1,
                                 'message' => $e->getMessage() 
-                            )));
+                        )));
                     } else {
                         die( $e->getMessage() );
                     }
