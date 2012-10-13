@@ -39,7 +39,7 @@ class ActionService
                     $result = $runner->run( $_REQUEST['action'] );
                     if( $result && $runner->isAjax() ) {
                         // it's JSON
-                        header('Content-Type: application/json; Charset=utf-8');
+                        header('Content-Type: text/plain; Charset=utf-8');
                         echo $result->__toString();
                         exit(0);
                     }
