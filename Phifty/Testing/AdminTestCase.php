@@ -40,6 +40,7 @@ class AdminTestCase extends Selenium2TestCase
             }
         }
         wait();
+        wait_for('.admin-menu');
     }
 
     protected function logout()
