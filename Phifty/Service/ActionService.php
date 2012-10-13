@@ -36,21 +36,21 @@ class ActionService
                 try
                 {
                     $runner = $kernel->action; // get runner
-                    $result = $runner->run();
+                    $result = $runner->run( $_REQUEST['action'] );
                     if( $result && $runner->isAjax() ) {
                         // it's JSON
                         header('Content-Type: application/json; Charset=utf-8');
-                        echo $result;
+                        echo $result->__toString();
                         exit(0);
                     }
                 } catch( Exception $e ) {
                     /**
-                     * return 403 status forbidden
+                     * Return 403 status forbidden
                      */
                     header('HTTP/1.0 403');
                     if( $runner->isAjax() ) {
-                        die(json_encode( 
-                            array( 
+                        die(json_encode(
+                            array(
                                 'error' => 1, 
                                 'message' => $e->getMessage() 
                             )));
