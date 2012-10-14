@@ -9,7 +9,7 @@ class StatusSchema extends MixinSchemaDeclare
         $this->column( 'status' )
             ->validValues(array(
                 '草稿' => 'draft',
-                '發佈' => 'publish'
+                '公開發佈' => 'publish'
             ))
             ->label('儲存為')
             ->renderAs('SelectInput')
