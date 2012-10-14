@@ -43,7 +43,7 @@ class CRUDTestCase extends AdminTestCase
             contains_ok('確認刪除', get_alert_text() );
             accept_alert();
             wait_for_jgrowl();
-            wait_for('.jGrowl-close')->click();
+            jgrowl_close();
             usleep(100 * 1000); // 0.10 second
         }
     }
