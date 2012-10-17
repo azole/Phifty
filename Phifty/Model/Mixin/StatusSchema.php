@@ -11,6 +11,7 @@ class StatusSchema extends MixinSchemaDeclare
                 '草稿' => 'draft',
                 '公開發佈' => 'publish'
             ))
+            ->default('publish')
             ->label('儲存為')
             ->renderAs('SelectInput')
             ;
