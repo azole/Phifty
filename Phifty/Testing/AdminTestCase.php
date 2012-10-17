@@ -56,7 +56,7 @@ class AdminTestCase extends Selenium2TestCase
     protected function isUpdated() 
     {
         $msg = find_element('.message.success')->text();
-        jgrowl_like('/updated|已經更新|成功/');
+        jgrowl_like('/updated|已經更新|成功|更新成功/');
     }
 
     protected function isDeleted() 
