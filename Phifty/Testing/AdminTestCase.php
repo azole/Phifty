@@ -50,23 +50,23 @@ class AdminTestCase extends Selenium2TestCase
 
     protected function isCreated() 
     {
-        message_like('/created|已經建立/');
+        message_like('/created|已經建立|成功/');
     }
 
     protected function isUpdated() 
     {
         $msg = find_element('.message.success')->text();
-        jgrowl_like('/updated|已經更新/');
+        jgrowl_like('/updated|已經更新|成功/');
     }
 
     protected function isDeleted() 
     {
-        jgrowl_like('/(deleted|刪除成功)/');
+        jgrowl_like('/(deleted|刪除成功|成功)/');
     }
 
     public function isUploaded() 
     {
-        jgrowl_like('/(created|已經建立)/');
+        jgrowl_like('/(created|已經建立|成功)/');
     }
 
     public function uploadFile( $sel, $filepath ) 
