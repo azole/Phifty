@@ -39,6 +39,7 @@ class AdminTestCase extends Selenium2TestCase
                 throw new Exception("Url of $transferTo is not defined.");
             }
         }
+        wait();
         wait_for('.admin-menu');
     }
 
