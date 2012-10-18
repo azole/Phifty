@@ -2,7 +2,7 @@
 namespace Phifty\Model\Mixin;
 use LazyRecord\Schema\MixinSchemaDeclare;
 
-class SeoSchema extends MixinSchemaDeclare
+class SEOSchema extends MixinSchemaDeclare
 {
     public function schema()
     {
