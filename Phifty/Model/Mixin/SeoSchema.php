@@ -9,17 +9,25 @@ class SEOSchema extends MixinSchemaDeclare
 
         $this->column( 'seo_keywords' )
             ->text()
-            ->label('SEO 關鍵字');
+            ->label('頁面關鍵字');
             ;
 
         $this->column( 'seo_description' )
             ->text()
-            ->label('SEO 敘述')
+            ->label('頁面敘述')
             ;
+
+        $this->column( 'seo_author' )
+            ->varchar(32)
+            ->label('作者');
+
+        $this->column( 'seo_copyright' )
+            ->varchar(32)
+            ->label('版權宣告');
 
         $this->column( 'seo_title' )
             ->varchar(256)
-            ->label('SEO 標題');
+            ->label('標題');
     }
 }
 
