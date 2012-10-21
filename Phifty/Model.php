@@ -6,13 +6,13 @@ use ActionKit\RecordAction\BaseRecordAction;
 
 class Model extends BaseModel 
 {
-    function getLabel()
+    public function getLabel()
     {
         $label = parent::getLabel();
         return $label ? _($label) : $label;
     }
 
-    function getCurrentUser() 
+    public function getCurrentUser() 
     {
         return kernel()->currentUser;
     }
