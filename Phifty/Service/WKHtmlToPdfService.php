@@ -19,7 +19,7 @@ class WKHtmlToPdf {
             $cmds[] = '--page-size';
             $cmds[] = $this->pageSize;
         }
-        $cmds[] = $url;
+        $cmds[] = "\"$url\"";
         $cmds[] = $target;
         $cmd = join(' ',$cmds);
         system($cmd);
