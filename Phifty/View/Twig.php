@@ -21,8 +21,10 @@ use Twig_Extensions_Extension_I18n;
     * {% set obj = new('InputSystem\\Model\\Patient') %}
     * {% set obj = new('InputSystem\\Model\\PatientSchema') %}
     */
-function newObject($class,$args = null) 
+function newObject($class) 
 {
+    $args = func_get_args();
+    array_shift($args);
     return \Phifty\ClassUtils::new_class($class,$args);
 }
 
