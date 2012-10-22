@@ -27,49 +27,49 @@ class Html5UploadHandler
     public $headers;
     public $uploadDir;
 
-    function __construct() 
+    public function __construct() 
     {
         $this->content = $this->decodeContent();
         $headers = getallheaders();
         $this->headers = array_change_key_case($headers, CASE_UPPER);
     }
 
-    function supportSendAsBinary() 
+    public function supportSendAsBinary() 
     {
         return count($_FILES) > 0;
     }
 
-    function getFileName()
+    public function getFileName()
     {
         return $this->headers[ 'UPLOAD-FILENAME' ];
     }
 
-    function getFileType()
+    public function getFileType()
     {
         return $this->headers[ 'UPLOAD-TYPE' ];
     }
 
-    function getFileSize()
+    public function getFileSize()
     {
         return $this->headers[ 'UPLOAD-SIZE' ];
     }
 
-    function getContent()
+    public function getContent()
     {
         return $this->content;
     }
 
-    function getHeaders()
+    public function getHeaders()
     {
         return $this->headers;
     }
 
-    function setUploadDir( $dir )
+    public function setUploadDir( $dir )
     {
         $this->uploadDir = $dir;
     }
 
-    function decodeContent()
+    public function decodeContent()
     {
         $content = file_get_contents('php://input');
         if(isset($_GET['base64'])) {
