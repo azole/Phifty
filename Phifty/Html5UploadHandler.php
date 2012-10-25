@@ -97,6 +97,7 @@ class Html5UploadHandler
             // $_FILES['upload']['tmp_name'];
             $filename = $newFileName ? $newFileName : $_FILES['upload']['name'];
             $path = $this->uploadDir . DIRECTORY_SEPARATOR . $filename;
+            $path = FileUtils::filename_increase($path);
             if( move_uploaded_file( $_FILES['upload']['tmp_name'] , $path ) ) {
                 return $path;
             }
@@ -105,6 +106,7 @@ class Html5UploadHandler
             $content = $this->getContent();
             $filename = $newFileName ? $newFileName : $this->getFileName();
             $path = $this->uploadDir . DIRECTORY_SEPARATOR . $filename;
+            $path = FileUtils::filename_increase($path);
             if( file_put_contents( $path , $content ) )
                 return $path;
             return false;
