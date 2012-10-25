@@ -23,17 +23,17 @@ class Locale
     public $domain;
     public $defaultLang;
 
-    function setDefault( $lang )
+    public function setDefault( $lang )
     {
         $this->defaultLang = $lang;
         return $this;
     }
 
-    function getDefault() {
+    public function getDefault() {
         return $this->defaultLang;
     }
 
-    function init( $force_lang = null  )
+    public function init( $force_lang = null  )
     {
         $lang = null;
 
@@ -59,24 +59,24 @@ class Locale
     }
 
 
-    function saveSession()
+    public function saveSession()
     {
         kernel()->session->set( L10N_LOCALE_KEY , $this->current );
     }
 
-    function saveCookie()
+    public function saveCookie()
     {
         $time = time() + 60 * 60 * 24 * 30;
         @setcookie( L10N_LOCALE_KEY , $this->current , $time , '/' );
     }
 
-    function getCurrentLang()
+    public function getCurrentLang()
     {
         return $this->current;
     }
 
     // set current language
-    function speak( $lang )
+    public function speak( $lang )
     {
         $this->current = $lang;
         $this->saveCookie();
@@ -85,23 +85,23 @@ class Locale
         return $this;
     }
 
-    function isSpeaking( $lang )
+    public function isSpeaking( $lang )
     {
         return $this->current == $lang;
     }
 
 
-    function current()
+    public function current()
     {
         return $this->current;
     }
 
-    function speaking()
+    public function speaking()
     {
         return $this->current;
     }
 
-    function available()
+    public function available()
     {
         return $this->getLangList();
     }
