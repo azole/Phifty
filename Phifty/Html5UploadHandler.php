@@ -9,9 +9,9 @@ namespace Phifty;
 //            [REFERER] => http://phifty.local/bs/image
 //            [CONTENT-LENGTH] => 96740
 //            [ORIGIN] => http://phifty.local
-//            [UPLOAD-TYPE] => image/png
-//            [UPLOAD-FILENAME] => Screen shot 2011-08-17 at 10.25.58 AM.png
-//            [UPLOAD-SIZE] => 72555
+//            [X-UPLOAD-TYPE] => image/png
+//            [X-UPLOAD-FILENAME] => Screen shot 2011-08-17 at 10.25.58 AM.png
+//            [X-UPLOAD-SIZE] => 72555
 //            [USER-AGENT] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.218 Safari/535.1
 //            [CONTENT-TYPE] => application/xml
 //            [ACCEPT] => */*
@@ -34,24 +34,24 @@ class Html5UploadHandler
         $this->headers = array_change_key_case($headers, CASE_UPPER);
     }
 
-    public function supportSendAsBinary() 
+    public function supportSendAsBinary()
     {
         return count($_FILES) > 0;
     }
 
     public function getFileName()
     {
-        return $this->headers[ 'UPLOAD-FILENAME' ];
+        return $this->headers[ 'X-UPLOAD-FILENAME' ];
     }
 
     public function getFileType()
     {
-        return $this->headers[ 'UPLOAD-TYPE' ];
+        return $this->headers[ 'X-UPLOAD-TYPE' ];
     }
 
     public function getFileSize()
     {
-        return $this->headers[ 'UPLOAD-SIZE' ];
+        return $this->headers[ 'X-UPLOAD-SIZE' ];
     }
 
     public function getContent()
@@ -78,7 +78,7 @@ class Html5UploadHandler
         return $content;
     }
 
-    function hasFile()
+    public function hasFile()
     {
         if( count($_FILES) > 0 )
             return true;
@@ -89,7 +89,7 @@ class Html5UploadHandler
         return false;
     }
 
-    function move( $newFileName = null )
+    public function move( $newFileName = null )
     {
         if( $this->supportSendAsBinary() ) {
 
