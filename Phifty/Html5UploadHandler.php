@@ -30,7 +30,7 @@ class Html5UploadHandler
     public function __construct() 
     {
         $this->content = $this->decodeContent();
-        $headers = getallheaders();
+        $headers = @getallheaders();
         $this->headers = array_change_key_case($headers, CASE_UPPER);
     }
 
@@ -41,17 +41,26 @@ class Html5UploadHandler
 
     public function getFileName()
     {
-        return $this->headers[ 'X-UPLOAD-FILENAME' ];
+        if( isset($_SERVER['HTTP_X_UPLOAD_FILENAME']) )
+            return $_SERVER['HTTP_X_UPLOAD_FILENAME'];
+        if( isset( $this->headers[ 'X-UPLOAD-FILENAME' ] ) )
+            return $this->headers[ 'X-UPLOAD-FILENAME' ];
     }
 
     public function getFileType()
     {
-        return $this->headers[ 'X-UPLOAD-TYPE' ];
+        if( isset($_SERVER['HTTP_X_UPLOAD_TYPE']) )
+            return $_SERVER['HTTP_X_UPLOAD_TYPE'];
+        if( isset($this->headers[ 'X-UPLOAD-TYPE' ]) )
+            return $this->headers[ 'X-UPLOAD-TYPE' ];
     }
 
     public function getFileSize()
     {
-        return $this->headers[ 'X-UPLOAD-SIZE' ];
+        if( isset($_SERVER['HTTP_X_UPLOAD_SIZE']) )
+            return $_SERVER['HTTP_X_UPLOAD_SIZE'];
+        if( isset($this->headers[ 'X-UPLOAD-SIZE' ]) )
+            return $this->headers[ 'X-UPLOAD-SIZE' ];
     }
 
     public function getContent()
