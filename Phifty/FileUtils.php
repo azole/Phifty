@@ -187,11 +187,11 @@ class FileUtils {
         $pos = strrpos( $path , '.' );
         if( $pos !== false ) {
             $filepath = substr($path, 0 , $pos);
-            $extension = substr($path, $pos + 1);
+            $extension = substr($path, $pos);
             $newfilepath = $filepath . $extension;
             $i = 1;
             while( file_exists($newfilepath) ) {
-                $newfilepath = $filepath . " (" . $i++ . ")" . '.' . $extension;
+                $newfilepath = $filepath . " (" . $i++ . ")" . $extension;
             }
             return $newfilepath;
         }
