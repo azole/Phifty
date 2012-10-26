@@ -30,8 +30,10 @@ class Html5UploadHandler
     public function __construct() 
     {
         $this->content = $this->decodeContent();
-        $headers = @getallheaders();
-        $this->headers = array_change_key_case($headers, CASE_UPPER);
+        if( function_exists('getallheaders') )
+            $this->headers = @getallheaders();
+        if( $this->headers )
+            $this->headers = array_change_key_case($this->headers, CASE_UPPER);
     }
 
     public function supportSendAsBinary()
