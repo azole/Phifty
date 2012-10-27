@@ -9,9 +9,9 @@ namespace Phifty;
 //            [REFERER] => http://phifty.local/bs/image
 //            [CONTENT-LENGTH] => 96740
 //            [ORIGIN] => http://phifty.local
-//            [UPLOAD-TYPE] => image/png
-//            [UPLOAD-FILENAME] => Screen shot 2011-08-17 at 10.25.58 AM.png
-//            [UPLOAD-SIZE] => 72555
+//            [X-UPLOAD-TYPE] => image/png
+//            [X-UPLOAD-FILENAME] => Screen shot 2011-08-17 at 10.25.58 AM.png
+//            [X-UPLOAD-SIZE] => 72555
 //            [USER-AGENT] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.218 Safari/535.1
 //            [CONTENT-TYPE] => application/xml
 //            [ACCEPT] => */*
@@ -27,49 +27,60 @@ class Html5UploadHandler
     public $headers;
     public $uploadDir;
 
-    function __construct() 
+    public function __construct() 
     {
         $this->content = $this->decodeContent();
-        $headers = getallheaders();
-        $this->headers = array_change_key_case($headers, CASE_UPPER);
+        if( function_exists('getallheaders') )
+            $this->headers = @getallheaders();
+        if( $this->headers )
+            $this->headers = array_change_key_case($this->headers, CASE_UPPER);
     }
 
-    function supportSendAsBinary() 
+    public function supportSendAsBinary()
     {
         return count($_FILES) > 0;
     }
 
-    function getFileName()
+    public function getFileName()
     {
-        return $this->headers[ 'UPLOAD-FILENAME' ];
+        if( isset($_SERVER['HTTP_X_UPLOAD_FILENAME']) )
+            return $_SERVER['HTTP_X_UPLOAD_FILENAME'];
+        if( isset( $this->headers[ 'X-UPLOAD-FILENAME' ] ) )
+            return $this->headers[ 'X-UPLOAD-FILENAME' ];
     }
 
-    function getFileType()
+    public function getFileType()
     {
-        return $this->headers[ 'UPLOAD-TYPE' ];
+        if( isset($_SERVER['HTTP_X_UPLOAD_TYPE']) )
+            return $_SERVER['HTTP_X_UPLOAD_TYPE'];
+        if( isset($this->headers[ 'X-UPLOAD-TYPE' ]) )
+            return $this->headers[ 'X-UPLOAD-TYPE' ];
     }
 
-    function getFileSize()
+    public function getFileSize()
     {
-        return $this->headers[ 'UPLOAD-SIZE' ];
+        if( isset($_SERVER['HTTP_X_UPLOAD_SIZE']) )
+            return $_SERVER['HTTP_X_UPLOAD_SIZE'];
+        if( isset($this->headers[ 'X-UPLOAD-SIZE' ]) )
+            return $this->headers[ 'X-UPLOAD-SIZE' ];
     }
 
-    function getContent()
+    public function getContent()
     {
         return $this->content;
     }
 
-    function getHeaders()
+    public function getHeaders()
     {
         return $this->headers;
     }
 
-    function setUploadDir( $dir )
+    public function setUploadDir( $dir )
     {
         $this->uploadDir = $dir;
     }
 
-    function decodeContent()
+    public function decodeContent()
     {
         $content = file_get_contents('php://input');
         if(isset($_GET['base64'])) {
@@ -78,7 +89,7 @@ class Html5UploadHandler
         return $content;
     }
 
-    function hasFile()
+    public function hasFile()
     {
         if( count($_FILES) > 0 )
             return true;
@@ -89,25 +100,27 @@ class Html5UploadHandler
         return false;
     }
 
-    function move( $newFileName = null )
+    public function move( $newFileName = null )
     {
-        if( $this->supportSendAsBinary() ) {
-
+        if( count($_FILES) > 0 ) {
             /* process with $_FILES */
             // $_FILES['upload']['tmp_name'];
             $filename = $newFileName ? $newFileName : $_FILES['upload']['name'];
             $path = $this->uploadDir . DIRECTORY_SEPARATOR . $filename;
-            if( move_uploaded_file( $_FILES['upload']['tmp_name'] , $path ) ) {
-                return $path;
+            $path = FileUtils::filename_increase($path);
+            if( move_uploaded_file( $_FILES['upload']['tmp_name'] , $path ) === false ) {
+                return false;
             }
-            return false;
+            return $path;
         } else {
             $content = $this->getContent();
             $filename = $newFileName ? $newFileName : $this->getFileName();
             $path = $this->uploadDir . DIRECTORY_SEPARATOR . $filename;
-            if( file_put_contents( $path , $content ) )
-                return $path;
-            return false;
+            $path = FileUtils::filename_increase($path);
+            if( file_put_contents( $path , $content ) === false ) {
+                return false;
+            }
+            return $path;
         }
     }
 }

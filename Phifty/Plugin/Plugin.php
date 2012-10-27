@@ -65,19 +65,18 @@ class Plugin extends MicroApp
 
 
 
-    function getName()
+    public function getName()
     {
         return $this->getNamespace();
     }
 
-    /* get plugin dir */
-    function getDir()
+    public function getDir()
     {
 
     }
 
     /* static method */
-    static function locatePlugin( $name )
+    public static function locatePlugin( $name )
     {
         /* possible plugin paths */
         $paths = array();
@@ -97,9 +96,7 @@ class Plugin extends MicroApp
 
 
     /*
-    
     Use case:
-
         kernel()->plugin('SB')->render( 'product/view' , array( .... args .... ) );
 
     */
