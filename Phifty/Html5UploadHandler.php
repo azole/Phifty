@@ -102,8 +102,7 @@ class Html5UploadHandler
 
     public function move( $newFileName = null )
     {
-        if( $this->supportSendAsBinary() ) {
-
+        if( count($_FILES) > 0 ) {
             /* process with $_FILES */
             // $_FILES['upload']['tmp_name'];
             $filename = $newFileName ? $newFileName : $_FILES['upload']['name'];
