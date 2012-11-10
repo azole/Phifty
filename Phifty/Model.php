@@ -1,6 +1,5 @@
 <?php
 namespace Phifty;
-use Phifty\Model\Column;
 use LazyRecord\BaseModel;
 use ActionKit\RecordAction\BaseRecordAction;
 
