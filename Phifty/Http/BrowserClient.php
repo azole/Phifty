@@ -118,8 +118,8 @@ class BrowserClient
             $this->browser = (object) get_browser( $userAgentStr , true);
         }
         else {
-            $browscap = new Browscap( kernel()->cacheDir );
-            $this->browser = (object) $browscap->getBrowser( $userAgentStr , true);
+            // $browscap = new Browscap( kernel()->cacheDir );
+            // $this->browser = (object) $browscap->getBrowser( $userAgentStr , true);
         }
     }
 
