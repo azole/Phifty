@@ -5,13 +5,13 @@ use Phifty\Web\Pager;
 class RegionPager extends Pager
 {
 
-    function render_link( $num , $text = null , $moreclass = "" , $disabled = false )
+    public function renderLink( $num , $text = null , $moreclass = "" , $disabled = false )
     {
         if( $text == null )
             $text = $num;
 
         if( $disabled )
-            return $this->render_link_dis( $text , $moreclass );
+            return $this->renderLinkDisabled( $text , $moreclass );
 
         return <<<EOF
  <a class="pager-link $moreclass"
@@ -20,7 +20,7 @@ EOF;
 
     }
 
-    function render_link_dis( $text , $moreclass = "" ) {
+    function renderLinkDisabled( $text , $moreclass = "" ) {
         return <<<EOF
 <a class="pager-link pager-disabled $moreclass">$text</a>
 EOF;
