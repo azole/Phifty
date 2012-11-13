@@ -9,10 +9,10 @@ namespace Phifty\Web;
  */
 class Pager
 {
-    public $first_text;
-    public $last_text;
-    public $next_text;
-    public $prev_text;
+    public $firstText;
+    public $lastText;
+    public $nextText;
+    public $prevText;
 
     public $showHeader = false;
     public $showNavigator = true;
@@ -32,12 +32,12 @@ class Pager
      * @param integer total size
      * @param integer page size (optional)
      */
-    function __construct()
+    public function __construct()
     {
-        $this->first_text = _('Page.First');
-        $this->last_text  = _('Page.Last');
-        $this->next_text  = _('Page.Next');
-        $this->prev_text  = _('Page.Previous');
+        $this->firstText = _('Page.First');
+        $this->lastText  = _('Page.Last');
+        $this->nextText  = _('Page.Next');
+        $this->prevText  = _('Page.Previous');
         if( $args = func_get_args() ) {
             if( 2 === count($args) ) {
                 $this->currentPage = $args[0] ?: 1;
@@ -54,20 +54,20 @@ class Pager
      * @param integer $total
      * @param integer $size = null  (optional)
      */
-    function calculatePages($total,$size = 20)
+    public function calculatePages($total,$size = 20)
     {
         $this->pageSize = $size ?: 20;
         $this->totalPages = $total > 0 ? (int) ceil($total / $this->pageSize ) : 0;
     }
 
 
-    function mergeQuery( $orig_params , $params = array() )
+    public function mergeQuery( $orig_params , $params = array() )
     {
         $params = array_merge(  $orig_params , $params );
         return '?' . http_build_query( $params );
     }
 
-    function render_link( $num , $text = null , $moreclass = "" , $disabled = false )
+    public function render_link( $num , $text = null , $moreclass = "" , $disabled = false )
     {
         if( $text == null )
             $text = $num;
@@ -83,19 +83,19 @@ class Pager
 EOF;
     }
 
-    function render_link_dis( $text , $moreclass = "" ) {
+    public function render_link_dis( $text , $moreclass = "" ) 
+    {
         return <<<EOF
 <a class="pager-link pager-disabled $moreclass">$text</a>
 EOF;
     }
 
-    function __toString() 
+    public function __toString() 
     {
         return $this->render();
     }
 
-
-    function render2()
+    public function render2()
     {
         $heredoc = new \Phifty\View\Heredoc('twig');
         $heredoc->content =<<<TWIG
@@ -111,8 +111,7 @@ TWIG;
         ));
     }
 
-
-    function render()
+    public function render()
     {
         $cur = $this->currentPage;
         $total_pages = $this->totalPages;
@@ -135,13 +134,13 @@ TWIG;
         if( $this->showNavigator ) {
 
             if( $cur > 1 )
-                $output .= $this->render_link( 1       , $this->first_text , 'pager-first' , $cur == 1 );
+                $output .= $this->render_link( 1       , $this->firstText , 'pager-first' , $cur == 1 );
 
             if( $cur > 5 )
                 $output .= $this->render_link( $cur - 5 , _("Pager.Prev 5 Pages") , 'pager-number' );
 
             if( $cur > 1 )
-                $output .= $this->render_link( $cur -1 , $this->prev_text  , 'pager-prev'  , $cur == 1 );
+                $output .= $this->render_link( $cur -1 , $this->prevText  , 'pager-prev'  , $cur == 1 );
         }
 
         if( $cur > 5 )
@@ -162,7 +161,7 @@ TWIG;
 
             if( $cur < $total_pages )
                 $output .= $this->render_link( $cur + 1, 
-                            $this->next_text , 'pager-next' , $cur == $this->totalPages );
+                            $this->nextText , 'pager-next' , $cur == $this->totalPages );
 
             if( $cur + 5 < $total_pages )
                 $output .= $this->render_link( $cur + 5, 
@@ -170,7 +169,7 @@ TWIG;
 
             if( $total_pages > 1 && $cur < $total_pages )
                 $output .= $this->render_link( $this->totalPages,
-                            $this->last_text , 'pager-last' , $cur == $this->totalPages );
+                            $this->lastText , 'pager-last' , $cur == $this->totalPages );
         }
 
         $output .= '</div>';
