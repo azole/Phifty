@@ -50,6 +50,25 @@ class Pager
         }
     }
 
+    public function setFirstPageText($text)
+    {
+        $this->firstText = $text;
+    }
+
+    public function setLastPageText($text)
+    {
+        $this->lastText = $text;
+    }
+
+    public function setNextPagetext($text)
+    {
+        $this->nextText = $text;
+    }
+
+    public function setPrevPageText($text)
+    {
+        $this->prevText = $text;
+    }
 
     public function addClass($class) 
     {
