@@ -9,14 +9,14 @@ namespace Phifty\Web;
  */
 class Pager
 {
-    public $first_text;
-    public $last_text;
-    public $next_text;
-    public $prev_text;
+    public $firstText;
+    public $lastText;
+    public $nextText;
+    public $prevText;
 
     public $showHeader = false;
     public $showNavigator = true;
-    public $wrapperClass = 'pager';
+    public $wrapperClass = array('pager');
     public $whenOverflow  = true;
 
     public $rangeLimit = 3;
@@ -32,12 +32,12 @@ class Pager
      * @param integer total size
      * @param integer page size (optional)
      */
-    function __construct()
+    public function __construct()
     {
-        $this->first_text = _('Page.First');
-        $this->last_text  = _('Page.Last');
-        $this->next_text  = _('Page.Next');
-        $this->prev_text  = _('Page.Previous');
+        $this->firstText = _('Page.First');
+        $this->lastText  = _('Page.Last');
+        $this->nextText  = _('Page.Next');
+        $this->prevText  = _('Page.Previous');
         if( $args = func_get_args() ) {
             if( 2 === count($args) ) {
                 $this->currentPage = $args[0] ?: 1;
@@ -50,30 +50,55 @@ class Pager
         }
     }
 
+    public function setFirstPageText($text)
+    {
+        $this->firstText = $text;
+    }
+
+    public function setLastPageText($text)
+    {
+        $this->lastText = $text;
+    }
+
+    public function setNextPagetext($text)
+    {
+        $this->nextText = $text;
+    }
+
+    public function setPrevPageText($text)
+    {
+        $this->prevText = $text;
+    }
+
+    public function addClass($class) 
+    {
+        $this->wrapperClass[] = $class;
+    }
+
     /**
      * @param integer $total
      * @param integer $size = null  (optional)
      */
-    function calculatePages($total,$size = 20)
+    public function calculatePages($total,$size = 20)
     {
         $this->pageSize = $size ?: 20;
         $this->totalPages = $total > 0 ? (int) ceil($total / $this->pageSize ) : 0;
     }
 
 
-    function mergeQuery( $orig_params , $params = array() )
+    public function mergeQuery( $orig_params , $params = array() )
     {
         $params = array_merge(  $orig_params , $params );
         return '?' . http_build_query( $params );
     }
 
-    function render_link( $num , $text = null , $moreclass = "" , $disabled = false )
+    public function renderLink( $num , $text = null , $moreclass = "" , $disabled = false )
     {
         if( $text == null )
             $text = $num;
 
         if( $disabled )
-            return $this->render_link_dis( $text , $moreclass );
+            return $this->renderLink_dis( $text , $moreclass );
 
         $args = array_merge( $_GET , $_POST );
         $href = $this->mergeQuery( $args , array( "page" => $num ) );
@@ -83,19 +108,19 @@ class Pager
 EOF;
     }
 
-    function render_link_dis( $text , $moreclass = "" ) {
+    public function renderLink_dis( $text , $moreclass = "" ) 
+    {
         return <<<EOF
 <a class="pager-link pager-disabled $moreclass">$text</a>
 EOF;
     }
 
-    function __toString() 
+    public function __toString() 
     {
         return $this->render();
     }
 
-
-    function render2()
+    public function render2()
     {
         $heredoc = new \Phifty\View\Heredoc('twig');
         $heredoc->content =<<<TWIG
@@ -111,8 +136,7 @@ TWIG;
         ));
     }
 
-
-    function render()
+    public function render()
     {
         $cur = $this->currentPage;
         $total_pages = $this->totalPages;
@@ -126,7 +150,7 @@ TWIG;
         $pagenum_end   = $cur + $this->rangeLimit < $total_pages ?  $cur + $this->rangeLimit : $total_pages;
 
         $output = "";
-        $output .= '<div class="'.$this->wrapperClass.'">';
+        $output .= '<div class="'. join(' ',$this->wrapperClass) .'">';
 
 
         if( $this->showHeader )
@@ -135,42 +159,42 @@ TWIG;
         if( $this->showNavigator ) {
 
             if( $cur > 1 )
-                $output .= $this->render_link( 1       , $this->first_text , 'pager-first' , $cur == 1 );
+                $output .= $this->renderLink( 1       , $this->firstText , 'pager-first' , $cur == 1 );
 
             if( $cur > 5 )
-                $output .= $this->render_link( $cur - 5 , _("Pager.Prev 5 Pages") , 'pager-number' );
+                $output .= $this->renderLink( $cur - 5 , _("Pager.Prev 5 Pages") , 'pager-number' );
 
             if( $cur > 1 )
-                $output .= $this->render_link( $cur -1 , $this->prev_text  , 'pager-prev'  , $cur == 1 );
+                $output .= $this->renderLink( $cur -1 , $this->prevText  , 'pager-prev'  , $cur == 1 );
         }
 
         if( $cur > 5 )
-            $output .= $this->render_link( 1 , 1 , 'pager-number' ) . ' ... ';
+            $output .= $this->renderLink( 1 , 1 , 'pager-number' ) . ' ... ';
 
         for ( $i = $pagenum_start ; $i <= $pagenum_end ; $i++ ) {
             if( $i == $this->currentPage ) 
-                $output .= $this->render_link( $i , $i , 'pager-number active pager-number-current' );
+                $output .= $this->renderLink( $i , $i , 'pager-number active pager-number-current' );
             else 
-                $output .= $this->render_link( $i , $i , 'pager-number' );
+                $output .= $this->renderLink( $i , $i , 'pager-number' );
         }
 
 
         if( $cur + 5 < $total_pages )
-            $output .= ' ... ' . $this->render_link( $total_pages , $total_pages , 'pager-number' );
+            $output .= ' ... ' . $this->renderLink( $total_pages , $total_pages , 'pager-number' );
 
         if( $this->showNavigator ) {
 
             if( $cur < $total_pages )
-                $output .= $this->render_link( $cur + 1, 
-                            $this->next_text , 'pager-next' , $cur == $this->totalPages );
+                $output .= $this->renderLink( $cur + 1, 
+                            $this->nextText , 'pager-next' , $cur == $this->totalPages );
 
             if( $cur + 5 < $total_pages )
-                $output .= $this->render_link( $cur + 5, 
+                $output .= $this->renderLink( $cur + 5, 
                             _("Pager.Next 5 Pages") , 'pager-number' );
 
             if( $total_pages > 1 && $cur < $total_pages )
-                $output .= $this->render_link( $this->totalPages,
-                            $this->last_text , 'pager-last' , $cur == $this->totalPages );
+                $output .= $this->renderLink( $this->totalPages,
+                            $this->lastText , 'pager-last' , $cur == $this->totalPages );
         }
 
         $output .= '</div>';
