@@ -104,7 +104,7 @@ class Pager
         $href = $this->mergeQuery( $args , array( "page" => $num ) );
 
         return <<<EOF
-<a class="pager-link $moreclass" href="$href">$text</a>
+ <a class="pager-link $moreclass" href="$href">$text</a>
 EOF;
     }
 
