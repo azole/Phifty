@@ -22,12 +22,9 @@ class AdminTestCase extends Selenium2TestCase
     protected function login( $transferTo = null ) 
     {
         $this->gotoLoginPage();
-        $accountInput = find_element_ok('input[name=account]');
-        $accountInput->value('admin');
 
-        $passwordInput = find_element_ok('input[name=password]');
-        $passwordInput->value('admin');
-
+        find_element_ok('input[name=account]')->value('admin');
+        find_element_ok('input[name=password]')->value('admin');
         find_element_ok('.submit')->click();
 
         // ok( ! find_element('.message.error') , 'login error' );
