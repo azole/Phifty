@@ -22,20 +22,19 @@ class AdminTestCase extends Selenium2TestCase
     protected function login( $transferTo = null ) 
     {
         $this->gotoLoginPage();
-        $accountInput = find_element('input[name=account]');
+        $accountInput = find_element_ok('input[name=account]');
         $accountInput->value('admin');
 
-        $passwordInput = find_element('input[name=password]');
+        $passwordInput = find_element_ok('input[name=password]');
         $passwordInput->value('admin');
 
-        find_element('.submit')->click();
+        find_element_ok('.submit')->click();
 
         // ok( ! find_element('.message.error') , 'login error' );
-        
         wait_for('.admin-menu');
 
         if ( $transferTo ) {
-            $a = find_element(".admin-menu a[href=$transferTo]");
+            $a = find_element_ok(".admin-menu a[href=$transferTo]");
             if(!$a)
                 throw new Exception("Menu link $transferTo not found.");
             $a->click();
