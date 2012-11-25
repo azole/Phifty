@@ -11,19 +11,19 @@ class CRUDTestCase extends AdminTestCase
 
     public function clickCreateBtn()
     {
-        find_element('input.record-create-btn')->click();
+        find_element_ok('input.record-create-btn')->click();
         wait_for('div[id^=record-div]');
         wait_for_tinymce();
     }
 
     public function clickRecordCloseBtn()
     {
-        find_element('input.record-close-btn')->click();
+        find_element_ok('input.record-close-btn')->click();
     }
 
     public function clickRecordSaveBtn()
     {
-        find_element('.crud-edit input[type=submit]')->click();
+        find_element_ok('.crud-edit input[type=submit]')->click();
     }
 
     public function getDeleteBtnElements()
