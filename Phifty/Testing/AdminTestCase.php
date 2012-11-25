@@ -31,16 +31,15 @@ class AdminTestCase extends Selenium2TestCase
         find_element('.submit')->click();
 
         // ok( ! find_element('.message.error') , 'login error' );
+        
+        wait_for('.admin-menu');
 
         if ( $transferTo ) {
-            if( isset($this->urlOf[ $transferTo ]) )
-                $this->url( $this->getBaseUrl() . $this->urlOf[ $transferTo ] );
-            else {
-                throw new Exception("Url of $transferTo is not defined.");
-            }
+            $a = find_element(".admin-menu a[href=$transferTo]");
+            if(!$a)
+                throw new Exception("Menu link $transferTo not found.");
+            $a->click();
         }
-        wait();
-        wait_for('.admin-menu');
     }
 
     protected function logout()
