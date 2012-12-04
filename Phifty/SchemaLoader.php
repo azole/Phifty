@@ -8,7 +8,7 @@ foreach( kernel()->plugins->getPlugins() as $plugin ) {
     $finder->addPath( $plugin->locate() );
 }
 
-$finder->addPath( PH_ROOT . DIRECTORY_SEPARATOR . 'src' );
+// $finder->addPath( PH_ROOT . DIRECTORY_SEPARATOR . 'src' );
 $finder->addPath( PH_ROOT . DIRECTORY_SEPARATOR . 'tests' );
 $finder->loadFiles();
 return $finder->getSchemas();
