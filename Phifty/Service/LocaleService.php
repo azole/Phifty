@@ -13,15 +13,17 @@ class LocaleService
         // call spl autoload, to load `__` locale function
         class_exists('Phifty\Locale', true);
 
-        $config = $kernel->config->get('framework','Locale');
-        if( ! $config )
+
+        // for backward compatibility
+        $options = $kernel->config->get('framework','Locale');
+        if( ! $options )
             return;
-        
-        $kernel->locale = function() use ($kernel,$config) {
+
+        $kernel->locale = function() use ($kernel,$options) {
 
             $textdomain =  $kernel->config->framework->ApplicationID;
-            $defaultLang  = $config->Default ?: 'en';
-            $localeDir = $config->LocaleDir;
+            $defaultLang  = $options->Default ?: 'en';
+            $localeDir = $options->LocaleDir;
 
             if( ! ( $textdomain && $defaultLang && $localeDir) ) {
                 return;
@@ -33,13 +35,12 @@ class LocaleService
             $locale->localedir( $kernel->rootDir . DIRECTORY_SEPARATOR . $localeDir);
 
             // add languages to list
-            foreach( @$config->Langs as $localeName ) {
+            foreach( @$options->Langs as $localeName ) {
                 $locale->add( $localeName );
             }
 
             # _('en');
             $locale->init();
-
             return $locale;
         };
     }
