@@ -23,7 +23,6 @@ class LocaleService
         spl_autoload_call('Phifty\Locale');
 
         $kernel->locale = function() use ($kernel,$options) {
-
             $textdomain  = $kernel->config->framework->ApplicationID;
             $defaultLang = isset($options['Default'])   ? $options['Default']   : 'en';
             $localeDir   = isset($options['LocaleDir']) ? $options['LocaleDir'] : 'locale';
