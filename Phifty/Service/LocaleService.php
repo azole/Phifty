@@ -12,9 +12,11 @@ class LocaleService
     {
 
         // for backward compatibility
-        $options = $kernel->config->get('framework','Locale');
-        if( ! $options )
-            return;
+        if( ! $options ) {
+            $options = $kernel->config->get('framework','Locale');
+            if( ! $options )
+                return;
+        }
 
         // call spl autoload, to load `__` locale function,
         // and we need to initialize locale before running the application.
@@ -23,8 +25,8 @@ class LocaleService
         $kernel->locale = function() use ($kernel,$options) {
 
             $textdomain  = $kernel->config->framework->ApplicationID;
-            $defaultLang = $options->Default ?: 'en';
-            $localeDir   = $options->LocaleDir;
+            $defaultLang = isset($options['Default'])   ? $options['Default']   : 'en';
+            $localeDir   = isset($options['LocaleDir']) ? $options['LocaleDir'] : 'locale';
 
             if( ! ( $textdomain && $defaultLang && $localeDir) ) {
                 return;
@@ -36,7 +38,7 @@ class LocaleService
             $locale->localedir( $kernel->rootDir . DIRECTORY_SEPARATOR . $localeDir);
 
             // add languages to list
-            foreach( @$options->Langs as $localeName ) {
+            foreach( @$options['Langs'] as $localeName ) {
                 $locale->add( $localeName );
             }
 
