@@ -24,9 +24,16 @@ class PluginService
             return $manager;
         };
 
+        // default plugin paths
         if( PH_APP_ROOT !== PH_ROOT )
             $manager->registerPluginDir( PH_APP_ROOT . DIRECTORY_SEPARATOR . 'plugins' );
         $manager->registerPluginDir( PH_ROOT . DIRECTORY_SEPARATOR . 'plugins' );
+
+        if ( isset($options["Dirs"]) ) {
+            foreach( $options["Dirs"] as $dir ) {
+                $manager->registerPluginDir($dir);
+            }
+        }
 
         foreach( $config as $pluginName => $config ) {
             $kernel->classloader->addNamespace(array( 
