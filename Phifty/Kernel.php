@@ -84,6 +84,8 @@ class Kernel extends ObjectContainer
         $this->services[ $service->getId() ] = $service;
     }
 
+
+
     /**
      * Run initialize after services were registered.
      */
@@ -166,7 +168,6 @@ class Kernel extends ObjectContainer
     public function service($id)
     {
         if( isset($this->services[ $id ] ) )
-
             return $this->services[ $id ];
     }
 

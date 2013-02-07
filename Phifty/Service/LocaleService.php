@@ -10,20 +10,21 @@ class LocaleService
 
     public function register($kernel, $options = array() )
     {
-        // call spl autoload, to load `__` locale function
-        class_exists('Phifty\Locale', true);
-
 
         // for backward compatibility
         $options = $kernel->config->get('framework','Locale');
         if( ! $options )
             return;
 
+        // call spl autoload, to load `__` locale function,
+        // and we need to initialize locale before running the application.
+        spl_autoload_call('Phifty\Locale');
+
         $kernel->locale = function() use ($kernel,$options) {
 
-            $textdomain =  $kernel->config->framework->ApplicationID;
-            $defaultLang  = $options->Default ?: 'en';
-            $localeDir = $options->LocaleDir;
+            $textdomain  = $kernel->config->framework->ApplicationID;
+            $defaultLang = $options->Default ?: 'en';
+            $localeDir   = $options->LocaleDir;
 
             if( ! ( $textdomain && $defaultLang && $localeDir) ) {
                 return;
