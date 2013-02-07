@@ -8,8 +8,15 @@ class PluginService
 
     public function getId() { return 'Plugin'; }
 
+
+    /**
+     *
+     * @param Phifty\Kernel $kernel Kernel object.
+     * @param array $options Plugin service options.
+     */
     public function register($kernel, $options = array() )
     {
+        // here we check plugins stash to decide what to load.
         $config = $kernel->config->get('framework','Plugins');
         if( $config === null || $config->isEmpty() ) {
             return;
@@ -19,7 +26,6 @@ class PluginService
         // plugin manager depends on classloader,
         // register plugin namespace to classloader.
         $manager = PluginManager::getInstance();
-
         $kernel->plugins = function() use ($manager) {
             return $manager;
         };
