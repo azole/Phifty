@@ -34,9 +34,12 @@ class ViewFactory
 class ViewService
     implements ServiceInterface
 {
+    public $options;
+
     public function getId() { return 'View'; }
     public function register($kernel, $options = array() ) 
     {
+        $this->options = $options;
         $factory = new ViewFactory;
         if( isset($options['Backend']) )
             $factory->backend = $options['Backend'];
