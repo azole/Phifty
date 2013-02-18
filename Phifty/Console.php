@@ -31,6 +31,7 @@ class Console extends Application
         $this->registerCommand('router');
         $this->registerCommand('asset');
         $this->registerCommand('new','Phifty\Command\GenerateCommand');
+        $this->registerCommand('migration-check','Phifty\Command\MigrationCheckCommand');
         $this->registerCommand('requirement');
 
         $this->registerCommand('build-schema','LazyRecord\Command\BuildSchemaCommand');

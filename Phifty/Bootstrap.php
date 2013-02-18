@@ -80,16 +80,19 @@ class Bootstrap
         return $loader;
     }
 
+    /**
+     * Load important services by sequence:
+     *
+     * 1. ClassLoaderService
+     * 2. ConfigService
+     * 3. DatabaseService
+     *
+     * @param Phifty\Kernel $kernel kernel object.
+     * @param ClassLoader   $classloader 
+     */
     static function bootKernel($kernel,$classloader) 
     {
-        /*
-         * Load important services by sequence:
-         *
-         * 1. ClassLoaderService
-         * 2. ConfigService
-         * 3. DatabaseService
-         *
-         */
+        // register default classloader service
         $kernel->registerService(
             new \Phifty\Service\ClassLoaderService($classloader)
         );
@@ -121,7 +124,6 @@ class Bootstrap
                     ));
                 }
             }
-
 
             if( $services = $kernel->config->get('framework','Services') ) {
                 foreach( $services as $name => $options ) {
@@ -169,10 +171,12 @@ namespace {
     global $kernel;
 
     /**
-    * kernel() is a global shorter helper function to get Phifty\Kernel instance.
-    *
-    * Initialize kernel instance, classloader, plugins and services.
-    */
+     * kernel() is a global shorter helper function to get Phifty\Kernel instance.
+     *
+     * Initialize kernel instance, classloader, plugins and services.
+     *
+     * @return Phifty\Kernel
+     */
     function kernel()
     {
         global $kernel;

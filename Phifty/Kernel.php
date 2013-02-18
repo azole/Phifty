@@ -10,7 +10,7 @@ class Kernel extends ObjectContainer
 {
     /* framework version */
     const FRAMEWORK_ID = 'phifty';
-    const VERSION = '2.3.0';
+    const VERSION = '2.5.0';
 
     public $frameworkDir;
     public $frameworkAppDir;
@@ -83,6 +83,8 @@ class Kernel extends ObjectContainer
         $service->register( $this , $options );
         $this->services[ $service->getId() ] = $service;
     }
+
+
 
     /**
      * Run initialize after services were registered.
@@ -166,7 +168,6 @@ class Kernel extends ObjectContainer
     public function service($id)
     {
         if( isset($this->services[ $id ] ) )
-
             return $this->services[ $id ];
     }
 

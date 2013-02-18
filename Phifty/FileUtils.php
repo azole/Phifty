@@ -222,6 +222,18 @@ class FileUtils {
     {
         return filemtime($targetFile) > filemtime($cacheFile);
     }
+
+    static function fileobject_from_path($path)
+    {
+        $pathinfo = pathinfo($path);
+        $file = array(
+            'name' => $pathinfo['basename'],
+            'tmp_name' => $path,
+            'saved_path' => $path,
+            'size' => filesize($path)
+        );
+        return $file;
+    }
 }
 
 

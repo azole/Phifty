@@ -1,5 +1,6 @@
 <?php
 namespace Phifty;
+use Exception;
 
 // Upload Header is like:
 //
@@ -26,9 +27,13 @@ class Html5UploadHandler
     public $content;
     public $headers;
     public $uploadDir;
+    public $field;
 
-    public function __construct() 
+    public function __construct($field = false)
     {
+        if ($field)
+            $this->field = $field;
+
         $this->content = $this->decodeContent();
         if( function_exists('getallheaders') )
             $this->headers = @getallheaders();
@@ -102,10 +107,18 @@ class Html5UploadHandler
 
     public function move( $newFileName = null )
     {
-        if( count($_FILES) > 0 ) {
+        if( $this->field ) {
+            if ( ! isset($_FILES[$this->field]['name'] ) ) {
+                throw new Exception( "File field {$this->field}: name is empty");
+            }
+
+            if ( $err = $_FILES[$this->field]['error'] ) {
+                throw new Exception( "File field {$this->field} error: $err");
+            }
+
             /* process with $_FILES */
             // $_FILES['upload']['tmp_name'];
-            $filename = $newFileName ? $newFileName : $_FILES['upload']['name'];
+            $filename = $newFileName ? $newFileName : $_FILES[$this->field]['name'];
             $path = $this->uploadDir . DIRECTORY_SEPARATOR . $filename;
             $path = FileUtils::filename_increase($path);
             if( move_uploaded_file( $_FILES['upload']['tmp_name'] , $path ) === false ) {

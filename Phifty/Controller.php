@@ -90,11 +90,11 @@ class Controller extends BaseController
      */
     public function createView($viewClass = null,$options = null)
     {
-        $templateEngine = kernel()->config->get('framework','View.Backend');
-        $class      = $viewClass ?: $this->defaultViewClass ?: kernel()->config->get('framework','View.Class');
+        $viewService = kernel()->service('View');
+        $templateEngine = $viewService->options['Backend'];
+        $class = $viewClass ?: $this->defaultViewClass ?: $viewService->options['Class'];
         if( ! $class )
             throw new Exception('View.Class config is not defined.');
-
         $engine = \Phifty\View\Engine::createEngine( $templateEngine , $options );
         return new $class( $engine );  // pass 'Smarty' or 'Twig'
     }
