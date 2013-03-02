@@ -30,18 +30,18 @@ class Bootstrap
 
         // create spl classloader
         $loader->addNamespace(array( 
-            'Phifty'     => PH_ROOT . '/src',
-            'ActionKit'  => PH_ROOT . '/src',
-            'I18NKit'    => PH_ROOT . '/src',
-            'ConfigKit'  => PH_ROOT . '/src',
-            'Kendo'      => PH_ROOT . '/src',
-            'Universal'  => PH_ROOT . '/vendor/universal/src',
-            'SQLBuilder' => PH_ROOT . '/vendor/sqlbuilder/src',
-            'AssetKit'   => PH_ROOT . '/vendor/assetkit/src',
-            'LazyRecord' => PH_ROOT . '/vendor/lazyrecord/src',
-            'FormKit'    => PH_ROOT . '/vendor/formkit/src',
-            'Roller'     => PH_ROOT . '/vendor/roller/src',
-            'GenPHP'     => PH_ROOT . '/vendor/genphp/src',
+            'Phifty'         => PH_ROOT . '/src',
+            'ActionKit'      => PH_ROOT . '/src',
+            'I18NKit'        => PH_ROOT . '/src',
+            'ConfigKit'      => PH_ROOT . '/src',
+            'Kendo'          => PH_ROOT . '/src',
+            'Universal'      => PH_ROOT . '/vendor/universal/src',
+            'SQLBuilder'     => PH_ROOT . '/vendor/sqlbuilder/src',
+            'AssetToolkit'   => PH_ROOT . '/vendor/assettoolkit/src',
+            'LazyRecord'     => PH_ROOT . '/vendor/lazyrecord/src',
+            'FormKit'        => PH_ROOT . '/vendor/formkit/src',
+            'Roller'         => PH_ROOT . '/vendor/roller/src',
+            'GenPHP'         => PH_ROOT . '/vendor/genphp/src',
         ));
         $loader->addFallback( PH_ROOT . '/vendor/pear' );
         $loader->useIncludePath(true);

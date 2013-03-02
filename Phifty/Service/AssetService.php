@@ -1,6 +1,6 @@
 <?php
 namespace Phifty\Service;
-use AssetKit;
+use AssetToolkit;
 use Exception;
 
 class AssetService
@@ -19,37 +19,32 @@ class AssetService
      */
     function register($kernel, $options = array() ) 
     {
-        $assetFile = PH_APP_ROOT . DIRECTORY_SEPARATOR . '.assetkit';
+        $assetFile = PH_APP_ROOT . DIRECTORY_SEPARATOR . '.assetkit.php';
 
         if( ! file_exists($assetFile) ) {
             throw new Exception("$assetFile not found.");
             return;
         }
 
-        $config = new AssetKit\Config( $assetFile , 
+        $config = new AssetToolkit\AssetConfig( $assetFile , 
             $kernel->environment === 'production' 
                 ? array( 'cache' => true ) 
                 : array() 
         );
 
         $kernel->asset = function() use ($kernel,$config) {
-            $loader = new AssetKit\AssetLoader($config);
-            $writer = new AssetKit\AssetWriter($config);
-            $writer->env($kernel->environment);
+            $loader = new AssetToolkit\AssetLoader($config);
+            $compiler = new AssetToolkit\AssetCompiler($config,$loader);
+            $render = new AssetToolkit\AssetRender($config,$loader);
 
             if( $kernel->namespace ) {
-                $writer->name( $kernel->namespace );
+                $compiler->setNamespace( $kernel->namespace );
             }
 
-            $writer->in('/assets');
-
-            // cache
-            if( isset($kernel->cache) ) {
-                $writer->cache( $kernel->cache );
-            }
             return (object) array( 
                 'loader' => $loader,
-                'writer' => $writer,
+                'render' => $render,
+                'compiler' => $compiler,
             );
         };
     }
