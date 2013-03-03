@@ -9,6 +9,7 @@ class Plugin extends MicroApp
     public $config;
     public $basePath;
 
+
     public function setConfig( $config )
     {
         $this->config = $config;

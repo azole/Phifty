@@ -2,12 +2,12 @@
 namespace Phifty\Command;
 use CLIFramework\Command;
 use Exception;
-use AssetKit\Asset;
-use AssetKit\Config;
+use AssetToolkit\Asset;
+use AssetToolkit\AssetConfig;
 
 class AssetInitCommand extends Command
 {
-    function registerAsset($config,$dir)
+    public function registerAsset($config,$dir)
     {
         $manifestPath = substr(
             $dir  . DIRECTORY_SEPARATOR . 'manifest.yml', 
@@ -27,9 +27,9 @@ class AssetInitCommand extends Command
         $config->save();
     }
 
-    function execute() 
+    public function execute() 
     {
-        $config = new Config('.assetkit');
+        $config = new AssetConfig('.assetkit.php');
         $kernel = kernel();
 
         $this->logger->info("Finding assets from applications...");

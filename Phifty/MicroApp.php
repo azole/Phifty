@@ -13,9 +13,9 @@ class MicroApp
     public $config;
 
 
-    function init() { }
+    public function init() { }
 
-    function getId()
+    public function getId()
     {
         return $this->getNamespace();
     }
@@ -39,7 +39,7 @@ class MicroApp
      * @param string $path
      * @param string $template file
      */
-    function page( $path , $template , $args = array() )
+    public function page( $path , $template , $args = array() )
     {
         $this->add( $path , array( 
             'template' => $template,
@@ -50,7 +50,7 @@ class MicroApp
     /**
      * Locate plugin app dir path.
      */
-    function locate()
+    public function locate()
     {
         $object = new ReflectionObject($this);
         return dirname($object->getFilename());
@@ -204,18 +204,7 @@ class MicroApp
         // should return relative path here.
         $dir = $this->locate();
         $assetDir = $dir . DIRECTORY_SEPARATOR . 'assets';
-
-        $dirs = array();
-        if( file_exists($assetDir) && $handle = opendir($assetDir) ) {
-            while (false !== ($entry = readdir($handle))) {
-                if( '.' === $entry || '..' === $entry ) 
-                    continue;
-                $path = $assetDir . DIRECTORY_SEPARATOR . $entry;
-                if( is_dir($path) )
-                    $dirs[] = $path;
-            }
-            closedir($handle);
-        }
+        $dirs =  FileUtils::read_dir_for_dir($assetDir);
         return $dirs;
     }
 

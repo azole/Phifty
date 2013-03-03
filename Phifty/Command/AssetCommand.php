@@ -15,12 +15,9 @@ use Phifty\Console;
  */
 class AssetCommand extends Command
 {
+    public function brief() { return 'register and install assets'; }
 
-
-    function brief() { return 'register and install assets'; }
-
-
-    function options($opts)
+    public function options($opts)
     {
         $init = new AssetInstallCommand;
         $init->logger = $this->logger;
@@ -28,14 +25,16 @@ class AssetCommand extends Command
     }
 
 
-    function init()
+    public function init()
     {
         $this->registerCommand('init', 'Phifty\Command\AssetInitCommand');
         $this->registerCommand('install', 'Phifty\Command\AssetInstallCommand');
     }
 
-    function execute() {
+    public function execute() 
+    {
         $app = Console::getInstance();
+
         $init = new AssetInitCommand;
         $init->application = $app;
         $init->options = $this->options;
