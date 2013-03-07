@@ -11,16 +11,6 @@ class AssetInitCommand extends AssetBaseCommand
     // $this->logger->info("{$asset->name} added.", 1);
 
 
-    public function registerBundleAssets($bundle)
-    {
-        $config = $this->getAssetConfig();
-        $this->logger->info( ' - ' . get_class($bundle) );
-        foreach( $bundle->getAssetDirs() as $dir ) {
-            if( file_exists($dir) ) {
-                $config->registerAssetFromPath($dir);
-            }
-        }
-    }
 
 
 
