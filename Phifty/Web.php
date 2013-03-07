@@ -30,7 +30,7 @@ class Web
     {
         $kernel = kernel();
         $assets = $kernel->asset->loader->all();
-        return kernel()->asset->render->renderAssets($assets);
+        return $kernel->asset->render->renderAssets($assets);
     }
 
     /**
@@ -42,7 +42,8 @@ class Web
     public function include_assets($assets, $name = null)
     {
         $kernel = kernel();
-        return kernel()->asset->render($assets,$name);
+        $assetObjs = $kernel->asset->loader->loadAssets($assets);
+        return $kernel->asset->render->renderAssets($assetObjs,$name);
     }
 
     public function langs()
