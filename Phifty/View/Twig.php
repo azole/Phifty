@@ -5,6 +5,9 @@ use Phifty\View\Engine;
 use Phifty\FileUtils;
 use Phifty\ClassUtils;
 
+use AssetToolkit\Extension\Twig\AssetExtension;
+    
+
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use Twig_Function_Function;
@@ -118,6 +121,12 @@ class Twig extends \Phifty\View\Engine
 
             $this->env->addExtension( new Twig_Extensions_Extension_Text );
             $this->env->addExtension( new Twig_Extensions_Extension_I18n );
+
+            // include assettoolkit extension
+            $assetExt = new AssetExtension();
+            $assetExt->setAssetConfig( kernel()->asset->config );
+            $assetExt->setAssetLoader( kernel()->asset->loader );
+            $this->env->addExtension($assetExt);
         }
         $this->loader = $loader;
         $this->registerFunctions();
