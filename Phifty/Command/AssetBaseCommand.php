@@ -31,7 +31,6 @@ class AssetBaseCommand extends Command
             if( file_exists($dir) ) {
                 $dir = substr($dir, strlen($cwd) + 1 );
                 $asset = $config->registerAssetFromPath($dir);
-
                 $this->logger->info( "Found asset {$asset->name}" ,1 );
                 $this->updateAssetResource($asset);
             }
