@@ -222,12 +222,12 @@ class Bundle
     /**
      * Return assets for asset loader.
      */
-    public function getAssets() { return array(); }
+    public function assets() { return array(); }
 
     public function loadAssets()
     {
         $loader = kernel()->asset->loader;
-        $assetNames = $this->getAssets();
+        $assetNames = $this->assets();
         if ( ! empty($assetNames) ) {
             $loader->loadAssets($assetNames);
         }
