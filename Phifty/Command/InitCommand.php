@@ -65,23 +65,13 @@ class InitCommand extends Command
         }
 
         # init config
-        $this->logger->info("Copying config files");
+        $this->logger->info("Copying config files...");
         copy_if_not_exists(FileUtils::path_join(PH_ROOT,'config','framework.app.yml'), FileUtils::path_join(PH_APP_ROOT,'config','framework.yml') );
         copy_if_not_exists(FileUtils::path_join(PH_ROOT,'config','application.dev.yml'), FileUtils::path_join(PH_APP_ROOT,'config','application.yml') );
         copy_if_not_exists(FileUtils::path_join(PH_ROOT,'config','database.app.yml'), FileUtils::path_join(PH_APP_ROOT,'config','database.yml') );
 
         copy_if_not_exists(FileUtils::path_join(PH_ROOT,'webroot','index.php'), FileUtils::path_join(PH_APP_ROOT,'webroot','index.php') );
         copy_if_not_exists(FileUtils::path_join(PH_ROOT,'webroot','.htaccess'), FileUtils::path_join(PH_APP_ROOT,'webroot','.htaccess') );
-
-        if( PH_ROOT !== PH_APP_ROOT ) {
-            // link 'assets/' to 'phifty/assets/'
-            if( ! file_exists('assets') )
-                symlink( 'phifty' . DIRECTORY_SEPARATOR . 'assets' , 'assets' );
-
-            // link 'vendor/' to 'phifty/vendor/'
-            if( ! file_exists('vendor') )
-                symlink( 'phifty' . DIRECTORY_SEPARATOR . 'vendor' , 'vendor' );
-        }
 
         $this->logger->info('Application is initialized, please edit your config files and run:');
 
