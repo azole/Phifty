@@ -53,12 +53,6 @@ class InitCommand extends Command
         $chmods = array();
         $chmods[] = array( "og+rw" , "cache" );
 
-        foreach( $kernel->applications as $n => $app ) {
-            $webDir = $kernel->app($n)->getWebDir();
-            if( file_exists($webDir) )
-                $chmods[] = array( "og+rw" , $webDir );
-        }
-
         $chmods[] = array( "og+rw" , $kernel->webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload' );
         foreach( $chmods as $mod ) {
             $this->logger->info( "{$mod[0]} {$mod[1]}", 1 );

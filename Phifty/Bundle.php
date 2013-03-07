@@ -190,16 +190,22 @@ class Bundle
         kernel()->action->registerCRUD( $this->getNamespace() , $model , (array) $types );
     }
 
-    public function getWebDir() 
-    {
-        return $this->locate() . DS . 'web';
-    }
 
+    /**
+     * Returns template directory path.
+     */
     public function getTemplateDir()
     {
         return $this->locate() . DS . 'template';
     }
 
+
+
+    /**
+     * Get asset directory list, this is for registering bundle assets.
+     *
+     * @return string[]
+     */
     public function getAssetDirs()
     {
         // XXX: Here we got a absolute path,
