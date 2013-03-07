@@ -8,12 +8,6 @@ use AssetToolkit\AssetConfig;
 class AssetInitCommand extends AssetBaseCommand
 {
 
-    // $this->logger->info("{$asset->name} added.", 1);
-
-
-
-
-
     public function execute() 
     {
         $loader = $this->getAssetLoader();
@@ -28,6 +22,7 @@ class AssetInitCommand extends AssetBaseCommand
         foreach( $kernel->plugins as $plugin ) {
             $this->registerBundleAssets($plugin);
         }
+        $this->getAssetConfig()->save();
     }
 }
 

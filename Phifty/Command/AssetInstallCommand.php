@@ -30,6 +30,8 @@ class AssetInstallCommand extends AssetBaseCommand
         $installer->logger = $this->logger;
         $loader = $this->getAssetLoader();
         $assets = $loader->loadAll();
+
+        var_dump( $assets ); 
         foreach( $assets as $name => $asset ) {
             $this->logger->info("Installing $name ...");
 
