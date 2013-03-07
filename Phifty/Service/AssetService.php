@@ -1,6 +1,10 @@
 <?php
 namespace Phifty\Service;
 use AssetToolkit;
+use AssetToolkit\AssetConfig;
+use AssetToolkit\AssetLoader;
+use AssetToolkit\AssetCompiler;
+use AssetToolkit\AssetRender;
 use Exception;
 
 class AssetService
@@ -33,14 +37,12 @@ class AssetService
         );
 
         $kernel->asset = function() use ($kernel,$config) {
-            $loader = new AssetToolkit\AssetLoader($config);
+            $loader   = new AssetToolkit\AssetLoader($config);
             $compiler = new AssetToolkit\AssetCompiler($config,$loader);
-            $render = new AssetToolkit\AssetRender($config,$loader);
-
+            $render   = new AssetToolkit\AssetRender($config,$loader);
             if( $kernel->namespace ) {
                 $compiler->setNamespace( $kernel->namespace );
             }
-
             return (object) array( 
                 'loader' => $loader,
                 'render' => $render,

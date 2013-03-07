@@ -6,20 +6,22 @@ use ReflectionObject;
 use Exception;
 
 /**
- *  MicroApp is the base class of App, Core, {Plugin} class.
+ *  Bundle is the base class of App, Core, {Plugin} class.
  */
-class MicroApp
+class Bundle
 {
     public $config;
 
 
-    public function init() { }
+    public function init() 
+    {
+   
+    }
 
     public function getId()
     {
         return $this->getNamespace();
     }
-
 
     /**
      * get the namespace name,
@@ -210,6 +212,11 @@ class MicroApp
         }
         return array();
     }
+
+    /**
+     * Return assets for asset loader.
+     */
+    public function getAssets() { return array(); }
 
     static function getInstance() { 
         static $instance;

@@ -1,10 +1,10 @@
 <?php
 namespace Phifty\Plugin;
-use Phifty\MicroApp;
+use Phifty\Bundle;
 use Phifty\FileUtils;
 use ConfigKit\Accessor;
 
-class Plugin extends MicroApp
+class Plugin extends Bundle
 {
     public $config;
     public $basePath;
