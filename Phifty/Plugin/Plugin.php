@@ -118,14 +118,5 @@ class Plugin extends Bundle
 
     }
 
-    public function loadAssets()
-    {
-        $loader = kernel()->asset->loader;
-        $assetNames = $this->getAssets();
-        if ( ! empty($assetNames) ) {
-            $loader->loadAssets($assetNames);
-        }
-    }
-
 }
 

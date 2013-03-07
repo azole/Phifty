@@ -218,6 +218,15 @@ class Bundle
      */
     public function getAssets() { return array(); }
 
+    public function loadAssets()
+    {
+        $loader = kernel()->asset->loader;
+        $assetNames = $this->getAssets();
+        if ( ! empty($assetNames) ) {
+            $loader->loadAssets($assetNames);
+        }
+    }
+
     static function getInstance() { 
         static $instance;
         if( $instance )
