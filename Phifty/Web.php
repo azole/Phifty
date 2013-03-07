@@ -4,7 +4,9 @@ use Exception;
 use Phifty\View;
 use Phifty\WebUtils;
 use ActionKit\ActionRunner;
-use AssetKit\IncludeRender;
+
+use AssetToolkit\AssetRender;
+use AssetToolkit\AssetConfig;
 
 class Web
 {
@@ -27,13 +29,8 @@ class Web
     public function include_loaded_assets($name = null)
     {
         $kernel = kernel();
-        $render = new IncludeRender;
-        $writer = $kernel->asset->writer;
-        if( $name )
-            $writer->name($name);
-        $assets = $kernel->asset->loader->getAssets(); 
-        $manifest = $writer->write($assets);
-        return $render->render($manifest);
+        $assets = $kernel->asset->loader->all();
+        return kernel()->asset->render->renderAssets($assets);
     }
 
     /**
@@ -45,18 +42,7 @@ class Web
     public function include_assets($assets, $name = null)
     {
         $kernel = kernel();
-        $render = new IncludeRender;
-        $writer = $kernel->asset->writer;
-        if( $name )
-            $writer->name($name);
-        $assets = array_map(function($n) use($kernel) {
-                    $a = $kernel->asset->loader->load($n);
-                    if( ! $a )
-                        throw new Exception("Asset $n can not be loaded, asset not found.");
-                    return $a;
-                },$assets);
-        $manifest = $writer->write($assets);
-        return $render->render($manifest);
+        return kernel()->asset->render($assets,$name);
     }
 
     public function langs()
