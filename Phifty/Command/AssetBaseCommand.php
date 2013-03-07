@@ -29,6 +29,7 @@ class AssetBaseCommand extends Command
         $cwd = getcwd();
         foreach( $bundle->getAssetDirs() as $dir ) {
             if( file_exists($dir) ) {
+                $this->logger->info( "   Installing asset from $dir" );
                 $dir = substr($dir, strlen($cwd) + 1 );
                 $asset = $config->registerAssetFromPath($dir);
                 $this->updateAssetResource($asset);
