@@ -1,7 +1,7 @@
 <?php
 namespace Phifty\Command;
 use CLIFramework\Command;
-use AssetKit\Config;
+use AssetKit\AssetConfig;
 use AssetKit\Installer;
 use AssetKit\LinkInstaller;
 
@@ -11,7 +11,7 @@ use AssetKit\LinkInstaller;
  *
  * Then, By running asset install command, phifty will install assets into webroot.
  */
-class AssetInstallCommand extends Command
+class AssetInstallCommand extends AssetBaseCommand
 {
     function options($opts)
     {
@@ -21,23 +21,24 @@ class AssetInstallCommand extends Command
     function execute() 
     {
         $options = $this->options;
-        $config = new Config('.assetkit');
+        $config = $this->getAssetConfig();
+
         $installer = $options->link
                 ? new LinkInstaller
                 : new Installer;
 
         $installer->logger = $this->logger;
-
-        foreach( $config->getAssets() as $name => $asset ) {
+        $loader = $this->getAssetLoader();
+        $assets = $loader->loadAll();
+        foreach( $assets as $name => $asset ) {
             $this->logger->info("Installing $name ...");
-            $asset->initResource(true); // update/install it
 
-            $this->logger->info( "Installing {$asset->name}" );
-            $installer->install( $asset );
-
-            $export = $asset->export();
-            $config->addAsset( $asset->name , $export );
-            $config->save();
+#              $this->logger->info( "Installing {$asset->name}" );
+#              $installer->install( $asset );
+#  
+#              $export = $asset->export();
+#              $config->addAsset( $asset->name , $export );
+#              $config->save();
         }
         $this->logger->info("Done");
     }
