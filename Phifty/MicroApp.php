@@ -204,8 +204,11 @@ class MicroApp
         // should return relative path here.
         $dir = $this->locate();
         $assetDir = $dir . DIRECTORY_SEPARATOR . 'assets';
-        $dirs =  FileUtils::read_dir_for_dir($assetDir);
-        return $dirs;
+        if( file_exists($assetDir) ) {
+            $dirs =  FileUtils::read_dir_for_dir($assetDir);
+            return $dirs;
+        }
+        return array();
     }
 
     static function getInstance() { 
