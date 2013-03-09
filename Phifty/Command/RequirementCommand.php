@@ -8,7 +8,7 @@ class RequirementCommand extends Command
     public function printResult($msg, $ok)
     {
         $f = $this->formatter;
-        echo sprintf("% -30s ",$msg);
+        echo sprintf("   % -30s ",$msg);
         if ($ok) {
             echo $f->format( "[  OK  ]" , 'success' );
         } else {
@@ -34,14 +34,22 @@ class RequirementCommand extends Command
             'pdo_psql',
             'mysqli',
         );
+        echo "extensions:\n";
         foreach ($exts as $ext) {
             $this->printResult($ext, extension_loaded($ext) );
         }
 
+
         $this->printResult('reflection', class_exists('ReflectionObject') );
+
+
+        echo "classes:\n";
         $this->printResult('lazyrecord', class_exists('LazyRecord\BaseModel',true));
         $this->printResult('assetkit',   class_exists('AssetToolkit\AssetLoader',true));
         $this->printResult('roller',     class_exists('Roller\Router',true));
+
+        echo "config:\n";
+        $this->printResult( 'short_open_tag', ini_get('short_open_tag') );
 
         $this->printResult('roller extension', extension_loaded('roller') );
 
