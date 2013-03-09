@@ -10,8 +10,24 @@ use Exception;
  */
 class Bundle
 {
+
+    /**
+     * @var array bundle config stash
+     */
     public $config;
 
+
+    /**
+     * @var string the plugin class directory, used for caching the locate() result.
+     */
+    public $dir;
+
+
+
+    public function __construct()
+    {
+
+    }
 
     public function init() 
     {
@@ -54,8 +70,11 @@ class Bundle
      */
     public function locate()
     {
+        if($this->dir)
+            return $this->dir;
+
         $object = new ReflectionObject($this);
-        return dirname($object->getFilename());
+        return $this->dir = dirname($object->getFilename());
     }
 
 
@@ -191,6 +210,7 @@ class Bundle
     }
 
 
+
     /**
      * Returns template directory path.
      */
@@ -210,11 +230,9 @@ class Bundle
     {
         // XXX: Here we got a absolute path,
         // should return relative path here.
-        $dir = $this->locate();
-        $assetDir = $dir . DIRECTORY_SEPARATOR . 'assets';
+        $assetDir = $this->locate() . DIRECTORY_SEPARATOR . 'assets';
         if( file_exists($assetDir) ) {
-            $dirs =  FileUtils::read_dir_for_dir($assetDir);
-            return $dirs;
+            return FileUtils::read_dir_for_dir($assetDir);
         }
         return array();
     }
@@ -222,8 +240,15 @@ class Bundle
     /**
      * Return assets for asset loader.
      */
-    public function assets() { return array(); }
+    public function assets() 
+    {
+        return array(); 
+    }
 
+
+    /**
+     * Get the asset loader and load these assets. 
+     */
     public function loadAssets()
     {
         $loader = kernel()->asset->loader;
@@ -233,10 +258,12 @@ class Bundle
         }
     }
 
-    static function getInstance() { 
+    static function getInstance() 
+    {
         static $instance;
         if( $instance )
             return $instance;
         return $instance = new static;
     }
+
 }
