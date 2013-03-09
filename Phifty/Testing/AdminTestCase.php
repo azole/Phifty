@@ -2,7 +2,7 @@
 namespace Phifty\Testing;
 use Exception;
 
-class AdminTestCase extends Selenium2TestCase 
+class AdminTestCase extends Selenium2TestCase
 {
     protected $urlOf = array(
         'login' => '/bs/login',
@@ -19,7 +19,7 @@ class AdminTestCase extends Selenium2TestCase
         $this->url( $this->getBaseUrl() . $this->urlOf['login'] );
     }
 
-    protected function login( $transferTo = null ) 
+    protected function login( $transferTo = null )
     {
         $this->gotoLoginPage();
 
@@ -30,7 +30,7 @@ class AdminTestCase extends Selenium2TestCase
         // ok( ! find_element('.message.error') , 'login error' );
         wait_for('.admin-menu');
 
-        if ( $transferTo ) {
+        if ($transferTo) {
             $url = @$this->urlOf[$transferTo];
             $a = find_element_ok(".admin-menu a[href=\"$url\"]");
             if(!$a)
@@ -45,28 +45,28 @@ class AdminTestCase extends Selenium2TestCase
         wait();
     }
 
-    protected function isCreated() 
+    protected function isCreated()
     {
         message_like('/created|已經建立|成功/');
     }
 
-    protected function isUpdated() 
+    protected function isUpdated()
     {
         $msg = find_element('.message.success')->text();
         jgrowl_like('/updated|已經更新|成功|更新成功/');
     }
 
-    protected function isDeleted() 
+    protected function isDeleted()
     {
         jgrowl_like('/(deleted|刪除成功|成功)/');
     }
 
-    public function isUploaded() 
+    public function isUploaded()
     {
         jgrowl_like('/(created|已經建立|成功)/');
     }
 
-    public function uploadFile( $sel, $filepath ) 
+    public function uploadFile( $sel, $filepath )
     {
         find_element($sel)->value( realpath( $filepath ));
     }

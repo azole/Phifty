@@ -4,7 +4,7 @@ use LazyRecord\Schema\MixinSchemaDeclare;
 
 class MetadataSchema extends MixinSchemaDeclare
 {
-    function schema()
+    public function schema()
     {
         $this->column( 'created_on' )
             ->timestamp()
@@ -29,9 +29,9 @@ class MetadataSchema extends MixinSchemaDeclare
         $this->column( 'created_by' )
             ->integer()
             ->refer( kernel()->currentUser->userModelClass )
-            ->default(function() { 
-                if( isset($_SESSION) ) {
-                    return kernel()->currentUser->id; 
+            ->default(function() {
+                if ( isset($_SESSION) ) {
+                    return kernel()->currentUser->id;
                 }
             })
             ->renderAs('SelectInput')
@@ -42,9 +42,9 @@ class MetadataSchema extends MixinSchemaDeclare
         $this->column( 'updated_by' )
             ->integer()
             ->refer( kernel()->currentUser->userModelClass )
-            ->default(function() { 
-                if( isset($_SESSION) ) {
-                    return kernel()->currentUser->id; 
+            ->default(function() {
+                if ( isset($_SESSION) ) {
+                    return kernel()->currentUser->id;
                 }
             })
             ->renderAs('SelectInput')
@@ -52,4 +52,3 @@ class MetadataSchema extends MixinSchemaDeclare
             ;
     }
 }
-

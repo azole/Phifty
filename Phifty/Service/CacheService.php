@@ -11,7 +11,7 @@ class CacheService
     public function register($kernel, $options = array() )
     {
         $kernel->cache = function() use ($kernel) {
-            $kernel->classloader->addNamespace(array( 
+            $kernel->classloader->addNamespace(array(
                 'CacheKit' => $kernel->frameworkDir . DS . 'src',
             ));
             $b = array();
@@ -27,12 +27,8 @@ class CacheService
             if( extension_loaded('memcache') )
                 $b[] = new \CacheKit\MemcacheCache( array( array('localhost',11211) ) );
             */
+
             return new CacheKit($b);
         };
     }
 }
-
-
-
-
-

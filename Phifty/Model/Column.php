@@ -8,10 +8,11 @@ class Column extends DeclareColumn
 
     public $widgetAttributes = array();
 
-    public function renderAs( $type , $widgetAttributes = array() ) {
+    public function renderAs( $type , $widgetAttributes = array() )
+    {
         $this->widgetClass = $type;
         $this->widgetAttributes = $widgetAttributes;
+
         return $this;
     }
 }
-

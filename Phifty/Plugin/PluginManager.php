@@ -1,8 +1,6 @@
 <?php
 namespace Phifty\Plugin;
 use Exception;
-use Phifty\FileUtils;
-use Phifty\Singleton;
 use ArrayAccess;
 use IteratorAggregate;
 use ArrayIterator;
@@ -23,7 +21,8 @@ class PluginManager
         return isset( $this->plugins[ $name ] );
     }
 
-    public function registerPluginDir($dir) {
+    public function registerPluginDir($dir)
+    {
         $this->pluginDirs[] = $dir;
     }
 
@@ -38,13 +37,12 @@ class PluginManager
     }
 
     /**
-     * has plugin 
+     * has plugin
      */
     public function has( $name )
     {
         return isset($this->plugins[ $name ]);
     }
-
 
     /**
      * get plugin object
@@ -52,22 +50,24 @@ class PluginManager
     public function get( $name )
     {
         if( isset( $this->plugins[ $name ] ) )
+
             return $this->plugins[ $name ];
     }
 
-    protected function _loadPlugin($name) {
+    protected function _loadPlugin($name)
+    {
         # $name = '\\' . ltrim( $name , '\\' );
         $class = "$name\\$name";
-        if( class_exists($class,true) ) {
+        if ( class_exists($class,true) ) {
             return $class;
-        }
-        else {
+        } else {
             // try to require plugin class from plugin path
             $subpath = $name . DIRECTORY_SEPARATOR . $name . '.php';
-            foreach( $this->pluginDirs as $dir ) {
+            foreach ($this->pluginDirs as $dir) {
                 $path = $dir . DIRECTORY_SEPARATOR . $subpath;
-                if( file_exists($path) ) {
+                if ( file_exists($path) ) {
                     require $path;
+
                     return $class;
                 }
             }
@@ -79,13 +79,15 @@ class PluginManager
      */
     public function load( $name , $config = array() )
     {
-        if( $class = $this->_loadPlugin($name) ) {
+        if ( $class = $this->_loadPlugin($name) ) {
             $plugin = $class::getInstance();
             // XXX: better solution
             $plugin->mergeWithDefaultConfig( $config );
+
             return $this->plugins[ $name ] = $plugin;
         }
         throw new Exception("Plugin $name not found.");
+
         return false;
     }
 
@@ -95,19 +97,18 @@ class PluginManager
     public function init()
     {
         // TODO: initialize by config ordering
-        foreach( $this->plugins as $name => $plugin ) {
+        foreach ($this->plugins as $name => $plugin) {
             $plugin->init();
         }
     }
 
-
     /**
      * Register plugin to the plugin pool.
-     * 
-     * @param string $name plugin id
+     *
+     * @param string               $name   plugin id
      * @param Phifty\Plugin\Plugin $plugin plugin object
      */
-    public function add($name,$plugin) 
+    public function add($name,$plugin)
     {
         $this->plugins[ $name ] = $plugin;
     }
@@ -132,15 +133,16 @@ class PluginManager
         unset($this->plugins[$name]);
     }
 
-    public function getIterator() 
+    public function getIterator()
     {
         return new ArrayIterator( $this->plugins );
     }
 
-    static function getInstance() {
+    public static function getInstance()
+    {
         static $instance;
+
         return $instance ?: $instance = new static;
     }
 
 }
-

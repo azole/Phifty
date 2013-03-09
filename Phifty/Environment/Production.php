@@ -12,9 +12,9 @@ namespace Phifty\Environment;
 
 class Production
 {
-    static function init($kernel)
+    public static function init($kernel)
     {
-        // if we are in command-line mode, 
+        // if we are in command-line mode,
         /* for production mode */
         if( extension_loaded('xdebug') )
             xdebug_disable();
@@ -39,4 +39,3 @@ class Production
         });
     }
 }
-

@@ -2,23 +2,24 @@
 
 namespace Phifty;
 
-class Singleton 
+class Singleton
 {
     /* seems AppKernel use the same $self */
-    static function getInstance() {
+    public static function getInstance()
+    {
         static $instance;
         if( $instance )
+
             return $instance;
         $class = get_called_class();
-		# echo "new $class\n";
+        # echo "new $class\n";
+
         return $instance = new $class;
     }
 
     /* alias of getInstance() */
-    static function one()
+    public static function one()
     {
         return static::getInstance();
     }
 }
-
-?>

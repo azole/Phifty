@@ -14,11 +14,12 @@ class Console extends Application
 {
     const name = 'phifty';
 
-    function getVersion() {
+    public function getVersion()
+    {
         return Kernel::VERSION;
     }
 
-    function init()
+    public function init()
     {
         parent::init();
         $this->registerCommand('init');
@@ -38,13 +39,12 @@ class Console extends Application
         $this->registerCommand('build-sql','LazyRecord\Command\BuildSqlCommand');
     }
 
-    static function getInstance()
+    public static function getInstance()
     {
         static $instance;
         if( $instance )
+
             return $instance;
         return $instance = new static;
     }
 }
-
-

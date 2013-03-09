@@ -9,7 +9,6 @@ class Plugin extends Bundle
     public $config;
     public $basePath;
 
-
     public function setConfig( $config )
     {
         $this->config = $config;
@@ -21,9 +20,10 @@ class Plugin extends Bundle
     }
 
     /*
-    function config( $key ) 
+    public function config( $key )
     {
         if( isset( $this->config[ $key ] ) )
+
             return $this->config[ $key ];
         return null;
     }
@@ -34,7 +34,6 @@ class Plugin extends Bundle
         return array();
     }
 
-
     /**
      * Get plugin config
      *
@@ -42,29 +41,31 @@ class Plugin extends Bundle
      *
      * @return mixed
      */
-    public function config( $key ) 
+    public function config( $key )
     {
-        if( isset($this->config[ $key ]) ) {
+        if ( isset($this->config[ $key ]) ) {
             if( is_array( $this->config[ $key ] ) )
+
                 return new Accessor($this->config[ $key ]);
             return $this->config[ $key ];
         }
 
-        if( strchr( $key , '.' ) !== false ) {
+        if ( strchr( $key , '.' ) !== false ) {
             $parts = explode( '.' , $key );
             $ref = $this->config;
-            while( $ref_key = array_shift( $parts ) ) {
-                if( ! isset($ref[ $ref_key ]) ) 
+            while ( $ref_key = array_shift( $parts ) ) {
+                if( ! isset($ref[ $ref_key ]) )
+
                     return null;
                     # throw new Exception( "Config key: $key not found.  '$ref_key'" );
                 $ref = & $ref[ $ref_key ];
             }
+
             return $ref;
         }
+
         return null;
     }
-
-
 
     public function getName()
     {
@@ -85,16 +86,17 @@ class Plugin extends Bundle
         $paths[] = FileUtils::path_join( PH_ROOT , 'plugins' , $name );
         foreach( $paths as $path )
             if( file_exists( $path ) )
+
                 return $path;
     }
 
     public function getExportWebDir()
     {
         $name = $this->getName();
+
         return '/ph/plugins/' . $name;
         # return FileUtils::path_join( kernel()->getWebPluginDir() , $name );
     }
-
 
     /*
     Use case:
@@ -119,4 +121,3 @@ class Plugin extends Bundle
     }
 
 }
-

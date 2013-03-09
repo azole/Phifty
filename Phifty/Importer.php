@@ -2,16 +2,16 @@
 namespace Phifty;
 use Phifty\Logger;
 
-abstract class Importer 
+abstract class Importer
 {
     public $logger;
 
-    function __construct($logPrefix = 'import-')
+    public function __construct($logPrefix = 'import-')
     {
         $this->logger = new Logger( 'logs' , $logPrefix );
     }
 
-    function info( $msg , $pad = 0 ) 
+    public function info( $msg , $pad = 0 )
     {
         $msg = str_repeat(' ',$pad * 4) . $msg;
         echo $msg . "\n";
@@ -19,9 +19,6 @@ abstract class Importer
     }
 
     /* import from a file or a directory */
-    abstract function import($target);
+    abstract public function import($target);
 
 }
-
-
-

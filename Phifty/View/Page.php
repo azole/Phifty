@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Phifty\View;
-
 
 /*
  * Phifty Page class
@@ -21,7 +19,7 @@ class Page extends \Phifty\View
     public $i18n = false;
     public $cache = false;
 
-    function __construct( $options = array() )
+    public function __construct( $options = array() )
     {
         if( isset( $options['i18n'] ) )
             $this->i18n = $options['i18n'];
@@ -38,47 +36,46 @@ class Page extends \Phifty\View
         parent::__construct( @$options['engine'] );
     }
 
-    function getLocal()
+    public function getLocal()
     {
         // XXX: replace with locale from AppKernel
         return @$_SESSION[ 'locale' ];
     }
 
     /* split template name, join with locale name, like:
-        *    template_en.html, 
-        *    template_zh.html, 
-        *    template_zh_cn.html 
+        *    template_en.html,
+        *    template_zh.html,
+        *    template_zh_cn.html
         *
         *    etc..
         **/
-    function jointI18n( $template )
+    public function jointI18n( $template )
     {
         $parts = explode( '.', $template );
         $ext = array_pop($parts);
 
         # generate template name with locale
+
         return join('.',$parts) . '_' . $this->getLocal() . '.' . $ext;
     }
 
-
-    function display( $template = null )
+    public function display( $template = null )
     {
         if( ! $template && $this->content )
             $template = $this->content;
 
         $engine = $this->getEngine();
 
-
-        if( $this->i18n && $this->getLocal() ) 
+        if( $this->i18n && $this->getLocal() )
             $template = $this->jointI18n( $template );
 
-        // XXX: do we need i18n block seperated for layout page template? 
+        // XXX: do we need i18n block seperated for layout page template?
 
         /* render subcontent template and put content into layout template */
-        if( $this->layout ) {
+        if ($this->layout) {
             $content = $engine->render( $template , $this->args );
-            $engine->display( $this->layout , array( 
-                'PageContent' => $content 
+            $engine->display( $this->layout , array(
+                'PageContent' => $content
             ) );
 
             /*
@@ -86,14 +83,9 @@ class Page extends \Phifty\View
             $layoutView->assign( 'PageContent' , $content );
             $layoutView->display( $this->layout );
             */
-        }
-        else {
+        } else {
             $engine->display( $template , $this->args );
         }
     }
 
 }
-
-
-
-?>

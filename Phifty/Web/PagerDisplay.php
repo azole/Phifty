@@ -15,17 +15,18 @@ class PagerDisplay
     public $wrapper_class = 'pager';
     public $when_overflow  = true;
 
-    function __construct( $pager )
+    public function __construct( $pager )
     {
         $this->pager = $pager;
         $this->config();
     }
 
-    function config() { 
+    public function config()
+    {
         $this->text_config();
     }
 
-    function text_config()
+    public function text_config()
     {
         $this->first_text = _('__pager.First');
         $this->last_text  = _('__pager.Last');
@@ -33,16 +34,16 @@ class PagerDisplay
         $this->prev_text  = _('__pager.Previous');
     }
 
-    function merge_to_query( $orig_params , $params = array() )
+    public function merge_to_query( $orig_params , $params = array() )
     {
-        foreach( $params as $key => $value ) {
+        foreach ($params as $key => $value) {
             /* override original get params */
             $orig_params[ $key ] = $value;
         }
 
         $qs = "";
         $parts = array();
-        foreach( $orig_params as $key => $value ) {
+        foreach ($orig_params as $key => $value) {
             $pair = $key . "=" . $value;
             array_push( $parts , $pair );
         }
@@ -50,12 +51,13 @@ class PagerDisplay
         return "?" . join( '&' , $parts );
     }
 
-    function render_link( $num , $text = null , $moreclass = "" , $disabled = false )
+    public function render_link( $num , $text = null , $moreclass = "" , $disabled = false )
     {
         if( $text == null )
             $text = $num;
 
         if( $disabled )
+
             return $this->render_link_dis( $text , $moreclass );
 
         $args = array_merge( $_GET , $_POST );
@@ -66,19 +68,19 @@ class PagerDisplay
 EOF;
     }
 
-    function render_link_dis( $text , $moreclass = "" ) {
+    public function render_link_dis( $text , $moreclass = "" )
+    {
         return <<<EOF
 <a class="pager-link pager-disabled $moreclass">$text</a>
 EOF;
     }
 
-    function __toString() 
+    public function __toString()
     {
         return $this->render();
     }
 
-
-    function render2()
+    public function render2()
     {
         $heredoc = new \Phifty\View\Heredoc('twig');
         $heredoc->content =<<<TWIG
@@ -88,24 +90,21 @@ EOF;
     {% endfor %}
 </div>
 TWIG;
-        $html = $heredoc->render(array( 
+        $html = $heredoc->render(array(
             'currentPage' => $this->pager->currentPage,
             'totalPages'  => $this->pager->totalPages,
         ));
     }
 
-
-    function render()
+    public function render()
     {
-
 
         $cur = $this->pager->currentPage;
         $total_pages = $this->pager->totalPages;
 
-        if( $this->when_overflow && $this->pager->totalPages == 1 ) {
+        if ($this->when_overflow && $this->pager->totalPages == 1) {
             return "";
         }
-
 
         $pagenum_start = $cur > 5 ? $cur - 5 : 1 ;
         $pagenum_end   = $cur + 5 < $total_pages ?  $cur + 5 : $total_pages;
@@ -113,11 +112,10 @@ TWIG;
         $output = "";
         $output .= '<div class="'.$this->wrapper_class.'">';
 
-
         if( $this->show_pager_header )
             $output .= '<div class="pager-current">' . _('__pager.page') .': ' . $this->pager->currentPage . '</div>';
-    
-        if( $this->show_navigator ) {
+
+        if ($this->show_navigator) {
 
             if( $cur > 1 )
                 $output .= $this->render_link( 1       , $this->first_text , 'pager-first' , $cur == 1 );
@@ -132,25 +130,24 @@ TWIG;
         if( $cur > 5 )
             $output .= $this->render_link( 1 , 1 , 'pager-number' ) . ' ... ';
 
-        for ( $i = $pagenum_start ; $i <= $pagenum_end ; $i++ ) {
-            if( $i == $this->pager->currentPage ) 
+        for ($i = $pagenum_start ; $i <= $pagenum_end ; $i++) {
+            if( $i == $this->pager->currentPage )
                 $output .= $this->render_link( $i , $i , 'pager-number active pager-number-current' );
-            else 
+            else
                 $output .= $this->render_link( $i , $i , 'pager-number' );
         }
-
 
         if( $cur + 5 < $total_pages )
             $output .= ' ... ' . $this->render_link( $total_pages , $total_pages , 'pager-number' );
 
-        if( $this->show_navigator ) {
+        if ($this->show_navigator) {
 
             if( $cur < $total_pages )
-                $output .= $this->render_link( $cur + 1, 
+                $output .= $this->render_link( $cur + 1,
                             $this->next_text , 'pager-next' , $cur == $this->pager->totalPages );
 
             if( $cur + 5 < $total_pages )
-                $output .= $this->render_link( $cur + 5, 
+                $output .= $this->render_link( $cur + 5,
                             _("Pager.Next 5 Pages") , 'pager-number' );
 
             if( $total_pages > 1 && $cur < $total_pages )
@@ -159,7 +156,7 @@ TWIG;
         }
 
         $output .= '</div>';
+
         return $output;
     }
 }
-

@@ -4,7 +4,6 @@ use Exception;
 use ZMQ;
 use ZMQSocket;
 use ZMQContext;
-use ZMQSocketException;
 
 class NotificationCenter
 {
@@ -19,73 +18,81 @@ class NotificationCenter
      */
     public $config;
 
-    function __construct() {
-        if( extension_loaded('mongo') ) {
+    public function __construct()
+    {
+        if ( extension_loaded('mongo') ) {
             $this->encoder = 'bson_encode';
             $this->decoder = 'bson_decode';
-        }
-        elseif( extension_loaded('json') ) {
+        } elseif ( extension_loaded('json') ) {
             $this->encoder = 'json_encode';
             $this->decoder = 'json_decode';
         }
         $this->config = kernel()->config->framework->Notification;
 
-        $this->publishPoint = $this->config && $this->config->PublishPoint 
-                                ? $this->config->PublishPoint  
+        $this->publishPoint = $this->config && $this->config->PublishPoint
+                                ? $this->config->PublishPoint
                                 : 'tcp://localhost:55555';
-        $this->subscribePoint = $this->config && $this->config->subscribePoint 
+        $this->subscribePoint = $this->config && $this->config->subscribePoint
                                 ? $this->config->subscribePoint
                                 : 'tcp://localhost:55556';
         $this->context = new ZMQContext(1);
     }
 
-    function createRequester() {
+    public function createRequester()
+    {
         // $this->requester = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_PUSH);
         $requester = new ZMQSocket($this->getContext(), ZMQ::SOCKET_REQ);
         $requester->connect( $this->getPublishPoint() );
+
         return $requester;
     }
 
-
-    function parseFilter($string) {
+    public function parseFilter($string)
+    {
         return substr($string,0,13);
     }
 
-    function splitMessage($string) {
+    public function splitMessage($string)
+    {
         $filter = substr($string,0,13);
         $binary = substr($string,13);
+
         return array($filter,$binary);
     }
 
-
-    function encode($payload) {
+    public function encode($payload)
+    {
         return call_user_func($this->encoder,$payload);
     }
 
-    function decode($payload) {
+    public function decode($payload)
+    {
         return call_user_func($this->decoder,$payload);
     }
 
-    function getSubscribePoint($forListen = false) {
-        if( $forListen ) {
+    public function getSubscribePoint($forListen = false)
+    {
+        if ($forListen) {
             preg_match('#^(\w+)://(.*?):(\d+)$#',$this->subscribePoint,$regs);
+
             return "{$regs[1]}://*:{$regs[3]}";
-        }
-        else {
+        } else {
             return $this->subscribePoint;
         }
     }
 
-    function getContext() {
+    public function getContext()
+    {
         return $this->context;
     }
 
-    function getPublishPoint($forListen = false) { 
-        if( $forListen ) {
+    public function getPublishPoint($forListen = false)
+    {
+        if ($forListen) {
             preg_match('#^(\w+)://(.*?):(\d+)$#',$this->publishPoint,$regs);
+
             return "{$regs[1]}://*:{$regs[3]}";
-        }
-        else {
+        } else {
             return $this->publishPoint;
         }
     }
@@ -93,38 +100,44 @@ class NotificationCenter
     /**
      * Create a subscriber Id
      */
-    function getSubscriberId($id = null) {
+    public function getSubscriberId($id = null)
+    {
         $id = $id ?: uniqid();
+
         return $id;
     }
 
-    function createFilter($id) {
-        if( strlen($id) > 13 ) {
+    public function createFilter($id)
+    {
+        if ( strlen($id) > 13 ) {
             throw new Exception('Filter string length exceed.');
         }
+
         return sprintf('%_13s',$id); // 13 chars for uniqid
     }
 
-    function getEncoder() { 
+    public function getEncoder()
+    {
         return $this->encoder;
     }
 
-    function getDecoder() {
+    public function getDecoder()
+    {
         return $this->decoder;
     }
 
-    function setEncoder() {
+    public function setEncoder()
+    {
         return $this->encoder;
     }
 
-    static function getInstance() { 
+    public static function getInstance()
+    {
         static $ins;
         if( $ins )
+
             return $ins;
         return $ins = new static;
     }
 
-
 }
-
-

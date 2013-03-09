@@ -4,7 +4,6 @@ use Phifty\Session;
 use Exception;
 use BadMethodCallException;
 
-
 /**
  * CurrentUserRole interface, for getting roles from model.
  */
@@ -32,7 +31,7 @@ use Phifty\Security\CurrentUserRole;
 class CurrentUser
 {
     /**
-     * User model class 
+     * User model class
      */
     public $userModelClass;
 
@@ -145,16 +144,13 @@ class CurrentUser
             $val = $record->$name;
             $this->session->set( $name, is_object($val) ? $val->__toString() : $val );
         }
-        if( $record instanceof CurrentUserRole ) {
+        if ($record instanceof CurrentUserRole) {
             $this->session->set('roles', $record->getRoles() );
-        }
-        elseif ( method_exists($record,'getRoles') ) {
+        } elseif ( method_exists($record,'getRoles') ) {
             $this->session->set('roles', $record->getRoles() );
-        }
-        elseif ( isset($record->role) ) {
+        } elseif ( isset($record->role) ) {
             $this->session->set('roles', array($record->role) );
-        }
-        else {
+        } else {
             $this->session->set('roles', array() );
         }
     }
@@ -205,7 +201,7 @@ class CurrentUser
     /**
      * Mixin getter with model record object
      *
-     * @param string $key session key
+     * @param  string $key session key
      * @return mixed
      */
     public function __get( $key )
@@ -224,56 +220,54 @@ class CurrentUser
      */
     public function __call($method,$args)
     {
-        if ( $this->record ) {
-            if( method_exists($this->record,$method) ) {
+        if ($this->record) {
+            if ( method_exists($this->record,$method) ) {
                 return call_user_func_array(array($this->record,$method), $args);
-            } else { 
+            } else {
                 throw new BadMethodCallException("Record $method not found.");
             }
-        } 
+        }
     }
-
 
     /**
      * Returns role identities
      *
      * @return string[] returns role identities
      */
-    public function getRoles() 
+    public function getRoles()
     {
-        if( $roles = $this->session->get('roles') ) {
+        if ( $roles = $this->session->get('roles') ) {
             return $roles;
         }
-        if( $this->record && $this->record->id ) {
-            if( $this->record instanceof CurrentUserRole ) {
+        if ($this->record && $this->record->id) {
+            if ($this->record instanceof CurrentUserRole) {
                 return $this->record->getRoles();
-            }
-            elseif ( method_exists($this->record,'getRoles') ) {
+            } elseif ( method_exists($this->record,'getRoles') ) {
                 return $this->record->getRoles();
             }
         }
+
         return array();
     }
-
 
     /**
      * Check if a role exists.
      *
-     * @param string $roleId
+     * @param  string  $roleId
      * @return boolean
      */
-    public function hasRole($roleId) 
+    public function hasRole($roleId)
     {
-        if( $roles = $this->session->get('roles') ) {
+        if ( $roles = $this->session->get('roles') ) {
             if( is_object($roleId) )
+
                 return in_array($roleId->__toString(), $roles );
             return in_array($roleId , $roles);
         }
-        if( $this->record && $this->record->id ) {
+        if ($this->record && $this->record->id) {
             return $this->record->hasRole($roleId);
         }
     }
-
 
     /**
      * @return string
@@ -304,5 +298,3 @@ class CurrentUser
     }
 
 }
-
-

@@ -1,17 +1,15 @@
 <?php
 namespace Phifty\Command;
 use CLIFramework\Command;
-use Phifty\Utils;
-use Phifty\FileUtils;
 
 class MigrationCheckCommand extends Command
 {
-    public function brief() 
+    public function brief()
     {
         return 'Checking migration notes';
     }
 
-    public function usage() 
+    public function usage()
     {
         return 'phifty migrationcheck ';
     }
@@ -25,20 +23,19 @@ class MigrationCheckCommand extends Command
         /**
          * Checking config->View options to ViewService->
          */
-        if( $k->config->framework->View ) {
+        if ($k->config->framework->View) {
             $found = true;
             $this->logger->warn("View config is moved to Service.ViewService.");
         }
 
-        if( $k->config->framework->Locale ) {
+        if ($k->config->framework->Locale) {
             $found = true;
             $this->logger->warn("Locale config is moved to Service.LocaleService.");
         }
 
-        if($found) {
+        if ($found) {
             $this->logger->info("Migration note not found.");
         }
 
     }
 }
-

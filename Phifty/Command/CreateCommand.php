@@ -6,12 +6,14 @@ use Phifty\FileUtils;
 
 class CreateCommand extends Command
 {
-    public function brief() { 
-        return 'create new phifty app'; 
+    public function brief()
+    {
+        return 'create new phifty app';
     }
 
-    public function usage() { 
-        return 'phifty create [app]'; 
+    public function usage()
+    {
+        return 'phifty create [app]';
     }
 
     public function options($opts)
@@ -39,7 +41,6 @@ class CreateCommand extends Command
         Utils::system('git submodule --quiet update');
         chdir($appdir);
 
-        
         $dirs = array();
         $dirs[] = 'webroot';
         $dirs[] = 'webroot/static/upload';
@@ -58,7 +59,6 @@ class CreateCommand extends Command
 
         Utils::rcopy('phifty/locale','locale');
 
-
         $stub =<<<EOS
 <?php
 define('PH_APP_ROOT',__DIR__);
@@ -70,7 +70,7 @@ EOS;
         echo <<<EOS
 Done!
 
-Please edit config file: 
+Please edit config file:
 
     config/framework.yml
     config/database.yml
@@ -81,7 +81,5 @@ And run:
 
 EOS;
 
-
     }
 }
-

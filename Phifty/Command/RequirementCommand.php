@@ -5,11 +5,11 @@ use CLIFramework\Command;
 class RequirementCommand extends Command
 {
 
-    public function printResult($msg, $ok) 
+    public function printResult($msg, $ok)
     {
         $f = $this->formatter;
         echo sprintf("% -30s ",$msg);
-        if( $ok ) {
+        if ($ok) {
             echo $f->format( "[  OK  ]" , 'success' );
         } else {
             echo $f->format( "[ FAIL ]" , 'fail' );
@@ -17,7 +17,7 @@ class RequirementCommand extends Command
         echo PHP_EOL;
     }
 
-    public function execute() 
+    public function execute()
     {
         // xxx: Can use universal requirement checker.
         //
@@ -34,7 +34,7 @@ class RequirementCommand extends Command
             'pdo_psql',
             'mysqli',
         );
-        foreach( $exts as $ext ) {
+        foreach ($exts as $ext) {
             $this->printResult($ext, extension_loaded($ext) );
         }
 
@@ -43,21 +43,17 @@ class RequirementCommand extends Command
         $this->printResult('assetkit',   class_exists('AssetToolkit\AssetLoader',true));
         $this->printResult('roller',     class_exists('Roller\Router',true));
 
-
         $this->printResult('roller extension', extension_loaded('roller') );
 
         $kernel = kernel();
-        if( $configext = $kernel->config->get('Requirement.Extensions') ) {
-            foreach( $configext as $extname ) {
+        if ( $configext = $kernel->config->get('Requirement.Extensions') ) {
+            foreach ($configext as $extname) {
                 $this->printResult("$extname extension", extension_loaded($extname) );
             }
         }
 
-
-        // TODO: 
+        // TODO:
         //   1. get services and get dependencies from these services for checking
 
     }
 }
-
-

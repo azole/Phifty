@@ -2,31 +2,31 @@
 
 namespace Phifty\Web;
 
-class RequestVar
+class Request
 {
     public $hash;
 
-    function __construct( & $hash = array() )
+    public function __construct( & $hash = array() )
     {
         $this->hash = $hash;
     }
 
-    function has( $name )
+    public function has( $name )
     {
         return isset( $this->hash[ $name ] );
     }
 
-    function __isset( $name )
+    public function __isset( $name )
     {
         return isset( $this->hash[ $name ] );
     }
 
-    function __get( $name )
+    public function __get( $name )
     {
         return @$this->hash[ $name ];
     }
 
-    function __set( $name , $value )
+    public function __set( $name , $value )
     {
         $this->hash[ $name ] = $value;
     }
@@ -36,20 +36,19 @@ class Request
 {
     public $requestVars = array();
 
-    function __get( $name )
+    public function __get( $name )
     {
         return $this->getRequestVar( $name );
     }
 
-    function getRequestVar( & $name )
+    public function getRequestVar( & $name )
     {
-        if( isset($this->requestVars[ $name ]) ){
+        if ( isset($this->requestVars[ $name ]) ) {
             return $this->requestVars[ $name ];
         }
 
         $vars = null;
-        switch( $name )
-        {
+        switch ($name) {
             case 'post':
                 $vars = new RequestVar($_POST);
                 break;
@@ -69,8 +68,8 @@ class Request
                 $vars = new RequestVar($_COOKIE);
                 break;
         }
+
         return $this->requestVars[ $name ] = $vars;
     }
 
 }
-

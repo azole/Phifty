@@ -77,7 +77,7 @@ class MailerService implements ServiceInterface
             $transportClass = 'Swift_' . $transportType;
             $transport = null;
 
-            switch( $transportType ) {
+            switch ($transportType) {
 
                 case 'MailTransport':
                     $transport = $transportClass::newInstance();
@@ -105,16 +105,15 @@ class MailerService implements ServiceInterface
                     throw new Exception("Unsupported transport type: $transportType");
             }
 
-
             // Create the Mailer using your created Transport
             // return Swift_Mailer::newInstance($transport);
             $mailer = Swift_Mailer::newInstance($transport); // $mailer
 
-            if( $accessor->Plugins ) {
-                foreach( $accessor->Plugins as $pluginName => $options ) {
+            if ($accessor->Plugins) {
+                foreach ($accessor->Plugins as $pluginName => $options) {
                     $pluginOptions = new Accessor( $options );
                     $class = 'Swift_Plugins_'.$pluginName;
-                    switch( $pluginName ) {
+                    switch ($pluginName) {
                         case 'AntiFloodPlugin':
                             $emailLimit = $pluginOptions->EmailLimit ?: 100; // default email limit
                             $pauseSeconds = $pluginOptions->PauseSeconds ?: null;
@@ -125,13 +124,9 @@ class MailerService implements ServiceInterface
                 }
             }
 
-
             return $mailer;
         };
 
     }
 
 }
-
-
-

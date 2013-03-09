@@ -3,7 +3,6 @@
 namespace Phifty\View;
 
 use Phifty\FileUtils;
-use ActionKit\Runner as ActionRunner;
 
 abstract class Engine
 {
@@ -12,11 +11,10 @@ abstract class Engine
     public $templateDirs = array();
     public $cacheDir;
 
-
     private $renderer;
 
     /*
-     * Contructor 
+     * Contructor
      *   template_dirs
      *   cache_dir
      */
@@ -27,7 +25,6 @@ abstract class Engine
         /* save options */
         $this->options = $options;
 
-
         /* preprocess options */
         if( isset( $options['template_dirs'] ) )
             $this->templateDirs = (array) $options['template_dirs'];
@@ -35,12 +32,12 @@ abstract class Engine
         if( isset( $options['cache_dir'] ) )
             $this->cacheDir = $options['cache_dir'];
 
-        if( empty( $this->templateDirs) ) {
+        if ( empty( $this->templateDirs) ) {
             $this->templateDirs = $this->getDefaultTemplateDirs();
         }
     }
 
-    function getDefaultTemplateDirs()
+    public function getDefaultTemplateDirs()
     {
         // when we move all plugins into applications, we take off the PH_APP_ROOT and PH_ROOT from paths
         $dirs = array(
@@ -52,34 +49,35 @@ abstract class Engine
             $this->kernel->frameworkDir,
         );
 
-        if( $configDirs = $this->kernel->config->get('framework','View.TemplateDirs') ) {
-            foreach($configDirs as $dir) {
+        if ( $configDirs = $this->kernel->config->get('framework','View.TemplateDirs') ) {
+            foreach ($configDirs as $dir) {
                 $dirs[] = PH_APP_ROOT . '/' . $dir;
             }
         }
+
         return $dirs;
     }
 
     /*
      * Method for creating new renderer object
      */
-    abstract function newRenderer();
+    abstract public function newRenderer();
 
     /*
      * Return Renderer object, statical
      */
-    function getRenderer()
+    public function getRenderer()
     {
         if( $this->renderer )
+
             return $this->renderer;
         return $this->renderer = $this->newRenderer();
     }
 
     /* refactor to Phifty\View\Smarty and Phifty\View\Twig */
-    static function createEngine( $backend , $opts = array() )
+    public static function createEngine( $backend , $opts = array() )
     {
-        switch( $backend )
-        {
+        switch ($backend) {
             case "smarty":
                 return new \Phifty\View\Smarty( $opts );
             case "twig":
@@ -91,18 +89,20 @@ abstract class Engine
         }
     }
 
-    function getCachePath()
+    public function getCachePath()
     {
         if( $this->cacheDir )
+
             return $this->cacheDir;
 
         return $this->kernel->config->get( 'framework', 'View.CacheDir' )
             ?: FileUtils::path_join( $this->kernel->rootDir , 'cache' );
     }
 
-    function getTemplateDirs()
+    public function getTemplateDirs()
     {
         if( $this->templateDirs )
+
             return $this->templateDirs;
 
         /* default template paths */
@@ -110,19 +110,19 @@ abstract class Engine
 
         /* framework core view template dir */
         $frameT = $this->kernel->app('Core')->getTemplateDir();
-        if( file_exists($frameT) ) {
+        if ( file_exists($frameT) ) {
             $paths[] = $frameT;
         }
 
-        if( $dirs = $this->kernel->config->get( 'framework', 'View.TemplateDirs' ) ) {
+        if ( $dirs = $this->kernel->config->get( 'framework', 'View.TemplateDirs' ) ) {
             foreach( $dirs as $dir )
                 $paths[] = $this->kernel->rootDir  . DIRECTORY_SEPARATOR . $dir;
         }
         $paths[] = $this->kernel->rootPluginDir;
         $paths[] = $this->kernel->frameworkPluginDir;
+
         return $paths;
     }
-
 
     /* render method should be defined,
      * we should just call render method by default. */

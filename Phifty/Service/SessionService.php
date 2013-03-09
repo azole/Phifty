@@ -2,7 +2,7 @@
 namespace Phifty\Service;
 use SessionKit;
 
-class SessionService 
+class SessionService
     implements ServiceInterface
 {
 
@@ -16,8 +16,8 @@ class SessionService
                 'state'   => new SessionKit\State\NativeState,
                 'storage' => new SessionKit\Storage\NativeStorage,
             ));
+
             return $session;
         };
     }
 }
-

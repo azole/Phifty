@@ -5,5 +5,3 @@ interface CurrentUserRole
 {
     public function getRoles();
 }
-
-

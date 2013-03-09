@@ -4,7 +4,7 @@ use Phifty\Kernel;
 use ConfigKit\ConfigCompiler;
 use ConfigKit\ConfigLoader;
 
-/** 
+/**
  * Script for phifty kernel bootstrap
  *
  * load config file and bootstrap
@@ -15,13 +15,14 @@ use ConfigKit\ConfigLoader;
 class Bootstrap
 {
 
-    static function initConstants() {
+    public static function initConstants()
+    {
     }
 
-    static function initClassLoader() 
+    public static function initClassLoader()
     {
         $loader = null;
-        if( extension_loaded('apc') ) {
+        if ( extension_loaded('apc') ) {
             require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/ApcClassLoader.php';
             $loader = new \Universal\ClassLoader\ApcClassLoader( PH_ROOT );
         } else {
@@ -29,7 +30,7 @@ class Bootstrap
         }
 
         // create spl classloader
-        $loader->addNamespace(array( 
+        $loader->addNamespace(array(
             'Phifty'         => PH_ROOT . '/src',
             'ActionKit'      => PH_ROOT . '/src',
             'I18NKit'        => PH_ROOT . '/src',
@@ -46,10 +47,11 @@ class Bootstrap
         $loader->addFallback( PH_ROOT . '/vendor/pear' );
         $loader->useIncludePath(true);
         $loader->register();
+
         return $loader;
     }
 
-    static function initConfigLoader() 
+    public static function initConfigLoader()
     {
         // We load other services from the definitions in config file
         // Simple load three config files (framework.yml, database.yml, application.yml)
@@ -59,10 +61,9 @@ class Bootstrap
             $loader->load('framework', PH_APP_ROOT . '/config/framework.yml');
 
         // This is for DatabaseService
-        if( file_exists( PH_APP_ROOT . '/db/config/database.yml') ) {
+        if ( file_exists( PH_APP_ROOT . '/db/config/database.yml') ) {
             $loader->load('database', PH_APP_ROOT . '/db/config/database.yml');
-        }
-        elseif( file_exists( PH_APP_ROOT . '/config/database.yml') ) {
+        } elseif ( file_exists( PH_APP_ROOT . '/config/database.yml') ) {
             $loader->load('database', PH_APP_ROOT . '/config/database.yml');
         }
 
@@ -70,13 +71,14 @@ class Bootstrap
         if( file_exists( PH_APP_ROOT . '/config/application.yml') )
             $loader->load('application', PH_APP_ROOT . '/config/application.yml');
 
-        // Only load testing configuration when environment 
+        // Only load testing configuration when environment
         // is 'testing'
-        if( getenv('PHIFTY_ENV') === 'testing' ) {
-            if( file_exists( PH_APP_ROOT . '/config/testing.yml' ) ) {
+        if ( getenv('PHIFTY_ENV') === 'testing' ) {
+            if ( file_exists( PH_APP_ROOT . '/config/testing.yml' ) ) {
                 $loader->load('testing', ConfigCompiler::compile(PH_APP_ROOT . '/config/testing.yml') );
             }
         }
+
         return $loader;
     }
 
@@ -87,10 +89,10 @@ class Bootstrap
      * 2. ConfigService
      * 3. DatabaseService
      *
-     * @param Phifty\Kernel $kernel kernel object.
-     * @param ClassLoader   $classloader 
+     * @param Phifty\Kernel $kernel      kernel object.
+     * @param ClassLoader   $classloader
      */
-    static function bootKernel($kernel,$classloader) 
+    public static function bootKernel($kernel,$classloader)
     {
         // register default classloader service
         $kernel->registerService(
@@ -104,16 +106,15 @@ class Bootstrap
         $kernel->registerService( $configService );
 
         // load a event service, so that we can bind events in Phifty
-        // currently we are working on a CTEvent extension, which provides a better 
+        // currently we are working on a CTEvent extension, which provides a better
         // performance than pure PHP class.
         $kernel->registerService( new \Phifty\Service\EventService );
 
-
         // if the framework config is defined.
-        if( $configLoader->isLoaded('framework') ) {
+        if ( $configLoader->isLoaded('framework') ) {
             // we should load database service before other services
             // because other services might need database service
-            if( $configLoader->isLoaded('database') ) {
+            if ( $configLoader->isLoaded('database') ) {
                 $kernel->registerService( new \Phifty\Service\DatabaseService );
             }
 
@@ -125,8 +126,8 @@ class Bootstrap
                 }
             }
 
-            if( $services = $kernel->config->get('framework','Services') ) {
-                foreach( $services as $name => $options ) {
+            if ( $services = $kernel->config->get('framework','Services') ) {
+                foreach ($services as $name => $options) {
                     // not full qualified classname
                     $class = ( false === strpos($name,'\\') ) ? ('Phifty\\Service\\' . $name) : $name;
                     $kernel->registerService( new $class , $options );
@@ -140,12 +141,11 @@ class Bootstrap
      *
      * @param string $env Environment type
      */
-    static function createKernel($env = null)
+    public static function createKernel($env = null)
     {
         return new Kernel( $env );
     }
 }
-
 
 }
 namespace {
@@ -158,7 +158,7 @@ namespace {
     require PH_ROOT . '/vendor/universal/src/Universal/Container/ObjectContainer.php';
 
     // Load Kernel so we don't need to load by classloader.
-    if( ! class_exists('ConfigKit\ConfigLoader') ) {
+    if ( ! class_exists('ConfigKit\ConfigLoader') ) {
         require PH_ROOT . '/vendor/pear/ConfigKit/ConfigCompiler.php';
         require PH_ROOT . '/vendor/pear/ConfigKit/Accessor.php';
         require PH_ROOT . '/vendor/pear/ConfigKit/ConfigLoader.php';
@@ -166,7 +166,6 @@ namespace {
     require PH_ROOT . '/src/Phifty/Kernel.php';
 
     use Phifty\Bootstrap;
-
 
     global $kernel;
 
@@ -177,16 +176,18 @@ namespace {
      *
      * @return Phifty\Kernel
      */
-    function kernel()
+    public function kernel()
     {
         global $kernel;
         if( $kernel )
+
             return $kernel;
 
         $classloader = Bootstrap::initClassLoader();
         $kernel      = Bootstrap::createKernel();
         Bootstrap::bootKernel($kernel,$classloader);
         $kernel->init();
+
         return $kernel;
     }
 

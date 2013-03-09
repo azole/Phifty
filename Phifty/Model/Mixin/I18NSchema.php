@@ -4,7 +4,7 @@ use LazyRecord\Schema\MixinSchemaDeclare;
 
 class I18NSchema extends MixinSchemaDeclare
 {
-    function schema()
+    public function schema()
     {
         $this->column('lang')
             ->varchar(12)
@@ -12,11 +12,10 @@ class I18NSchema extends MixinSchemaDeclare
                 return array_flip( kernel()->locale->available() );
             })
             ->label('語言')
-            ->default( function() { 
+            ->default( function() {
                 return kernel()->locale->getDefault();
             })
             ->renderAs('SelectInput')
             ;
     }
 }
-

@@ -3,13 +3,11 @@ namespace Phifty\Service;
 use Mongo;
 use Exception;
 
-
 class MongodbService
     implements ServiceInterface
 {
 
     public function getId() { return 'mongodb'; }
-
 
     /**
      *
@@ -23,19 +21,20 @@ class MongodbService
         if( ! extension_loaded('mongo') )
             throw new Exception('mongo extension is required.');
 
-        $kernel->mongo = function() use($kernel,$options) {
+        $kernel->mongo = function() use ($kernel,$options) {
             $conn = null;
             $db = null;
-            if( isset($options['DSN']) ) {
+            if ( isset($options['DSN']) ) {
                 $conn = new Mongo( $options['DSN'] );
             } else {
                 $conn = new Mongo;
             }
 
-            if( isset($options['Database']) ) {
+            if ( isset($options['Database']) ) {
                 $dbname = $options['Database'];
                 $db = $conn->{ $dbname };
             }
+
             return (object) array(
                 'connection' => $conn,
                 'database' => $db,
@@ -44,5 +43,3 @@ class MongodbService
     }
 
 }
-
-

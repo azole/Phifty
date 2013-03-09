@@ -1,95 +1,97 @@
 <?php
 namespace Phifty;
 
-class Session 
+class Session
 {
-	public $sessionPrefix;
+    public $sessionPrefix;
 
-	function __construct( $sessionPrefix = '' )
-	{
-		$this->sessionPrefix = $sessionPrefix;
-	}
+    public function __construct( $sessionPrefix = '' )
+    {
+        $this->sessionPrefix = $sessionPrefix;
+    }
 
-	function __set( $name , $value ) 
-	{
-		$this->set( $name , $value );
-	}
+    public function __set( $name , $value )
+    {
+        $this->set( $name , $value );
+    }
 
-	function __get( $name )
-	{
-		return $this->get( $name );
-	}
+    public function __get( $name )
+    {
+        return $this->get( $name );
+    }
 
-    function __isset( $name )
+    public function __isset( $name )
     {
         return isset( $_SESSION[ $this->sessionPrefix . $name ] );
     }
 
-	function set($name,$value)
-	{
+    public function set($name,$value)
+    {
         $key = $this->sessionPrefix . $name;
-		@$_SESSION[ $key ] = $value;
-	}
+        @$_SESSION[ $key ] = $value;
+    }
 
-	function get($name)
-	{
+    public function get($name)
+    {
         $key = $this->sessionPrefix . $name;
-		return @$_SESSION[ $key ];
-	}
 
-	function remove($name)
-	{
+        return @$_SESSION[ $key ];
+    }
+
+    public function remove($name)
+    {
         $key = $this->sessionPrefix . $name;
-		unset( $_SESSION[ $key ] );
-	}
+        unset( $_SESSION[ $key ] );
+    }
 
-	function getAll()
-	{
-		$args = array();
-		foreach( $_SESSION as $key => $value )
-			if( strpos( $key , $this->sessionPrefix ) === 0 )
-				$args[ $key ] = $value;
-		return $args;
-	}
+    public function getAll()
+    {
+        $args = array();
+        foreach( $_SESSION as $key => $value )
+            if( strpos( $key , $this->sessionPrefix ) === 0 )
+                $args[ $key ] = $value;
 
-	function has($name)
-	{
-		return isset( $_SESSION[ $this->sessionPrefix . $name ] );
-	}
+        return $args;
+    }
 
-	function setArgs( $args )
-	{
-		foreach( $args as $key => $value ) {
-			@$_SESSION[ $this->sessionPrefix . $key ] = $value;
-		}
-	}
+    public function has($name)
+    {
+        return isset( $_SESSION[ $this->sessionPrefix . $name ] );
+    }
 
-	function doExpire( $minutes )
-	{
-		session_cache_expire( $minutes );
-	}
+    public function setArgs( $args )
+    {
+        foreach ($args as $key => $value) {
+            @$_SESSION[ $this->sessionPrefix . $key ] = $value;
+        }
+    }
 
-	function getExpire()
-	{
-		return session_cache_expire();
-	}
+    public function doExpire( $minutes )
+    {
+        session_cache_expire( $minutes );
+    }
 
-	function getId()
-	{
-		return session_id();
-	}
+    public function getExpire()
+    {
+        return session_cache_expire();
+    }
 
-	function decode( $data )
-	{
-		return session_decode( $data );
-	}
+    public function getId()
+    {
+        return session_id();
+    }
 
-	function encode()
-	{
-		return session_encode();
-	}
+    public function decode( $data )
+    {
+        return session_decode( $data );
+    }
 
-    function clear()
+    public function encode()
+    {
+        return session_encode();
+    }
+
+    public function clear()
     {
         session_unset();
 
@@ -97,10 +99,9 @@ class Session
         $_SESSION = array();
     }
 
-	function destroy()
-	{
-		@session_destroy();
+    public function destroy()
+    {
+        @session_destroy();
         $this->clear();
-	}
+    }
 }
-

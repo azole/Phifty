@@ -1,12 +1,7 @@
 <?php
 namespace Phifty;
-use Exception;
 use Phifty\View;
-use Phifty\WebUtils;
 use ActionKit\ActionRunner;
-
-use AssetToolkit\AssetRender;
-use AssetToolkit\AssetConfig;
 
 class Web
 {
@@ -16,12 +11,12 @@ class Web
         $runner = kernel()->action;
         $results = $runner->getResults();
         $html = '';
-        foreach( $results as $key => $value ) {
+        foreach ($results as $key => $value) {
             $html .= $this->render_result( $key );
         }
+
         return $html;
     }
-
 
     /**
      * @param string $name
@@ -33,13 +28,13 @@ class Web
         $assets = array();
 
         // Instead of loading assets by triggering asset.load event
-        // the flow (plugin service->init, appliation->init) can 
+        // the flow (plugin service->init, appliation->init) can
         // not load the assets with the correct sequence.
-        foreach( $kernel->applications as $app ) {
+        foreach ($kernel->applications as $app) {
             // load application assets
             $app->loadAssets();
         }
-        foreach( $kernel->plugins as $plugin ) {
+        foreach ($kernel->plugins as $plugin) {
             $plugin->loadAssets();
         }
 
@@ -55,7 +50,7 @@ class Web
 
     /**
      * @param string[] $assets asset names
-     * @param string $name name
+     * @param string   $name   name
      *
      * {{ Web.include_assets(['jquery','jquery-ui'], 'page_name')|raw}}
      */
@@ -63,6 +58,7 @@ class Web
     {
         $kernel = kernel();
         $assetObjs = $kernel->asset->loader->loadAssets($assets);
+
         return $kernel->asset->render->renderAssets($assetObjs,$name);
     }
 
@@ -74,15 +70,17 @@ class Web
     public function get_result( $resultName )
     {
         $runner = ActionRunner::getInstance();
+
         return $runner->getResult( $resultName );
     }
 
     public function render_result( $resultName )
     {
         $runner = ActionRunner::getInstance();
-        if( $result = $runner->getResult( $resultName ) ) {
+        if ( $result = $runner->getResult( $resultName ) ) {
             $view = new \Phifty\View;
             $view->result = $result;
+
             return $view->render('Core/template/phifty/action_result_box.html');
         }
     }

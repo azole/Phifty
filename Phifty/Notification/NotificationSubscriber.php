@@ -2,9 +2,6 @@
 namespace Phifty\Notification;
 use ZMQ;
 use ZMQSocket;
-use ZMQContext;
-use ZMQSocketException;
-use Exception;
 
 class NotificationSubscriber
 {
@@ -23,7 +20,8 @@ class NotificationSubscriber
 
     public $center;
 
-    function __construct($id = null, $center = null) {
+    public function __construct($id = null, $center = null)
+    {
         $this->center = $center ?: NotificationCenter::getInstance();
         $this->id = $this->center->getSubscriberId($id);
         $this->subscriber = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_SUB);
@@ -34,26 +32,33 @@ class NotificationSubscriber
         $this->requester = $this->center->createRequester();
     }
 
-    function askBacklog($topic) {
+    public function askBacklog($topic)
+    {
         $tId = is_string($topic) ? $topic : $topic->id;
         $this->requester->send( 'blog ' . $tId . ' ' . $this->id );
+
         return $this->requester->recv();
     }
 
-    function unsubscribe($topic) {
+    public function unsubscribe($topic)
+    {
         $tId = is_string($topic) ? $topic : $topic->id;
         $this->requester->send( 'unsub ' . $tId . ' ' . $this->id );
+
         return $this->requester->recv();
     }
 
-    function subscribe($topic) {
+    public function subscribe($topic)
+    {
         $tId = is_string($topic) ? $topic : $topic->id;
         $this->requester->send( 'sub ' . $tId . ' ' . $this->id );
+
         return $this->requester->recv();
     }
 
-    function listen($callback) { 
-        while(true) {
+    public function listen($callback)
+    {
+        while (true) {
             $string = $this->subscriber->recv();
             list($sId,$topicId,$binary) = explode(' ',$string,3);
             $payload = $this->center->decode($binary);
@@ -61,5 +66,3 @@ class NotificationSubscriber
         }
     }
 }
-
-

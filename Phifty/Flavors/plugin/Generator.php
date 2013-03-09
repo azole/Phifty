@@ -4,9 +4,9 @@ use GenPHP\Flavor\BaseGenerator;
 
 class Generator extends BaseGenerator
 {
-    function brief() { return 'generate plugin structure'; }
+    public function brief() { return 'generate plugin structure'; }
 
-    function generate($pluginName) 
+    public function generate($pluginName)
     {
         $pluginDir = PH_APP_ROOT . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . $pluginName;
         $this->createDir( $pluginDir );

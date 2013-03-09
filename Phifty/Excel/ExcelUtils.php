@@ -9,21 +9,16 @@ class ExcelUtils
      *
      * @return string A, B, C
      */
-    static function convert_column_name( $i )
+    public static function convert_column_name( $i )
     {
         $columnName = '';
-        while($i > 0 ) {
+        while ($i > 0) {
             $modulo = ($i - 1) % 26;
             $columnName = chr( 65 + $modulo ) . $columnName;
-            $i = (int)(($i - $modulo) / 26);
+            $i = (int) (($i - $modulo) / 26);
         }
+
         return $columnName;
     }
 
-
-
-
-
-
 }
-

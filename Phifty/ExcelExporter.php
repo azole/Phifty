@@ -5,7 +5,6 @@ namespace Phifty;
 require_once 'PHPExcel/PHPExcel.php';
 require_once 'PHPExcel/PHPExcel/IOFactory.php';
 
-
 /*
  *
     $exporter = new ExcelExporter
@@ -16,7 +15,7 @@ require_once 'PHPExcel/PHPExcel/IOFactory.php';
     $exporter->writeToStream( 'blah.xls' );
 
 */
-class ExcelExporter 
+class ExcelExporter
 {
     public $columns;
     public $excel;
@@ -24,61 +23,62 @@ class ExcelExporter
     public $currentRow;
     public $currentCol;
 
-    function __construct( )
+    public function __construct( )
     {
         $this->excel = new \PHPExcel();
         $this->currentRow = 1;
         $this->currentCol = 1;
     }
 
-    function getExcel()
+    public function getExcel()
     {
         return $this->excel;
     }
 
     /* convert column to column name 1 => A1 */
-    function convertColName( $i )
+    public function convertColName( $i )
     {
         $columnName = '';
-        while($i > 0 ) {
+        while ($i > 0) {
             $modulo = ($i - 1) % 26;
             $columnName = chr( 65 + $modulo ) . $columnName;
-            $i = (int)(($i - $modulo) / 26);
+            $i = (int) (($i - $modulo) / 26);
         }
+
         return $columnName;
     }
 
-    function nextRow()
+    public function nextRow()
     {
         $this->currentRow++;
         $this->currentCol = 1;
     }
 
-    function nextCol()
+    public function nextCol()
     {
         return ++$this->currentCol;
     }
 
-
-    function setSheet($index = 0)
+    public function setSheet($index = 0)
     {
         return $this->sheet = $this->excel->setActiveSheetIndex($index);
     }
 
-    function getSheet()
+    public function getSheet()
     {
         if( $this->sheet )
+
             return $this->sheet;
     }
 
-    function putCells( $cells , $at = 1 ) 
+    public function putCells( $cells , $at = 1 )
     {
         $this->currentCol = $at;
         $sheet = $this->getSheet();
         if( ! $sheet )
             $sheet = $this->setSheet(0);
 
-        foreach( $cells as $cell ) {
+        foreach ($cells as $cell) {
             $pos = $this->convertColName( $this->currentCol++ ) . $this->currentRow;
             $sheet->setCellValueExplicit( $pos , $cell );  // string type
         }
@@ -86,7 +86,7 @@ class ExcelExporter
     }
 
     /*
-    function setMetaData( $excel )
+    public function setMetaData( $excel )
     {
         // Set properties
         $excel->getProperties()
@@ -100,7 +100,7 @@ class ExcelExporter
     }
      */
 
-    function writeToStream( $filename = 'ExportData.xls' )
+    public function writeToStream( $filename = 'ExportData.xls' )
     {
         $excel = $this->excel;
 
@@ -108,22 +108,22 @@ class ExcelExporter
         $excel->setActiveSheetIndex(0);
 
         // Redirect output to a client’s web browser (Excel5)
-        header('Pragma: public'); // required 
-        header('Expires: 0'); 
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0'); 
-        header('Cache-Control: private', false); // required for certain browsers 
+        header('Pragma: public'); // required
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Cache-Control: private', false); // required for certain browsers
         header('Cache-Control: max-age=0');
 
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment;filename=\"$filename\"");
-        header('Content-Transfer-Encoding: binary'); 
+        header('Content-Transfer-Encoding: binary');
 
         $objWriter = \PHPExcel_IOFactory::createWriter($excel, 'Excel5');
         $objWriter->save('php://output');
     }
 
     /*
-    function writeToFile($filename)
+    public function writeToFile($filename)
     {
         $objPHPExcel = $this->excel;
 
@@ -142,4 +142,3 @@ class ExcelExporter
     */
 
 }
-

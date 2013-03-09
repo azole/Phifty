@@ -27,14 +27,13 @@ class ConfigService
     public function register($kernel, $options = array() )
     {
         $self = $this;
-        $kernel->config = function() use ($self) {  
+        $kernel->config = function() use ($self) {
             return $self->loader;
         };
     }
 
-    public function load($section,$file) {
+    public function load($section,$file)
+    {
         return $this->loader->load($section,$file);
     }
 }
-
-

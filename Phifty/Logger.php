@@ -1,13 +1,13 @@
 <?php
 namespace Phifty;
 
-class Logger 
+class Logger
 {
     public $logDir;
     public $logFile;
     private $fp;
 
-    function __construct($logDir,$prefix = '')
+    public function __construct($logDir,$prefix = '')
     {
         $this->logDir = $logDir;
 
@@ -20,22 +20,20 @@ class Logger
             or die("Can not open log file.");
     }
 
-    function info( $msg )
+    public function info( $msg )
     {
         fwrite( $this->fp , $msg . "\n" );
     }
 
-    function close()
+    public function close()
     {
         fclose( $this->fp );
         $this->fp = null;
     }
 
-    function __destruct()
+    public function __destruct()
     {
         if( $this->fp !== null )
             $this->close();
     }
 }
-
-

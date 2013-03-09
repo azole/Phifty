@@ -1,7 +1,6 @@
 <?php
 namespace Phifty\Command;
 use CLIFramework\Command;
-use Phifty\FileUtils;
 
 /**
  *
@@ -18,15 +17,12 @@ class LocaleCommand extends Command
     {
         $kernel = kernel();
 
-
-
-#          $finder = Finder::create()->files()->name('*.po')->in( 
+#          $finder = Finder::create()->files()->name('*.po')->in(
 #              PH_ROOT . DIRECTORY_SEPARATOR . $kernel->config->get('framework','Locale.localedir')
 #          );
-#          foreach( $finder->getIterator() as $file ) {
+#          foreach ( $finder->getIterator() as $file ) {
 #              echo $file, "\n";
 #          }
     }
 
 }
-

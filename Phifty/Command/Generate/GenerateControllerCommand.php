@@ -4,8 +4,8 @@ use CLIFramework\Command;
 
 class GenerateControllerCommand extends Command
 {
-    function execute() {
+    public function execute()
+    {
         die('not implemented yet');
     }
 }
-

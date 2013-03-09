@@ -6,4 +6,3 @@ class GenerateModelCommand extends Command
 {
 
 }
-

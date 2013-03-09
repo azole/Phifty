@@ -1,7 +1,7 @@
 <?php
 namespace Phifty\Service;
 
-abstract class BaseService 
+abstract class BaseService
 {
     public $options;
 
@@ -14,7 +14,3 @@ abstract class BaseService
      */
     abstract public function register($kernel, $options = array());
 }
-
-
-
-

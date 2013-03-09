@@ -6,7 +6,7 @@ class ClassLoaderService
 {
     public $classloader;
 
-    public function __construct($classloader) 
+    public function __construct($classloader)
     {
         $this->classloader = $classloader;
     }
@@ -21,9 +21,8 @@ class ClassLoaderService
     public function register($kernel,$options = array())
     {
         $self = $this;
-        $kernel->classloader = function() use($self) {
+        $kernel->classloader = function() use ($self) {
             return $self->classloader;
         };
     }
 }
-

@@ -1,7 +1,7 @@
 <?php
 namespace Phifty\Service;
 
-class CoreService 
+class CoreService
     implements ServiceInterface
 {
     public function getId() { return 'core'; }

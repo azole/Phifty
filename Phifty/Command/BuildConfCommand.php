@@ -1,8 +1,6 @@
 <?php
 namespace Phifty\Command;
 use CLIFramework\Command;
-use SplFileInfo;
-use Exception;
 use ConfigKit\ConfigCompiler;
 
 class BuildConfCommand extends Command
@@ -22,28 +20,26 @@ class BuildConfCommand extends Command
         $configPath = func_get_args();
 
         // should we scan config directories ?
-        if( empty($configPath) ) {
+        if ( empty($configPath) ) {
             $configPath = array_filter(
                 array(
                     'config/application.yml',
                     'config/framework.yml',
                     'config/database.yml',
-                    'config/testing.yml' 
+                    'config/testing.yml'
                 ), function($file) {
                             return file_exists($file);
                         });
         }
 
-        if( empty($configPath) ) {
+        if ( empty($configPath) ) {
             die("No config found.");
         }
 
-        foreach( $configPath as $path ) {
+        foreach ($configPath as $path) {
             $this->logger->info( "Building config file $path" );
             ConfigCompiler::compile($path);
         }
         $this->logger->info('Done');
     }
 }
-
-

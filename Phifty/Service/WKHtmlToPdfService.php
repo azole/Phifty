@@ -1,8 +1,8 @@
 <?php
 namespace Phifty\Service;
 
-class WKHtmlToPdf {
-
+class WKHtmlToPdfService
+{
     public $bin;
     public $pageSize;
 
@@ -15,7 +15,7 @@ class WKHtmlToPdf {
     public function convert($url,$target)
     {
         $cmds = array($this->bin);
-        if( $this->pageSize ) {
+        if ($this->pageSize) {
             $cmds[] = '--page-size';
             $cmds[] = $this->pageSize;
         }
@@ -24,6 +24,7 @@ class WKHtmlToPdf {
         $cmds[] = $target;
         $cmd = join(' ',$cmds);
         system($cmd);
+
         return $target;
     }
 }
@@ -44,10 +45,8 @@ class WKHtmlToPdfService
 
     public function register( $kernel , $options = array() )
     {
-        $kernel->wkHtmlToPdf = function() use($kernel,$options) {
+        $kernel->wkHtmlToPdf = function() use ($kernel,$options) {
             return new WKHtmlToPdf($options['Bin'], @$options['PageSize']);
         };
     }
 }
-
-

@@ -1,6 +1,5 @@
 <?php
 namespace Phifty;
-use Exception;
 use ArrayAccess;
 use ArrayIterator;
 use IteratorAggregate;
@@ -17,7 +16,7 @@ class View
 
     protected $defaultEngine = 'twig';
 
-    public function __construct( $engine = null , $engineOpts = null ) 
+    public function __construct( $engine = null , $engineOpts = null )
     {
         $this->initEngine( $engine , $engineOpts );
         $this->init();
@@ -40,9 +39,9 @@ class View
 
     public function initEngine( $engine = null , $engineOpts = null )
     {
-        if( $engine ) {
+        if ($engine) {
             /* if it's an engine object already, just save it */
-            if( is_object( $engine ) ) {
+            if ( is_object( $engine ) ) {
                 $this->engine = $engine;
             } else {
                 $this->engine = \Phifty\View\Engine::createEngine( $engine , $engineOpts );
@@ -61,11 +60,10 @@ class View
 
     public function __get( $name )
     {
-        if( isset($this->args[$name]) ) {
+        if ( isset($this->args[$name]) ) {
             return $this->args[ $name ];
         }
     }
-
 
     /*
      * Assign template variable
@@ -74,15 +72,14 @@ class View
      * ->assign( key , value );
      *
      */
-    function assign()
+    public function assign()
     {
         $args = func_get_args();
-        if( is_array( $args[0] ) ) {
-            foreach( $args[0] as $k => $v ) {
+        if ( is_array( $args[0] ) ) {
+            foreach ($args[0] as $k => $v) {
                 $this->args[ $k ] = $v;
             }
-        }
-        elseif( count($args) == 2 ) {
+        } elseif ( count($args) == 2 ) {
             list($name,$value) = $args;
             $this->args[ $name ] = $value;
         } else {
@@ -92,30 +89,28 @@ class View
 
     /*
      * Get template arguments
-     * 
+     *
      * @return array template arguments
      */
-    function getArgs()
+    public function getArgs()
     {
         return $this->args;
     }
 
-
     /*
      * Setup template arguments
      *
-     * @param array $args 
+     * @param array $args
      */
-    function setArgs($args)
+    public function setArgs($args)
     {
         $this->args = $args;
     }
 
-    function getEngine()
+    public function getEngine()
     {
         return $this->engine;
     }
-
 
     /*
      * Default render method, can be overrided from View\Engine\Twig or View\Engine\Smarty
@@ -123,26 +118,24 @@ class View
      * Render template file.
      * @param string $template template name
      */
-    function render($template)
+    public function render($template)
     {
         return $this->engine->render( $template , $this->args );
     }
 
-
-    /* 
+    /*
      * Render template from string
      * @param string $stringTemplate template content
      * */
-    function renderString( $stringTemplate )
+    public function renderString( $stringTemplate )
     {
         return $this->engine->renderString( $stringTemplate , $this->args );
     }
 
-
     /*
      * Call render method to render
      */
-    function __toString()
+    public function __toString()
     {
         return $this->render();
     }
@@ -167,11 +160,9 @@ class View
         unset($this->args[$name]);
     }
 
-    public function getIterator() 
+    public function getIterator()
     {
         return new ArrayIterator( $this->args );
     }
 
-
 }
-

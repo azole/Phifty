@@ -3,15 +3,16 @@ namespace Phifty;
 use LazyRecord\BaseModel;
 use ActionKit\RecordAction\BaseRecordAction;
 
-class Model extends BaseModel 
+class Model extends BaseModel
 {
     public function getLabel()
     {
         $label = parent::getLabel();
+
         return $label ? _($label) : $label;
     }
 
-    public function getCurrentUser() 
+    public function getCurrentUser()
     {
         return kernel()->currentUser;
     }
@@ -42,7 +43,7 @@ class Model extends BaseModel
     {
         $class = get_class($this);
         $actionClass = BaseRecordAction::createCRUDClass($class,$type);
+
         return new $actionClass( $args , $this );
     }
 }
-

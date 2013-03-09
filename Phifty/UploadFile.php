@@ -5,7 +5,7 @@ namespace Phifty;
     $f = new UploadFile( 'ufile' , 0 );   // name and index   , $_FILES['ufile'][...][0]
     $f->putIn( "file_dirs" );
  */
-class UploadFile 
+class UploadFile
 {
 
     // file data object
@@ -18,13 +18,13 @@ class UploadFile
     public $error;
     public $saved_path;
 
-    public function __construct( $name , $index = null )  
+    public function __construct( $name , $index = null )
     {
         $this->column = $name;
         $hasFile = (bool) @$_FILES[$name]['tmp_name'];
-        if( $hasFile ) {
+        if ($hasFile) {
             $keys = array_keys( @$_FILES[ $name ] );
-            if( $index ) {
+            if ($index) {
                 foreach( $keys as $key )
                     $this->$key = $_FILES[ $name ][ $key ][ $index ];
             } else {
@@ -34,58 +34,61 @@ class UploadFile
         }
     }
 
-    function __destruct() 
+    public function __destruct()
     {
 
     }
 
-    function getKBytes() {
+    public function getKBytes()
+    {
         return (int) $this->size / 1024;
     }
 
-    function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-    function getExtension() {
+    public function getExtension()
+    {
         $parts = explode('.',$this->name);
+
         return end($parts);
     }
 
     /* size: kbytes */
-    function validateSize( $size )
+    public function validateSize( $size )
     {
         return ($this->size / 1024) < $size;
     }
 
-    function validateExtension( $exts )
+    public function validateExtension( $exts )
     {
         $ext = strtolower($this->getExtension());
+
         return in_array( $ext, $exts );
     }
 
-    function getSavedPath() { return $this->saved_path; }
-    function getType() { return $this->type; }
-    function getSize() { return $this->size; }
-
-
+    public function getSavedPath() { return $this->saved_path; }
+    public function getType() { return $this->type; }
+    public function getSize() { return $this->size; }
 
     /**
      * In this method, we don't modify tmp_name attribute
-     * rather than that, we set the saved_path attribute 
+     * rather than that, we set the saved_path attribute
      * for location of these moved files.
      */
-    function putIn( $targetDir , $targetFileName = null, $useCopy = false )
+    public function putIn( $targetDir , $targetFileName = null, $useCopy = false )
     {
         /* source file */
         $file = $this->tmp_name;
-        if( ! file_exists($file) && isset( $_FILES[ $this->column ]['saved_path'] ) ) {
+        if ( ! file_exists($file) && isset( $_FILES[ $this->column ]['saved_path'] ) ) {
             $useCopy = true;
             $file = $_FILES[ $this->column ]['saved_path'];
         }
 
 
-        // if targetFilename is not given, 
+        // if targetFilename is not given,
         // we should take the filename from original filename by using basename.
         if( ! $targetFileName )
             $targetFileName = basename( $this->name );
@@ -99,58 +102,61 @@ class UploadFile
 
         /* avoid file name duplication */
         $fileCnt = 1;
-        while( file_exists($newPath) ) {
-            $newPath = FileUtils::path_join( $targetDir , 
+        while ( file_exists($newPath) ) {
+            $newPath = FileUtils::path_join( $targetDir ,
                 FileUtils::filename_suffix( $targetFileName , '_' . $fileCnt++ ) );
                 // substr(md5_file( $file ),0,5) . '_' . $targetFileName );
         }
 
         /* register to $_FILES[ name ][ savedpath ]
          *
-         * in CRUD action, we need to validate if a action file column's value 
+         * in CRUD action, we need to validate if a action file column's value
          * is a real upload file.
          * */
         $this->saved_path = $newPath;
 
-        if( $useCopy ) {
+        if ($useCopy) {
             copy($file, $newPath);
         } else {
             $this->move( $file , $newPath );
         }
         $_FILES[ $this->column ]['saved_path'] = $newPath;
+
         return $newPath;
     }
 
-    function move( $from , $to ) 
+    public function move( $from , $to )
     {
         if( ! $from || ! file_exists( $from ) )
             throw new \Exception('Source file not found.');
 
-		if( $this->error != 0 )
+        if( $this->error != 0 )
             throw new \Exception('File Upload Error:' . $this->getErrorMessage() );
-		if( false === move_uploaded_file( $from , $to ) )
+        if( false === move_uploaded_file( $from , $to ) )
             throw new \Exception('File Upload Error: Move uploaded file failed.');
     }
 
-    function deleteTmp() 
+    public function deleteTmp()
     {
         unlink( $this->tmp_name );
     }
 
-    function found() 
+    public function found()
     {
         return $this->name ? true : false;
     }
 
-    function hasError() {
+    public function hasError()
+    {
         return (bool) $this->error;
     }
 
-    function getErrorMessage() {
+    public function getErrorMessage()
+    {
         $error = $this->error;
 
         // error messages for normal users.
-        switch( $error ) {
+        switch ($error) {
             case UPLOAD_ERR_OK:
                 return _("No Error");
             case UPLOAD_ERR_INI_SIZE || UPLOAD_ERR_FORM_SIZE:
@@ -168,7 +174,7 @@ class UploadFile
         }
 
         // built-in php error description
-        switch( $error ) {
+        switch ($error) {
             case UPLOAD_ERR_OK:
                 return _("There is no error, the file uploaded with success.");
             case UPLOAD_ERR_INI_SIZE:
@@ -191,4 +197,3 @@ class UploadFile
     }
 
 }
-

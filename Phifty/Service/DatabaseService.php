@@ -12,7 +12,7 @@ class DatabaseService
     {
         $config = $kernel->config->stashes['database'];
         $loader = \LazyRecord\ConfigLoader::getInstance();
-        if( ! $loader->loaded ) { 
+        if (! $loader->loaded) {
             $loader->load( $config );
             $loader->init();  // init data source and connection
         }
@@ -22,5 +22,3 @@ class DatabaseService
     }
 
 }
-
-

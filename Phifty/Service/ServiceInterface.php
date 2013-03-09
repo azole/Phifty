@@ -1,8 +1,7 @@
 <?php
 namespace Phifty\Service;
 
-
-interface ServiceInterface 
+interface ServiceInterface
 {
 
     public function getId();
@@ -13,7 +12,3 @@ interface ServiceInterface
     public function register($kernel, $options = array() );
 
 }
-
-
-
-

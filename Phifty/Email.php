@@ -6,7 +6,7 @@ $email->to( $to );
 $email->to( $to );
 $email->from( $from );
 $email->subject(  $subject );
-$email->template( $template , array( 
+$email->template( $template , array(
         "user" => $user   // $assign
     ) );
 $email->send();
@@ -18,118 +18,142 @@ use Phifty\View;
 
 class Email
 {
-    var $to = array();
-    var $from;
-    var $cc = array();
-    var $bcc = array();
-    var $subject;
-    var $replyTo;
+    public $to = array();
+    public $from;
+    public $cc = array();
+    public $bcc = array();
+    public $subject;
+    public $replyTo;
 
-    var $template;
-    var $templateVars = array();
-    var $templateEngineOpts = array();
+    public $template;
+    public $templateVars = array();
+    public $templateEngineOpts = array();
 
-    var $contentType = 'html';
-    var $content;
+    public $contentType = 'html';
+    public $content;
 
-    function __construct() {
+    public function __construct()
+    {
         // load default email config from config file.
 
     }
 
-    function to( $to ) {
+    public function to( $to )
+    {
         $this->to[] = $to;
+
         return $this;
     }
 
-    function from( $from ) {
+    public function from( $from )
+    {
         $this->from = $from;  // chould be array
+
         return $this;
     }
 
-    function bcc( $bcc ) {
+    public function bcc( $bcc )
+    {
         $this->bcc[] = $bcc;
+
         return $this;
     }
 
-    function cc( $cc ) {
+    public function cc( $cc )
+    {
         array_push( $this->cc , $cc );
+
         return $this;
     }
 
-    function subject( $subject ) {
+    public function subject( $subject )
+    {
         $this->subject = $subject;
+
         return $this;
     }
 
-    function replyTo( $replies ) {
+    public function replyTo( $replies )
+    {
         $this->replyTo = $replies;
+
         return $this;
     }
 
-    function encodeColumns($data)
+    public function encodeColumns($data)
     {
         if( empty( $data ) )
+
             return;
 
-        if( is_array($data) ) {
+        if ( is_array($data) ) {
             $cols = array();
-            foreach( $data as $name => $email ) {
-                if( is_integer( $name ) ) {
+            foreach ($data as $name => $email) {
+                if ( is_integer( $name ) ) {
                     $cols[] = $email;  // just append email chars
                 } else {
                     $cols[] = $this->encode( $name ) . ' <' . $email . '>';
                 }
             }
+
             return join(',', $cols);
-        } elseif( is_string($data) ) {
-            if( preg_match('/(.*?)\s*<(.*?)>/',$data,$regs) ) {
+        } elseif ( is_string($data) ) {
+            if ( preg_match('/(.*?)\s*<(.*?)>/',$data,$regs) ) {
                 list($orig,$name,$email) = $regs;
+
                 return $this->encode($name) . ' <' . $email . '>';
-            }
-            else {
+            } else {
                 return $data;
                 # throw new \Exception( _('Unsupported email column format') );
             }
         }
     }
 
-    function template_vars( $vars ) {
+    public function template_vars( $vars )
+    {
         $this->templateVars = $vars;
+
         return $this;
     }
 
-    function applyLangTag( $str ) {
+    public function applyLangTag( $str )
+    {
         // XXX: put current_lang() tag out of this class.
         $tag = str_replace( '_' , '-' , strtolower( current_lang() ) );
+
         return str_replace( '{lang}' , $tag , $str );
     }
 
     // when setting template, the contentType will be 'html'
-    function template( $template , $vars = array() , $engineOpts = array() ) 
+    public function template( $template , $vars = array() , $engineOpts = array() )
     {
         $this->template = $template;
-        if( $vars ) {
+        if ($vars) {
             $this->templateVars = $vars;
         }
         $this->templateEngineOpts = $engineOpts;
         $this->contentType = 'html';
+
         return $this;
     }
 
-    function assign( $name , $value ) {
+    public function assign( $name , $value )
+    {
         $this->templateVars[ $name ] = $value;
+
         return $this;
     }
 
-    private function renderTemplate() {
+    private function renderTemplate()
+    {
         $view = new View;
-        if( $this->templateVars ) {
+        if ($this->templateVars) {
             $view->setArgs( $this->templateVars );
         }
         $view->subject = $this->subject;
         $view->from = $this->from;
         $view->to = $this->to;
+
         return $view->render($this->template);
         /*
         $templateFile = $this->applyLangTag( $this->template );
@@ -140,18 +164,23 @@ class Email
         */
     }
 
-    function getSubject() {
+    public function getSubject()
+    {
         return $this->subject;
     }
 
-    function getContent() {
+    public function getContent()
+    {
         if( $this->template )
+
             return $this->renderTemplate();
         if( $this->content )
+
             return $this->content;
     }
 
-    private function getHeader() {
+    private function getHeader()
+    {
         $from = $this->encodeColumns($this->from);
         $to   = $this->encodeColumns($this->to);
         $cc   = $this->encodeColumns($this->cc);
@@ -169,24 +198,28 @@ class Email
         return $headers;
     }
 
-    function text( $text ) {
+    public function text( $text )
+    {
         $this->contentType = 'text';
         $this->content = $text;
+
         return $this;
     }
 
-    function html( $html ) {
+    public function html( $html )
+    {
         $this->contentType = 'html';
         $this->content = $html;
+
         return $this;
     }
 
-    function encode($str) 
+    public function encode($str)
     {
         return '=?UTF-8?B?'.base64_encode($str).'?=';
     }
 
-    function send() 
+    public function send()
     {
         $headers = $this->getHeader();
 
@@ -200,10 +233,11 @@ class Email
 
         if( ! $subject )
             throw new \Exception("mail subject is not defined.");
-        if( ! $content ) 
+        if( ! $content )
             throw new \Exception("mail content is not defined.");
 
         $subject = $this->encode($subject);
+
         return mail(
             $this->encodeColumns($this->to),
             $subject,
@@ -211,5 +245,3 @@ class Email
             $headers);
     }
 }
-
-?>

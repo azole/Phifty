@@ -4,18 +4,19 @@ use Phifty\FileUtils;
 use Phifty\Plugin\Plugin;
 use CLIFramework\Command;
 
-
 /*
  * Export plugin web dirs to app webroot.
  */
 class ExportCommand extends Command
 {
 
-    public function usage() {
+    public function usage()
+    {
         return 'export';
     }
 
-    public function brief() {
+    public function brief()
+    {
         return 'export application/plugin web paths to webroot/.';
     }
 
@@ -27,20 +28,20 @@ class ExportCommand extends Command
         $webPluginDir = $kernel->getWebPluginDir();
         $webAssetDir  = $kernel->getWebAssetDir();
 
-        if( $options->clean ) {
+        if ($options->clean) {
             $this->logger->info( "Removing webroot/ph");
             $unlinks = array();
-            foreach( $kernel->applications as $appname => $app ) {
+            foreach ($kernel->applications as $appname => $app) {
                 $path = FileUtils::path_join( $webroot , 'ph' , $appname );
                 $this->logger->info("Unlinking $path ...");
                 if( file_exists( $path ) )
                     unlink( $path );
             }
+
             return;
         }
 
         $this->logger->info( "Exporting web directory to webroot..." );
-
 
         /* Make directories */
         $dirs = array();
@@ -48,30 +49,28 @@ class ExportCommand extends Command
         $dirs[] = $webPluginDir;
         $dirs[] = $webAssetDir;
 
-
         $dirs[] = $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload';
         foreach( $dirs as $dir )
             FileUtils::mkpath( $dir , true );
 
         system( 'chmod -vR 777 ' . $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload' );
 
-        /* 
-         * get all plugins 
+        /*
+         * get all plugins
          *
          * and link the plugin web directory to web/
          *
          * */
-        foreach( kernel()->plugins as $plugin ) 
-        {
+        foreach ( kernel()->plugins as $plugin ) {
             // create links
-            // var_dump( $plugin->getName() ); 
+            // var_dump( $plugin->getName() );
             $name = $plugin->getName();
             $target = FileUtils::path_join( $webPluginDir , $name );
 
             // find source plugin path
             $pluginDir = Plugin::locatePlugin( $name );
             $pluginWebDir =  FileUtils::path_join( $pluginDir , 'web' );
-            if( ! file_exists( $pluginWebDir ) ) 
+            if( ! file_exists( $pluginWebDir ) )
                 continue;
 
             /*
@@ -85,4 +84,3 @@ class ExportCommand extends Command
         $this->logger->info( "Done" );
     }
 }
-

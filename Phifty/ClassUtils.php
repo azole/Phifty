@@ -2,19 +2,17 @@
 namespace Phifty;
 use ReflectionClass;
 
-class ClassUtils 
+class ClassUtils
 {
     public static function new_class( $class , $args = null )
     {
-        if( $args ) {
+        if ($args) {
             $rc = new ReflectionClass( $class );
             // return $rc->newInstance();
             return $rc->newInstanceArgs( $args );
-        } 
-        else {
+        } else {
             return new $class;
         }
     }
 
 }
-

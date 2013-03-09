@@ -2,7 +2,6 @@
 namespace Phifty\View;
 
 use Phifty\View\Engine;
-use Phifty\FileUtils;
 use Phifty\ClassUtils;
 
 use AssetToolkit\Extension\Twig\AssetExtension;
@@ -13,7 +12,6 @@ use Twig_Function_Function;
 
 use Twig_Extension_Debug;
 use Twig_Extension_Optimizer;
-use Twig_Extension_Escaper;
 use Twig_Loader_String;
 
 use Twig_Extensions_Extension_Text;
@@ -23,14 +21,15 @@ use Twig_Extensions_Extension_I18n;
     * {% set obj = new('InputSystem\\Model\\Patient') %}
     * {% set obj = new('InputSystem\\Model\\PatientSchema') %}
     */
-function newObject($class) 
+function newObject($class)
 {
     $args = func_get_args();
     array_shift($args);
+
     return \Phifty\ClassUtils::new_class($class,$args);
 }
 
-class Twig extends \Phifty\View\Engine 
+class Twig extends \Phifty\View\Engine
 //    implements \Phifty\View\EngineInterface
 {
     public $loader;
@@ -48,40 +47,39 @@ class Twig extends \Phifty\View\Engine
         $isDev = $kernel->isDev;
 
         // get twig config
-        if( $isDev ) {
+        if ($isDev) {
             $envOpts['cache'] = $cacheDir;
             $envOpts['debug'] = true;
             $envOpts['auto_reload'] = true;
-        }
-        else {
+        } else {
             $envOpts['cache'] = $cacheDir;
         }
 
         /* if twig config is defined, then override the current config */
         $twigConfig = $kernel->config->get( 'View.Twig' );
-        if( $twigConfig && is_array( $twigConfig ) ) {
+        if ( $twigConfig && is_array( $twigConfig ) ) {
             $envOpts = array_merge( $envOpts , $twigConfig );
         }
 
-        /* 
+        /*
          * Env Options
          * http://www.twig-project.org/doc/api.html#environment-options
          * */
         $this->env = new Twig_Environment($loader, $envOpts );
 
         /**
-         * Load extensions from config settings 
+         * Load extensions from config settings
          *
          * Twig:
          *   CoreExtensions:
          *   Extensions:
          */
-        if( $twigConfig ) {
-            if( isset($twigConfig['CoreExtensions'] ) ) {
-                foreach( $twigConfig['CoreExtensions'] as $extension ) {
+        if ($twigConfig) {
+            if ( isset($twigConfig['CoreExtensions'] ) ) {
+                foreach ($twigConfig['CoreExtensions'] as $extension) {
                     $extname = null;
                     $options = null;
-                    if( is_string($extension) ) {
+                    if ( is_string($extension) ) {
                         $extname = $extension;
                     } elseif ( is_array( $extension ) ) {
                         $extname = key($extension);
@@ -92,11 +90,11 @@ class Twig extends \Phifty\View\Engine
                 }
             }
 
-            if( isset($twigConfig['Extensions'] ) ) { 
-                foreach( $twigConfig['Extensions'] as $extension ) {
+            if ( isset($twigConfig['Extensions'] ) ) {
+                foreach ($twigConfig['Extensions'] as $extension) {
                     $extname = null;
                     $options = null;
-                    if( is_string($extension) ) {
+                    if ( is_string($extension) ) {
                         $extname = $extension;
                     } elseif ( is_array( $extension ) ) {
                         $extname = key($extension);
@@ -111,7 +109,7 @@ class Twig extends \Phifty\View\Engine
             /* Default extensions */
 
             /* if twig config is not define, then use our dev default extensions */
-            if( $isDev ) {
+            if ($isDev) {
                 $this->env->addExtension( new Twig_Extension_Debug );
             } else {
                 // for production mode
@@ -129,12 +127,11 @@ class Twig extends \Phifty\View\Engine
         }
         $this->loader = $loader;
         $this->registerFunctions();
+
         return $this->env;
     }
 
-
-
-    function registerFunctions()
+    public function registerFunctions()
     {
         $exports = array(
             'uniqid' => 'uniqid',
@@ -147,7 +144,7 @@ class Twig extends \Phifty\View\Engine
             'new' => 'Phifty\View\newObject',
         );
 
-        foreach( $exports as $export => $func ) {
+        foreach ($exports as $export => $func) {
             $this->env->addFunction( $export , new Twig_Function_Function( $func ));
         }
 
@@ -157,31 +154,32 @@ class Twig extends \Phifty\View\Engine
             if (function_exists($name) && ( strpos($name,'array_') === 0 || strpos($name,'str') === 0 ) ) {
                 return new Twig_Function_Function($name);
             }
+
             return false;
         });
     }
 
-    function newStringRenderer()
+    public function newStringRenderer()
     {
         return new Twig_Environment( new Twig_Loader_String );
     }
 
-    function render( $template,$args = array() )
+    public function render( $template,$args = array() )
     {
         return $this->getRenderer()->loadTemplate( $template )->render( $args );
     }
 
-    function display( $template , $args = array() )
+    public function display( $template , $args = array() )
     {
         $this->getRenderer()->loadTemplate( $template )->display($args);
     }
 
-    function renderString( $stringTemplate , $args = array() )
+    public function renderString( $stringTemplate , $args = array() )
     {
         return $this->newStringRenderer()->loadTemplate( $stringTemplate )->render( $args );
     }
 
-    function displayString( $stringTemplate , $args = array() )
+    public function displayString( $stringTemplate , $args = array() )
     {
         $this->newStringRenderer()->loadTemplate( $stringTemplate )->display($args);
     }

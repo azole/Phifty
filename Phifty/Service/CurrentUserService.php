@@ -5,7 +5,7 @@ class CurrentUserService
     implements ServiceInterface
 {
 
-    public function getId() { return 'current_user'; } 
+    public function getId() { return 'current_user'; }
 
     public function register($kernel,$options = array() )
     {
@@ -22,11 +22,11 @@ class CurrentUserService
                 ? $options['Model']
                 : $kernel->config->get('framework','CurrentUser.Model');
 
-            if( isset($args['PrimaryKey']) ) {
+            if ( isset($args['PrimaryKey']) ) {
                 $args['primary_key'] = $args['PrimaryKey'];
             }
 
-            if( isset($args['SessionPrefix']) ) {
+            if ( isset($args['SessionPrefix']) ) {
                 $args['session_prefix'] = $args['SessionPrefix'];
             }
 
@@ -38,8 +38,3 @@ class CurrentUserService
         };
     }
 }
-
-
-
-
-

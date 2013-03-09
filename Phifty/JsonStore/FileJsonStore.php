@@ -10,7 +10,6 @@
  */
 namespace Phifty\JsonStore;
 
-
 /**
  * $store = new FileJsonStore('ModelName');
  *
@@ -46,7 +45,7 @@ class FileJsonStore
     public $items;
     public $setname;
 
-    function __construct($name,$rootDir)
+    public function __construct($name,$rootDir)
     {
         $this->name = $name;
         $this->rootDir = $rootDir;
@@ -56,35 +55,37 @@ class FileJsonStore
             mkdir( $this->rootDir , 0755 , true ); // recursive
     }
 
-    function getStoreFile()
+    public function getStoreFile()
     {
         return $this->rootDir . DIRECTORY_SEPARATOR . $this->name . '_' . $this->setname . '.json';
     }
 
-    function load()
+    public function load()
     {
         $file = $this->getStoreFile();
-        if( file_exists($file) ) {
+        if ( file_exists($file) ) {
             $data = json_decode(file_get_contents($file),true);
-            if( isset($data['items']) ) {
+            if ( isset($data['items']) ) {
                 $this->items = $data['items'];
+
                 return count($this->items);
             }
         }
     }
 
-    function save()
+    public function save()
     {
         $file = $this->getStoreFile();
         $string = json_encode( array( 'items' => $this->items ) );
         if( file_put_contents( $file, $string ) === false )
+
             return false;
         return true;
     }
 
-    function add($record)
+    public function add($record)
     {
-        if( $this->items ) {
+        if ($this->items) {
             $keys = array_keys($this->items);
             sort($keys);
             $last_key = (int) end($keys);
@@ -95,60 +96,61 @@ class FileJsonStore
             $last_key = 1;
         }
         $this->items[$last_key] = $record->getData();
+
         return $last_key;
     }
 
-    function update($record)
+    public function update($record)
     {
-        if( is_object($record) ) {
+        if ( is_object($record) ) {
             $id = $record->id;
             $data = $record->getData();
             $this->items[$id] = $data;
         }
+
         return true;
     }
 
-    function get($id)
+    public function get($id)
     {
-        if( isset($this->items[$id]) ) 
+        if( isset($this->items[$id]) )
+
             return new FileJsonModel( $this->name, $this, $this->items[$id] );
     }
 
-    function newModel($data = null)
+    public function newModel($data = null)
     {
         return new FileJsonModel( $this->name , $this , $data );
     }
 
-    function items()
+    public function items()
     {
         $that = $this;
+
         return array_map( function($e) use ($that) {
             return new FileJsonModel( $that->name, $that, $e );
         }, array_values($this->items) );
     }
 
-    function remove($id)
+    public function remove($id)
     {
         unset($this->items[$id]);
     }
 
-    function destroy()
+    public function destroy()
     {
         $file = $this->getStoreFile();
-        if( file_exists($file) ) {
+        if ( file_exists($file) ) {
             unlink( $file );
             $this->items = null;
+
             return true;
         }
     }
 
-
-    function __destruct()
+    public function __destruct()
     {
         if( $this->items )
             $this->save();
     }
 }
-
-
-

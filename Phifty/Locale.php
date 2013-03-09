@@ -26,10 +26,12 @@ class Locale
     public function setDefault( $lang )
     {
         $this->defaultLang = $lang;
+
         return $this;
     }
 
-    public function getDefault() {
+    public function getDefault()
+    {
         return $this->defaultLang;
     }
 
@@ -46,7 +48,7 @@ class Locale
             $lang = $_POST[ L10N_LOCALE_KEY ];
         if( ! $lang && isset( $_SESSION[ L10N_LOCALE_KEY ] ) )
             $lang = @$_SESSION[ L10N_LOCALE_KEY ];
-        
+
         if( ! $lang && isset( $_COOKIE['locale'] ) )
             $lang = @$_COOKIE['locale'];
 
@@ -55,9 +57,9 @@ class Locale
         if( ! $lang )
             throw new Exception( 'Locale: Language is not define.' );
         $this->speak( $lang );
+
         return $this;
     }
-
 
     public function saveSession()
     {
@@ -82,6 +84,7 @@ class Locale
         $this->saveCookie();
         $this->saveSession();
         $this->initGettext();
+
         return $this;
     }
 
@@ -89,7 +92,6 @@ class Locale
     {
         return $this->current == $lang;
     }
-
 
     public function current()
     {
@@ -107,53 +109,58 @@ class Locale
     }
 
     // get available language list
-    function getLangList()
+    public function getLangList()
     {
         // update language Label
-        foreach( $this->langList as $n => $v ) {
+        foreach ($this->langList as $n => $v) {
             $this->langList[ $n ] = _( $n );
         }
+
         return $this->langList;
     }
 
-    function setLangList( $list )
+    public function setLangList( $list )
     {
         $this->langList = $list;
     }
 
-    function add( $lang , $name = null )
+    public function add( $lang , $name = null )
     {
         if( ! $name )
             $name = _( $lang );
         $this->langList[ $lang ] = $name;
+
         return $this;
     }
 
-    function remove( $lang )
+    public function remove( $lang )
     {
         unset( $this->langList[ $lang ] );
+
         return $this;
     }
 
     // get language name from language hash
-    function name( $lang )
+    public function name( $lang )
     {
         return @$this->langList[ $lang ];
     }
 
-    function domain( $domain )
+    public function domain( $domain )
     {
         $this->domain = $domain;
+
         return $this;
     }
 
-    function localedir( $dir )
+    public function localedir( $dir )
     {
         $this->localedir = $dir;
+
         return $this;
     }
 
-    function setupEnv()
+    public function setupEnv()
     {
         $lang = $this->current;
         putenv("LANG=$lang");
@@ -163,7 +170,7 @@ class Locale
         setlocale(LC_TIME, "$lang.UTF-8");
     }
 
-    function initGettext( $textdomain = null , $localedir = null )
+    public function initGettext( $textdomain = null , $localedir = null )
     {
         if( ! $textdomain )
             $textdomain = $this->domain;
@@ -185,10 +192,10 @@ class Locale
         bindtextdomain( $textdomain, $localedir );
         bind_textdomain_codeset( $textdomain, 'UTF-8');
         textdomain( $textdomain );
+
         return $this;
     }
 }
-
 
 /*
 function current_language()
@@ -205,16 +212,16 @@ function current_lang()
 }
 
 namespace {
-    function __()
+    public function __()
     {
         $args = func_get_args();
         $msg = _( array_shift( $args ) );
         $id = 1;
-        foreach( $args as $arg ) {
+        foreach ($args as $arg) {
             $msg = str_replace( "%$id" , $arg , $msg );
             $id++;
         }
+
         return $msg;
     }
 }
-

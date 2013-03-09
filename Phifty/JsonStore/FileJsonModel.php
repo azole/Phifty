@@ -11,8 +11,6 @@
 
 namespace Phifty\JsonStore;
 
-
-
 /*
  * Store data in json file.
  *
@@ -25,7 +23,7 @@ namespace Phifty\JsonStore;
  * load object
  *
  *      $record->load( $id );
- * 
+ *
  * update object
  *
  *      $record->update( $id , array( ... ) );
@@ -34,70 +32,69 @@ namespace Phifty\JsonStore;
 class FileJsonModel
 {
     protected $name;
-	protected $store;
-	protected $data;
+    protected $store;
+    protected $data;
 
-    function __construct($name,$store,$data = null)
+    public function __construct($name,$store,$data = null)
     {
         $this->name = $name;
-		$this->store = $store;
-			$this->data = $data ? $data : array();
+        $this->store = $store;
+            $this->data = $data ? $data : array();
     }
 
-	function __isset($name)
-	{
-		return isset($this->data[$name]);
-	}
-
-	function __get($name)
-	{
-		if( isset($this->data[$name] ) )
-			return $this->data[$name];
-	}
-
-	function __set($name,$value)
-	{
-		$this->data[$name] = $value;
-	}
-
-	function hasId()
-	{
-		return isset($this->data['id']) && $this->data['id'];
-	}
-
-	function getData()
-	{
-		return $this->data;
-	}
-
-    function save($data = null)
+    public function __isset($name)
     {
-		if( $data )
-			$this->data = $data;
-
-		if( $this->hasId() )
-			return $this->store->update($this);
-		else
-			return $this->store->add($this);
+        return isset($this->data[$name]);
     }
 
-    function load($id)
+    public function __get($name)
     {
-		$data = $this->store->get($id);
-		$this->data = $data;
+        if( isset($this->data[$name] ) )
+
+            return $this->data[$name];
     }
 
-    function update($data)
+    public function __set($name,$value)
+    {
+        $this->data[$name] = $value;
+    }
+
+    public function hasId()
+    {
+        return isset($this->data['id']) && $this->data['id'];
+    }
+
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    public function save($data = null)
+    {
+        if( $data )
+            $this->data = $data;
+
+        if( $this->hasId() )
+
+            return $this->store->update($this);
+        else
+            return $this->store->add($this);
+    }
+
+    public function load($id)
+    {
+        $data = $this->store->get($id);
+        $this->data = $data;
+    }
+
+    public function update($data)
     {
         $id = $data['id'];
         $orig_data = $this->load($id);
-        if( $orig_data ) {
+        if ($orig_data) {
             $data = array_merge( $orig_data, $data );
             $this->store($data);
         }
     }
 
-
 }
-
-

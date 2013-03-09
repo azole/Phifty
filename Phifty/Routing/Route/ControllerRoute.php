@@ -12,22 +12,20 @@ namespace Phifty\Routing\Route;
 
 use Exception;
 use ReflectionObject;
-use ReflectionFunction;
 use Phifty\Routing\Route;
-use Phifty\Routing\RouteInterface;
 
 class ControllerRoute extends Route
 {
 
-    function evaluate()
+    public function evaluate()
     {
-		$class  = $this->get('controller');
-		$method = $this->get('method');
+        $class  = $this->get('controller');
+        $method = $this->get('method');
 
-		$controller = new $class( $this );
-		$controller->before();
+        $controller = new $class( $this );
+        $controller->before();
 
-        if( ! $method || ! method_exists($controller,$method) ) {
+        if ( ! $method || ! method_exists($controller,$method) ) {
             if( $action = $this->get('action') )
                 $method = $action . 'Action';
             elseif( method_exists($controller,'run') )
@@ -36,14 +34,14 @@ class ControllerRoute extends Route
                 $method = 'indexAction';
         }
 
-        if( method_exists($controller,$method) ) {
+        if ( method_exists($controller,$method) ) {
             $vars = $this->getVars();
             $ro = new ReflectionObject( $controller );
             $rm = $ro->getMethod($method);
             $parameters = $rm->getParameters();
             $arguments = array();
-            foreach( $parameters as $param ) {
-                if( isset( $vars[ $param->getName() ] ) ) {
+            foreach ($parameters as $param) {
+                if ( isset( $vars[ $param->getName() ] ) ) {
                     $arguments[] = $vars[ $param->getName() ];
                 } else {
                     $arguments[] = $this->getDefault( $param->getName() );
@@ -55,8 +53,8 @@ class ControllerRoute extends Route
             throw new Exception( "Controller action method $method of $class not found." );
         }
 
-		$controller->after();
-		return $content;
+        $controller->after();
+
+        return $content;
     }
 }
-

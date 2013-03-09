@@ -2,8 +2,6 @@
 namespace Phifty\Notification;
 use ZMQ;
 use ZMQSocket;
-use ZMQContext;
-use ZMQSocketException;
 use ZMQDevice;
 use Exception;
 
@@ -15,15 +13,17 @@ class NotificationServer
 
     public $publiser;
 
-    function __construct($center = null) {
+    public function __construct($center = null)
+    {
         $this->center = $center ?: NotificationCenter::getInstance();
-        $this->connectDevice( 
-            $this->center->getPublishPoint(true), 
+        $this->connectDevice(
+            $this->center->getPublishPoint(true),
             $this->center->getSubscribePoint(true)
         );
     }
 
-    function connectDevice($bind,$publishEndPoint) {
+    public function connectDevice($bind,$publishEndPoint)
+    {
         //  Socket to talk to clients
         // $this->responder = new ZMQSocket($this->center->context, ZMQ::SOCKET_REP);
         $this->responder = new ZMQSocket($this->center->getContext(), ZMQ::SOCKET_REP);
@@ -37,7 +37,8 @@ class NotificationServer
         $this->publisher->bind($publishEndPoint);
     }
 
-    function start() {
+    public function start()
+    {
         // new ZMQDevice($this->pull, $this->publisher);
         $subscribers = array(
             /* topicId => array( subscriberId => queue ) */
@@ -46,7 +47,7 @@ class NotificationServer
             /* topic => message queue */
         );
 
-        while(true) {
+        while (true) {
             try {
                 // Wait for next request from client
                 $msg = $this->responder->recv();
@@ -55,62 +56,58 @@ class NotificationServer
                 printf("Received request: [%s]\n", $msg);
 
                 // register subscriber a topic
-                if( strpos($msg,'reg') === 0 ) {
+                if ( strpos($msg,'reg') === 0 ) {
                     list($cmd,$topicId) = explode(' ',$msg,2);
-                    if( ! isset($topics[$topicId]) ) {
+                    if ( ! isset($topics[$topicId]) ) {
                         $topics[ $topicId ] = array(); // empty message queue
                         $result = 1;
                     }
                 }
                 // unregister subscriber from a topci
-                elseif( strpos($msg,'unreg') === 0 ) { 
+                elseif ( strpos($msg,'unreg') === 0 ) {
                     list($cmd,$topicId) = explode(' ',$msg,2);
                     unset($topics[$topicId]);
                     $result = 1;
-                }
-                elseif( strpos($msg,'unsub') === 0 ) {
+                } elseif ( strpos($msg,'unsub') === 0 ) {
                     list($cmd,$topicId,$sId) = explode(' ',$msg,3);
-                    if( isset($subscribers[$topicId][$sId]) ) {
+                    if ( isset($subscribers[$topicId][$sId]) ) {
                         unset($subscribers[$topicId][$sId]);
                         $result = 1;
                     }
-                }
-                elseif( strpos($msg,'sub') === 0 ) {
+                } elseif ( strpos($msg,'sub') === 0 ) {
                     list($cmd,$topicId,$sId) = explode(' ',$msg,3);
 
-                    if( ! isset($subscribers[$topicId]) ) {
+                    if ( ! isset($subscribers[$topicId]) ) {
                         $subscribers[$topicId] = array();
                     }
 
-                    if( ! isset($subscribers[$topicId][$sId]) ) {
+                    if ( ! isset($subscribers[$topicId][$sId]) ) {
                         $subscribers[ $topicId ][ $sId ] = array();
                         $result = 1;
                     }
-                }
-                elseif( strpos($msg,'blog') === 0 ) {
+                } elseif ( strpos($msg,'blog') === 0 ) {
                     list($cmd,$topicId,$sId) = explode(' ',$msg,3);
                     // send backlog to subscriber
 
-                    if( isset( $topics[$topicId] ) ) {
-                        foreach( $topics[$topicId] as $msg ) {
+                    if ( isset( $topics[$topicId] ) ) {
+                        foreach ($topics[$topicId] as $msg) {
                             printf("Publish backlog: [%s]\n", $sId . ' ' . $topicId . ' ' . $msg);
                             $this->publisher->send($sId . ' ' . $topicId . ' ' . $msg); // send messages to channels
                         }
                         $result = 1;
                     }
-                }
-                else {
+                } else {
                     list($topicId,$binary) = explode(' ',$msg,2);
 
                     if( ! isset($topics[$topicId]) )
                         $topics[$topicId] = array();
 
                     // Delivery to a registered client
-                    if( isset($topics[$topicId]) ) {
-                        // get subscribers and publish to 
+                    if ( isset($topics[$topicId]) ) {
+                        // get subscribers and publish to
                         // them
-                        if( isset($subscribers[$topicId]) ) {
-                            foreach( $subscribers[$topicId] as $sId => $q ) {
+                        if ( isset($subscribers[$topicId]) ) {
+                            foreach ($subscribers[$topicId] as $sId => $q) {
                                 printf("Publish message: [%s]\n", $sId . ' ' . $topicId . ' ' . $binary);
                                 $this->publisher->send($sId . ' ' . $topicId . ' ' . $binary); // send messages to channels
                             }
@@ -122,15 +119,9 @@ class NotificationServer
                     $result = 1;
                 }
                 $this->responder->send($result);
-            } 
-            catch ( Exception $e ) {
+            } catch ( Exception $e ) {
                 echo $e;
             }
         }
     }
 }
-
-
-
-
-

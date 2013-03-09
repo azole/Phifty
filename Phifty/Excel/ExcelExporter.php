@@ -7,42 +7,44 @@ require_once 'PHPExcel/PHPExcel/IOFactory.php';
 
 /* need to redesign this */
 
-class ExcelExporter 
+class ExcelExporter
 {
     public $collection;
     public $columns;
     public $excel;
 
-    function __construct( )
+    public function __construct( )
     {
         $this->excel = new \PHPExcel();
     }
 
-    function setCollection( $collection )
+    public function setCollection( $collection )
     {
         $this->collection = $collection;
+
         return $this;
     }
 
-    function setColumns( $columns )
+    public function setColumns( $columns )
     {
         $this->columns = $columns;
+
         return $this;
     }
 
-    function columnName( $i )
+    public function columnName( $i )
     {
         $columnName = '';
-        while($i > 0 ) {
+        while ($i > 0) {
             $modulo = ($i - 1) % 26;
             $columnName = chr( 65 + $modulo ) . $columnName;
-            $i = (int)(($i - $modulo) / 26);
+            $i = (int) (($i - $modulo) / 26);
         }
+
         return $columnName;
     }
 
-
-    function writeCollection($sheet,$collection)
+    public function writeCollection($sheet,$collection)
     {
         $row = 1;
         $col = 1;
@@ -50,16 +52,16 @@ class ExcelExporter
         $model = $this->collection->getModel();
         $labels = array();
         $columns = $this->columns ? $this->columns : $model->getColumnNames();
-        foreach( $columns as $name ) {
+        foreach ($columns as $name) {
             $label = $labels[$name] = $model->getColumn( $name )->getLabel();
             $cellpos = $this->columnName( $col++ ) . $row;
             $sheet->setCellValue( $cellpos , $label );
         }
         $row++;
 
-        foreach( $this->collection as $id => $item ) {
+        foreach ($this->collection as $id => $item) {
             $col = 1;
-            foreach( $columns as $name ) {
+            foreach ($columns as $name) {
                 $val = $item->value($name);
                 $cellpos = $this->columnName( $col++ ) . $row;
                 $sheet->setCellValueExplicit( $cellpos , $val );  // string type
@@ -69,7 +71,7 @@ class ExcelExporter
         $sheet->setTitle( $model->getLabel() );
     }
 
-    function setMetaData( $excel )
+    public function setMetaData( $excel )
     {
         // Set properties
         $excel->getProperties()
@@ -82,7 +84,7 @@ class ExcelExporter
             ->setCategory("");
     }
 
-    function writeStream( $filename = 'export.xls' )
+    public function writeStream( $filename = 'export.xls' )
     {
         $objPHPExcel = $this->excel;
 
@@ -97,22 +99,22 @@ class ExcelExporter
         $objPHPExcel->setActiveSheetIndex(0);
 
         // Redirect output to a client’s web browser (Excel5)
-        header("Pragma: public"); // required 
-        header("Expires: 0"); 
-        header("Cache-Control: must-revalidate, post-check=0, pre-check=0"); 
-        header("Cache-Control: private",false); // required for certain browsers 
+        header("Pragma: public"); // required
+        header("Expires: 0");
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header("Cache-Control: private",false); // required for certain browsers
         header('Cache-Control: max-age=0');
 
         header('Content-Type: application/vnd.ms-excel');
         header("Content-Disposition: attachment;filename=\"$filename\"");
-        header("Content-Transfer-Encoding: binary"); 
+        header("Content-Transfer-Encoding: binary");
 
         $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
         $objWriter->save('php://output');
         exit;
     }
 
-    function writeFile($filename)
+    public function writeFile($filename)
     {
         $objPHPExcel = $this->excel;
 

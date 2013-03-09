@@ -22,7 +22,7 @@ use Exception;
 //            [COOKIE] => PHPSESSID=6dqs40ngvldtjrg9iim3uafnl3; locale=zh_TW
 //        )
 
-class Html5UploadHandler 
+class Html5UploadHandler
 {
     public $content;
     public $headers;
@@ -49,24 +49,30 @@ class Html5UploadHandler
     public function getFileName()
     {
         if( isset($_SERVER['HTTP_X_UPLOAD_FILENAME']) )
+
             return $_SERVER['HTTP_X_UPLOAD_FILENAME'];
         if( isset( $this->headers[ 'X-UPLOAD-FILENAME' ] ) )
+
             return $this->headers[ 'X-UPLOAD-FILENAME' ];
     }
 
     public function getFileType()
     {
         if( isset($_SERVER['HTTP_X_UPLOAD_TYPE']) )
+
             return $_SERVER['HTTP_X_UPLOAD_TYPE'];
         if( isset($this->headers[ 'X-UPLOAD-TYPE' ]) )
+
             return $this->headers[ 'X-UPLOAD-TYPE' ];
     }
 
     public function getFileSize()
     {
         if( isset($_SERVER['HTTP_X_UPLOAD_SIZE']) )
+
             return $_SERVER['HTTP_X_UPLOAD_SIZE'];
         if( isset($this->headers[ 'X-UPLOAD-SIZE' ]) )
+
             return $this->headers[ 'X-UPLOAD-SIZE' ];
     }
 
@@ -88,18 +94,21 @@ class Html5UploadHandler
     public function decodeContent()
     {
         $content = file_get_contents('php://input');
-        if(isset($_GET['base64'])) {
+        if (isset($_GET['base64'])) {
             $content = base64_decode( $content );
-        } 
+        }
+
         return $content;
     }
 
     public function hasFile()
     {
         if( count($_FILES) > 0 )
+
             return true;
 
         if( $this->content )
+
             return true;
 
         return false;
@@ -107,12 +116,12 @@ class Html5UploadHandler
 
     public function move( $newFileName = null )
     {
-        if( $this->field ) {
+        if ($this->field) {
             if ( ! isset($_FILES[$this->field]['name'] ) ) {
                 throw new Exception( "File field {$this->field}: name is empty");
             }
 
-            if ( $err = $_FILES[$this->field]['error'] ) {
+            if ($err = $_FILES[$this->field]['error']) {
                 throw new Exception( "File field {$this->field} error: $err");
             }
 
@@ -121,20 +130,21 @@ class Html5UploadHandler
             $filename = $newFileName ? $newFileName : $_FILES[$this->field]['name'];
             $path = $this->uploadDir . DIRECTORY_SEPARATOR . $filename;
             $path = FileUtils::filename_increase($path);
-            if( move_uploaded_file( $_FILES['upload']['tmp_name'] , $path ) === false ) {
+            if ( move_uploaded_file( $_FILES['upload']['tmp_name'] , $path ) === false ) {
                 return false;
             }
+
             return $path;
         } else {
             $content = $this->getContent();
             $filename = $newFileName ? $newFileName : $this->getFileName();
             $path = $this->uploadDir . DIRECTORY_SEPARATOR . $filename;
             $path = FileUtils::filename_increase($path);
-            if( file_put_contents( $path , $content ) === false ) {
+            if ( file_put_contents( $path , $content ) === false ) {
                 return false;
             }
+
             return $path;
         }
     }
 }
-

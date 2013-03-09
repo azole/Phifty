@@ -12,9 +12,10 @@ class LocaleService
     {
 
         // for backward compatibility
-        if( ! $options ) {
+        if (! $options) {
             $options = $kernel->config->get('framework','Locale');
             if( ! $options )
+
                 return;
         }
 
@@ -27,7 +28,7 @@ class LocaleService
             $defaultLang = isset($options['Default'])   ? $options['Default']   : 'en';
             $localeDir   = isset($options['LocaleDir']) ? $options['LocaleDir'] : 'locale';
 
-            if( ! ( $textdomain && $defaultLang && $localeDir) ) {
+            if ( ! ( $textdomain && $defaultLang && $localeDir) ) {
                 return;
             }
 
@@ -37,12 +38,13 @@ class LocaleService
             $locale->localedir( $kernel->rootDir . DIRECTORY_SEPARATOR . $localeDir);
 
             // add languages to list
-            foreach( @$options['Langs'] as $localeName ) {
+            foreach (@$options['Langs'] as $localeName) {
                 $locale->add( $localeName );
             }
 
             # _('en');
             $locale->init();
+
             return $locale;
         };
     }

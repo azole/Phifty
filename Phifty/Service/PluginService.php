@@ -8,20 +8,18 @@ class PluginService
 
     public function getId() { return 'Plugin'; }
 
-
     /**
      *
-     * @param Phifty\Kernel $kernel Kernel object.
-     * @param array $options Plugin service options.
+     * @param Phifty\Kernel $kernel  Kernel object.
+     * @param array         $options Plugin service options.
      */
     public function register($kernel, $options = array() )
     {
         // here we check plugins stash to decide what to load.
         $config = $kernel->config->get('framework','Plugins');
-        if( $config === null || $config->isEmpty() ) {
+        if ( $config === null || $config->isEmpty() ) {
             return;
         }
-
 
         // plugin manager depends on classloader,
         // register plugin namespace to classloader.
@@ -36,14 +34,14 @@ class PluginService
         $manager->registerPluginDir( PH_ROOT . DIRECTORY_SEPARATOR . 'plugins' );
 
         if ( isset($options["Dirs"]) ) {
-            foreach( $options["Dirs"] as $dir ) {
+            foreach ($options["Dirs"] as $dir) {
                 $manager->registerPluginDir($dir);
             }
         }
 
-        foreach( $config as $pluginName => $config ) {
-            $kernel->classloader->addNamespace(array( 
-                $pluginName => array( 
+        foreach ($config as $pluginName => $config) {
+            $kernel->classloader->addNamespace(array(
+                $pluginName => array(
                     $kernel->rootPluginDir,
                     $kernel->frameworkPluginDir,
                 )
@@ -56,5 +54,3 @@ class PluginService
     }
 
 }
-
-

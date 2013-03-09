@@ -6,26 +6,26 @@ use Phifty\Web\PagerDisplay;
 class RegionPagerDisplay extends PagerDisplay
 {
 
-    function render_link( $num , $text = null , $moreclass = "" , $disabled = false )
+    public function render_link( $num , $text = null , $moreclass = "" , $disabled = false )
     {
         if( $text == null )
             $text = $num;
 
         if( $disabled )
+
             return $this->render_link_dis( $text , $moreclass );
 
         return <<<EOF
  <a class="pager-link $moreclass"
-   onclick="return Region.of( this ).refreshWith({ page: $num  });">$text</a> 
+   onclick="return Region.of( this ).refreshWith({ page: $num  });">$text</a>
 EOF;
 
     }
 
-    function render_link_dis( $text , $moreclass = "" ) {
+    public function render_link_dis( $text , $moreclass = "" )
+    {
         return <<<EOF
 <a class="pager-link pager-disabled $moreclass">$text</a>
 EOF;
     }
 }
-
-

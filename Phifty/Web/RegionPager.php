@@ -11,20 +11,21 @@ class RegionPager extends Pager
             $text = $num;
 
         if( $disabled )
+
             return $this->renderLinkDisabled( $text , $moreclass );
 
         return <<<EOF
  <a class="pager-link $moreclass"
-   onclick="return Region.of( this ).refreshWith({ page: $num  });">$text</a> 
+   onclick="return Region.of( this ).refreshWith({ page: $num  });">$text</a>
 EOF;
 
     }
 
-    function renderLinkDisabled( $text , $moreclass = "" ) {
+    public function renderLinkDisabled( $text , $moreclass = "" )
+    {
         return <<<EOF
 <a class="pager-link pager-disabled $moreclass">$text</a>
 EOF;
     }
 
 }
-

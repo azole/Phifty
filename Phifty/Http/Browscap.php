@@ -241,10 +241,10 @@ class Browscap
     /**
      * Gets the information about the browser by User Agent
      *
-     * @param string $user_agent  the user agent string
-     * @param bool $return_array  whether return an array or an object
+     * @param  string    $user_agent   the user agent string
+     * @param  bool      $return_array whether return an array or an object
      * @throws Exception
-     * @return stdObject  the object containing the browsers details. Array if
+     * @return stdObject the object containing the browsers details. Array if
      *                    $return_array is set to true.
      */
     public function getBrowser($user_agent = null, $return_array = false)
@@ -353,11 +353,11 @@ class Browscap
     /**
      * Add proxy settings to the stream context array.
      *
-     * @param string $server    Proxy server/host
-     * @param int    $port      Port
-     * @param string $wrapper   Wrapper: "http", "https", "ftp", others...
-     * @param string $username  Username (when requiring authentication)
-     * @param string $password  Password (when requiring authentication)
+     * @param string $server   Proxy server/host
+     * @param int    $port     Port
+     * @param string $wrapper  Wrapper: "http", "https", "ftp", others...
+     * @param string $username Username (when requiring authentication)
+     * @param string $password Password (when requiring authentication)
      *
      * @return Browscap
      */
@@ -385,6 +385,7 @@ class Browscap
          *   addProxySettings('https')->
          *   addProxySettings('ftp');
          */
+
         return $this;
     }
 
@@ -405,7 +406,7 @@ class Browscap
 
             // remove wrapper options related to proxy settings
             if (isset($this->_streamContextOptions[$wrapper]['proxy'])) {
-                foreach ($options as $option){
+                foreach ($options as $option) {
                     unset($this->_streamContextOptions[$wrapper][$option]);
                 }
 
@@ -572,10 +573,10 @@ class Browscap
      * Updates the local copy of the ini file (by version checking) and adapts
      * his syntax to the PHP ini parser
      *
-     * @param string $url  the url of the remote server
-     * @param string $path  the path of the ini file to update
+     * @param  string    $url  the url of the remote server
+     * @param  string    $path the path of the ini file to update
      * @throws Exception
-     * @return bool if the ini file was updated
+     * @return bool      if the ini file was updated
      */
     protected function _getRemoteIniFile($url, $path)
     {
@@ -630,7 +631,7 @@ class Browscap
      * Gets the remote ini file update timestamp
      *
      * @throws Exception
-     * @return int the remote modification timestamp
+     * @return int       the remote modification timestamp
      */
     protected function _getRemoteMTime()
     {
@@ -648,7 +649,7 @@ class Browscap
      * Gets the local ini file update timestamp
      *
      * @throws Exception
-     * @return int the local modification timestamp
+     * @return int       the local modification timestamp
      */
     protected function _getLocalMTime()
     {
@@ -665,7 +666,7 @@ class Browscap
      * var_export one as the internal PHP function does not strip whitespace or
      * convert strings to numbers.
      *
-     * @param array $array the array to parse and convert
+     * @param  array  $array the array to parse and convert
      * @return string the array parsed into a PHP string
      */
     protected function _array2string($array)
@@ -724,9 +725,9 @@ class Browscap
     /**
      * Retrieve the data identified by the URL
      *
-     * @param string $url the url of the data
+     * @param  string    $url the url of the data
      * @throws Exception
-     * @return string the retrieved data
+     * @return string    the retrieved data
      */
     protected function _getRemoteData($url)
     {

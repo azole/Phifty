@@ -6,9 +6,9 @@ use Roller\Dumper\ConsoleDumper;
 class RouterCommand extends Command
 {
 
-    function brief() { return 'List router'; }
-    
-    function execute()
+    public function brief() { return 'List router'; }
+
+    public function execute()
     {
         $router = kernel()->router;
         $router->compile();
@@ -17,5 +17,3 @@ class RouterCommand extends Command
         $dumper->dump( $router->routes );
     }
 }
-
-

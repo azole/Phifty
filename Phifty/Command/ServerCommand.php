@@ -4,15 +4,15 @@ use CLIFramework\Command;
 
 class ServerCommand extends Command
 {
-    function brief() { return 'run http server'; }
-    
-    function options($opts) 
+    public function brief() { return 'run http server'; }
+
+    public function options($opts)
     {
         $opts->add('h|host:','host');
         $opts->add('p|port:','port');
     }
 
-    function execute()
+    public function execute()
     {
         while (@ob_end_flush());
 
@@ -20,7 +20,7 @@ class ServerCommand extends Command
         $host = $this->options->host ?: 'localhost';
         $port = $this->options->port ?: '8000';
         chdir(PH_APP_ROOT . DIRECTORY_SEPARATOR . 'webroot');
-        if( extension_loaded('pcntl') ) {
+        if ( extension_loaded('pcntl') ) {
             pcntl_exec($php, array('-S', "$host:$port", 'index.php'));
         } else {
             $this->logger->info("Starting server at http://$host:$port");
@@ -28,4 +28,3 @@ class ServerCommand extends Command
         }
     }
 }
-

@@ -3,26 +3,28 @@ namespace Phifty\Command;
 use CLIFramework\Command;
 use Phifty\FileUtils;
 
-function copy_if_not_exists($source,$dest) {
-    if( ! file_exists($dest) ) {
+function copy_if_not_exists($source,$dest)
+{
+    if ( ! file_exists($dest) ) {
         copy($source,$dest);
     }
 }
 
 class InitCommand extends Command
 {
-    function brief() {
+    public function brief()
+    {
         return 'Initialize phifty project files, directories and permissions.';
     }
 
-    function options($opts)
+    public function options($opts)
     {
         $init = new AssetInitCommand;
         $install = new AssetInstallCommand;
         $install->options($opts);
     }
 
-    function execute()
+    public function execute()
     {
         $kernel = kernel();
         $this->logger->info( "Initializing phifty dirs..." );
@@ -54,13 +56,13 @@ class InitCommand extends Command
         $chmods[] = array( "og+rw" , "cache" );
 
         $chmods[] = array( "og+rw" , $kernel->webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload' );
-        foreach( $chmods as $mod ) {
+        foreach ($chmods as $mod) {
             $this->logger->info( "{$mod[0]} {$mod[1]}", 1 );
             system("chmod -R {$mod[0]} {$mod[1]}");
         }
 
         $this->logger->info("Linking bin/phifty");
-        if( ! file_exists('bin/phifty') ) {
+        if ( ! file_exists('bin/phifty') ) {
             symlink(  '../phifty/bin/phifty', 'bin/phifty' );
         }
 
@@ -85,4 +87,3 @@ class InitCommand extends Command
 DOC;
     }
 }
-

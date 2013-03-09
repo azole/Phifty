@@ -4,7 +4,7 @@ use CLIFramework\Command;
 use Phifty\Console;
 
 /**
- * When running asset:init command, we should simply register app/plugin assets 
+ * When running asset:init command, we should simply register app/plugin assets
  * into .assetkit file.
  *
  * Then, By running asset:update command, phifty will install assets into webroot.
@@ -24,14 +24,13 @@ class AssetCommand extends Command
         $init->options($opts);
     }
 
-
     public function init()
     {
         $this->registerCommand('init', 'Phifty\Command\AssetInitCommand');
         $this->registerCommand('install', 'Phifty\Command\AssetInstallCommand');
     }
 
-    public function execute() 
+    public function execute()
     {
         $app = Console::getInstance();
 
@@ -47,6 +46,3 @@ class AssetCommand extends Command
         $install->executeWrapper(array());
     }
 }
-
-
-

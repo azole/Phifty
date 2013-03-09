@@ -8,7 +8,7 @@ use Phifty\View\Engine;
  *    $view = kernel()->view;
  */
 
-class ViewFactory 
+class ViewService
 {
 
     public $backend = 'twig';
@@ -27,6 +27,7 @@ class ViewFactory
         $opts = array();
         if( $this->templateDirs )
             $opts['template_dirs'] = $this->templateDirs;
+
         return new $viewClass($engine, $opts);
     }
 }
@@ -37,7 +38,7 @@ class ViewService
     public $options;
 
     public function getId() { return 'View'; }
-    public function register($kernel, $options = array() ) 
+    public function register($kernel, $options = array() )
     {
         $this->options = $options;
         $factory = new ViewFactory;
@@ -50,4 +51,3 @@ class ViewService
         $kernel->registerFactory('view',$factory);
     }
 }
-

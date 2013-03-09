@@ -11,7 +11,7 @@ use Phifty\Kernel;
  */
 class Locale extends Command
 {
-    function run()
+    public function run()
     {
         $kernel      = kernel();
 
@@ -21,7 +21,7 @@ class Locale extends Command
         /* merge/update framework locale into app locale dir */
         $finder = Finder::create()->files()->name('*.po')->in( PH_ROOT . DIRECTORY_SEPARATOR . 'locale' );
         $itr = $finder->getIterator();
-        foreach( $itr as $item ) {
+        foreach ($itr as $item) {
             # echo $item->getPathname(). "\n";
             $sourceDir = dirname( $item->getPathname() );
             $sourceRelPath = FileUtils::remove_base( $item->getPathname() , PH_ROOT );
@@ -33,29 +33,26 @@ class Locale extends Command
             $sourcePo = $sourceDir . DIRECTORY_SEPARATOR . $frameworkId . '.po';
             $targetPo = $targetDir . DIRECTORY_SEPARATOR . $appId . '.po';
 
-            # var_dump( $sourcePo , $targetPo ); 
+            # var_dump( $sourcePo , $targetPo );
 
-            if( file_exists( $targetPo ) ) {
+            if ( file_exists( $targetPo ) ) {
                 $this->log("Msgcat " . basename($sourcePo) . ' => ' . basename($targetPo) );
                 $merged = '';
                 $h = popen("msgcat $sourcePo $targetPo",'r');
-                while(!feof($h)) 
-                { 
-                    // send the current file part to the browser 
-                    $merged .= fread($h, 1024); 
-                } 
+                while (!feof($h)) {
+                    // send the current file part to the browser
+                    $merged .= fread($h, 1024);
+                }
                 pclose($h);
 
                 $this->log( "Writing back to " );
                 file_put_contents( $targetPo , $merged );
-            }
-            else {
+            } else {
                 $this->log( "Copying files.." );
                 copy( $sourcePo , $targetPo );
             }
-            
+
         }
 
     }
 }
-

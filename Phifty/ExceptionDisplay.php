@@ -1,33 +1,36 @@
 <?php
 
-
 namespace Phifty;
 
-class ExceptionDisplay {
-
+class ExceptionDisplay
+{
     public $template;
     public $exception;
     public $dev;
 
-    function __construct($exception,$dev = false,$template = null) {
+    public function __construct($exception,$dev = false,$template = null)
+    {
         $this->dev = $dev;
         $this->exception = $exception;
         $this->template = $template;
     }
 
-    function renderTemplate() {
+    public function renderTemplate()
+    {
         $smarty = new Smarty3;
         $smarty->assign( "Exception" , $this->exception );
         $smarty->assign( "Dev" , $this->dev );
         $smarty->assign( "Lines" , $this->getLines() );
-        $html = $smarty->fetch( $this->template ); 
+        $html = $smarty->fetch( $this->template );
+
         return $html;
     }
 
-    function renderDefault() {
+    public function renderDefault()
+    {
         $html = null;
 
-        if( $this->dev ) {
+        if ($this->dev) {
 
             $lines = join( "", $this->getLines() );
             $html =<<<EN
@@ -40,20 +43,19 @@ class ExceptionDisplay {
     </pre>
 </html>
 EN;
-        } 
-        else
-        {
+        } else {
             $html =<<<EN
 <pre>
     Error
 </pre>
 EN;
         }
+
         return $html;
     }
 
-
-    function getLines() {
+    public function getLines()
+    {
         $e = $this->exception;
 
         $file = $e->getFile();
@@ -61,15 +63,15 @@ EN;
         $range = 10;
         $lines = file( $file );
         $startLine = ($line - $range) > 0 ? $line - $range : 0;
+
         return array_splice( $lines , $startLine , $range + $range );
     }
 
-    function display() {
+    public function display()
+    {
         if( $this->template )
             echo $this->renderTemplate();
         else
             echo $this->renderDefault();
     }
 }
-
-

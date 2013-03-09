@@ -9,32 +9,32 @@
  * file that was distributed with this source code.
  */
 namespace Phifty\Environment;
-use Universal\Requirement\Requirement;
 use Exception;
 use ErrorException;
 
-
-class Development 
+class Development
 {
 
-    static function exception_error_handler($errno, $errstr, $errfile, $errline ) {
+    public static function exception_error_handler($errno, $errstr, $errfile, $errline )
+    {
         throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     }
 
-    static function exception_handler($e) {
-        // var_dump( $e ); 
+    public static function exception_handler($e)
+    {
+        // var_dump( $e );
     }
 
-
     // XXX: does not work with E_PARSE error
-    // register_shutdown_function(array(__CLASS__,'shutdown_handler')); 
-    static function shutdown_handler() {
-        if(is_null($e = error_get_last()) === false) { 
+    // register_shutdown_function(array(__CLASS__,'shutdown_handler'));
+    public static function shutdown_handler()
+    {
+        if (is_null($e = error_get_last()) === false) {
             print_r($e);
         }
     }
 
-    static function init($kernel)
+    public static function init($kernel)
     {
         error_reporting(E_ALL);
 
@@ -43,7 +43,7 @@ class Development
         // set_exception_handler(array(__CLASS__,'exception_handler') );
 
         // if firebug supports
-        if( $kernel->isCLI && getenv('PHIFTY_PROFILE') ) {
+        if ( $kernel->isCLI && getenv('PHIFTY_PROFILE') ) {
             $kernel->event->register('phifty.console.finish', function() use ($kernel) {
                 // echo 'memory usage: ', (int) (memory_get_usage() / 1024  ) , ' KB', PHP_EOL;
                 echo 'Memory peak usage: ', (int) (memory_get_peak_usage() / 1024 ) , ' KB' . PHP_EOL;

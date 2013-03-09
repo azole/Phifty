@@ -10,10 +10,10 @@ interface EngineInterface
      *
      * @return object
      */
-    function newRenderer();
+    public function newRenderer();
 
     /*
-     * Render template with args , return string 
+     * Render template with args , return string
      *
      * @param string $template template name
      * @param array  $args     template args
@@ -21,17 +21,16 @@ interface EngineInterface
      * @return string the rendererd template content
      *
      */
-    function render( $template , $args = null );
+    public function render( $template , $args = null );
 
     /*
      * Render template from string
      *
      * @param string $stringTemplate
-     * @param array $args
+     * @param array  $args
      *
      */
     // function renderString( $stringTemplate , $args = null );
-
 
     /*
      * Display template from string
@@ -45,4 +44,3 @@ interface EngineInterface
     /* display template directly */
     // function display( $template , $args = null );
 }
-
