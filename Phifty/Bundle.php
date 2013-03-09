@@ -242,7 +242,7 @@ class Bundle
      */
     public function assets() 
     {
-        return array(); 
+        return array();
     }
 
 
