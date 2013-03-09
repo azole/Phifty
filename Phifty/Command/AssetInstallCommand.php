@@ -29,11 +29,26 @@ class AssetInstallCommand extends AssetBaseCommand
 
         $installer->logger = $this->logger;
         $loader = $this->getAssetLoader();
-        $assets = $loader->loadAll();
+        $kernel = kernel();
 
-        foreach( $assets as $asset ) {
-            $this->logger->info("Installing {$asset->name} ...");
-            $installer->install( $asset );
+        $this->logger->info("Installing assets from applications...");
+        foreach( $kernel->applications as $application ) {
+            $assetNames = $application->assets();
+            $assets = $loader->loadAssets($assetNames);
+            foreach( $assets as $asset ) {
+                $this->logger->info("Installing {$asset->name} ...");
+                $installer->install( $asset );
+            }
+        }
+
+        $this->logger->info("Installing assets from plugins...");
+        foreach( $kernel->plugins as $plugin ) {
+            $assetNames = $plugin->assets();
+            $assets = $loader->loadAssets($assetNames);
+            foreach( $assets as $asset ) {
+                $this->logger->info("Installing {$asset->name} ...");
+                $installer->install( $asset );
+            }
         }
         $this->logger->info("Done");
     }
