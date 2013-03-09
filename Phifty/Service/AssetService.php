@@ -31,8 +31,13 @@ class AssetService
 
             $config = new AssetConfig( $assetFile ,
                 $kernel->environment === 'production'
-                    ? array( 'cache' => true )
-                    : array()
+                ? array( 
+                    'cache' => true,
+                    'environment' => AssetConfig::PRODUCTION
+                )
+                : array(
+                    'environment' => AssetConfig::DEVELOPMENT
+                )
             );
 
             $loader   = new AssetToolkit\AssetLoader($config);

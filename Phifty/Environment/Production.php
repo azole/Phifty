@@ -21,9 +21,9 @@ class Production
 
         # error_reporting(0);
 
-        set_error_handler(function($errno,$errmsg) {
-            trigger_error( "$errno: $errmsg" );
-        });
+        # set_error_handler(function($errno,$errmsg) {
+        #     trigger_error( "$errno: $errmsg" );
+        # });
 
         set_exception_handler( function($e) use ($kernel) {
             die('ERROR');
