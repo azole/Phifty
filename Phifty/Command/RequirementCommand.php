@@ -29,6 +29,9 @@ class RequirementCommand extends Command
         $exts = array(
             'apc',
             'pdo',
+            'pdo_mysql',
+            'pdo_sqlite',
+            'pdo_psql',
             'mysqli',
         );
         foreach( $exts as $ext ) {
