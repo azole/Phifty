@@ -6,7 +6,6 @@ use Phifty\FileUtils;
 use Phifty\ClassUtils;
 
 use AssetToolkit\Extension\Twig\AssetExtension;
-    
 
 use Twig_Environment;
 use Twig_Loader_Filesystem;
