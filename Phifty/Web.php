@@ -29,7 +29,14 @@ class Web
     public function include_loaded_assets($name = null)
     {
         $kernel = kernel();
+
+        // call asset.load trigger to load global assets
+        $kernel->event->trigger('asset.load');
+
+        // get all loaded assets
         $assets = $kernel->asset->loader->all();
+
+        // use renderAssets to render html
         return $kernel->asset->render->renderAssets($assets);
     }
 
