@@ -26,7 +26,7 @@ class Bundle
 
     public function __construct()
     {
-
+        kernel()->event->register('asset.load', array($this,'loadAssets'));
     }
 
     public function init() 
