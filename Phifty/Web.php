@@ -30,8 +30,21 @@ class Web
     {
         $kernel = kernel();
 
+        $assets = array();
+
+        // Instead of loading assets by triggering asset.load event
+        // the flow (plugin service->init, appliation->init) can 
+        // not load the assets with the correct sequence.
+        foreach( $kernel->applications as $app ) {
+            // load application assets
+            $app->loadAssets();
+        }
+        foreach( $kernel->plugins as $plugin ) {
+            $plugin->loadAssets();
+        }
+
         // call asset.load trigger to load global assets
-        $kernel->event->trigger('asset.load');
+        // $kernel->event->trigger('asset.load');
 
         // get all loaded assets
         $assets = $kernel->asset->loader->all();
