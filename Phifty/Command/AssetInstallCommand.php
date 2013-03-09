@@ -13,12 +13,12 @@ use AssetToolkit\LinkInstaller;
  */
 class AssetInstallCommand extends AssetBaseCommand
 {
-    function options($opts)
+    public function options($opts)
     {
         $opts->add('l|link','use symbolic link');
     }
 
-    function execute() 
+    public function execute() 
     {
         $options = $this->options;
         $config = $this->getAssetConfig();
