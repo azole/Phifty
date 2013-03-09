@@ -7,8 +7,7 @@ use Phifty\View\Engine;
  *
  *    $view = kernel()->view;
  */
-
-class ViewService
+class ViewFactory
 {
 
     public $backend = 'twig';

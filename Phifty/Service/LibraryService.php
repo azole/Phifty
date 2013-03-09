@@ -2,7 +2,7 @@
 namespace Phifty\Service;
 use Exception;
 
-class LibraryService
+class LibraryLoader
 {
     public $kernel;
 

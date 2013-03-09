@@ -176,7 +176,7 @@ namespace {
      *
      * @return Phifty\Kernel
      */
-    public function kernel()
+    function kernel()
     {
         global $kernel;
         if( $kernel )

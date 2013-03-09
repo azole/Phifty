@@ -212,7 +212,7 @@ function current_lang()
 }
 
 namespace {
-    public function __()
+    function __()
     {
         $args = func_get_args();
         $msg = _( array_shift( $args ) );
