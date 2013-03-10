@@ -46,6 +46,8 @@ class AssetService
             $render   = new AssetRender($config,$loader);
             $compiler = $render->getCompiler();
 
+            $compiler->defaultJsCompressor = 'uglifyjs';
+
             return (object) array(
                 'loader' => $loader,
                 'config' => $config,
