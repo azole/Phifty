@@ -33,20 +33,18 @@ class AssetService
                 $kernel->environment === 'production'
                 ? array( 
                     'cache' => true,
-                    'environment' => AssetConfig::PRODUCTION
+                    'environment' => AssetConfig::PRODUCTION,
+                    'namespace' => $kernel->namespace,
                 )
                 : array(
-                    'environment' => AssetConfig::DEVELOPMENT
+                    'environment' => AssetConfig::DEVELOPMENT,
+                    'namespace' => $kernel->namespace,
                 )
             );
 
-            $loader   = new AssetToolkit\AssetLoader($config);
-            $compiler = new AssetToolkit\AssetCompiler($config,$loader);
-            $render   = new AssetToolkit\AssetRender($config,$loader);
-
-            if ($kernel->namespace) {
-                $compiler->setNamespace( $kernel->namespace );
-            }
+            $loader   = new AssetLoader($config);
+            $render   = new AssetRender($config,$loader);
+            $compiler = $render->getCompiler();
 
             return (object) array(
                 'loader' => $loader,
