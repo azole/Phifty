@@ -30,6 +30,7 @@ class AssetInstallCommand extends AssetBaseCommand
         $loader = $this->getAssetLoader();
         $kernel = kernel();
 
+
         $this->logger->info("Installing assets from applications...");
         foreach ($kernel->applications as $application) {
             $assetNames = $application->assets();
@@ -49,6 +50,15 @@ class AssetInstallCommand extends AssetBaseCommand
                 $installer->install( $asset );
             }
         }
+
+
+        $compiledDir = $config->getCompiledDir();
+        if( ! file_exists($compiledDir) ) {
+            $this->logger->info("Creating asset compiled dir: $compiledDir");
+            $this->logger->info("Please chmod this directory as you need.");
+            mkdir($compiledDir,0777,true);
+        }
+
         $this->logger->info("Done");
     }
 }
