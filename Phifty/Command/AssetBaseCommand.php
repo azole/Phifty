@@ -30,9 +30,10 @@ class AssetBaseCommand extends Command
         foreach ( $bundle->getAssetDirs() as $dir ) {
             if ( file_exists($dir) ) {
                 $dir = substr($dir, strlen($cwd) + 1 );
-                $asset = $config->registerAssetFromPath($dir);
-                $this->logger->info( "Found asset {$asset->name}" ,1 );
-                $this->updateAssetResource($asset);
+                if ( $asset = $config->registerAssetFromPath($dir) ) {
+                    $this->logger->info( "Found asset {$asset->name}" ,1 );
+                    $this->updateAssetResource($asset);
+                }
             }
         }
     }
