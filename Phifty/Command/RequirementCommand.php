@@ -32,6 +32,7 @@ class RequirementCommand extends Command
             'pdo_mysql',
             'pdo_sqlite',
             'pdo_psql',
+            'gd',
             'mysqli',
         );
         echo "extensions:\n";
