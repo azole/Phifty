@@ -31,7 +31,7 @@ class RequirementCommand extends Command
             'pdo',
             'pdo_mysql',
             'pdo_sqlite',
-            'pdo_psql',
+            'pdo_pgsql',
             'gd',
             'mysqli',
         );
