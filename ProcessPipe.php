@@ -14,7 +14,7 @@ class ProcessPipe
             1 => array('pipe', 'w'),
             2 => array('pipe', 'w')), $pipes);
 
-        if( $input )
+        if ( $input )
             fwrite($pipes[0], $input);
 
         fclose($pipes[0]);

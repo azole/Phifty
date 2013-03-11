@@ -259,7 +259,7 @@ class CurrentUser
     public function hasRole($roleId)
     {
         if ( $roles = $this->session->get('roles') ) {
-            if( is_object($roleId) )
+            if ( is_object($roleId) )
 
                 return in_array($roleId->__toString(), $roles );
             return in_array($roleId , $roles);

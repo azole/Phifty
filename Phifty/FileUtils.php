@@ -12,7 +12,7 @@ class FileUtils
         $handle = opendir($dir);
 
         while (false !== ($entry = readdir($handle))) {
-            if( '.' === $entry || '..' === $entry )
+            if ( '.' === $entry || '..' === $entry )
                 continue;
             $lists[] = $dir . DIRECTORY_SEPARATOR . $entry;
         }
@@ -26,7 +26,7 @@ class FileUtils
         $lists = array();
         $handle = opendir($dir);
         while (false !== ($entry = readdir($handle))) {
-            if( '.' === $entry || '..' === $entry )
+            if ( '.' === $entry || '..' === $entry )
                 continue;
             $path = $dir . DIRECTORY_SEPARATOR . $entry;
             if ( is_dir($path) ) {
@@ -40,16 +40,16 @@ class FileUtils
 
     public static function pretty_size($bytes)
     {
-        if( $bytes < 1024 )
+        if ( $bytes < 1024 )
 
             return $bytes . 'B';
-        if( $bytes < 1024 * 1024 )
+        if ( $bytes < 1024 * 1024 )
 
             return ((int) $bytes / 1024) . 'KB';
-        if( $bytes < 1024 * 1024 * 1024 )
+        if ( $bytes < 1024 * 1024 * 1024 )
 
             return ((int) $bytes / 1024 / 1024) . 'MB';
-        if( $bytes < 1024 * 1024 * 1024 * 1024 )
+        if ( $bytes < 1024 * 1024 * 1024 * 1024 )
 
             return ((int) $bytes / 1024 / 1024 / 1024) . 'GB';
         return ((int) $bytes / 1024 / 1024) . 'MB';
@@ -69,9 +69,9 @@ class FileUtils
 
     public static function mkdir( $path , $verbose = false , $mode = 0777 )
     {
-        if( $verbose )
+        if ( $verbose )
             echo "Creating dir: $path\n";
-        if( false === file_exists($path) )
+        if ( false === file_exists($path) )
             mkdir($path,$mode,true);
     }
 
@@ -80,27 +80,27 @@ class FileUtils
         $paths = (array) $paths;
         foreach ($paths as $path) {
 
-            if( ! file_exists( $path ) )
+            if ( ! file_exists( $path ) )
                 die( "$path does not exist." );
 
             if ( is_dir( $path ) ) {
                 $iterator = new \DirectoryIterator($path);
                 foreach ($iterator as $fileinfo) {
                     if ( $fileinfo->isDir() ) {
-                        if( $fileinfo->getFilename() == "." )
+                        if ( $fileinfo->getFilename() == "." )
                             continue;
 
-                        if( $fileinfo->getFilename() == ".." )
+                        if ( $fileinfo->getFilename() == ".." )
                             continue;
                         self::rmtree( $fileinfo->getPathname() );
 
-                        if( $verbose )
+                        if ( $verbose )
                             echo "\trmdir: " . $fileinfo->getPathname() . "\n";
                     } elseif ($fileinfo->isFile()) {
-                        if( $verbose )
+                        if ( $verbose )
                             echo "\tunlink file: " . $fileinfo->getPathname() . "\n";
 
-                        if( unlink( $fileinfo->getPathname() ) == false )
+                        if ( unlink( $fileinfo->getPathname() ) == false )
                             die( "File delete error: {$fileinto->getPathname()}" );
                     }
                 }
@@ -117,9 +117,9 @@ class FileUtils
     {
         $paths = (array) $paths;
         foreach ($paths as $path) {
-            if( $verbose )
+            if ( $verbose )
                 echo "\tCreating directory $path\n";
-            if( file_exists( $path ) )
+            if ( file_exists( $path ) )
                 continue;
             mkdir( $path, $mode , true );  // recursive
         }
@@ -151,7 +151,7 @@ class FileUtils
         $start = strpos( $path , '{' );
         $end   = strpos( $path , '}' , $start );
 
-        if( $start === false || $end === false )
+        if ( $start === false || $end === false )
 
             return (array) $path;
 
@@ -217,7 +217,7 @@ class FileUtils
 
     public static function filename_increase($path)
     {
-        if( ! file_exists($path) )
+        if ( ! file_exists($path) )
 
             return $path;
 

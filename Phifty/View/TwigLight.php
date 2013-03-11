@@ -9,7 +9,7 @@ class TwigLight
     public static function getEngine()
     {
         static $engine;
-        if( $engine )
+        if ( $engine )
 
             return $engine;
         $loader = new \Twig_Loader_String();

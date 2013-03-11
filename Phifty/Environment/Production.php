@@ -16,7 +16,7 @@ class Production
     {
         // if we are in command-line mode,
         /* for production mode */
-        if( extension_loaded('xdebug') )
+        if ( extension_loaded('xdebug') )
             xdebug_disable();
 
         # error_reporting(0);

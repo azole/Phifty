@@ -19,12 +19,12 @@ class CacheService
             // return new ApcCache( $self->appName );
 
             /*
-            if( extension_loaded('apc') )
+            if ( extension_loaded('apc') )
                 $b[] = $kernel->apc;
             */
 
             /*
-            if( extension_loaded('memcache') )
+            if ( extension_loaded('memcache') )
                 $b[] = new \CacheKit\MemcacheCache( array( array('localhost',11211) ) );
             */
 

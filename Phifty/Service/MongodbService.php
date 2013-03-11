@@ -18,7 +18,7 @@ class MongodbService
      */
     public function register( $kernel , $options = array() )
     {
-        if( ! extension_loaded('mongo') )
+        if ( ! extension_loaded('mongo') )
             throw new Exception('mongo extension is required.');
 
         $kernel->mongo = function() use ($kernel,$options) {

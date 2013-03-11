@@ -204,7 +204,7 @@ abstract class CRUDHandler extends Controller
      */
     public function getListColumns()
     {
-        if( $this->listColumns )
+        if ( $this->listColumns )
 
             return $this->listColumns;
         return $this->getModel()->getColumnNames();
@@ -217,7 +217,7 @@ abstract class CRUDHandler extends Controller
      */
     public function getModel()
     {
-        if( $this->model )
+        if ( $this->model )
 
             return $this->model;
         return $this->model = new $this->modelClass;
@@ -259,7 +259,7 @@ abstract class CRUDHandler extends Controller
      */
     public function loadRecord()
     {
-        if( $this->currentRecord )
+        if ( $this->currentRecord )
 
             return $this->currentRecord;
         $id = $this->request->param('id');
@@ -395,7 +395,7 @@ abstract class CRUDHandler extends Controller
 
     public function getCurrentRecord()
     {
-        if( $this->currentRecord )
+        if ( $this->currentRecord )
 
             return $this->currentRecord;
         return $this->currentRecord = $this->loadRecord();
@@ -417,7 +417,7 @@ abstract class CRUDHandler extends Controller
 
     public function getCurrentAction()
     {
-        if( $this->currentAction )
+        if ( $this->currentAction )
 
             return $this->currentAction;
         $record = $this->getCurrentRecord();

@@ -24,7 +24,7 @@ class ViewFactory
         $engine = Engine::createEngine( $this->backend );
         $viewClass = $class ? $class : $this->class;
         $opts = array();
-        if( $this->templateDirs )
+        if ( $this->templateDirs )
             $opts['template_dirs'] = $this->templateDirs;
 
         return new $viewClass($engine, $opts);
@@ -41,11 +41,11 @@ class ViewService
     {
         $this->options = $options;
         $factory = new ViewFactory;
-        if( isset($options['Backend']) )
+        if ( isset($options['Backend']) )
             $factory->backend = $options['Backend'];
-        if( isset($options['Class']) )
+        if ( isset($options['Class']) )
             $factory->class = $options['Class'];
-        if( isset($options['TemplateDirs']) )
+        if ( isset($options['TemplateDirs']) )
             $factory->templateDirs = $options['TemplateDirs'];
         $kernel->registerFactory('view',$factory);
     }

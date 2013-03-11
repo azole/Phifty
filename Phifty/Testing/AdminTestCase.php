@@ -33,7 +33,7 @@ class AdminTestCase extends Selenium2TestCase
         if ($transferTo) {
             $url = @$this->urlOf[$transferTo];
             $a = find_element_ok(".admin-menu a[href=\"$url\"]");
-            if(!$a)
+            if (!$a)
                 throw new Exception("Menu link $transferTo not found.");
             $a->click();
         }

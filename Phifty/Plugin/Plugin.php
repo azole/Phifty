@@ -22,7 +22,7 @@ class Plugin extends Bundle
     /*
     public function config( $key )
     {
-        if( isset( $this->config[ $key ] ) )
+        if ( isset( $this->config[ $key ] ) )
 
             return $this->config[ $key ];
         return null;
@@ -44,7 +44,7 @@ class Plugin extends Bundle
     public function config( $key )
     {
         if ( isset($this->config[ $key ]) ) {
-            if( is_array( $this->config[ $key ] ) )
+            if ( is_array( $this->config[ $key ] ) )
 
                 return new Accessor($this->config[ $key ]);
             return $this->config[ $key ];
@@ -54,7 +54,7 @@ class Plugin extends Bundle
             $parts = explode( '.' , $key );
             $ref = $this->config;
             while ( $ref_key = array_shift( $parts ) ) {
-                if( ! isset($ref[ $ref_key ]) )
+                if ( ! isset($ref[ $ref_key ]) )
 
                     return null;
                     # throw new Exception( "Config key: $key not found.  '$ref_key'" );
@@ -85,7 +85,7 @@ class Plugin extends Bundle
         $paths[] = FileUtils::path_join( PH_APP_ROOT , 'plugins' , $name );
         $paths[] = FileUtils::path_join( PH_ROOT , 'plugins' , $name );
         foreach( $paths as $path )
-            if( file_exists( $path ) )
+            if ( file_exists( $path ) )
 
                 return $path;
     }

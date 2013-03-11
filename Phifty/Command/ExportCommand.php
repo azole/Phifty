@@ -34,7 +34,7 @@ class ExportCommand extends Command
             foreach ($kernel->applications as $appname => $app) {
                 $path = FileUtils::path_join( $webroot , 'ph' , $appname );
                 $this->logger->info("Unlinking $path ...");
-                if( file_exists( $path ) )
+                if ( file_exists( $path ) )
                     unlink( $path );
             }
 
@@ -70,7 +70,7 @@ class ExportCommand extends Command
             // find source plugin path
             $pluginDir = Plugin::locatePlugin( $name );
             $pluginWebDir =  FileUtils::path_join( $pluginDir , 'web' );
-            if( ! file_exists( $pluginWebDir ) )
+            if ( ! file_exists( $pluginWebDir ) )
                 continue;
 
             /*
@@ -78,7 +78,7 @@ class ExportCommand extends Command
              * plugins/{plugin}/web => webroot/plugin/User
              */
             $this->logger->info( "create link $target", 1 );
-            if( ! file_exists( $target ) )
+            if ( ! file_exists( $target ) )
                 symlink( $pluginWebDir , $target );
         }
         $this->logger->info( "Done" );

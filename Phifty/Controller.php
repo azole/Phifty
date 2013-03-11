@@ -64,7 +64,7 @@ class Controller extends BaseController
     {
         static $view;
         if ($view) {
-            if( $options )
+            if ( $options )
                 throw new Exception("The View object is initialized already.");
 
             return $view;
@@ -89,7 +89,7 @@ class Controller extends BaseController
         $viewService = kernel()->service('View');
         $templateEngine = $viewService->options['Backend'];
         $class = $viewClass ?: $this->defaultViewClass ?: $viewService->options['Class'];
-        if( ! $class )
+        if ( ! $class )
             throw new Exception('View class is not defined.');
         $engine = \Phifty\View\Engine::createEngine( $templateEngine , $options );
 
@@ -144,7 +144,7 @@ class Controller extends BaseController
     public function renderJson($data)
     {
         /* XXX: dirty hack this for phpunit testing */
-        if( ! CLI_MODE )
+        if ( ! CLI_MODE )
             header('Content-type: application/json; charset=UTF-8');
 
         return json_encode($data);
@@ -161,7 +161,7 @@ class Controller extends BaseController
      **/
     public function renderYaml($data)
     {
-        if( ! CLI_MODE )
+        if ( ! CLI_MODE )
             header('Content-type: application/yaml; charset=UTF-8;');
         $yaml = new YamlSerializer;
 
@@ -208,9 +208,9 @@ class Controller extends BaseController
     public function forbidden($msg = null)
     {
         /* XXX: dirty hack this for phpunit testing */
-        if( ! CLI_MODE )
+        if ( ! CLI_MODE )
             header('HTTP/1.1 403 Forbidden');
-        if( $msg ) echo $msg;
+        if ( $msg ) echo $msg;
         else       echo "403 Forbidden";
         exit(0);
     }
@@ -240,7 +240,7 @@ class Controller extends BaseController
      */
     public function hasAction($action)
     {
-        if( method_exists($this,$action . 'Action') )
+        if ( method_exists($this,$action . 'Action') )
 
             return $action . 'Action';
         return false;

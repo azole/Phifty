@@ -91,10 +91,10 @@ class Pager
 
     public function renderLink( $num , $text = null , $moreclass = "" , $disabled = false )
     {
-        if( $text == null )
+        if ( $text == null )
             $text = $num;
 
-        if( $disabled )
+        if ( $disabled )
 
             return $this->renderLink_dis( $text , $moreclass );
 
@@ -149,45 +149,45 @@ TWIG;
         $output = "";
         $output .= '<div class="'. join(' ',$this->wrapperClass) .'">';
 
-        if( $this->showHeader )
+        if ( $this->showHeader )
             $output .= '<div class="pager-current">' . _('Pager.page') .': ' . $this->currentPage . '</div>';
 
         if ($this->showNavigator) {
 
-            if( $cur > 1 )
+            if ( $cur > 1 )
                 $output .= $this->renderLink( 1       , $this->firstText , 'pager-first' , $cur == 1 );
 
-            if( $cur > 5 )
+            if ( $cur > 5 )
                 $output .= $this->renderLink( $cur - 5 , _("Pager.Prev 5 Pages") , 'pager-number' );
 
-            if( $cur > 1 )
+            if ( $cur > 1 )
                 $output .= $this->renderLink( $cur -1 , $this->prevText  , 'pager-prev'  , $cur == 1 );
         }
 
-        if( $cur > 5 )
+        if ( $cur > 5 )
             $output .= $this->renderLink( 1 , 1 , 'pager-number' ) . ' ... ';
 
         for ($i = $pagenum_start ; $i <= $pagenum_end ; $i++) {
-            if( $i == $this->currentPage )
+            if ( $i == $this->currentPage )
                 $output .= $this->renderLink( $i , $i , 'pager-number active pager-number-current' );
             else
                 $output .= $this->renderLink( $i , $i , 'pager-number' );
         }
 
-        if( $cur + 5 < $total_pages )
+        if ( $cur + 5 < $total_pages )
             $output .= ' ... ' . $this->renderLink( $total_pages , $total_pages , 'pager-number' );
 
         if ($this->showNavigator) {
 
-            if( $cur < $total_pages )
+            if ( $cur < $total_pages )
                 $output .= $this->renderLink( $cur + 1,
                             $this->nextText , 'pager-next' , $cur == $this->totalPages );
 
-            if( $cur + 5 < $total_pages )
+            if ( $cur + 5 < $total_pages )
                 $output .= $this->renderLink( $cur + 5,
                             _("Pager.Next 5 Pages") , 'pager-number' );
 
-            if( $total_pages > 1 && $cur < $total_pages )
+            if ( $total_pages > 1 && $cur < $total_pages )
                 $output .= $this->renderLink( $this->totalPages,
                             $this->lastText , 'pager-last' , $cur == $this->totalPages );
         }

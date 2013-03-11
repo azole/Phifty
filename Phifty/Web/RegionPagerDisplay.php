@@ -8,10 +8,10 @@ class RegionPagerDisplay extends PagerDisplay
 
     public function render_link( $num , $text = null , $moreclass = "" , $disabled = false )
     {
-        if( $text == null )
+        if ( $text == null )
             $text = $num;
 
-        if( $disabled )
+        if ( $disabled )
 
             return $this->render_link_dis( $text , $moreclass );
 

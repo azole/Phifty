@@ -69,7 +69,7 @@ EN;
 
     public function display()
     {
-        if( $this->template )
+        if ( $this->template )
             echo $this->renderTemplate();
         else
             echo $this->renderDefault();

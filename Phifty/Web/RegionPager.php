@@ -7,10 +7,10 @@ class RegionPager extends Pager
 
     public function renderLink( $num , $text = null , $moreclass = "" , $disabled = false )
     {
-        if( $text == null )
+        if ( $text == null )
             $text = $num;
 
-        if( $disabled )
+        if ( $disabled )
 
             return $this->renderLinkDisabled( $text , $moreclass );
 

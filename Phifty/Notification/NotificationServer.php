@@ -99,7 +99,7 @@ class NotificationServer
                 } else {
                     list($topicId,$binary) = explode(' ',$msg,2);
 
-                    if( ! isset($topics[$topicId]) )
+                    if ( ! isset($topics[$topicId]) )
                         $topics[$topicId] = array();
 
                     // Delivery to a registered client

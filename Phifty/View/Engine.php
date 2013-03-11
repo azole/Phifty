@@ -26,10 +26,10 @@ abstract class Engine
         $this->options = $options;
 
         /* preprocess options */
-        if( isset( $options['template_dirs'] ) )
+        if ( isset( $options['template_dirs'] ) )
             $this->templateDirs = (array) $options['template_dirs'];
 
-        if( isset( $options['cache_dir'] ) )
+        if ( isset( $options['cache_dir'] ) )
             $this->cacheDir = $options['cache_dir'];
 
         if ( empty( $this->templateDirs) ) {
@@ -68,7 +68,7 @@ abstract class Engine
      */
     public function getRenderer()
     {
-        if( $this->renderer )
+        if ( $this->renderer )
 
             return $this->renderer;
         return $this->renderer = $this->newRenderer();
@@ -91,7 +91,7 @@ abstract class Engine
 
     public function getCachePath()
     {
-        if( $this->cacheDir )
+        if ( $this->cacheDir )
 
             return $this->cacheDir;
 
@@ -101,7 +101,7 @@ abstract class Engine
 
     public function getTemplateDirs()
     {
-        if( $this->templateDirs )
+        if ( $this->templateDirs )
 
             return $this->templateDirs;
 

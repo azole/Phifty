@@ -40,7 +40,7 @@ class Utils
     public static function array_to_object($array)
     {
 
-        if(!is_array($array))
+        if (!is_array($array))
 
             return $array;
 

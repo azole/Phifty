@@ -26,9 +26,9 @@ class ControllerRoute extends Route
         $controller->before();
 
         if ( ! $method || ! method_exists($controller,$method) ) {
-            if( $action = $this->get('action') )
+            if ( $action = $this->get('action') )
                 $method = $action . 'Action';
-            elseif( method_exists($controller,'run') )
+            elseif ( method_exists($controller,'run') )
                 $method = 'run';
             elseif ( method_exists($controller,'indexAction') )
                 $method = 'indexAction';

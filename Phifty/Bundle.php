@@ -66,7 +66,7 @@ class Bundle
      */
     public function locate()
     {
-        if($this->dir)
+        if ($this->dir)
 
             return $this->dir;
 
@@ -141,7 +141,7 @@ class Bundle
             $action = 'indexAction';
             if ( false !== ($pos = strrpos($args,':')) ) {
                 list($class,$action) = explode(':',$args);
-                if( false === strrpos( $action , 'Action' ) )
+                if ( false === strrpos( $action , 'Action' ) )
                     $action .= 'Action';
             } else {
                 $class = $args;
@@ -250,7 +250,7 @@ class Bundle
     public static function getInstance()
     {
         static $instance;
-        if( $instance )
+        if ( $instance )
 
             return $instance;
         return $instance = new static;

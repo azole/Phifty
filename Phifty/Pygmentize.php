@@ -58,7 +58,7 @@ class Pygmentize
         $paths = explode( PATH_SEPARATOR, getenv('PATH'));
         foreach ($paths as $path) {
             $binPath = $path . DIRECTORY_SEPARATOR . 'pygmentize';
-            if( file_exists($binPath) )
+            if ( file_exists($binPath) )
 
                 return $binPath;
         }

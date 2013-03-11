@@ -51,7 +51,7 @@ class FileJsonStore
         $this->rootDir = $rootDir;
         $this->setname = 'global';
         $this->items = array();
-        if( ! file_exists($this->rootDir ) )
+        if ( ! file_exists($this->rootDir ) )
             mkdir( $this->rootDir , 0755 , true ); // recursive
     }
 
@@ -77,7 +77,7 @@ class FileJsonStore
     {
         $file = $this->getStoreFile();
         $string = json_encode( array( 'items' => $this->items ) );
-        if( file_put_contents( $file, $string ) === false )
+        if ( file_put_contents( $file, $string ) === false )
 
             return false;
         return true;
@@ -113,7 +113,7 @@ class FileJsonStore
 
     public function get($id)
     {
-        if( isset($this->items[$id]) )
+        if ( isset($this->items[$id]) )
 
             return new FileJsonModel( $this->name, $this, $this->items[$id] );
     }
@@ -150,7 +150,7 @@ class FileJsonStore
 
     public function __destruct()
     {
-        if( $this->items )
+        if ( $this->items )
             $this->save();
     }
 }

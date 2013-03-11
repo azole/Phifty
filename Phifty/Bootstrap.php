@@ -57,7 +57,7 @@ class Bootstrap
         // Simple load three config files (framework.yml, database.yml, application.yml)
 
         $loader = new ConfigLoader;
-        if( file_exists( PH_APP_ROOT . '/config/framework.yml') )
+        if ( file_exists( PH_APP_ROOT . '/config/framework.yml') )
             $loader->load('framework', PH_APP_ROOT . '/config/framework.yml');
 
         // This is for DatabaseService
@@ -68,7 +68,7 @@ class Bootstrap
         }
 
         // Config for application, services does not depends on this config file.
-        if( file_exists( PH_APP_ROOT . '/config/application.yml') )
+        if ( file_exists( PH_APP_ROOT . '/config/application.yml') )
             $loader->load('application', PH_APP_ROOT . '/config/application.yml');
 
         // Only load testing configuration when environment
@@ -179,7 +179,7 @@ namespace {
     function kernel()
     {
         global $kernel;
-        if( $kernel )
+        if ( $kernel )
 
             return $kernel;
 

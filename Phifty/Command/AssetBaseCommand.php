@@ -11,7 +11,7 @@ class AssetBaseCommand extends Command
     public function getAssetConfig()
     {
         static $config;
-        if($config)
+        if ($config)
 
             return $config;
         return $config = new AssetConfig('.assetkit.php');

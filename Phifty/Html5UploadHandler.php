@@ -35,9 +35,9 @@ class Html5UploadHandler
             $this->field = $field;
 
         $this->content = $this->decodeContent();
-        if( function_exists('getallheaders') )
+        if ( function_exists('getallheaders') )
             $this->headers = @getallheaders();
-        if( $this->headers )
+        if ( $this->headers )
             $this->headers = array_change_key_case($this->headers, CASE_UPPER);
     }
 
@@ -48,30 +48,30 @@ class Html5UploadHandler
 
     public function getFileName()
     {
-        if( isset($_SERVER['HTTP_X_UPLOAD_FILENAME']) )
+        if ( isset($_SERVER['HTTP_X_UPLOAD_FILENAME']) )
 
             return $_SERVER['HTTP_X_UPLOAD_FILENAME'];
-        if( isset( $this->headers[ 'X-UPLOAD-FILENAME' ] ) )
+        if ( isset( $this->headers[ 'X-UPLOAD-FILENAME' ] ) )
 
             return $this->headers[ 'X-UPLOAD-FILENAME' ];
     }
 
     public function getFileType()
     {
-        if( isset($_SERVER['HTTP_X_UPLOAD_TYPE']) )
+        if ( isset($_SERVER['HTTP_X_UPLOAD_TYPE']) )
 
             return $_SERVER['HTTP_X_UPLOAD_TYPE'];
-        if( isset($this->headers[ 'X-UPLOAD-TYPE' ]) )
+        if ( isset($this->headers[ 'X-UPLOAD-TYPE' ]) )
 
             return $this->headers[ 'X-UPLOAD-TYPE' ];
     }
 
     public function getFileSize()
     {
-        if( isset($_SERVER['HTTP_X_UPLOAD_SIZE']) )
+        if ( isset($_SERVER['HTTP_X_UPLOAD_SIZE']) )
 
             return $_SERVER['HTTP_X_UPLOAD_SIZE'];
-        if( isset($this->headers[ 'X-UPLOAD-SIZE' ]) )
+        if ( isset($this->headers[ 'X-UPLOAD-SIZE' ]) )
 
             return $this->headers[ 'X-UPLOAD-SIZE' ];
     }
@@ -103,11 +103,11 @@ class Html5UploadHandler
 
     public function hasFile()
     {
-        if( count($_FILES) > 0 )
+        if ( count($_FILES) > 0 )
 
             return true;
 
-        if( $this->content )
+        if ( $this->content )
 
             return true;
 

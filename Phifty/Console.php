@@ -42,7 +42,7 @@ class Console extends Application
     public static function getInstance()
     {
         static $instance;
-        if( $instance )
+        if ( $instance )
 
             return $instance;
         return $instance = new static;

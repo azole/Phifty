@@ -152,7 +152,7 @@ class Kernel extends ObjectContainer
      */
     public function app( $appname )
     {
-        if( isset($this->applications[ $appname ]) )
+        if ( isset($this->applications[ $appname ]) )
 
             return $this->applications[ $appname ];
     }
@@ -165,7 +165,7 @@ class Kernel extends ObjectContainer
      */
     public function service($id)
     {
-        if( isset($this->services[ $id ] ) )
+        if ( isset($this->services[ $id ] ) )
 
             return $this->services[ $id ];
     }
@@ -251,7 +251,7 @@ class Kernel extends ObjectContainer
     public static function getInstance()
     {
         static $one;
-        if( $one )
+        if ( $one )
 
             return $one;
         return $one = new static;

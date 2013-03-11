@@ -48,7 +48,7 @@ class Session
     {
         $args = array();
         foreach( $_SESSION as $key => $value )
-            if( strpos( $key , $this->sessionPrefix ) === 0 )
+            if ( strpos( $key , $this->sessionPrefix ) === 0 )
                 $args[ $key ] = $value;
 
         return $args;

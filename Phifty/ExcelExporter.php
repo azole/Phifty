@@ -66,7 +66,7 @@ class ExcelExporter
 
     public function getSheet()
     {
-        if( $this->sheet )
+        if ( $this->sheet )
 
             return $this->sheet;
     }
@@ -75,7 +75,7 @@ class ExcelExporter
     {
         $this->currentCol = $at;
         $sheet = $this->getSheet();
-        if( ! $sheet )
+        if ( ! $sheet )
             $sheet = $this->setSheet(0);
 
         foreach ($cells as $cell) {

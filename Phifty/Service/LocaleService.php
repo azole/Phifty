@@ -14,7 +14,7 @@ class LocaleService
         // for backward compatibility
         if (! $options) {
             $options = $kernel->config->get('framework','Locale');
-            if( ! $options )
+            if ( ! $options )
 
                 return;
         }

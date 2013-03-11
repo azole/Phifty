@@ -11,7 +11,7 @@ class Logger
     {
         $this->logDir = $logDir;
 
-        if( ! file_exists( $this->logDir ) )
+        if ( ! file_exists( $this->logDir ) )
             mkdir( $this->logDir , 0755 , true );
 
         // $this->logFile = $logDir . DIRECTORY_SEPARATOR . $prefix . date('Y.m.d-Hi') . '.log';
@@ -33,7 +33,7 @@ class Logger
 
     public function __destruct()
     {
-        if( $this->fp !== null )
+        if ( $this->fp !== null )
             $this->close();
     }
 }

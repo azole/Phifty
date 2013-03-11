@@ -85,7 +85,7 @@ class MailerService implements ServiceInterface
 
                 case 'SendmailTransport':
                     // sendmail transport has defined a built-in default command.
-                    if( $command = $accessor->Command )
+                    if ( $command = $accessor->Command )
                         $transport = $transportClass::newInstance($command);
                     else
                         $transport = $transportClass::newInstance();

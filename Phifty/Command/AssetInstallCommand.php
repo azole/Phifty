@@ -53,7 +53,7 @@ class AssetInstallCommand extends AssetBaseCommand
 
 
         $compiledDir = $config->getCompiledDir();
-        if( ! file_exists($compiledDir) ) {
+        if ( ! file_exists($compiledDir) ) {
             $this->logger->info("Creating asset compiled dir: $compiledDir");
             $this->logger->info("Please chmod this directory as you need.");
             mkdir($compiledDir,0777,true);

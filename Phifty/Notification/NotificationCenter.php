@@ -134,7 +134,7 @@ class NotificationCenter
     public static function getInstance()
     {
         static $ins;
-        if( $ins )
+        if ( $ins )
 
             return $ins;
         return $ins = new static;

@@ -49,7 +49,7 @@ class PluginManager
      */
     public function get( $name )
     {
-        if( isset( $this->plugins[ $name ] ) )
+        if ( isset( $this->plugins[ $name ] ) )
 
             return $this->plugins[ $name ];
     }

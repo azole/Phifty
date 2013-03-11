@@ -13,7 +13,7 @@ class Region
     <div id="{{ regionId }}"> </div>
     <script type="text/javascript">
     $(function() {
-        if( window.console )
+        if ( window.console )
             console.log('Load ajax region #{{ regionId }} from {{ ajaxPath }}');
         $('#{{ regionId }}').asRegion().load( '{{ ajaxPath }}' , {{ args|json_encode|raw }} );
     });

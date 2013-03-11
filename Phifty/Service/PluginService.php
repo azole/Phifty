@@ -29,7 +29,7 @@ class PluginService
         };
 
         // default plugin paths
-        if( PH_APP_ROOT !== PH_ROOT )
+        if ( PH_APP_ROOT !== PH_ROOT )
             $manager->registerPluginDir( PH_APP_ROOT . DIRECTORY_SEPARATOR . 'plugins' );
         $manager->registerPluginDir( PH_ROOT . DIRECTORY_SEPARATOR . 'plugins' );
 

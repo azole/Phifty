@@ -90,11 +90,11 @@ class UploadFile
 
         // if targetFilename is not given,
         // we should take the filename from original filename by using basename.
-        if( ! $targetFileName )
+        if ( ! $targetFileName )
             $targetFileName = basename( $this->name );
 
         // make sure we have the directory exists.
-        if( ! file_exists( $targetDir ) )
+        if ( ! file_exists( $targetDir ) )
             FileUtils::mkpath( $targetDir );
 
         // relative file path.
@@ -127,12 +127,12 @@ class UploadFile
 
     public function move( $from , $to )
     {
-        if( ! $from || ! file_exists( $from ) )
+        if ( ! $from || ! file_exists( $from ) )
             throw new \Exception('Source file not found.');
 
-        if( $this->error != 0 )
+        if ( $this->error != 0 )
             throw new \Exception('File Upload Error:' . $this->getErrorMessage() );
-        if( false === move_uploaded_file( $from , $to ) )
+        if ( false === move_uploaded_file( $from , $to ) )
             throw new \Exception('File Upload Error: Move uploaded file failed.');
     }
 

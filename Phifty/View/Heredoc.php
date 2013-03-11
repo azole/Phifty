@@ -14,7 +14,7 @@ class Heredoc
 
     public function render($args = array() )
     {
-        if( ! $this->content )
+        if ( ! $this->content )
             throw new Exception( 'template content is not defined.' );
 
         return $this->engine->renderString( $this->content , $args );

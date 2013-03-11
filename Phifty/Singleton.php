@@ -8,7 +8,7 @@ class Singleton
     public static function getInstance()
     {
         static $instance;
-        if( $instance )
+        if ( $instance )
 
             return $instance;
         $class = get_called_class();

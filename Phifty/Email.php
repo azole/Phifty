@@ -82,7 +82,7 @@ class Email
 
     public function encodeColumns($data)
     {
-        if( empty( $data ) )
+        if ( empty( $data ) )
 
             return;
 
@@ -171,10 +171,10 @@ class Email
 
     public function getContent()
     {
-        if( $this->template )
+        if ( $this->template )
 
             return $this->renderTemplate();
-        if( $this->content )
+        if ( $this->content )
 
             return $this->content;
     }
@@ -191,9 +191,9 @@ class Email
         $headers .= "From: $from\r\n";
         $headers .= "To: $to\r\n";
 
-        if( $cc )           $headers .= "CC: $cc\r\n";
-        if( $bcc )          $headers .= "BCC: $bcc\r\n";
-        if( $replyTo )      $headers .= "REPLY-TO: $replyTo\r\n";
+        if ( $cc )           $headers .= "CC: $cc\r\n";
+        if ( $bcc )          $headers .= "BCC: $bcc\r\n";
+        if ( $replyTo )      $headers .= "REPLY-TO: $replyTo\r\n";
 
         return $headers;
     }
@@ -223,17 +223,17 @@ class Email
     {
         $headers = $this->getHeader();
 
-        if( $this->contentType == 'html' )
+        if ( $this->contentType == 'html' )
             $headers .= "Content-type: text/html; charset=UTF-8\r\n";
-        elseif( $this->contentType == 'text' )
+        elseif ( $this->contentType == 'text' )
             $headers .= "Content-type: text/plain; charset=UTF-8\r\n";
 
         $subject = $this->getSubject();
         $content = $this->getContent();
 
-        if( ! $subject )
+        if ( ! $subject )
             throw new \Exception("mail subject is not defined.");
-        if( ! $content )
+        if ( ! $content )
             throw new \Exception("mail content is not defined.");
 
         $subject = $this->encode($subject);

@@ -21,16 +21,16 @@ class Page extends \Phifty\View
 
     public function __construct( $options = array() )
     {
-        if( isset( $options['i18n'] ) )
+        if ( isset( $options['i18n'] ) )
             $this->i18n = $options['i18n'];
 
-        if( isset( $options['layout'] ) )
+        if ( isset( $options['layout'] ) )
             $this->layout = $options['layout'];
 
-        if( isset( $options['content'] ) )
+        if ( isset( $options['content'] ) )
             $this->content = $options['content'];
 
-        if( isset( $options['cache'] ) )
+        if ( isset( $options['cache'] ) )
             $this->cache = true;
 
         parent::__construct( @$options['engine'] );
@@ -61,12 +61,12 @@ class Page extends \Phifty\View
 
     public function display( $template = null )
     {
-        if( ! $template && $this->content )
+        if ( ! $template && $this->content )
             $template = $this->content;
 
         $engine = $this->getEngine();
 
-        if( $this->i18n && $this->getLocal() )
+        if ( $this->i18n && $this->getLocal() )
             $template = $this->jointI18n( $template );
 
         // XXX: do we need i18n block seperated for layout page template?

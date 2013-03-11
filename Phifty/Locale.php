@@ -39,22 +39,22 @@ class Locale
     {
         $lang = null;
 
-        if( $force_lang )
+        if ( $force_lang )
             $lang = $force_lang;
 
-        if( ! $lang && isset($_GET[ L10N_LOCALE_KEY ]) )
+        if ( ! $lang && isset($_GET[ L10N_LOCALE_KEY ]) )
             $lang = $_GET[ L10N_LOCALE_KEY ];
-        if( ! $lang && isset($_POST[ L10N_LOCALE_KEY ]) )
+        if ( ! $lang && isset($_POST[ L10N_LOCALE_KEY ]) )
             $lang = $_POST[ L10N_LOCALE_KEY ];
-        if( ! $lang && isset( $_SESSION[ L10N_LOCALE_KEY ] ) )
+        if ( ! $lang && isset( $_SESSION[ L10N_LOCALE_KEY ] ) )
             $lang = @$_SESSION[ L10N_LOCALE_KEY ];
 
-        if( ! $lang && isset( $_COOKIE['locale'] ) )
+        if ( ! $lang && isset( $_COOKIE['locale'] ) )
             $lang = @$_COOKIE['locale'];
 
-        if( ! $lang )
+        if ( ! $lang )
             $lang = $this->defaultLang;
-        if( ! $lang )
+        if ( ! $lang )
             throw new Exception( 'Locale: Language is not define.' );
         $this->speak( $lang );
 
@@ -126,7 +126,7 @@ class Locale
 
     public function add( $lang , $name = null )
     {
-        if( ! $name )
+        if ( ! $name )
             $name = _( $lang );
         $this->langList[ $lang ] = $name;
 
@@ -172,19 +172,19 @@ class Locale
 
     public function initGettext( $textdomain = null , $localedir = null )
     {
-        if( ! $textdomain )
+        if ( ! $textdomain )
             $textdomain = $this->domain;
 
-        if( ! $textdomain )
+        if ( ! $textdomain )
             throw new Exception( 'Locale: textdomain is not defined.' );
 
-        if( ! $localedir )
+        if ( ! $localedir )
             $localedir = $this->localedir;
 
-        if( ! $localedir )
+        if ( ! $localedir )
             throw new Exception( 'Locale: locale dir is not defined.' );
 
-        if( ! file_exists( $localedir ) )
+        if ( ! file_exists( $localedir ) )
             throw new Exception( "Locale: locale dir does not exist: $localedir" );
 
         $this->setupEnv();

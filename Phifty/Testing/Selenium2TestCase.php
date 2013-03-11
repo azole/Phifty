@@ -22,16 +22,16 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
         $kernel->config->load('testing','config/testing.yml');
         $config = $kernel->config->get('testing');
         if ($config && $config->Selenium) {
-            if($config->Selenium->Host)
+            if ($config->Selenium->Host)
                 $this->setHost($config->Selenium->Host);
 
-            if($config->Selenium->Port)
+            if ($config->Selenium->Port)
                 $this->setPort($config->Selenium->Port);
 
-            if($config->Selenium->Browser)
+            if ($config->Selenium->Browser)
                 $this->setBrowser($config->Selenium->Browser);
 
-            if($config->Environment)
+            if ($config->Environment)
                 $this->environment = $config->Environment;
 
             $this->setBrowserUrl( $this->getBaseUrl() );
@@ -55,7 +55,7 @@ abstract class Selenium2TestCase extends PHPUnit_Extensions_Selenium2TestCase
     public function onNotSuccessfulTest(\Exception $e)
     {
         // use unix-timestamp so that we can sort file by name
-        if( $this->takeScreenshot('last.png') === false
+        if ( $this->takeScreenshot('last.png') === false
             || $this->takeScreenshot(
                 str_replace('\\','_',get_class($this)) . '_' .
                 str_replace('.','_',time(true)) . '.png' ) === false )
