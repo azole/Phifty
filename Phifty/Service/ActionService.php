@@ -40,11 +40,12 @@ class ActionService
                         // Deprecated:
                         // The text/plain seems work for IE8 (IE8 wraps the 
                         // content with a '<pre>' tag.
-                        // header('Content-Type: text/plain; Charset=utf-8');
+                        header('Cache-Control: no-cache');
+                        header('Content-Type: text/plain; Charset=utf-8');
 
                         // Since we are using "textContent" instead of "innerHTML" attributes
                         // we should output the correct json mime type.
-                        header('Content-Type: application/json; Charset=utf-8');
+                        // header('Content-Type: application/json; Charset=utf-8');
                         echo $result->__toString();
                         exit(0);
                     }
