@@ -5,22 +5,6 @@ use RecursiveDirectoryIterator;
 
 class FileUtils
 {
-
-    public static function read_dir($dir)
-    {
-
-        $lists = array();
-        $handle = opendir($dir);
-        while (false !== ($entry = readdir($handle))) {
-            if ( '.' === $entry || '..' === $entry )
-                continue;
-            $lists[] = $dir . DIRECTORY_SEPARATOR . $entry;
-        }
-        closedir($handle);
-
-        return $lists;
-    }
-
     public static function read_dir_for_dir($dir)
     {
         return futil_scanpath_dir($dir);
@@ -29,8 +13,8 @@ class FileUtils
     public static function pretty_size($bytes)
     {
         if ( $bytes < 1024 )
-
             return $bytes . 'B';
+
         if ( $bytes < 1024 * 1024 )
 
             return ((int) $bytes / 1024) . 'KB';
@@ -51,7 +35,6 @@ class FileUtils
         } else {
             $args = func_get_args();
         }
-
         return call_user_func(  'join' , DIRECTORY_SEPARATOR , $args );
     }
 
@@ -61,44 +44,6 @@ class FileUtils
             echo "Creating dir: $path\n";
         if ( false === file_exists($path) )
             mkdir($path,$mode,true);
-    }
-
-    public static function rmtree( $paths , $verbose = false )
-    {
-        $paths = (array) $paths;
-        foreach ($paths as $path) {
-
-            if ( ! file_exists( $path ) )
-                die( "$path does not exist." );
-
-            if ( is_dir( $path ) ) {
-                $iterator = new \DirectoryIterator($path);
-                foreach ($iterator as $fileinfo) {
-                    if ( $fileinfo->isDir() ) {
-                        if ( $fileinfo->getFilename() == "." )
-                            continue;
-
-                        if ( $fileinfo->getFilename() == ".." )
-                            continue;
-                        self::rmtree( $fileinfo->getPathname() );
-
-                        if ( $verbose )
-                            echo "\trmdir: " . $fileinfo->getPathname() . "\n";
-                    } elseif ($fileinfo->isFile()) {
-                        if ( $verbose )
-                            echo "\tunlink file: " . $fileinfo->getPathname() . "\n";
-
-                        if ( unlink( $fileinfo->getPathname() ) == false )
-                            die( "File delete error: {$fileinto->getPathname()}" );
-                    }
-                }
-                rmdir( $path );
-            } elseif ( is_file( $path ) ) {
-                unlink( $path );
-            }
-
-        }
-
     }
 
     public static function mkpath( $paths , $verbose = false , $mode = 0777 )
@@ -229,8 +174,7 @@ class FileUtils
     {
         $pos = strrpos( $filename , '.' );
         if ($pos !== false) {
-            return
-                substr( $filename , 0 , $pos )
+            return substr( $filename , 0 , $pos )
                 . $suffix
                 . substr( $filename , $pos );
         }
