@@ -8,9 +8,9 @@ class FileUtils
 
     public static function read_dir($dir)
     {
+
         $lists = array();
         $handle = opendir($dir);
-
         while (false !== ($entry = readdir($handle))) {
             if ( '.' === $entry || '..' === $entry )
                 continue;
@@ -23,19 +23,7 @@ class FileUtils
 
     public static function read_dir_for_dir($dir)
     {
-        $lists = array();
-        $handle = opendir($dir);
-        while (false !== ($entry = readdir($handle))) {
-            if ( '.' === $entry || '..' === $entry )
-                continue;
-            $path = $dir . DIRECTORY_SEPARATOR . $entry;
-            if ( is_dir($path) ) {
-                $lists[] = $path;
-            }
-        }
-        closedir($handle);
-
-        return $lists;
+        return futil_scanpath_dir($dir);
     }
 
     public static function pretty_size($bytes)

@@ -221,7 +221,7 @@ class Bundle
         // should return relative path here.
         $assetDir = $this->locate() . DIRECTORY_SEPARATOR . 'assets';
         if ( file_exists($assetDir) ) {
-            return FileUtils::read_dir_for_dir($assetDir);
+            return futil_scanpath_dir($assetDir);
         }
 
         return array();
