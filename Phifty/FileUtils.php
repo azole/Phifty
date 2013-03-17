@@ -12,38 +12,24 @@ class FileUtils
 
     public static function pretty_size($bytes)
     {
-        if ( $bytes < 1024 )
-            return $bytes . 'B';
-
-        if ( $bytes < 1024 * 1024 )
-
-            return ((int) $bytes / 1024) . 'KB';
-        if ( $bytes < 1024 * 1024 * 1024 )
-
-            return ((int) $bytes / 1024 / 1024) . 'MB';
-        if ( $bytes < 1024 * 1024 * 1024 * 1024 )
-
-            return ((int) $bytes / 1024 / 1024 / 1024) . 'GB';
-        return ((int) $bytes / 1024 / 1024) . 'MB';
+        return futil_prettysize($bytes);
     }
+
 
     public static function path_join($list)
     {
-        $args = null;
         if ( is_array($list) ) {
-            $args = $list;
-        } else {
-            $args = func_get_args();
+            return futil_pathjoin($list);
         }
-        return call_user_func(  'join' , DIRECTORY_SEPARATOR , $args );
+        $args = func_get_args();
+        return futil_pathjoin($args);
     }
 
     public static function mkdir( $path , $verbose = false , $mode = 0777 )
     {
         if ( $verbose )
             echo "Creating dir: $path\n";
-        if ( false === file_exists($path) )
-            mkdir($path,$mode,true);
+        futil_mkdir_if_not_exists($path, $mode, true);
     }
 
     public static function mkpath( $paths , $verbose = false , $mode = 0777 )
@@ -52,9 +38,7 @@ class FileUtils
         foreach ($paths as $path) {
             if ( $verbose )
                 echo "\tCreating directory $path\n";
-            if ( file_exists( $path ) )
-                continue;
-            mkdir( $path, $mode , true );  // recursive
+            futil_mkdir_if_not_exists($path, $mode, true);
         }
     }
 
