@@ -147,14 +147,14 @@ namespace {
 
     // ObjectContainer is required by Kernel
     require PH_APP_ROOT . '/vendor/autoload.php';
-    require PH_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/SplClassLoader.php';
-    require PH_ROOT . '/vendor/corneltek/universal/src/Universal/Container/ObjectContainer.php';
+    require PH_APP_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/SplClassLoader.php';
+    require PH_APP_ROOT . '/vendor/corneltek/universal/src/Universal/Container/ObjectContainer.php';
 
     // Load Kernel so we don't need to load by classloader.
     if ( ! class_exists('ConfigKit\ConfigLoader') ) {
-        require PH_ROOT . '/vendor/pear/ConfigKit/ConfigCompiler.php';
-        require PH_ROOT . '/vendor/pear/ConfigKit/Accessor.php';
-        require PH_ROOT . '/vendor/pear/ConfigKit/ConfigLoader.php';
+        require PH_APP_ROOT . '/vendor/corneltek/ConfigKit/ConfigCompiler.php';
+        require PH_APP_ROOT . '/vendor/corneltek/ConfigKit/Accessor.php';
+        require PH_APP_ROOT . '/vendor/corneltek/ConfigKit/ConfigLoader.php';
     }
     require PH_ROOT . '/src/Phifty/Kernel.php';
 
