@@ -23,7 +23,7 @@ class Bootstrap
     {
         $loader = null;
         if ( extension_loaded('apc') ) {
-            require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/ApcClassLoader.php';
+            require PH_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/ApcClassLoader.php';
             $loader = new \Universal\ClassLoader\ApcClassLoader( PH_ROOT );
         } else {
             $loader = new \Universal\ClassLoader\SplClassLoader;
