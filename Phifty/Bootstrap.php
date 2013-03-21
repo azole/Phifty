@@ -147,8 +147,8 @@ namespace {
 
     // ObjectContainer is required by Kernel
     require PH_APP_ROOT . '/vendor/autoload.php';
-    require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/SplClassLoader.php';
-    require PH_ROOT . '/vendor/universal/src/Universal/Container/ObjectContainer.php';
+    require PH_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/SplClassLoader.php';
+    require PH_ROOT . '/vendor/corneltek/universal/src/Universal/Container/ObjectContainer.php';
 
     // Load Kernel so we don't need to load by classloader.
     if ( ! class_exists('ConfigKit\ConfigLoader') ) {
