@@ -154,6 +154,7 @@ namespace {
     defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
 
     // ObjectContainer is required by Kernel
+    require PH_APP_ROOT . '/vendor/autoload.php';
     require PH_ROOT . '/vendor/universal/src/Universal/ClassLoader/SplClassLoader.php';
     require PH_ROOT . '/vendor/universal/src/Universal/Container/ObjectContainer.php';
 
