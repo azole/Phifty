@@ -17,7 +17,7 @@ class PluginService
     {
         // here we check plugins stash to decide what to load.
         $config = $kernel->config->get('framework','Plugins');
-        if ( $config === null || $config->isEmpty() ) {
+        if ( ! $config || $config->isEmpty() ) {
             return;
         }
 
@@ -29,9 +29,10 @@ class PluginService
         };
 
         // default plugin paths
-        if ( PH_APP_ROOT !== PH_ROOT )
-            $manager->registerPluginDir( PH_APP_ROOT . DIRECTORY_SEPARATOR . 'plugins' );
-        $manager->registerPluginDir( PH_ROOT . DIRECTORY_SEPARATOR . 'plugins' );
+        if ( PH_APP_ROOT !== PH_ROOT ) {
+            $manager->registerPluginDir( $kernel->rootPluginDir );
+        }
+        $manager->registerPluginDir( $kernel->frameworkPluginDir );
 
         if ( isset($options["Dirs"]) ) {
             foreach ($options["Dirs"] as $dir) {
