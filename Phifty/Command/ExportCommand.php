@@ -33,8 +33,9 @@ class ExportCommand extends Command
         $dirs[] = $webPluginDir;
 
         $dirs[] = $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload';
-        foreach ( $dirs as $dir )
+        foreach ( $dirs as $dir ) {
             FileUtils::mkpath( $dir , true );
+        }
 
         system('chmod -R og+rw ' . $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload' );
 
