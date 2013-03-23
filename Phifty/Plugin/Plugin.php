@@ -84,10 +84,11 @@ class Plugin extends Bundle
         $paths = array();
         $paths[] = FileUtils::path_join( PH_APP_ROOT , 'plugins' , $name );
         $paths[] = FileUtils::path_join( PH_ROOT , 'plugins' , $name );
-        foreach( $paths as $path )
-            if ( file_exists( $path ) )
-
+        foreach( $paths as $path ) {
+            if ( file_exists( $path ) ) {
                 return $path;
+            }
+        }
     }
 
     /*
