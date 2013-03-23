@@ -141,7 +141,6 @@ class PluginManager
     public static function getInstance()
     {
         static $instance;
-
         return $instance ?: $instance = new static;
     }
 

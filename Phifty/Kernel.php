@@ -200,37 +200,6 @@ class Kernel extends ObjectContainer
         return $this->config->framework->ApplicationUUID;
     }
 
-    public function getMinifiedWebDir()
-    {
-        return $this->webroot . DS . 'static' . DS . 'minified';
-    }
-
-    /**
-     * Get exported plugin webdir
-     *
-     * web dir structure
-     *
-     *   web/ph/plugins/sb/
-     *   web/ph/plugins/product/
-     *   web/ph/plugins/coupon/
-     *   ..... etc
-     * */
-    public function getWebPluginDir()
-    {
-        return $this->webroot .  DS . 'ph' . DS . 'plugins';
-    }
-
-    /**
-     * Get exported widget web dir
-     *
-     *     widgets/Foo/web => webroot/ph/widgets/Foo
-     *
-     */
-    public function getWebAssetDir()
-    {
-        return $this->webroot . DS . 'ph' . DS . 'assets';
-    }
-
     /**
      * return framework id
      */
