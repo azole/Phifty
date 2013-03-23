@@ -90,14 +90,6 @@ class Plugin extends Bundle
                 return $path;
     }
 
-    public function getExportWebDir()
-    {
-        $name = $this->getName();
-
-        return '/ph/plugins/' . $name;
-        # return FileUtils::path_join( kernel()->getWebPluginDir() , $name );
-    }
-
     /*
     Use case:
         kernel()->plugin('SB')->render( 'product/view' , array( .... args .... ) );
@@ -105,7 +97,6 @@ class Plugin extends Bundle
     */
     public function render( $vpath )
     {
-        /* XXX: render view */
     }
 
     /* methods for definitions */
