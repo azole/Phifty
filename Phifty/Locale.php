@@ -172,27 +172,28 @@ class Locale
 
     public function initGettext( $textdomain = null , $localedir = null )
     {
-        if ( ! $textdomain )
+        if ( ! $textdomain ) {
             $textdomain = $this->domain;
+        }
 
-        if ( ! $textdomain )
+        if ( ! $textdomain ) {
             throw new Exception( 'Locale: textdomain is not defined.' );
+        }
 
-        if ( ! $localedir )
+        if ( ! $localedir ) {
             $localedir = $this->localedir;
+        }
 
-        if ( ! $localedir )
+        if ( ! $localedir ) {
             throw new Exception( 'Locale: locale dir is not defined.' );
+        }
 
-        if ( ! file_exists( $localedir ) )
-            throw new Exception( "Locale: locale dir does not exist: $localedir" );
-
-        $this->setupEnv();
-
-        bindtextdomain( $textdomain, $localedir );
-        bind_textdomain_codeset( $textdomain, 'UTF-8');
-        textdomain( $textdomain );
-
+        if ( $localedir ) {
+            $this->setupEnv();
+            bindtextdomain( $textdomain, $localedir );
+            bind_textdomain_codeset( $textdomain, 'UTF-8');
+            textdomain( $textdomain );
+        }
         return $this;
     }
 }
