@@ -43,7 +43,7 @@ abstract class Engine
         $dirs = array(
             $this->kernel->rootAppDir,
             $this->kernel->frameworkAppDir,
-            $this->kernel->rootPluginDir,
+            $this->kernel->appPluginDir,
             $this->kernel->frameworkPluginDir,
             $this->kernel->rootDir,
             $this->kernel->frameworkDir,
@@ -118,7 +118,7 @@ abstract class Engine
             foreach( $dirs as $dir )
                 $paths[] = $this->kernel->rootDir  . DIRECTORY_SEPARATOR . $dir;
         }
-        $paths[] = $this->kernel->rootPluginDir;
+        $paths[] = $this->kernel->appPluginDir;
         $paths[] = $this->kernel->frameworkPluginDir;
 
         return $paths;
