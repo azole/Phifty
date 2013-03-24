@@ -66,12 +66,11 @@ class Bundle
      */
     public function locate()
     {
-        if ($this->dir)
-
+        if ($this->dir) {
             return $this->dir;
+        }
 
         $object = new ReflectionObject($this);
-
         return $this->dir = dirname($object->getFilename());
     }
 

@@ -32,10 +32,7 @@ class Bootstrap
         // create spl classloader
         $loader->addNamespace(array(
             'Phifty'         => PH_ROOT . '/src',
-            'ActionKit'      => PH_ROOT . '/src',
             'I18NKit'        => PH_ROOT . '/src',
-            'Kendo'          => PH_ROOT . '/src',
-            'GenPHP'         => PH_ROOT . '/vendor/genphp/src',
         ));
         $loader->addFallback( PH_ROOT . '/vendor/pear' );
         $loader->useIncludePath(true);
@@ -151,7 +148,7 @@ namespace {
     require PH_APP_ROOT . '/vendor/corneltek/universal/src/Universal/Container/ObjectContainer.php';
 
     // Load Kernel so we don't need to load by classloader.
-    if ( ! class_exists('ConfigKit\ConfigLoader') ) {
+    if ( ! class_exists('ConfigKit\ConfigCompiler') ) {
         require PH_APP_ROOT . '/vendor/corneltek/ConfigKit/ConfigCompiler.php';
         require PH_APP_ROOT . '/vendor/corneltek/ConfigKit/Accessor.php';
         require PH_APP_ROOT . '/vendor/corneltek/ConfigKit/ConfigLoader.php';
