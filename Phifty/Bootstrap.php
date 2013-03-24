@@ -36,7 +36,7 @@ class Bootstrap
         ));
         $loader->addFallback( PH_ROOT . '/vendor/pear' );
         $loader->useIncludePath(true);
-        $loader->register(true);
+        $loader->register(false);
         return $loader;
     }
 
