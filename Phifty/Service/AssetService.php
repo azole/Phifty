@@ -5,6 +5,7 @@ use AssetToolkit\AssetConfig;
 use AssetToolkit\AssetLoader;
 use AssetToolkit\AssetCompiler;
 use AssetToolkit\AssetRender;
+use UniversalCache\ApcCache;
 use Exception;
 
 class AssetService
@@ -32,7 +33,7 @@ class AssetService
             $config = new AssetConfig( $assetFile ,
                 $kernel->environment === 'production'
                 ? array( 
-                    'cache' => true,
+                    'cache' => new ApcCache(array( 'namespace' => PH_APP_ROOT )),
                     'environment' => AssetConfig::PRODUCTION,
                     'namespace' => $kernel->namespace,
                 )
