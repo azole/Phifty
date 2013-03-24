@@ -155,7 +155,6 @@ namespace {
     require PH_ROOT . '/src/Phifty/GlobalFuncs.php';
     require PH_ROOT . '/src/Phifty/Kernel.php';
 
-    use Phifty\Bootstrap;
 
     global $kernel;
 
@@ -173,9 +172,9 @@ namespace {
 
             return $kernel;
 
-        $classloader = Bootstrap::initClassLoader();
-        $kernel      = Bootstrap::createKernel();
-        Bootstrap::bootKernel($kernel,$classloader);
+        $classloader = \Phifty\Bootstrap::initClassLoader();
+        $kernel      = \Phifty\Bootstrap::createKernel();
+        \Phifty\Bootstrap::bootKernel($kernel,$classloader);
         $kernel->init();
 
         return $kernel;

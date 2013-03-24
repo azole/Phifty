@@ -34,6 +34,3 @@ function get()
     }
     return false;
 }
-
-
-
