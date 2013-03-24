@@ -152,6 +152,7 @@ namespace {
         require PH_APP_ROOT . '/vendor/corneltek/configkit/src/ConfigKit/Accessor.php';
         require PH_APP_ROOT . '/vendor/corneltek/configkit/src/ConfigKit/ConfigLoader.php';
     }
+    require PH_ROOT . '/src/Phifty/GlobalFuncs.php';
     require PH_ROOT . '/src/Phifty/Kernel.php';
 
     use Phifty\Bootstrap;

@@ -23,16 +23,20 @@ class Bundle
     public function __construct($config = array())
     {
         if ( $config ) {
-            $this->config = $this->mergeWithDefaultConfig($config);
+            $this->setConfig( $this->mergeWithDefaultConfig($config) );
         } else {
-            $this->config = $this->defaultConfig();
+            $this->setConfig( $this->defaultConfig() );
         }
         // XXX: currently we are triggering the loadAssets from Phifty\Web
         // kernel()->event->register('asset.load', array($this,'loadAssets'));
     }
 
+    public function getConfig()
+    {
+        return $this->config;
+    }
 
-    public function setConfig( $config )
+    public function setConfig($config)
     {
         $this->config = $config;
     }
@@ -122,10 +126,6 @@ class Bundle
         return new $class;
     }
 
-    public function getConfig()
-    {
-        return $this->config;
-    }
 
     /**
      * Get plugin config
