@@ -2,6 +2,7 @@
 namespace Phifty;
 use ReflectionObject;
 use Exception;
+use ConfigKit\Accessor;
 
 /**
  *  Bundle is the base class of App, Core, {Plugin} class.
@@ -19,10 +20,33 @@ class Bundle
      */
     public $dir;
 
-    public function __construct()
+    public function __construct($config = array())
     {
-        kernel()->event->register('asset.load', array($this,'loadAssets'));
+        if ( $config ) {
+            $this->config = $this->mergeWithDefaultConfig($config);
+        } else {
+            $this->config = $this->defaultConfig();
+        }
+        // XXX: currently we are triggering the loadAssets from Phifty\Web
+        // kernel()->event->register('asset.load', array($this,'loadAssets'));
     }
+
+
+    public function setConfig( $config )
+    {
+        $this->config = $config;
+    }
+
+    public function mergeWithDefaultConfig( $config = array() )
+    {
+        return array_merge( $this->defaultConfig() , $config ?: array() );
+    }
+
+    public function defaultConfig()
+    {
+        return array();
+    }
+
 
     public function init()
     {
@@ -102,6 +126,39 @@ class Bundle
     {
         return $this->config;
     }
+
+    /**
+     * Get plugin config
+     *
+     * @param string $key config key
+     * @return mixed
+     */
+    public function config( $key )
+    {
+        if ( isset($this->config[ $key ]) ) {
+            if ( is_array( $this->config[ $key ] ) )
+
+                return new Accessor($this->config[ $key ]);
+            return $this->config[ $key ];
+        }
+
+        if ( strchr( $key , '.' ) !== false ) {
+            $parts = explode( '.' , $key );
+            $ref = $this->config;
+            while ( $ref_key = array_shift( $parts ) ) {
+                if ( ! isset($ref[ $ref_key ]) )
+
+                    return null;
+                    # throw new Exception( "Config key: $key not found.  '$ref_key'" );
+                $ref = & $ref[ $ref_key ];
+            }
+
+            return $ref;
+        }
+        return null;
+    }
+
+
 
     /**
      * XXX: make this simpler......orz
@@ -246,13 +303,13 @@ class Bundle
         }
     }
 
-    public static function getInstance()
+    public static function getInstance($config = array())
     {
         static $instance;
-        if ( $instance )
-
+        if ( $instance ) {
             return $instance;
-        return $instance = new static;
+        }
+        return $instance = new static($config);
     }
 
 }

@@ -80,10 +80,7 @@ class PluginManager
     public function load( $name , $config = array() )
     {
         if ( $class = $this->_loadPlugin($name) ) {
-            $plugin = $class::getInstance();
-            // XXX: better solution
-            $plugin->mergeWithDefaultConfig( $config );
-
+            $plugin = $class::getInstance($config);
             return $this->plugins[ $name ] = $plugin;
         }
         throw new Exception("Plugin $name not found.");
