@@ -25,8 +25,6 @@ class Web
     {
         $kernel = kernel();
 
-        $assets = array();
-
         // Instead of loading assets by triggering asset.load event
         // the flow (plugin service->init, appliation->init) can
         // not load the assets with the correct sequence.
@@ -58,7 +56,6 @@ class Web
     {
         $kernel = kernel();
         $assetObjs = $kernel->asset->loader->loadAssets($assets);
-
         return $kernel->asset->render->renderAssets($assetObjs,$name);
     }
 
@@ -78,9 +75,8 @@ class Web
     {
         $runner = ActionRunner::getInstance();
         if ( $result = $runner->getResult( $resultName ) ) {
-            $view = new \Phifty\View;
+            $view = new View;
             $view->result = $result;
-
             return $view->render('Core/template/phifty/action_result_box.html');
         }
     }
