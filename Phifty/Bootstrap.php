@@ -21,7 +21,7 @@ class Bootstrap
 
     public static function initClassLoader()
     {
-        $composerLoader = require PH_APP_ROOT . '/vendor/autoload.php';
+        $composerLoader = require PH_ROOT . '/vendor/autoload.php';
         $loader = null;
         if ( 0 && extension_loaded('apc') ) {
             require PH_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/ApcClassLoader.php';
@@ -145,14 +145,14 @@ namespace {
     defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
 
     // ObjectContainer is required by Kernel
-    require PH_APP_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/SplClassLoader.php';
-    require PH_APP_ROOT . '/vendor/corneltek/universal/src/Universal/Container/ObjectContainer.php';
+    require PH_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/SplClassLoader.php';
+    require PH_ROOT . '/vendor/corneltek/universal/src/Universal/Container/ObjectContainer.php';
 
     // Load Kernel so we don't need to load by classloader.
     if ( ! class_exists('ConfigKit\ConfigCompiler') ) {
-        require PH_APP_ROOT . '/vendor/corneltek/configkit/src/ConfigKit/ConfigCompiler.php';
-        require PH_APP_ROOT . '/vendor/corneltek/configkit/src/ConfigKit/Accessor.php';
-        require PH_APP_ROOT . '/vendor/corneltek/configkit/src/ConfigKit/ConfigLoader.php';
+        require PH_ROOT . '/vendor/corneltek/configkit/src/ConfigKit/ConfigCompiler.php';
+        require PH_ROOT . '/vendor/corneltek/configkit/src/ConfigKit/Accessor.php';
+        require PH_ROOT . '/vendor/corneltek/configkit/src/ConfigKit/ConfigLoader.php';
     }
     require PH_ROOT . '/src/Phifty/GlobalFuncs.php';
     require PH_ROOT . '/src/Phifty/Kernel.php';
