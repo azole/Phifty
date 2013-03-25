@@ -34,8 +34,7 @@ class Bootstrap
         $loader->addNamespace(array(
             'I18NKit'        => PH_ROOT . '/src',
         ));
-        $loader->addFallback( PH_ROOT . '/vendor/pear' );
-        $loader->useIncludePath(true);
+        $loader->useIncludePath(false);
         $loader->register(false);
         return $loader;
     }
