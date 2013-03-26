@@ -29,10 +29,6 @@ class AssetService
     {
         $kernel->asset = function() use ($kernel) {
             $assetFile = PH_APP_ROOT . DIRECTORY_SEPARATOR . '.assetkit.php';
-            if ( ! file_exists($assetFile) ) {
-                throw new Exception("$assetFile not found.");
-            }
-
             $config = new AssetConfig( $assetFile ,
                 $kernel->environment === 'production'
                 ? array( 'environment' => AssetConfig::PRODUCTION )
