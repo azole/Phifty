@@ -85,12 +85,6 @@ abstract class Engine
         }
     }
 
-    public function getCachePath()
-    {
-        // always returns absolute cache dir
-        return $this->kernel->getCacheDir() . DIRECTORY_SEPARATOR . 'view';
-    }
-
     public function getTemplateDirs()
     {
         if ( $this->templateDirs )
