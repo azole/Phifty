@@ -12,6 +12,10 @@ class Kernel extends ObjectContainer
     const FRAMEWORK_ID = 'phifty';
     const VERSION = '2.6.0';
 
+    public $applicationID;
+    public $applicationName;
+    public $applicationUUID;
+
     public $frameworkDir;
     public $frameworkAppDir;
     public $frameworkPluginDir;
@@ -76,6 +80,40 @@ class Kernel extends ObjectContainer
     {
         return $this->cacheDir;
     }
+
+
+
+    /**
+     * Get application UUID from config
+     *
+     * @return string Application UUID
+     */
+    public function getApplicationUUID()
+    {
+        if ( $this->applicationUUID )
+            return $this->ApplicationUUID;
+        return $this->ApplicationUUID = $this->config->framework->ApplicationUUID;
+    }
+
+    public function getApplicationID()
+    {
+        if ( $this->applicationID ) 
+            return $this->applicationID;
+        return $this->applicationID = $this->config->framework->ApplicationID;
+    }
+
+    /**
+     * Get current application name from config
+     *
+     * @return string Application name
+     */
+    public function getApplicationName()
+    {
+        if ( $this->applicationName )
+            return $this->applicationName;
+        return $this->applicationName = $this->config->framework->ApplicationName;
+    }
+
 
     public function registerService( ServiceInterface $service, $options = array() )
     {
@@ -179,25 +217,7 @@ class Kernel extends ObjectContainer
         return $this->plugins->get( $name );
     }
 
-    /**
-     * Get current application name from config
-     *
-     * @return string Application name
-     */
-    public function getApplicationName()
-    {
-        return $this->config->framework->ApplicationName;
-    }
 
-    /**
-     * Get application UUID from config
-     *
-     * @return string Application UUID
-     */
-    public function getApplicationUUID()
-    {
-        return $this->config->framework->ApplicationUUID;
-    }
 
     /**
      * return framework id

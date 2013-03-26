@@ -1,7 +1,9 @@
 <?php
 namespace Phifty\Service;
-use CacheKit\CacheKit;
-use CacheKit\ApcCache;
+use UniversalCache\ApcCache;
+use UniversalCache\FileSystemCache;
+use UniversalCache\MemcacheCache;
+use UniversalCache\UniversalCache;
 
 class CacheService
     implements ServiceInterface
@@ -11,11 +13,6 @@ class CacheService
     public function register($kernel, $options = array() )
     {
         $kernel->cache = function() use ($kernel) {
-            $kernel->classloader->addNamespace(array(
-                'CacheKit' => $kernel->frameworkDir . DS . 'src',
-            ));
-            $b = array();
-
             // return new ApcCache( $self->appName );
 
             /*
@@ -23,12 +20,16 @@ class CacheService
                 $b[] = $kernel->apc;
             */
 
-            /*
-            if ( extension_loaded('memcache') )
-                $b[] = new \CacheKit\MemcacheCache( array( array('localhost',11211) ) );
-            */
-
-            return new CacheKit($b);
+            $cache = new UniversalCache(array());
+            if ( extension_loaded('apc') ) {
+                $cache->addBackend(new ApcCache( array( 'namespace' => $kernel->config->get('framework','ApplicationID') ) ));
+            }
+            if ( extension_loaded('memcache') ) {
+                $cache->addBackend(new MemcacheCache( array( 
+                    'servers' => array( array('localhost',11211) )
+                )));
+            }
+            return $cache;
         };
     }
 }
