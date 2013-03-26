@@ -53,6 +53,7 @@ class AssetService
                 'config' => $config,
                 'render' => $render,
                 'compiler' => $compiler,
+                'cache'    => $cache,
             );
         };
     }
