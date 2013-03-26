@@ -24,9 +24,9 @@ class ViewFactory
         $engine = Engine::createEngine( $this->backend );
         $viewClass = $class ? $class : $this->class;
         $opts = array();
-        if ( $this->templateDirs )
+        if ( $this->templateDirs ) {
             $opts['template_dirs'] = $this->templateDirs;
-
+        }
         return new $viewClass($engine, $opts);
     }
 }

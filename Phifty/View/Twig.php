@@ -47,11 +47,11 @@ class Twig extends \Phifty\View\Engine
 
         // get twig config
         if ($isDev) {
-            $envOpts['cache'] = kernel()->getCachePath() . DIRECTORY_SEPARATOR . 'twig';
+            $envOpts['cache'] = kernel()->getCacheDir() . DIRECTORY_SEPARATOR . 'twig';
             $envOpts['debug'] = true;
             $envOpts['auto_reload'] = true;
         } else {
-            $envOpts['cache'] = kernel()->getCachePath() . DIRECTORY_SEPARATOR . 'twig';
+            $envOpts['cache'] = kernel()->getCacheDir() . DIRECTORY_SEPARATOR . 'twig';
         }
 
         /* if twig config is defined, then override the current config */
