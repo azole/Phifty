@@ -26,7 +26,6 @@ class Generator extends BaseGenerator
 
         if ( file_exists($classFile) ) {
             $this->logger->info("Found existing $classFile, skip");
-
             return;
         }
 
