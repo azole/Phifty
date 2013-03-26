@@ -72,6 +72,11 @@ class Kernel extends ObjectContainer
         return self::VERSION;
     }
 
+    public function getCacheDir()
+    {
+        return $this->cacheDir;
+    }
+
     public function registerService( ServiceInterface $service, $options = array() )
     {
         $service->register( $this , $options );
