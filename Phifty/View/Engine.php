@@ -9,7 +9,6 @@ abstract class Engine
     public $kernel;
     public $options = array();
     public $templateDirs = array();
-    public $cacheDir;
 
     private $renderer;
 
@@ -28,9 +27,6 @@ abstract class Engine
         /* preprocess options */
         if ( isset( $options['template_dirs'] ) )
             $this->templateDirs = (array) $options['template_dirs'];
-
-        if ( isset( $options['cache_dir'] ) )
-            $this->cacheDir = $options['cache_dir'];
 
         if ( empty( $this->templateDirs) ) {
             $this->templateDirs = $this->getDefaultTemplateDirs();
@@ -91,16 +87,8 @@ abstract class Engine
 
     public function getCachePath()
     {
-        if ( $this->cacheDir ) {
-            return $this->cacheDir;
-        }
-
-        $dir = $this->kernel->config->get( 'framework', 'View.CacheDir' );
-        if ( ! dir ) {
-            $dir = DIRECTORY_SEPARATOR . 'cache';
-        }
         // always returns absolute cache dir
-        return $this->kernel->rootDir . DIRECTORY_SEPARATOR . $dir;
+        return $this->kernel->getCacheDir() . DIRECTORY_SEPARATOR . 'view';
     }
 
     public function getTemplateDirs()
