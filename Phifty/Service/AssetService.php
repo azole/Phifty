@@ -44,6 +44,7 @@ class AssetService
                 new FileSystemCache(array( 'cache_dir' => $kernel->getCacheDir() )),
             ));
             $config->setCache($cache);
+            $config->setRoot(PH_APP_ROOT);
 
             $loader   = new AssetLoader($config);
             $render   = new AssetRender($config,$loader);
