@@ -57,10 +57,17 @@ class Bundle
 
     }
 
+
+    public function getName()
+    {
+        return $this->getNamespace();
+    }
+
     public function getId()
     {
         return $this->getNamespace();
     }
+
 
     /**
      * get the namespace name,
