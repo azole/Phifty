@@ -23,12 +23,6 @@ class Kernel extends ObjectContainer
     public $appPluginDir;
     public $webroot;
 
-    /* application namespace */
-    public $namespace;
-
-    /* application uuid */
-    public $uuid;
-
     /* boolean: is in command mode ? */
     public $isCLI;
 
