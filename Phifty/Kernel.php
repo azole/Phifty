@@ -56,10 +56,10 @@ class Kernel extends ObjectContainer
         // build path info
         $this->frameworkDir       = PH_ROOT;
         $this->frameworkAppDir    = PH_ROOT . DS . 'applications';
-        $this->frameworkPluginDir = PH_ROOT . DS . 'plugins';
+        $this->frameworkPluginDir = PH_ROOT . DS . 'bundles';
         $this->rootDir            = PH_APP_ROOT;      // Application root.
         $this->rootAppDir         = PH_APP_ROOT . DS . 'applications';
-        $this->appPluginDir      = PH_APP_ROOT . DS . 'plugins';
+        $this->appPluginDir      = PH_APP_ROOT . DS . 'bundles';
         $this->webroot            = PH_APP_ROOT . DS . 'webroot';
         $this->cacheDir           = PH_APP_ROOT . DS . 'cache';
 
