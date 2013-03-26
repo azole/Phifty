@@ -10,6 +10,7 @@ class CacheService
 {
     public function getId() { return 'cache'; }
 
+    // XXX: we should provide config for get the cache object.
     public function register($kernel, $options = array() )
     {
         $kernel->cache = function() use ($kernel) {
