@@ -94,7 +94,6 @@ abstract class Engine
     public function getTemplateDirs()
     {
         if ( $this->templateDirs )
-
             return $this->templateDirs;
 
         /* default template paths */

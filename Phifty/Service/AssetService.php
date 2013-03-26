@@ -7,6 +7,8 @@ use AssetToolkit\AssetCompiler;
 use AssetToolkit\AssetRender;
 use AssetToolkit\Cache;
 use UniversalCache\ApcCache;
+use UniversalCache\FileSystemCache;
+use UniversalCache\UniversalCache;
 use Exception;
 
 class AssetService
@@ -37,7 +39,10 @@ class AssetService
                 : array( 'environment' => AssetConfig::DEVELOPMENT )
             );
 
-            $cache = Cache::create($config);
+            $cache = new UniversalCache(array(  
+                new ApcCache(array( 'namespace' => $config->getNamespace() )),
+                new FileSystemCache(array( 'cache_dir' => $kernel->getCacheDir() )),
+            ));
             $config->setCache($cache);
 
             $loader   = new AssetLoader($config);
