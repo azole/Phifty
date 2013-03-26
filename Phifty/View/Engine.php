@@ -91,12 +91,16 @@ abstract class Engine
 
     public function getCachePath()
     {
-        if ( $this->cacheDir )
-
+        if ( $this->cacheDir ) {
             return $this->cacheDir;
+        }
 
-        return $this->kernel->config->get( 'framework', 'View.CacheDir' )
-            ?: FileUtils::path_join( $this->kernel->rootDir , 'cache' );
+        $dir = $this->kernel->config->get( 'framework', 'View.CacheDir' );
+        if ( ! dir ) {
+            $dir = DIRECTORY_SEPARATOR . 'cache';
+        }
+        // always returns absolute cache dir
+        return $this->kernel->rootDir . DIRECTORY_SEPARATOR . $dir;
     }
 
     public function getTemplateDirs()
