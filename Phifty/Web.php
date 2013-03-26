@@ -21,7 +21,7 @@ class Web
     /**
      * @param string $name
      */
-    public function include_loaded_assets($name = null)
+    public function include_loaded_assets($target = null)
     {
         $kernel = kernel();
 
@@ -43,7 +43,7 @@ class Web
         $assets = $kernel->asset->loader->all();
 
         // use renderAssets to render html
-        return $kernel->asset->render->renderAssets($assets);
+        return $kernel->asset->render->renderAssets($assets, $target);
     }
 
     /**
