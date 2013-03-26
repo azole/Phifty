@@ -105,7 +105,6 @@ abstract class Engine
         }
         $paths[] = $this->kernel->appPluginDir;
         $paths[] = $this->kernel->frameworkPluginDir;
-
         return $paths;
     }
 

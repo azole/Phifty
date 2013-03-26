@@ -1,6 +1,6 @@
 <?php
-
 namespace Phifty\View;
+use Phifty\View;
 
 /*
  * Phifty Page class
@@ -12,7 +12,7 @@ namespace Phifty\View;
  *
  *
  */
-class Page extends \Phifty\View
+class Page extends View
 {
     public $layout;
     public $content;
