@@ -41,12 +41,15 @@ class ViewService
     {
         $this->options = $options;
         $factory = new ViewFactory;
-        if ( isset($options['Backend']) )
+        if ( isset($options['Backend']) ) {
             $factory->backend = $options['Backend'];
-        if ( isset($options['Class']) )
+        }
+        if ( isset($options['Class']) ) {
             $factory->class = $options['Class'];
-        if ( isset($options['TemplateDirs']) )
+        }
+        if ( isset($options['TemplateDirs']) ) {
             $factory->templateDirs = $options['TemplateDirs'];
+        }
         $kernel->registerFactory('view',$factory);
     }
 }

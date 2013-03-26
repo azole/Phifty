@@ -37,7 +37,6 @@ class Twig extends \Phifty\View\Engine
 
     public function newRenderer()
     {
-        $cacheDir = $this->getCachePath();
         $dirs     = $this->getTemplateDirs();
         $loader   = new Twig_Loader_Filesystem( $dirs );
 
@@ -48,11 +47,11 @@ class Twig extends \Phifty\View\Engine
 
         // get twig config
         if ($isDev) {
-            $envOpts['cache'] = $cacheDir;
+            $envOpts['cache'] = kernel()->getCachePath() . DIRECTORY_SEPARATOR . 'twig';
             $envOpts['debug'] = true;
             $envOpts['auto_reload'] = true;
         } else {
-            $envOpts['cache'] = $cacheDir;
+            $envOpts['cache'] = kernel()->getCachePath() . DIRECTORY_SEPARATOR . 'twig';
         }
 
         /* if twig config is defined, then override the current config */

@@ -13,16 +13,9 @@ class CacheService
     public function register($kernel, $options = array() )
     {
         $kernel->cache = function() use ($kernel) {
-            // return new ApcCache( $self->appName );
-
-            /*
-            if ( extension_loaded('apc') )
-                $b[] = $kernel->apc;
-            */
-
             $cache = new UniversalCache(array());
             if ( extension_loaded('apc') ) {
-                $cache->addBackend(new ApcCache( array( 'namespace' => $kernel->config->get('framework','ApplicationID') ) ));
+                $cache->addBackend(new ApcCache( array( 'namespace' => $kernel->getApplicationID() ));
             }
             if ( extension_loaded('memcache') ) {
                 $cache->addBackend(new MemcacheCache( array( 
