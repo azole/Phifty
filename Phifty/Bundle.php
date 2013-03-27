@@ -285,10 +285,9 @@ class Bundle
         // XXX: Here we got a absolute path,
         // should return relative path here.
         $assetDir = $this->locate() . DIRECTORY_SEPARATOR . 'Assets';
-        if ( file_exists($assetDir) ) {
-            return futil_scanpath_dir($assetDir);
+        if ( $list = futil_scanpath_dir($assetDir) ) {
+            return $list;
         }
-
         return array();
     }
 
