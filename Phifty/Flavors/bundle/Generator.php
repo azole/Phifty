@@ -22,8 +22,8 @@ class Generator extends BaseGenerator
         ));
 
         // registering bundle to config
-        $config = yaml_parse(file_get_contents('config/framework.yml'));
-        $config['Plugins'][ $bundleName ] = array();
-        file_put_contents('config/framework.yml', yaml_emit($config) );
+        // $config = yaml_parse(file_get_contents('config/framework.yml'));
+        // $config['Plugins'][ $bundleName ] = array();
+        // file_put_contents('config/framework.yml', yaml_emit($config) );
     }
 }
