@@ -31,7 +31,7 @@ class Generator extends BaseGenerator
 
         $dir = $app->locate();
         $className = $ns . '\\Model\\' . $schemaName;
-        $classDir = $dir . DIRECTORY_SEPARATOR . 'Schema';
+        $classDir = $dir . DIRECTORY_SEPARATOR . 'Model';
         $classFile = $classDir . DIRECTORY_SEPARATOR . $schemaName . '.php';
 
         if ( ! file_exists($classDir) ) {
