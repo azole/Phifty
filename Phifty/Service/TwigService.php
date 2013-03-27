@@ -10,6 +10,13 @@ use Twig_Extension_Optimizer;
 use Twig_Extensions_Extension_Text;
 use Twig_Extensions_Extension_I18n;
 
+use AssetToolkit\Extension\Twig\AssetExtension;
+
+
+/**
+ * Depends on AssetService
+ */
+
 class TwigService
     implements ServiceInterface
 {
@@ -53,6 +60,21 @@ class TwigService
 
             // http://www.twig-project.org/doc/api.html#environment-options
             $env = new Twig_Environment($loader, $args);
+
+
+            if ($kernel->isDev) {
+                $env->addExtension( new Twig_Extension_Debug );
+            } else {
+                $env->addExtension( new Twig_Extension_Optimizer );
+            }
+            $env->addExtension( new Twig_Extensions_Extension_Text );
+            $env->addExtension( new Twig_Extensions_Extension_I18n );
+
+            // include assettoolkit extension
+            $assetExt = new AssetExtension();
+            $assetExt->setAssetConfig( kernel()->asset->config );
+            $assetExt->setAssetLoader( kernel()->asset->loader );
+            $env->addExtension($assetExt);
             return (object) array(
                 'loader' => $loader,
                 'env' => $env,
