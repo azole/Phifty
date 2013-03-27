@@ -8,12 +8,10 @@ class Generator extends BaseGenerator
 
     public function generate($ns,$actionName)
     {
-        $app = kernel()->app($ns) ?: kernel()->plugin($ns);
+        $app = kernel()->app($ns) ?: kernel()->plugin($ns) ?: kernel()->plugins->load($ns);
         if (! $app) {
             throw new Exception("$ns application or plugin not found.");
         }
-
-        $this->logger->info("Found $ns");
 
         $dir = $app->locate();
         $className = $ns . '\\Action\\' . $actionName;

@@ -12,12 +12,9 @@ class Generator extends BaseGenerator
 
     public function generate($ns,$schemaName)
     {
-        $app = kernel()->app($ns) ?: kernel()->plugin($ns);
-        if (! $app) {
-            $app = kernel()->plugins->load($ns);
-            if ( !$app ) {
-                throw new Exception("$ns application or plugin not found.");
-            }
+        $app = kernel()->app($ns) ?: kernel()->plugin($ns) ?: kernel()->plugins->load($ns);
+        if ( ! $app) {
+            throw new Exception("$ns application or plugin not found.");
         }
 
         if ( strrpos($schemaName,'Schema') === false ) {

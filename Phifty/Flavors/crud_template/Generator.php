@@ -9,7 +9,7 @@ class Generator extends BaseGenerator
 
     public function generate($ns,$crudId)
     {
-        $app = kernel()->app($ns) ?: kernel()->plugin($ns);
+        $app = kernel()->app($ns) ?: kernel()->plugin($ns) ?: kernel()->plugins->load($ns);
         if (! $app) {
             throw new Exception("$ns application or plugin not found.");
         }
