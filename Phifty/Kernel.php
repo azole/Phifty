@@ -189,9 +189,9 @@ class Kernel extends ObjectContainer
      */
     public function app( $appname )
     {
-        if ( isset($this->applications[ $appname ]) )
-
+        if ( isset($this->applications[ $appname ]) ) {
             return $this->applications[ $appname ];
+        }
     }
 
     /**

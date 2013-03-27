@@ -140,7 +140,7 @@ class Bootstrap
 }
 namespace {
     defined( 'PH_ROOT' )     || define( 'PH_ROOT' , dirname(dirname(__DIR__)) );
-    defined( 'PH_APP_ROOT' ) || define( 'PH_APP_ROOT' , PH_ROOT );
+    defined( 'PH_APP_ROOT' ) || define( 'PH_APP_ROOT' , getcwd() );
     defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
 
     // ObjectContainer is required by Kernel
