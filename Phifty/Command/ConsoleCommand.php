@@ -22,7 +22,7 @@ class ConsoleCommand extends Command
         }
 
         $commands = array();
-        $commands['exit'] = function() {
+        $commands['q'] = $commands['exit'] = function() {
             exit(0);
         };
 
