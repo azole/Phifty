@@ -1,5 +1,5 @@
 <?php
-namespace controller;
+namespace crud_template;
 use GenPHP\Flavor\BaseGenerator;
 use Exception;
 
@@ -14,7 +14,7 @@ class Generator extends BaseGenerator
             throw new Exception("$ns application or plugin not found.");
         }
         $templateDir = $app->getTemplateDir() . DIRECTORY_SEPARATOR . $crudId;
-        $this->copy( 'template' , $templateDir );
+        $this->copyDir( 'template' , $templateDir );
     }
 
 }
