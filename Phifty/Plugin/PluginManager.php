@@ -47,10 +47,12 @@ class PluginManager
     /**
      * get plugin object
      */
-    public function get( $name )
+    public function get( $name, $lookup = false )
     {
         if ( isset( $this->plugins[ $name ] ) ) {
             return $this->plugins[ $name ];
+        } elseif ( $lookup ) {
+            return $this->lookup( $name );
         }
     }
 

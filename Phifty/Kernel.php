@@ -226,7 +226,7 @@ class Kernel extends ObjectContainer
      *
      * @param string $name
      */
-    public function bundle($name)
+    public function bundle($name, $lookup = false)
     {
         return $this->plugins->get($name);
     }

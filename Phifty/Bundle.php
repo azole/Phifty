@@ -25,6 +25,9 @@ class Bundle
      */
     protected $_namespace;
 
+
+    public $defaultActionTypes = array('Create','Update','Delete', 'BulkDelete');
+
     public $exportTemplates = false;
 
     public $kernel;
@@ -272,6 +275,9 @@ class Bundle
 
     public function expandRoute($path,$class)
     {
+        if ( ! class_exists($class,true) ) {
+            $class = $this->getNamespace() . '\\' . $class;
+        }
         $routes = $class::expand();
         $this->kernel->router->mount( $path , $routes );
     }
@@ -288,8 +294,11 @@ class Bundle
     }
 
 
-    public function addCRUDAction( $model, $types )
+    public function addCRUDAction( $model, $types = array() )
     {
+        if ( empty($types) ) {
+            $types = $this->defaultActionTypes;
+        }
         $this->kernel->action->registerCRUD( $this->getNamespace() , $model , (array) $types );
     }
 
