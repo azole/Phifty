@@ -2,6 +2,10 @@
 namespace bundle;
 use GenPHP\Flavor\BaseGenerator;
 
+
+/**
+ * phifty new bundle {bundle name}
+ */
 class Generator extends BaseGenerator
 {
     public function brief() { return 'generate bundle structure'; }
