@@ -28,12 +28,12 @@ class {{bundleName}} extends Plugin
         // save/add spec data (item)
         // $this->route( '/bs/product/api/save_spec_data', 'SpecDataController:saveSpecData');
 
-        $this->withCRUDAction( 'Category' , array('Create','Update','Delete','BulkDelete') );
-        $this->withCRUDAction( 'Product' , array('BulkDelete') );
-        $this->withCRUDAction( 'ProductType' , array('Create','Update','Delete','BulkDelete') );
-        $this->withCRUDAction( 'Feature' , array('Delete') );
-        $this->withCRUDAction( 'FeatureRel' , array('Create','Update','Delete') );
-        $this->withCRUDAction( 'Resource' , array('Create','Update','Delete') );
+        $this->addCRUDAction( 'Category' , array('Create','Update','Delete','BulkDelete') );
+        $this->addCRUDAction( 'Product' , array('BulkDelete') );
+        $this->addCRUDAction( 'ProductType' , array('Create','Update','Delete','BulkDelete') );
+        $this->addCRUDAction( 'Feature' , array('Delete') );
+        $this->addCRUDAction( 'FeatureRel' , array('Create','Update','Delete') );
+        $this->addCRUDAction( 'Resource' , array('Create','Update','Delete') );
         */
     }
 

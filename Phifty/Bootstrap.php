@@ -82,12 +82,10 @@ class Bootstrap
      * @param Phifty\Kernel $kernel      kernel object.
      * @param ClassLoader   $classloader
      */
-    public static function bootKernel($kernel,$classloader)
+    public static function bootKernel($kernel, $classloader)
     {
         // register default classloader service
-        $kernel->registerService(
-            new \Phifty\Service\ClassLoaderService($classloader)
-        );
+        $kernel->registerService( new \Phifty\Service\ClassLoaderService($classloader) );
 
         $configLoader = self::initConfigLoader();
         $configService = new \Phifty\Service\ConfigService($configLoader);

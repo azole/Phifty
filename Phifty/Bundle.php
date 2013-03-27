@@ -175,10 +175,10 @@ class Bundle
             $parts = explode( '.' , $key );
             $ref = $this->config;
             while ( $ref_key = array_shift( $parts ) ) {
-                if ( ! isset($ref[ $ref_key ]) )
-
+                if ( ! isset($ref[ $ref_key ]) ) {
                     return null;
-                    # throw new Exception( "Config key: $key not found.  '$ref_key'" );
+                }
+                # throw new Exception( "Config key: $key not found.  '$ref_key'" );
                 $ref = & $ref[ $ref_key ];
             }
 
@@ -282,9 +282,15 @@ class Bundle
      * @param string $model model class
      * @param array  $types action types (Create, Update, Delete...)
      */
-    public function withCRUDAction( $model , $types )
+    public function addCRUDAction( $model , $types )
     {
         $this->kernel->action->registerCRUD( $this->getNamespace() , $model , (array) $types );
+    }
+
+
+    public function addCRUDAction( $model, $types )
+    {
+        return $this->addCRUDAction($model, $types);
     }
 
     /**
