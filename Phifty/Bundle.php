@@ -65,11 +65,11 @@ class Bundle
     public function init()
     {
         // we should have twig service
-        if ( $this->exportTemplates && isset($this->kernel->twig) ) 
-        {
+        if ( $this->exportTemplates && isset($this->kernel->twig) ) {
+            // register the loader to events
             $dir = $this->getTemplateDir();
             if ( file_exists($dir) ) {
-                $this->kernel->twig->loader->addPath( $this->getTemplateDir(), $this->getNamespace() );
+                $this->kernel->twig->loader->addPath($dir, $this->getNamespace() );
             }
         }
     }
