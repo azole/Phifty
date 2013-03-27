@@ -103,27 +103,35 @@ class Bundle
         return $this->baseDir = dirname($object->getFilename());
     }
 
+
+
     /**
-     * get the model in the namespace of current microapp
+     * Get the model in the namespace of current microapp
+     *
+     * @param string $name Model Name
      */
     public function getModel( $name )
     {
-        $class = sprintf('%s\Model\%s',$this->getNamespace(),$name);
-
+        $class = $this->getNamespace() . "\\Model\\$name";
         return new $class;
     }
 
+
+    /**
+     * Get controller object
+     *
+     * @param string $name Controller Name
+     */
     public function getController( $name )
     {
-        $class = sprintf('%s\Controller\%s',$this->getNamespace(),$name);
-
+        $class = $this->getNamespace() . "\\Controller\\$name";
         return new $class;
     }
+
 
     public function getAction( $name )
     {
-        $class = sprintf('%s\Action\%s',$this->getNamespace(),$name);
-
+        $class = $this->getNamespace() . "\\Action\\$name";
         return new $class;
     }
 
