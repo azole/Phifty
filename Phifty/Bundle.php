@@ -138,9 +138,9 @@ class Bundle
     public function config( $key )
     {
         if ( isset($this->config[ $key ]) ) {
-            if ( is_array( $this->config[ $key ] ) )
-
+            if ( is_array( $this->config[ $key ] ) ) {
                 return new Accessor($this->config[ $key ]);
+            }
             return $this->config[ $key ];
         }
 
