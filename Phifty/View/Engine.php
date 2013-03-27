@@ -39,8 +39,8 @@ abstract class Engine
         $dirs = array(
             $this->kernel->rootAppDir,
             $this->kernel->frameworkAppDir,
-            $this->kernel->appBundleDir,
-            $this->kernel->frameworkPluginDir,
+            $this->kernel->rootBundleDir,
+            $this->kernel->frameworkBundleDir,
             $this->kernel->rootDir,
             $this->kernel->frameworkDir,
         );
@@ -101,8 +101,8 @@ abstract class Engine
             foreach( $dirs as $dir )
                 $paths[] = $this->kernel->rootDir  . DIRECTORY_SEPARATOR . $dir;
         }
-        $paths[] = $this->kernel->appBundleDir;
-        $paths[] = $this->kernel->frameworkPluginDir;
+        $paths[] = $this->kernel->rootBundleDir;
+        $paths[] = $this->kernel->frameworkBundleDir;
         return $paths;
     }
 

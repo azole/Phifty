@@ -34,9 +34,9 @@ class TwigService
             }
             // append fallback template dirs from plugin dir or framework plugin dir.
             $templateDirs[] = $kernel->rootAppDir;
-            $templateDirs[] = $kernel->appBundleDir;
+            $templateDirs[] = $kernel->rootBundleDir;
             $templateDirs[] = $kernel->frameworkAppDir;
-            $templateDirs[] = $kernel->frameworkPluginDir;
+            $templateDirs[] = $kernel->frameworkBundleDir;
 
             // create the filesystem loader
             $loader   = new Twig_Loader_Filesystem( $templateDirs );
