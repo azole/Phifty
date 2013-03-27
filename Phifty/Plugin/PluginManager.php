@@ -49,9 +49,9 @@ class PluginManager
      */
     public function get( $name )
     {
-        if ( isset( $this->plugins[ $name ] ) )
-
+        if ( isset( $this->plugins[ $name ] ) ) {
             return $this->plugins[ $name ];
+        }
     }
 
     protected function _loadPlugin($name)
@@ -62,14 +62,19 @@ class PluginManager
             return $class;
         } else {
             // try to require plugin class from plugin path
-            $subpath = $name . DIRECTORY_SEPARATOR . $name . '.php';
-            foreach ($this->pluginDirs as $dir) {
-                $path = $dir . DIRECTORY_SEPARATOR . $subpath;
-                if ( file_exists($path) ) {
-                    require $path;
+            return $this->tryRequire($name);
+        }
+    }
 
-                    return $class;
-                }
+    public function tryRequire($name)
+    {
+        $class = "$name\\$name";
+        $subpath = $name . DIRECTORY_SEPARATOR . $name . '.php';
+        foreach ($this->pluginDirs as $dir) {
+            $path = $dir . DIRECTORY_SEPARATOR . $subpath;
+            if ( file_exists($path) ) {
+                require $path;
+                return $class;
             }
         }
     }

@@ -2,6 +2,10 @@
 namespace schema;
 use GenPHP\Flavor\BaseGenerator;
 
+
+/**
+ * $ phifty new schema StaffBundle Staff name:varchar:30
+ */
 class Generator extends BaseGenerator
 {
     public function brief() { return 'generate schema class'; }
@@ -10,10 +14,11 @@ class Generator extends BaseGenerator
     {
         $app = kernel()->app($ns) ?: kernel()->plugin($ns);
         if (! $app) {
-            throw new Exception("$ns application or plugin not found.");
+            $app = kernel()->plugins->load($ns);
+            if ( !$app ) {
+                throw new Exception("$ns application or plugin not found.");
+            }
         }
-
-        $this->logger->info("Found $ns");
 
         if ( strrpos($schemaName,'Schema') === false ) {
             $schemaName .= 'Schema';
@@ -28,7 +33,7 @@ class Generator extends BaseGenerator
         }
 
         $dir = $app->locate();
-        $className = $ns . '\\Schema\\' . $schemaName;
+        $className = $ns . '\\Model\\' . $schemaName;
         $classDir = $dir . DIRECTORY_SEPARATOR . 'Schema';
         $classFile = $classDir . DIRECTORY_SEPARATOR . $schemaName . '.php';
 
@@ -38,7 +43,6 @@ class Generator extends BaseGenerator
 
         if ( file_exists($classFile) ) {
             $this->logger->info("Found existing $classFile, skip");
-
             return;
         }
 
