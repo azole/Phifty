@@ -43,7 +43,7 @@ abstract class CRUDHandler extends Controller
      */
     public $predefined = array();
 
-    public $templatePage = 'CRUD/template/page.html';
+    public $templatePage = 'CRUD/Templates/page.html';
 
     /** Namespace **/
     public $namespace; /* like News\... */
@@ -323,7 +323,7 @@ abstract class CRUDHandler extends Controller
     {
         return $this->render(
             $this->namespace
-            . '/template/'
+            . '/Templates/'
             . $this->crudId
             . '/list.html' , $args );
     }
@@ -338,7 +338,7 @@ abstract class CRUDHandler extends Controller
     {
         return $this->render(
             $this->namespace
-            . '/template/'
+            . '/Templates/'
             . $this->crudId
             . '/edit.html' , $args);
     }

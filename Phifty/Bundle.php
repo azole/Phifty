@@ -265,7 +265,7 @@ class Bundle
      */
     public function getTemplateDir()
     {
-        return $this->locate() . DS . 'template';
+        return $this->locate() . DS . 'Templates';
     }
 
     /**
@@ -277,7 +277,7 @@ class Bundle
     {
         // XXX: Here we got a absolute path,
         // should return relative path here.
-        $assetDir = $this->locate() . DIRECTORY_SEPARATOR . 'assets';
+        $assetDir = $this->locate() . DIRECTORY_SEPARATOR . 'Assets';
         if ( file_exists($assetDir) ) {
             return futil_scanpath_dir($assetDir);
         }

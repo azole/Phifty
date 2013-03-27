@@ -77,7 +77,7 @@ class Web
         if ( $result = $runner->getResult( $resultName ) ) {
             $view = new View;
             $view->result = $result;
-            return $view->render('Core/template/phifty/action_result_box.html');
+            return $view->render('Core/Templates/phifty/action_result_box.html');
         }
     }
 
