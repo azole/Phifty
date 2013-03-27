@@ -282,7 +282,7 @@ class Bundle
      * @param string $model model class
      * @param array  $types action types (Create, Update, Delete...)
      */
-    public function addCRUDAction( $model , $types )
+    public function withCRUDAction( $model , $types )
     {
         $this->kernel->action->registerCRUD( $this->getNamespace() , $model , (array) $types );
     }
@@ -290,7 +290,7 @@ class Bundle
 
     public function addCRUDAction( $model, $types )
     {
-        return $this->addCRUDAction($model, $types);
+        $this->kernel->action->registerCRUD( $this->getNamespace() , $model , (array) $types );
     }
 
     /**
