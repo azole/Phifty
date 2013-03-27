@@ -83,28 +83,6 @@ abstract class Engine
         }
     }
 
-    public function getTemplateDirs()
-    {
-        if ( $this->templateDirs )
-            return $this->templateDirs;
-
-        /* default template paths */
-        $paths = array();
-
-        /* framework core view template dir */
-        $frameT = $this->kernel->app('Core')->getTemplateDir();
-        if ( file_exists($frameT) ) {
-            $paths[] = $frameT;
-        }
-
-        if ( $dirs = $this->kernel->config->get( 'framework', 'View.TemplateDirs' ) ) {
-            foreach( $dirs as $dir )
-                $paths[] = $this->kernel->rootDir  . DIRECTORY_SEPARATOR . $dir;
-        }
-        $paths[] = $this->kernel->rootBundleDir;
-        $paths[] = $this->kernel->frameworkBundleDir;
-        return $paths;
-    }
 
     /* render method should be defined,
      * we should just call render method by default. */
