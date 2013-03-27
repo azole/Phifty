@@ -18,12 +18,12 @@ class Bundle
     /**
      * @var string the plugin class directory, used for caching the locate() result.
      */
-    public $baseDir;
+    protected $_baseDir;
 
     /**
      * @var string cached namespace from reflection class
      */
-    public $namespace;
+    protected $_namespace;
 
     public $exportTemplates = false;
 
@@ -89,10 +89,10 @@ class Bundle
      * */
     public function getNamespace()
     {
-        if ( $this->namespace )
-            return $this->namespace;
+        if ( $this->_namespace )
+            return $this->_namespace;
         $object = new ReflectionObject($this);
-        return $this->namespace = $object->getNamespaceName();
+        return $this->_namespace = $object->getNamespaceName();
     }
 
     /**
@@ -116,11 +116,11 @@ class Bundle
      */
     public function locate()
     {
-        if ($this->baseDir) {
-            return $this->baseDir;
+        if ($this->_baseDir) {
+            return $this->_baseDir;
         }
         $object = new ReflectionObject($this);
-        return $this->baseDir = dirname($object->getFilename());
+        return $this->_baseDir = dirname($object->getFilename());
     }
 
 
