@@ -18,6 +18,7 @@ class GenerateCommand extends Command
             $generator = $flavor->getGenerator();
             $generator->setLogger($this->logger);
             $runner = new GeneratorRunner;
+            $runner->logger = $this->logger;
             $runner->run($generator,$args);
         } else {
             throw new Exception("Flavor $flavor not found.");
