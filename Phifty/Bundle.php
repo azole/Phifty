@@ -96,7 +96,9 @@ class Bundle
     }
 
     /**
-     * helper method, route path to template
+     * Helper method, route path to template.
+     *
+     *    $this->page('/about.html', 'about.html' ,array( 'name' => 'foo' ));
      *
      * @param string $path
      * @param string $template file
