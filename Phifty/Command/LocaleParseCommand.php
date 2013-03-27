@@ -119,8 +119,9 @@ class LocaleParseCommand extends Command
             if ( $retval != 0 )
                 die('xgettext error');
 
+            $moPathname = futil_replace_extension($shortPathname,'mo');
             $this->logger->info("Compiling messages $shortPathname");
-            $cmd = sprintf('msgfmt -v %s', $shortPathname);
+            $cmd = sprintf('msgfmt -v -o %s %s', $moPathname, $shortPathname);
             $this->logger->debug($cmd);
             system($cmd, $retval);
             if ( $retval != 0 )
