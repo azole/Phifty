@@ -38,6 +38,8 @@ class Twig extends \Phifty\View\Engine
     public function newRenderer()
     {
         $dirs     = $this->getTemplateDirs();
+
+
         $loader   = new Twig_Loader_Filesystem( $dirs );
 
         $envOpts = array();
