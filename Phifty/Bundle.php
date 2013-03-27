@@ -25,6 +25,10 @@ class Bundle
      */
     public $namespace;
 
+    public $exportTemplates = false;
+
+    public $kernel;
+
     public function __construct($config = array())
     {
         if ( $config ) {
@@ -32,6 +36,7 @@ class Bundle
         } else {
             $this->setConfig( $this->defaultConfig() );
         }
+        $this->kernel = kernel();
         // XXX: currently we are triggering the loadAssets from Phifty\Web
         // kernel()->event->register('asset.load', array($this,'loadAssets'));
     }
@@ -60,11 +65,11 @@ class Bundle
     public function init()
     {
         // we should have twig service
-        $kernel = kernel();
-        if ( isset($kernel->twig) ) {
+        if ( $this->exportTemplates && isset($this->kernel->twig) ) 
+        {
             $dir = $this->getTemplateDir();
             if ( file_exists($dir) ) {
-                $kernel->twig->loader->addPath( $this->getTemplateDir(), $this->getNamespace() );
+                $this->kernel->twig->loader->addPath( $this->getTemplateDir(), $this->getNamespace() );
             }
         }
     }
@@ -206,7 +211,7 @@ class Bundle
      */
     public function route( $path, $args, $options = array() )
     {
-        $router = kernel()->router;
+        $router = $this->kernel->router;
 
         /* if args is string, it's a controller class */
         if ( is_string($args)  ) {
@@ -266,7 +271,7 @@ class Bundle
     public function expandRoute($path,$class)
     {
         $routes = $class::expand();
-        kernel()->router->mount( $path , $routes );
+        $this->kernel->router->mount( $path , $routes );
     }
 
     /**
@@ -277,7 +282,7 @@ class Bundle
      */
     public function withCRUDAction( $model , $types )
     {
-        kernel()->action->registerCRUD( $this->getNamespace() , $model , (array) $types );
+        $this->kernel->action->registerCRUD( $this->getNamespace() , $model , (array) $types );
     }
 
     /**
@@ -317,7 +322,7 @@ class Bundle
      */
     public function loadAssets()
     {
-        $loader = kernel()->asset->loader;
+        $loader = $this->kernel->asset->loader;
         $assetNames = $this->assets();
         if ( ! empty($assetNames) ) {
             $loader->loadAssets($assetNames);
