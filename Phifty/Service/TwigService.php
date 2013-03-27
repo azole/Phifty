@@ -75,6 +75,33 @@ class TwigService
             $assetExt->setAssetConfig( kernel()->asset->config );
             $assetExt->setAssetLoader( kernel()->asset->loader );
             $env->addExtension($assetExt);
+
+
+            // TODO: we should refactor this
+            $exports = array(
+                'uniqid' => 'uniqid',
+                'md5' => 'md5',
+                'time' => 'time',
+                'sha1' => 'sha1',
+                'gettext' => 'gettext',
+                '_' => '_',
+                'count' => 'count',
+                'new' => 'Phifty\View\newObject',
+            );
+            foreach ($exports as $export => $func) {
+                $env->addFunction( $export , new Twig_Function_Function( $func ));
+            }
+
+            // auto-register all native PHP functions as Twig functions
+            $env->registerUndefinedFunctionCallback(function($name) {
+                // use functions with prefix 'array_' and 'str'
+                if (function_exists($name) && ( strpos($name,'array_') === 0 || strpos($name,'str') === 0 ) ) {
+                    return new Twig_Function_Function($name);
+                }
+                return false;
+            });
+
+
             return (object) array(
                 'loader' => $loader,
                 'env' => $env,

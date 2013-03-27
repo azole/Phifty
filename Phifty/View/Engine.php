@@ -74,8 +74,6 @@ abstract class Engine
     public static function createEngine( $backend , $opts = array() )
     {
         switch ($backend) {
-            case "smarty":
-                return new \Phifty\View\Smarty( $opts );
             case "twig":
                 return new \Phifty\View\Twig( $opts );
             case "php":
