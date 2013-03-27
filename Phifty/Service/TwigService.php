@@ -8,5 +8,8 @@ class TwigService
 
     public function register($kernel, $options = array() )
     {
+        $kernel->twig = function() {
+
+        };
     }
 }
