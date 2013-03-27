@@ -1,6 +1,8 @@
 <?php
 namespace Phifty\Command;
 use CLIFramework\Command;
+use GenPHP\Flavor\FlavorLoader;
+use GenPHP\GeneratorRunner;
 
 class GenerateCommand extends Command
 {
@@ -11,13 +13,11 @@ class GenerateCommand extends Command
         $args = func_get_args();
         array_shift($args);
 
-        $loader = new \GenPHP\Flavor\FlavorLoader(array(
-            PH_ROOT . '/src/Phifty/Flavors'
-        ));
+        $loader = new FlavorLoader(array( PH_ROOT . '/src/Phifty/Flavors' ));
         if ( $flavor = $loader->load($flavor) ) {
             $generator = $flavor->getGenerator();
             $generator->setLogger($this->logger);
-            $runner = new \GenPHP\GeneratorRunner;
+            $runner = new GeneratorRunner;
             $runner->run($generator,$args);
         } else {
             throw new Exception("Flavor $flavor not found.");

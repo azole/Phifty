@@ -17,31 +17,15 @@ class ExportCommand extends Command
 
     public function brief()
     {
-        return 'export application/plugin web paths to webroot/.';
+        return 'Export application/plugin web paths to webroot/.';
     }
 
     public function execute()
     {
-        $options = $this->options;
         $kernel       = kernel();
         $webroot      = $kernel->webroot;
-        $this->logger->info( "Exporting web directory to webroot..." );
-
-        /* Make directories */
-        $dirs = array();
-        $dirs[] = $webroot;
-        $dirs[] = $webPluginDir;
-
-        $dirs[] = $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload';
-        foreach ( $dirs as $dir ) {
-            FileUtils::mkpath( $dir , true );
-        }
-
-        system('chmod -R og+rw ' . $webroot . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'upload' );
-
         foreach ( kernel()->plugins as $plugin ) {
-
+            // Exporting Web directory
         }
-        $this->logger->info( "Done" );
     }
 }
