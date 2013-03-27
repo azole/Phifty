@@ -13,7 +13,7 @@ class Generator extends BaseGenerator
         $this->createDir( $bundleDir . DIRECTORY_SEPARATOR . 'Model' );
         $this->createDir( $bundleDir . DIRECTORY_SEPARATOR . 'Controller' );
         $this->createDir( $bundleDir . DIRECTORY_SEPARATOR . 'Action' );
-        $this->createDir( $bundleDir . DIRECTORY_SEPARATOR . 'Template' );
+        $this->createDir( $bundleDir . DIRECTORY_SEPARATOR . 'Templates' );
         $this->createDir( $bundleDir . DIRECTORY_SEPARATOR . 'Assets' );
 
         $classFile = $bundleDir . DIRECTORY_SEPARATOR . $bundleName . '.php';
