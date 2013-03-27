@@ -20,12 +20,9 @@ class InitCommand extends Command
     public function execute()
     {
         $kernel = kernel();
-        $this->logger->info( "Initializing phifty dirs..." );
-        $this->logger->info( "Webroot: " . $kernel->webroot );
-
         $dirs = array();
-        $dirs[] = FileUtils::path_join( PH_APP_ROOT , 'cache' , 'view' );
-        $dirs[] = FileUtils::path_join( PH_APP_ROOT , 'cache' , 'config' );
+        $dirs[] = FileUtils::path_join( PH_APP_ROOT, 'cache', 'view' );
+        $dirs[] = FileUtils::path_join( PH_APP_ROOT, 'cache', 'config' );
         $dirs[] = 'locale';
         $dirs[] = 'applications';
         $dirs[] = 'bin';
