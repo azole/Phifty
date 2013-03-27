@@ -180,6 +180,11 @@ class FileUtils
         return filemtime($targetFile) > filemtime($cacheFile);
     }
 
+    public static function remove_cwd($path)
+    {
+        return substr($path, strlen(getcwd()) + 1 );
+    }
+
     public static function fileobject_from_path($path)
     {
         $pathinfo = pathinfo($path);

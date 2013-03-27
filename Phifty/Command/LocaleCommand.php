@@ -5,7 +5,7 @@ use Symfony\Component\Finder\Finder;
 use Phifty\Kernel;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
-use Phifty;
+use Phifty\FileUtils;
 
 
 /*
@@ -20,11 +20,6 @@ function proc_read($command)
     return $output;
 }
 */
-
-function remove_cwd($path)
-{
-    return substr($path, strlen(getcwd()) + 1 );
-}
 
 
 /**
@@ -41,6 +36,12 @@ class LocaleCommand extends Command
     public function options($opts)
     {
         $opts->add('f|force','force');
+    }
+
+    public function init()
+    {
+        parent::init();
+        // $this->registerCommand( );
     }
 
 
@@ -94,7 +95,7 @@ class LocaleCommand extends Command
             {
                 // force compilation
                 if( preg_match( '/\.(html?|twig)$/', $file ) ) {
-                    $this->logger->info( remove_cwd($file->getPathname()) ,1);
+                    $this->logger->info( FileUtils::remove_cwd($file->getPathname()) ,1);
                     $twig->loadTemplate( substr($file, strlen(dirname($pluginDir)) + 1) );
                 }
             }
@@ -126,8 +127,7 @@ class LocaleCommand extends Command
         // Update message catalog
         $finder = Finder::create()->files()->name('*.po')->in( $localeDir );
         foreach ( $finder->getIterator() as $file ) {
-            // $shortPath     = remove_cwd($file->getPath() );
-            $shortPathname = $file; // remove_cwd($file->getPathname() );
+            $shortPathname = $file;
 
             $this->logger->info("Updating $shortPathname");
             $cmd = sprintf('msgmerge --update %s %s', $shortPathname, $potFile);
