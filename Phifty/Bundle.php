@@ -18,7 +18,7 @@ class Bundle
     /**
      * @var string the plugin class directory, used for caching the locate() result.
      */
-    public $dir;
+    public $baseDir;
 
     public function __construct($config = array())
     {
@@ -96,12 +96,11 @@ class Bundle
      */
     public function locate()
     {
-        if ($this->dir) {
-            return $this->dir;
+        if ($this->baseDir) {
+            return $this->baseDir;
         }
-
         $object = new ReflectionObject($this);
-        return $this->dir = dirname($object->getFilename());
+        return $this->baseDir = dirname($object->getFilename());
     }
 
     /**
@@ -265,7 +264,7 @@ class Bundle
      */
     public function getTemplateDir()
     {
-        return $this->locate() . DS . 'Templates';
+        return $this->locate() . DIRECTORY_SEPARATOR . 'Templates';
     }
 
     /**
