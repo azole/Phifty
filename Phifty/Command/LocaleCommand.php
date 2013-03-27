@@ -94,13 +94,13 @@ class LocaleCommand extends Command
             {
                 // force compilation
                 if( preg_match( '/\.(html?|twig)$/', $file ) ) {
-                    $this->logger->info("Compiling " . remove_cwd($file->getPathname()) ,1);
+                    $this->logger->info( remove_cwd($file->getPathname()) ,1);
                     $twig->loadTemplate( substr($file, strlen(dirname($pluginDir)) + 1) );
                 }
             }
         }
 
-        $potFile = 'locale/messages.pot';
+        $potFile = $localeDir . DIRECTORY_SEPARATOR . 'messages.pot';
         touch($potFile);
 
         $scanDirs = array();
@@ -116,28 +116,29 @@ class LocaleCommand extends Command
             $potFile,
             join( ' ', $scanDirs ) );
 
-        $this->logger->info($cmd);
+        $this->logger->debug($cmd,1);
         system($cmd, $retval);
         if ( $retval != 0 )
             die('xgettext error');
 
+        $this->logger->info("Updating message catalog...");
 
         // Update message catalog
         $finder = Finder::create()->files()->name('*.po')->in( $localeDir );
         foreach ( $finder->getIterator() as $file ) {
-            $shortPath     = substr( $file->getPath() , strlen($cwd) + 1 );
-            $shortPathname = substr( $file->getPathname() , strlen($cwd) + 1 );
+            // $shortPath     = remove_cwd($file->getPath() );
+            $shortPathname = $file; // remove_cwd($file->getPathname() );
 
-            $this->logger->info("Updating $shortPathname",1);
-            $cmd = sprintf('msgmerge %s %s', $shortPathname, $potFile);
+            $this->logger->info("Updating $shortPathname");
+            $cmd = sprintf('msgmerge --update %s %s', $shortPathname, $potFile);
             $this->logger->debug($cmd,1);
             system($cmd, $retval);
             if ( $retval != 0 )
                 die('xgettext error');
 
-            $this->logger->info("Compiling messages $shortPathname",1);
+            $this->logger->info("Compiling messages $shortPathname");
             $cmd = sprintf('msgfmt -v %s', $shortPathname);
-            $this->logger->debug($cmd,1);
+            $this->logger->debug($cmd);
             system($cmd, $retval);
             if ( $retval != 0 )
                 die('xgettext error');
