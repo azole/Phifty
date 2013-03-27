@@ -30,7 +30,7 @@ class BundleService
 
         // default plugin paths
         if ( PH_APP_ROOT !== PH_ROOT ) {
-            $manager->registerPluginDir( $kernel->appPluginDir );
+            $manager->registerPluginDir( $kernel->appBundleDir );
         }
         $manager->registerPluginDir( $kernel->frameworkPluginDir );
 
@@ -43,7 +43,7 @@ class BundleService
         foreach ($config as $pluginName => $config) {
             $kernel->classloader->addNamespace(array(
                 $pluginName => array(
-                    $kernel->appPluginDir,
+                    $kernel->appBundleDir,
                     $kernel->frameworkPluginDir,
                 )
             ));

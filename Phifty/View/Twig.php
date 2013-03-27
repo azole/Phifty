@@ -39,10 +39,6 @@ class Twig extends \Phifty\View\Engine
     public function newRenderer()
     {
         $kernel = kernel();
-        /*
-         * Env Options
-         * http://www.twig-project.org/doc/api.html#environment-options
-         * */
         $this->env = $kernel->twig->env;
         $this->loader = $kernel->twig->loader;
         return $this->env;
@@ -72,5 +68,4 @@ class Twig extends \Phifty\View\Engine
     {
         $this->newStringRenderer()->loadTemplate( $stringTemplate )->display($args);
     }
-
 }

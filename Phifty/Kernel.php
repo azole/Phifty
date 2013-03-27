@@ -24,7 +24,7 @@ class Kernel extends ObjectContainer
 
     public $rootDir;  // application root dir
     public $rootAppDir;   // application dir (./applications)
-    public $appPluginDir;
+    public $appBundleDir;
     public $webroot;
 
     /* boolean: is in command mode ? */
@@ -59,7 +59,7 @@ class Kernel extends ObjectContainer
         $this->frameworkPluginDir = PH_ROOT . DS . 'bundles';
         $this->rootDir            = PH_APP_ROOT;      // Application root.
         $this->rootAppDir         = PH_APP_ROOT . DS . 'applications';
-        $this->appPluginDir      = PH_APP_ROOT . DS . 'bundles';
+        $this->appBundleDir      = PH_APP_ROOT . DS . 'bundles';
         $this->webroot            = PH_APP_ROOT . DS . 'webroot';
         $this->cacheDir           = PH_APP_ROOT . DS . 'cache';
 

@@ -10,7 +10,6 @@ use Twig_Extension_Debug;
 use Twig_Extension_Optimizer;
 use Twig_Extensions_Extension_Text;
 use Twig_Extensions_Extension_I18n;
-
 use AssetToolkit\Extension\Twig\AssetExtension;
 
 
@@ -34,7 +33,9 @@ class TwigService
                 }
             }
             // append fallback template dirs from plugin dir or framework plugin dir.
-            $templateDirs[] = $kernel->appPluginDir;
+            $templateDirs[] = $kernel->rootAppDir;
+            $templateDirs[] = $kernel->appBundleDir;
+            $templateDirs[] = $kernel->frameworkAppDir;
             $templateDirs[] = $kernel->frameworkPluginDir;
 
             // create the filesystem loader
