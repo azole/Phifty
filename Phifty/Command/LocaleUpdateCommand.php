@@ -11,6 +11,8 @@ use Phifty;
 class LocaleUpdateCommand extends Command
 {
 
+    public function brief() { return 'compile message files'; }
+
     public function options($opts)
     {
         $opts->add('f|force','force');

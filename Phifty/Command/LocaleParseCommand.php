@@ -11,6 +11,8 @@ use Phifty;
 class LocaleParseCommand extends Command
 {
 
+    public function brief() { return 'parse and update message catalogs.'; }
+
     public function options($opts)
     {
         $opts->add('f|force','force');
@@ -76,23 +78,32 @@ class LocaleParseCommand extends Command
         $potFile = $localeDir . DIRECTORY_SEPARATOR . 'messages.pot';
         touch($potFile);
 
-        $scanDirs = array();
-        $scanDirs[] = PH_ROOT . DIRECTORY_SEPARATOR . 'src'; // phifty src
-        $scanDirs[] = PH_ROOT . DIRECTORY_SEPARATOR . 'applications'; // phifty applications
-        $scanDirs[] = PH_ROOT . DIRECTORY_SEPARATOR . 'bundles';
-        $scanDirs[] = PH_APP_ROOT . DIRECTORY_SEPARATOR . 'applications';
-        $scanDirs[] = PH_APP_ROOT . DIRECTORY_SEPARATOR . 'bundles';
-        $scanDirs[] = $kernel->getCacheDir();
+        $scanDirs = func_get_args(); // get paths from command-line
+
+        if ( empty($scanDirs) ) {
+            $scanDirs[] = PH_ROOT . DIRECTORY_SEPARATOR . 'src'; // phifty src
+            $scanDirs[] = PH_ROOT . DIRECTORY_SEPARATOR . 'applications'; // phifty applications
+            $scanDirs[] = PH_ROOT . DIRECTORY_SEPARATOR . 'bundles';
+            $scanDirs[] = PH_APP_ROOT . DIRECTORY_SEPARATOR . 'applications';
+            $scanDirs[] = PH_APP_ROOT . DIRECTORY_SEPARATOR . 'bundles';
+            $scanDirs[] = $kernel->getCacheDir();
+        }
         $scanDirs = array_filter( $scanDirs, 'file_exists' );
+        if ( empty($scanDirs) ) {
+            throw new Exception("Non of existing directories");
+        }
 
-        $cmd = sprintf("xgettext -j -o %s --from-code=UTF-8 -n -L PHP -D $(find %s -type f -iname '*.php')",
-            $potFile,
-            join( ' ', $scanDirs ) );
-
-        $this->logger->debug($cmd,1);
-        system($cmd, $retval);
-        if ( $retval != 0 )
-            die('xgettext error');
+        foreach( $scanDirs as $scanDir ) {
+            $this->logger->info("Parsing from $scanDir...");
+            $cmd = sprintf("xgettext -j -o %s --from-code=UTF-8 -n -L PHP "
+                . " \$(find %s -type f -iname '*.php')",
+                $potFile,
+                $scanDir);
+            $this->logger->debug($cmd,1);
+            system($cmd, $retval);
+            if ( $retval != 0 )
+                die('xgettext error');
+        }
 
         $this->logger->info("Updating message catalog...");
 
@@ -103,7 +114,7 @@ class LocaleParseCommand extends Command
 
             $this->logger->info("Updating $shortPathname");
             $cmd = sprintf('msgmerge --update %s %s', $shortPathname, $potFile);
-            $this->logger->debug($cmd,1);
+            $this->logger->debug($cmd);
             system($cmd, $retval);
             if ( $retval != 0 )
                 die('xgettext error');
