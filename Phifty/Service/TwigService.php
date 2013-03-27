@@ -26,7 +26,7 @@ class TwigService
     {
         $kernel->twig = function() use($kernel, $options) {
             $templateDirs = array();
-            if ( isset($options['TemplateDirs']) ) {
+            if ( isset($options['TemplateDirs']) && $options['TemplateDirs'] ) {
                 foreach( $options['TemplateDirs'] as $dir ) {
                     // use absolute path from app root
                     $templateDirs[] = PH_APP_ROOT . DIRECTORY_SEPARATOR . $dir;
@@ -54,7 +54,7 @@ class TwigService
             }
 
             // override from config
-            if ( isset($options['Environment']) ) {
+            if ( isset($options['Environment']) && $options['Environment'] ) {
                 $args = array_merge( $args , $options['Environment'] );
             }
 
