@@ -1,6 +1,7 @@
 <?php
 namespace Phifty\Command;
 use CLIFramework\Command;
+use Symfony\Component\Finder\Finder;
 
 /**
  *
@@ -12,17 +13,14 @@ use CLIFramework\Command;
  */
 class LocaleCommand extends Command
 {
-
     public function execute()
     {
         $kernel = kernel();
-
-#          $finder = Finder::create()->files()->name('*.po')->in(
-#              PH_ROOT . DIRECTORY_SEPARATOR . $kernel->config->get('framework','Locale.localedir')
-#          );
-#          foreach ( $finder->getIterator() as $file ) {
-#              echo $file, "\n";
-#          }
+        $localeDir = PH_APP_ROOT . DIRECTORY_SEPARATOR . $kernel->config->get('framework','Services.LocaleService.LocaleDir');
+        $finder = Finder::create()->files()->name('*.po')->in( $localeDir );
+        foreach ( $finder->getIterator() as $file ) {
+            echo $file, "\n";
+        }
     }
 
 }
