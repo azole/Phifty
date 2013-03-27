@@ -202,19 +202,33 @@ class Kernel extends ObjectContainer
      */
     public function service($id)
     {
-        if ( isset($this->services[ $id ] ) )
-
+        if ( isset($this->services[ $id ] ) ) {
             return $this->services[ $id ];
+        }
     }
 
     /**
      * Get plugin object from plugin service
      *
      * backward-compatible
+     *
+     * @param string $name
      */
     public function plugin($name)
     {
         return $this->plugins->get( $name );
+    }
+
+
+
+    /**
+     * Since we are migrating plugin to bundle.
+     *
+     * @param string $name
+     */
+    public function bundle($name)
+    {
+        return $this->plugins->get($name);
     }
 
 
@@ -225,15 +239,6 @@ class Kernel extends ObjectContainer
     public function getFrameworkId()
     {
         return self::FRAMEWORK_ID;
-    }
-
-    /**
-     * get Template Engine
-     * XXX: not used ?
-     **/
-    public function view()
-    {
-        return new \Phifty\View;
     }
 
     public static function getInstance()
