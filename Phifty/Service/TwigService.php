@@ -5,6 +5,7 @@ use Twig_Loader_Filesystem;
 use Twig_Function_Function;
 use Twig_Loader_String;
 
+use Twig_Extension_Core;
 use Twig_Extension_Debug;
 use Twig_Extension_Optimizer;
 use Twig_Extensions_Extension_Text;
@@ -67,6 +68,7 @@ class TwigService
             } else {
                 $env->addExtension( new Twig_Extension_Optimizer );
             }
+            $env->addExtension( new Twig_Extension_Core );
             $env->addExtension( new Twig_Extensions_Extension_Text );
             $env->addExtension( new Twig_Extensions_Extension_I18n );
 
