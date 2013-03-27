@@ -31,7 +31,8 @@ class LocaleParseCommand extends Command
         $frameworkPoFilename = $frameworkId . '.po';
         $appPoFilename       = $appId . '.po';
 
-        // prepare po files from framework po source files.
+        // prepare po files from framework po source files,
+        // if we don't have one for the specific language.
         foreach( $langs as $langId ) {
             $poDir        = $localeDir . DIRECTORY_SEPARATOR . $langId . DIRECTORY_SEPARATOR . 'LC_MESSAGES';
             $sourcePoPath = $frameworkLocaleDir . DIRECTORY_SEPARATOR . $langId . DIRECTORY_SEPARATOR . 'LC_MESSAGES' . DIRECTORY_SEPARATOR . $frameworkId . '.po';
