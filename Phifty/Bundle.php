@@ -20,6 +20,11 @@ class Bundle
      */
     public $baseDir;
 
+    /**
+     * @var string cached namespace from reflection class
+     */
+    public $namespace;
+
     public function __construct($config = array())
     {
         if ( $config ) {
@@ -54,7 +59,14 @@ class Bundle
 
     public function init()
     {
-
+        // we should have twig service
+        $kernel = kernel();
+        if ( isset($kernel->twig) ) {
+            $dir = $this->getTemplateDir();
+            if ( file_exists($dir) ) {
+                $kernel->twig->loader->addPath( $this->getTemplateDir(), $this->getNamespace() );
+            }
+        }
     }
 
 
@@ -72,9 +84,10 @@ class Bundle
      * */
     public function getNamespace()
     {
+        if ( $this->namespace )
+            return $this->namespace;
         $object = new ReflectionObject($this);
-
-        return $object->getNamespaceName();
+        return $this->namespace = $object->getNamespaceName();
     }
 
     /**
