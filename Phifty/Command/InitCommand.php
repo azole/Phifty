@@ -17,13 +17,6 @@ class InitCommand extends Command
         return 'Initialize phifty project files, directories and permissions.';
     }
 
-    public function options($opts)
-    {
-        $init = new AssetInitCommand;
-        $install = new AssetInstallCommand;
-        $install->options($opts);
-    }
-
     public function execute()
     {
         $kernel = kernel();
@@ -36,11 +29,9 @@ class InitCommand extends Command
         $dirs[] = 'locale';
         $dirs[] = 'applications';
         $dirs[] = 'bin';
-        $dirs[] = 'plugins';
+        $dirs[] = 'bundles';
         $dirs[] = 'config';
         $dirs[] = 'webroot';
-
-        $dirs[] = 'webroot' . DIRECTORY_SEPARATOR . 'ph' . DIRECTORY_SEPARATOR . 'plugins';
 
         /* for hard links */
         $dirs[] = 'webroot' . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . 'images';
