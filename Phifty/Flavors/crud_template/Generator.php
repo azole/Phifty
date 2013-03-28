@@ -10,10 +10,10 @@ class Generator extends BaseGenerator
     public function generate($ns,$crudId)
     {
         $bundle = kernel()->app($ns) ?: kernel()->bundle($ns,true);
-        if (! $app) {
+        if (! $bundle) {
             throw new Exception("$ns application or plugin not found.");
         }
-        $templateDir = $app->getTemplateDir() . DIRECTORY_SEPARATOR . $crudId;
+        $templateDir = $bundle->getTemplateDir() . DIRECTORY_SEPARATOR . $crudId;
         $this->copyDir( 'template' , $templateDir );
     }
 

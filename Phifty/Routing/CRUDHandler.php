@@ -43,7 +43,7 @@ abstract class CRUDHandler extends Controller
      */
     public $predefined = array();
 
-    public $templatePage = 'CRUD/Templates/page.html';
+    public $templatePage = '@CRUD/page.html';
 
     /** Namespace **/
     public $namespace; /* like News\... */
