@@ -1,6 +1,7 @@
 <?php
 namespace schema;
 use GenPHP\Flavor\BaseGenerator;
+use Exception;
 
 
 /**

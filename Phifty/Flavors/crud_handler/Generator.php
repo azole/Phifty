@@ -20,8 +20,7 @@ class Generator extends BaseGenerator
         }
 
         $bundleName = $bundle->getNamespace();
-        $model = $bundle->getModel($modelName);
-        $modelClass = get_class($model);
+        $modelClass = $bundleName . '\\Model\\' . $modelName;
 
         $handlerClass = $modelName . 'CRUDHandler';
         $classFile = $bundle->locate() . DIRECTORY_SEPARATOR . $handlerClass . '.php';
@@ -30,7 +29,6 @@ class Generator extends BaseGenerator
             'handlerClass' => $handlerClass,
             'bundleName'   => $bundleName,
             'modelClass'   => $modelClass,
-            'model'        => $model,
             'crudId'       => $crudId,
         ));
     }
