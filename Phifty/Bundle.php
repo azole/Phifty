@@ -42,6 +42,15 @@ class Bundle
         $this->kernel = kernel();
         // XXX: currently we are triggering the loadAssets from Phifty\Web
         // kernel()->event->register('asset.load', array($this,'loadAssets'));
+
+        // we should have twig service
+        if ( $this->exportTemplates && isset($this->kernel->twig) ) {
+            // register the loader to events
+            $dir = $this->getTemplateDir();
+            if ( file_exists($dir) ) {
+                $this->kernel->twig->loader->addPath($dir, $this->getNamespace() );
+            }
+        }
     }
 
     public function getConfig()
@@ -67,14 +76,6 @@ class Bundle
 
     public function init()
     {
-        // we should have twig service
-        if ( $this->exportTemplates && isset($this->kernel->twig) ) {
-            // register the loader to events
-            $dir = $this->getTemplateDir();
-            if ( file_exists($dir) ) {
-                $this->kernel->twig->loader->addPath($dir, $this->getNamespace() );
-            }
-        }
     }
 
 
