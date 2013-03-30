@@ -22,8 +22,15 @@ class LocaleParseCommand extends Command
     {
         $kernel = kernel();
         $localeDir = $kernel->config->get('framework','Services.LocaleService.Directory') ?: 'locale';
-        $frameworkLocaleDir = PH_ROOT . DIRECTORY_SEPARATOR . 'locale';
-        $langs     = $kernel->config->get('framework','Services.LocaleService.Langs')->config;
+        $frameworkLocaleDir = PH_ROOT . DIRECTORY_SEPARATOR . $localeDir;
+
+        if ( $langsConfig = $kernel->config->get('framework','Services.LocaleService.Langs') ) {
+            $langs = $langsConfig->config;
+        } else {
+            $this->logger->warn("Services.LocaleService.Langs is required.");
+            $this->logger->warn("Using default lang 'en' for locale");
+            $langs= array('en');
+        }
 
         $cwd = getcwd();
         $appPoFiles = array();
@@ -44,7 +51,7 @@ class LocaleParseCommand extends Command
                 mkdir($poDir, 0755, true);
             }
 
-            if ( $this->options->force || file_exists( $sourcePoPath ) && ! file_exists( $targetPoPath ) ) {
+            if ( $this->options && $this->options->force || file_exists( $sourcePoPath ) && ! file_exists( $targetPoPath ) ) {
                 $this->logger->info("Creating $targetPoPath");
 
                 if ( $sourcePoPath != $targetPoPath ) {

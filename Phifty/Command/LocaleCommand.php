@@ -49,9 +49,11 @@ class LocaleCommand extends Command
     public function execute()
     {
         $parse = $this->createCommand('Phifty\Command\LocaleParseCommand');
+        $parse->options = $this->options;
         $parse->executeWrapper(array());
 
         $update = $this->createCommand('Phifty\Command\LocaleUpdateCommand');
+        $update->options = $this->options;
         $update->executeWrapper(array());
     }
 
