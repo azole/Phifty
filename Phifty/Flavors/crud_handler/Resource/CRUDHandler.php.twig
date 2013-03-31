@@ -2,7 +2,6 @@
 namespace {{bundleName}};
 use Phifty\Bundle;
 use AdminUI\CRUDHandler;
-use {{bundleName}};
 
 class {{handlerClass}} extends CRUDHandler
 {
@@ -29,7 +28,7 @@ class {{handlerClass}} extends CRUDHandler
 
     public function init()
     {
-        $this->plugin = {{bundleName}}\{{bundleName}}::getInstance();
+        $this->plugin = \{{bundleName}}\{{bundleName}}::getInstance();
         parent::init();
     }
 
