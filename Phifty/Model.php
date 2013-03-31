@@ -8,7 +8,6 @@ class Model extends BaseModel
     public function getLabel()
     {
         $label = parent::getLabel();
-
         return $label ? _($label) : $label;
     }
 
@@ -43,7 +42,6 @@ class Model extends BaseModel
     {
         $class = get_class($this);
         $actionClass = BaseRecordAction::createCRUDClass($class,$type);
-
         return new $actionClass( $args , $this );
     }
 }
