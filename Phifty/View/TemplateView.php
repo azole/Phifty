@@ -86,5 +86,6 @@ abstract class TemplateView
         $twig = $this->createTwigEnvironment($loader);
         return $twig->render($template, $this->mergeTemplateArguments($arguments) );
     }
+
 }
 

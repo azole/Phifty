@@ -4,6 +4,8 @@ use Phifty\View\TemplateView;
 
 class Region extends TemplateView
 {
+    public $regionId;
+
     public $path;
     public $arguments = array();
 
@@ -16,7 +18,16 @@ class Region extends TemplateView
 
     public function getRegionId()
     {
-        return preg_replace('#\W+#', '_', $this->path) . '-' . md5(microtime());
+        if ( $this->regionId ) {
+            return $this->regionId;
+        }
+        return $this->regionId = preg_replace('#\W+#', '_', $this->path) . '-' . md5(microtime());
+    }
+
+
+    public function setRegionId($id)
+    {
+        $this->regionId = $id;
     }
 
     public function getTemplate()
@@ -46,6 +57,10 @@ TEMPL;
     }
 
 
+    static public function create($path, $arguments = array()) 
+    {
+        return new static($path, $arguments);
+    }
 
 }
 
