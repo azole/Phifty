@@ -3,6 +3,16 @@ namespace Phifty\Web;
 use Phifty\View\TemplateView;
 use FormKit\Element;
 
+
+/**
+ *
+ *
+ * TODO: twig extension:
+ *
+ *    {% region '/bs/crud/list', { arguments } %}
+ *
+ */
+
 class Region extends TemplateView
 {
     public $regionId;
@@ -10,13 +20,14 @@ class Region extends TemplateView
     public $container;
     public $path;
     public $arguments = array();
+    public $options = array();
 
-    public function __construct($path, $arguments = array()) 
+    public function __construct($path, $arguments = array(), $options = array()) 
     {
         $this->path = $path;
         $this->arguments = $arguments;
+        $this->options = $options;
         $this->container = new Element('div');
-
         $this->container->addClass('__region');
     }
 
