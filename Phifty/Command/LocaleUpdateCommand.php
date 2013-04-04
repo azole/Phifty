@@ -41,7 +41,7 @@ class LocaleUpdateCommand extends Command
             $targetFile = futil_replace_extension($file,'mo');
 
             $this->logger->info("Compiling messages $file to $targetFile");
-            $cmd = sprintf('msgfmt -v -o %s %s', $targetFile, $file);
+            $cmd = sprintf('msgfmt -v --use-fuzzy -o %s %s', $targetFile, $file);
             $this->logger->debug($cmd);
             system($cmd, $retval);
             if ( $retval != 0 ) {
