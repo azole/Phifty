@@ -1,11 +1,13 @@
 <?php
 namespace Phifty\Web;
 use Phifty\View\TemplateView;
+use FormKit\Element;
 
 class Region extends TemplateView
 {
     public $regionId;
 
+    public $container;
     public $path;
     public $arguments = array();
 
@@ -13,8 +15,10 @@ class Region extends TemplateView
     {
         $this->path = $path;
         $this->arguments = $arguments;
-    }
+        $this->container = new Element('div');
 
+        $this->container->addClass('__region');
+    }
 
     public function getRegionId()
     {
@@ -24,7 +28,6 @@ class Region extends TemplateView
         return $this->regionId = preg_replace('#\W+#', '_', $this->path) . '-' . md5(microtime());
     }
 
-
     public function setRegionId($id)
     {
         $this->regionId = $id;
@@ -33,9 +36,7 @@ class Region extends TemplateView
     public function getTemplate()
     {
         return <<<TEMPL
-<div id="{{View.getRegionId()}}" class="__region">
-
-</div>
+{{ View.container.render()|raw }}
 <script type="text/javascript">
 $(document.body).ready(function() {
     $('#{{View.getRegionId()}}').asRegion().load( '{{View.path|raw}}' , {{ View.arguments|json_encode|raw }} );
@@ -47,9 +48,10 @@ TEMPL;
 
     public function render($args = array())
     {
+        // set the region ID to container when rendering content
+        $this->container->setId( $this->getRegionId() );
         return $this->renderTemplateString($this->getTemplate(), $this->mergeTemplateArguments( $args ));
     }
-
 
     public function __toString() 
     {
