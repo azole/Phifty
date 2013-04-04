@@ -2,7 +2,7 @@
 namespace Phifty\Command;
 use CLIFramework\Command;
 
-class RequirementCommand extends Command
+class CheckCommand extends Command
 {
 
     public function printResult($msg, $ok)
@@ -63,6 +63,10 @@ class RequirementCommand extends Command
 
         // TODO:
         //   1. get services and get dependencies from these services for checking
-
+        foreach( $kernel->plugins as $plugin ) {
+            // $dir = $plugin->getTemplateDir();
+        }
     }
+
+
 }

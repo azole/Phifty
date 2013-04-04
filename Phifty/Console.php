@@ -33,7 +33,7 @@ class Console extends Application
         $this->registerCommand('asset');
         $this->registerCommand('new','Phifty\Command\GenerateCommand');
         $this->registerCommand('migration-check','Phifty\Command\MigrationCheckCommand');
-        $this->registerCommand('requirement');
+        $this->registerCommand('check');
 
         $this->registerCommand('build-schema','LazyRecord\Command\BuildSchemaCommand');
         $this->registerCommand('build-sql','LazyRecord\Command\BuildSqlCommand');
