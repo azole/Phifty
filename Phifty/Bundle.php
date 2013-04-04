@@ -41,7 +41,7 @@ class Bundle
         }
         $this->kernel = kernel();
         // XXX: currently we are triggering the loadAssets from Phifty\Web
-        // kernel()->event->register('asset.load', array($this,'loadAssets'));
+        // $this->kernel->event->register('asset.load', array($this,'loadAssets'));
 
         // we should have twig service
         if ( $this->exportTemplates && isset($this->kernel->twig) ) {
