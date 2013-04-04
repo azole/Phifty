@@ -86,7 +86,7 @@ class Controller extends BaseController
             return $this->_view;
         }
         // call the view object factory from service
-        return $this->_view = kernel()->view;
+        return $this->_view = kernel()->view($this->defaultViewClass);
     }
 
     /**
