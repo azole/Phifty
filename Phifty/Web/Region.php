@@ -5,7 +5,6 @@ use Phifty\View\TemplateView;
 class Region extends TemplateView
 {
     public $path;
-
     public $arguments = array();
 
     public function __construct($path, $arguments = array()) 
@@ -35,9 +34,9 @@ TEMPL;
 
     }
 
-    public function render() 
+    public function render($args = array())
     {
-        return $this->renderTemplateString($this->getTemplate(), $this->mergeTemplateArguments());
+        return $this->renderTemplateString($this->getTemplate(), $this->mergeTemplateArguments( $args ));
     }
 
 

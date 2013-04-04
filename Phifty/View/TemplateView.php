@@ -62,7 +62,7 @@ abstract class TemplateView
 
     public function mergeTemplateArguments($args = array())
     {
-        return array_merge( $this->getDefaultArguments() , $arguments );
+        return array_merge( $this->getDefaultArguments() , $args);
     }
 
 
@@ -84,7 +84,7 @@ abstract class TemplateView
     {
         $loader = $this->createTwigStringLoader();
         $twig = $this->createTwigEnvironment($loader);
-        return $this->render($template, $this->mergeTemplateArguments($arguments) );
+        return $twig->render($template, $this->mergeTemplateArguments($arguments) );
     }
 }
 
