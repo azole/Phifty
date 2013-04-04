@@ -4,12 +4,10 @@ use Phifty\View\TemplateView;
 use FormKit\Element;
 
 
-/**
- *
- *
+/*
  * TODO: twig extension:
  *
- *    {% region '/bs/crud/list', { arguments } %}
+ *    {% region '/bs/crud/list', { arguments ...  } %}
  *
  */
 
