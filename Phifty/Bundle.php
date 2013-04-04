@@ -28,7 +28,7 @@ class Bundle
 
     public $defaultActionTypes = array('Create','Update','Delete', 'BulkDelete');
 
-    public $exportTemplates = false;
+    public $exportTemplates = true;
 
     public $kernel;
 
