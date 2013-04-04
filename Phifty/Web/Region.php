@@ -57,9 +57,13 @@ TEMPL;
     }
 
 
-    static public function create($path, $arguments = array()) 
+    static public function create($path, $arguments = array(), $regionId = null) 
     {
-        return new static($path, $arguments);
+        $region = new static($path, $arguments);
+        if ( $regionId ) {
+            $region->setRegionId($regionId);
+        }
+        return $region;
     }
 
 }
