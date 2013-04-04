@@ -3,8 +3,13 @@ namespace Phifty\View;
 use ReflectionObject;
 use Exception;
 use Twig_Loader_Filesystem;
+use Twig_Loader_String;
 use Twig_Environment;
 
+
+/**
+ * TODO: Refactor this out to a package.
+ */
 abstract class TemplateView
 {
     private $_classDir;
@@ -23,6 +28,13 @@ abstract class TemplateView
         return $this->getClassDir() . DIRECTORY_SEPARATOR . 'Templates';
     }
 
+
+    public function createTwigStringLoader() 
+    {
+        return new Twig_Loader_String();
+    }
+
+
     public function createTwigFileSystemLoader()
     {
         $dir = $this->getTemplateDir();
@@ -32,9 +44,8 @@ abstract class TemplateView
         return new Twig_Loader_Filesystem($dir);
     }
 
-    public function createTwigEnvironment()
+    public function createTwigEnvironment($loader)
     {
-        $loader = $this->createTwigFileSystemLoader();
         return new Twig_Environment($loader, $this->getTwigConfig());
     }
 
@@ -43,18 +54,39 @@ abstract class TemplateView
         return array();
     }
 
-    public function getTemplate($templateFile)
+    public function getDefaultArguments()
     {
-        $twig = $this->createTwigEnvironment();
-        return $twig->loadTemplate($templateFile);
+        return array('View' => $this );
     }
 
+
+    public function mergeTemplateArguments($args = array())
+    {
+        return array_merge( $this->getDefaultArguments() , $arguments );
+    }
+
+
+    /**
+     * When using renderTemplateFile method, we are creating the twig filesystem loader for use.
+     *
+     * @param string $templateFile template filename.
+     * @param array $arguments arguments for rendering.
+     */
     /* $twig->render('index.html', array('the' => 'variables', 'go' => 'here')); */
     public function renderTemplateFile($templateFile,$arguments = array())
     {
-        $template = $this->getTemplate($templateFile);
-        $arguments = array_merge( array('View' => $this ) , $arguments );
-        return $template->render($arguments);
+        $loader = $this->createTwigFileSystemLoader();
+        $twig = $this->createTwigEnvironment($loader);
+        return $twig->render($templateFile,  $this->mergeTemplateArguments($arguments) );
     }
+
+    public function renderTemplateString($template, $arguments = array())
+    {
+        $loader = $this->createTwigStringLoader();
+        $twig = $this->createTwigEnvironment($loader);
+        return $this->render($template, $this->mergeTemplateArguments($arguments) );
+    }
+
+
 }
 
