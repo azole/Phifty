@@ -38,12 +38,15 @@ class LocaleUpdateCommand extends Command
         // Update message catalog
         $finder = Finder::create()->files()->name('*.po')->in( $localeDir );
         foreach ( $finder->getIterator() as $file ) {
-            $this->logger->info("Compiling messages $file");
-            $cmd = sprintf('msgfmt -v %s', $file);
+            $targetFile = futil_replace_extension($file,'mo');
+
+            $this->logger->info("Compiling messages $file to $targetFile");
+            $cmd = sprintf('msgfmt -v -o %s %s', $targetFile, $file);
             $this->logger->debug($cmd);
             system($cmd, $retval);
-            if ( $retval != 0 )
+            if ( $retval != 0 ) {
                 die('xgettext error');
+            }
         }
     }
 
