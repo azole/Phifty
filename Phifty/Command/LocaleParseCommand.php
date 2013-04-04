@@ -120,7 +120,7 @@ class LocaleParseCommand extends Command
             $shortPathname = $file;
 
             $this->logger->info("Updating $shortPathname");
-            $cmd = sprintf('msgmerge --update %s %s', $shortPathname, $potFile);
+            $cmd = sprintf('msgmerge --verbose --no-fuzzy-matching --update %s %s', $shortPathname, $potFile);
             $this->logger->debug($cmd);
             system($cmd, $retval);
             if ( $retval != 0 )

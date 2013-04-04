@@ -20,10 +20,10 @@ class LocaleUpdateCommand extends Command
 
     public function execute()
     {
-        $kernel = kernel();
-        $localeDir = $kernel->config->get('framework','Services.LocaleService.Directory') ?: 'locale';
+        $kernel             = kernel();
+        $localeDir          = $kernel->config->get('framework','Services.LocaleService.Directory') ?: 'locale';
         $frameworkLocaleDir = PH_ROOT . DIRECTORY_SEPARATOR . 'locale';
-        $langs     = $kernel->config->get('framework','Services.LocaleService.Langs')->config;
+        $langs              = $kernel->config->get('framework','Services.LocaleService.Langs')->config;
 
         $cwd = getcwd();
         $appPoFiles = array();
