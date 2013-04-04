@@ -293,6 +293,9 @@ class Bundle
      */
     public function withCRUDAction( $model , $types )
     {
+        if ( empty($types) ) {
+            $types = $this->defaultActionTypes;
+        }
         $this->kernel->action->registerCRUD( $this->getNamespace() , $model , (array) $types );
     }
 

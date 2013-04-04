@@ -4,6 +4,7 @@ use Universal\Http\HttpRequest;
 use SerializerKit;
 use SerializerKit\YamlSerializer;
 use Exception;
+use InvalidArgumentException;
 use Roller\Controller as BaseController;
 
 /*
@@ -15,17 +16,32 @@ class Controller extends BaseController
 {
 
     /**
-     * @var HttpRequest
+     * @var HttpRequest request object for cache
      */
-    public $request;
+    protected $_request;
+
+
+    /**
+     * @var Phifty\View view object cache
+     */
+    protected $_view;
 
     public $defaultViewClass;
 
-    public $view;
-
     public function init()
     {
-        $this->request = new HttpRequest;
+    }
+
+    public function __get($name)
+    {
+        if ( 'request' === $name ) {
+            if ( $this->_request ) {
+                return $this->_request;
+            }
+            return $this->_request = new HttpRequest;
+        } else {
+            throw new InvalidArgumentException;
+        }
     }
 
     public function getMethod()
@@ -64,13 +80,13 @@ class Controller extends BaseController
      */
     public function view( $options = array() )
     {
-        if ($this->view) {
+        if ($this->_view) {
             if ( $options )
                 throw new Exception("The View object is initialized already.");
-            return $this->view;
+            return $this->_view;
         }
         // call the view object factory from service
-        return $this->view = kernel()->view;
+        return $this->_view = kernel()->view;
     }
 
     /**
