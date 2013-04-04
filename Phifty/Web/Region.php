@@ -27,8 +27,14 @@ class Region extends TemplateView
         $this->path = $path;
         $this->arguments = $arguments;
         $this->options = $options;
-        $this->container = new Element('div');
-        $this->container->addClass('__region');
+        $this->container = $this->createContainer();
+    }
+
+    public function createContainer()
+    {
+        $container = new Element('div');
+        $container->addClass('__region');
+        return $container;
     }
 
     public function getRegionId()
