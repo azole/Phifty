@@ -276,6 +276,7 @@ class Bundle
 
     public function expandRoute($path,$class)
     {
+        // TODO: reduce the autoload checking cost.
         if ( ! class_exists($class,true) ) {
             $class = $this->getNamespace() . '\\' . $class;
         }
