@@ -281,6 +281,7 @@ class Bundle
             $class = $this->getNamespace() . '\\' . $class;
         }
         $routes = $class::expand();
+        $class::set_mount_path($path);
         $this->kernel->router->mount( $path , $routes );
     }
 
