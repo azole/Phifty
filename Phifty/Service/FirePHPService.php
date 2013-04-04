@@ -16,17 +16,8 @@ class FirePHPService
         }
 
         /**
-         * init firephp for development:
          * http://www.firephp.org/HQ/Use.htm
-         *
-         * $ pear channel-discover pear.firephp.org
-         * $ pear install firephp/FirePHPCore
          **/
-        require $kernel->frameworkDir . '/vendor/firephp/lib/FirePHPCoreBundle/fb.php';
-
-        // Object-oriented methods
-        // require $kernel->frameworkDir . '/vendor/firephp/lib/FirePHPCoreBundle/FirePHP.class.php';
-
         // if firebug supports
         $kernel->event->register('phifty.after_page', function() use ($kernel) {
             if ( function_exists('fb') ) {
