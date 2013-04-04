@@ -21,6 +21,8 @@ class Controller extends BaseController
 
     public $defaultViewClass;
 
+    public $view;
+
     public function init()
     {
         $this->request = new HttpRequest;
@@ -62,20 +64,13 @@ class Controller extends BaseController
      */
     public function view( $options = array() )
     {
-        static $view;
-        if ($view) {
+        if ($this->view) {
             if ( $options )
                 throw new Exception("The View object is initialized already.");
-
-            return $view;
+            return $this->view;
         }
-
-        $templateEngine = kernel()->config->get('framework','View.Backend') ?: 'twig';
-        $viewClass      = $this->defaultViewClass ?: kernel()->config->get('framework','View.Class') ?: 'Phifty\View';
-
-        $engine = \Phifty\View\Engine::createEngine( $templateEngine , $options );
-
-        return $view = new $viewClass( $engine );  // pass 'Smarty' or 'Twig'
+        // call the view object factory from service
+        return $this->view = kernel()->view;
     }
 
     /**
@@ -84,16 +79,9 @@ class Controller extends BaseController
      * @param string $class
      * @param array  $options
      */
-    public function createView($viewClass = null,$options = null)
+    public function createView($viewClass = null)
     {
-        $viewService = kernel()->service('View');
-        $templateEngine = $viewService->options['Backend'];
-        $class = $viewClass ?: $this->defaultViewClass ?: $viewService->options['Class'];
-        if ( ! $class )
-            throw new Exception('View class is not defined.');
-        $engine = \Phifty\View\Engine::createEngine( $templateEngine , $options );
-
-        return new $class( $engine );  // pass 'Smarty' or 'Twig'
+        return kernel()->view($viewClass);
     }
 
     /**
@@ -120,7 +108,7 @@ class Controller extends BaseController
     /*
      * Tell browser dont cache page content
      */
-    public function headerNoCache()
+    public function setHeaderNoCache()
     {
         header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
     }
@@ -128,7 +116,7 @@ class Controller extends BaseController
     /*
      * Set cache expire time
      */
-    public function headerCacheTime( $time = null )
+    public function setHeaderCacheTime( $time = null )
     {
         $datestr = gmdate(DATE_RFC822, $time );
         // header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -201,7 +189,6 @@ class Controller extends BaseController
     {
         $view = $this->view( $engineOpts );
         $view->assign( $args );
-
         return $view->render( $template );
     }
 
