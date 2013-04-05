@@ -316,6 +316,13 @@ class Bundle
         return $this->locate() . DIRECTORY_SEPARATOR . 'Templates';
     }
 
+
+    public function getConfigDir()
+    {
+        return $this->locate() . DIRECTORY_SEPARATOR . 'Configs';
+    }
+
+
     /**
      * Get asset directory list, this is for registering bundle assets.
      *
