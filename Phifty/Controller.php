@@ -40,7 +40,7 @@ class Controller extends BaseController
             }
             return $this->_request = new HttpRequest;
         } else {
-            throw new InvalidArgumentException;
+            throw new InvalidArgumentException( $name );
         }
     }
 

@@ -6,6 +6,8 @@ class MetadataSchema extends MixinSchemaDeclare
 {
     public function schema()
     {
+        $kernel = kernel();
+
         $this->column( 'created_on' )
             ->timestamp()
             ->null()
@@ -28,7 +30,7 @@ class MetadataSchema extends MixinSchemaDeclare
 
         $this->column( 'created_by' )
             ->integer()
-            ->refer( kernel()->currentUser->userModelClass )
+            ->refer( $kernel->currentUser->userModelClass )
             ->default(function() {
                 if ( isset($_SESSION) ) {
                     return kernel()->currentUser->id;
@@ -41,7 +43,7 @@ class MetadataSchema extends MixinSchemaDeclare
         // XXX: inject value to beforeUpdate
         $this->column( 'updated_by' )
             ->integer()
-            ->refer( kernel()->currentUser->userModelClass )
+            ->refer( $kernel->currentUser->userModelClass )
             ->default(function() {
                 if ( isset($_SESSION) ) {
                     return kernel()->currentUser->id;
@@ -50,5 +52,8 @@ class MetadataSchema extends MixinSchemaDeclare
             ->renderAs('SelectInput')
             ->label('更新者')
             ;
+
+        // $this->belongsTo( 'created_by' , $kernel->currentUser->userModelClass . 'Schema' , 'id' , 'created_by' );
+        // $this->belongsTo( 'updated_by' , $kernel->currentUser->userModelClass . 'Schema' , 'id' , 'updated_by' );
     }
 }
