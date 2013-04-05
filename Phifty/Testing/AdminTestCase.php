@@ -28,11 +28,11 @@ class AdminTestCase extends Selenium2TestCase
         find_element_ok('.submit')->click();
 
         // ok( ! find_element('.message.error') , 'login error' );
-        wait_for('.admin-menu');
+        wait_for('#aimMenuStart');
 
         if ($transferTo) {
             $url = @$this->urlOf[$transferTo];
-            $a = find_element_ok(".admin-menu a[href=\"$url\"]");
+            $a = find_element_ok("#adminAimMenu a[href=\"$url\"]");
             if (!$a)
                 throw new Exception("Menu link $transferTo not found.");
             $a->click();
