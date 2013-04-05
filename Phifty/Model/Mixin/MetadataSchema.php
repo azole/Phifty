@@ -53,7 +53,8 @@ class MetadataSchema extends MixinSchemaDeclare
             ->label('更新者')
             ;
 
-        // $this->belongsTo( 'created_by' , $kernel->currentUser->userModelClass . 'Schema' , 'id' , 'created_by' );
-        // $this->belongsTo( 'updated_by' , $kernel->currentUser->userModelClass . 'Schema' , 'id' , 'updated_by' );
+        // XXX: here override the default column value, we should be able to convert the object for formkit widgets.
+        $this->belongsTo( 'created_by' , $kernel->currentUser->userModelClass . 'Schema' , 'id' , 'created_by' );
+        $this->belongsTo( 'updated_by' , $kernel->currentUser->userModelClass . 'Schema' , 'id' , 'updated_by' );
     }
 }
