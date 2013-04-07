@@ -34,6 +34,7 @@ class Console extends Application
         $this->registerCommand('new','Phifty\Command\GenerateCommand');
         $this->registerCommand('migration-check','Phifty\Command\MigrationCheckCommand');
         $this->registerCommand('check');
+        $this->registerCommand('cache:clean','Phifty\\Command\\CacheCleanCommand');
 
         $this->registerCommand('build-schema','LazyRecord\Command\BuildSchemaCommand');
         $this->registerCommand('build-sql','LazyRecord\Command\BuildSqlCommand');
