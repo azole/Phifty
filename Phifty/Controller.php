@@ -81,8 +81,9 @@ class Controller extends BaseController
     public function view( $options = array() )
     {
         if ($this->_view) {
-            if ( $options )
-                throw new Exception("The View object is initialized already.");
+            if ( $options ) {
+                throw new Exception("The View object is already initialized.");
+            }
             return $this->_view;
         }
         // call the view object factory from service
@@ -97,7 +98,7 @@ class Controller extends BaseController
      */
     public function createView($viewClass = null)
     {
-        return kernel()->view($viewClass);
+        return kernel()->getObject('view',array($viewClass));
     }
 
     /**
@@ -243,9 +244,9 @@ class Controller extends BaseController
      */
     public function hasAction($action)
     {
-        if ( method_exists($this,$action . 'Action') )
-
+        if ( method_exists($this,$action . 'Action') ) {
             return $action . 'Action';
+        }
         return false;
     }
 
