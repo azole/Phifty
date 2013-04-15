@@ -19,6 +19,7 @@ class Generator extends BaseGenerator
         $this->createDir( $bundleDir . DIRECTORY_SEPARATOR . 'Action' );
         $this->createDir( $bundleDir . DIRECTORY_SEPARATOR . 'Templates' );
         $this->createDir( $bundleDir . DIRECTORY_SEPARATOR . 'Assets' );
+        $this->createDir( $bundleDir . DIRECTORY_SEPARATOR . 'Configs' );
 
         $classFile = $bundleDir . DIRECTORY_SEPARATOR . $bundleName . '.php';
         $this->render('Plugin.php.twig', $classFile, array(

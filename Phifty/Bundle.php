@@ -28,7 +28,7 @@ class Bundle
 
     public $defaultActionTypes = array('Create','Update','Delete', 'BulkDelete');
 
-    public $exportTemplates = false;
+    public $exportTemplates = true;
 
     public $kernel;
 
@@ -315,6 +315,13 @@ class Bundle
     {
         return $this->locate() . DIRECTORY_SEPARATOR . 'Templates';
     }
+
+
+    public function getConfigDir()
+    {
+        return $this->locate() . DIRECTORY_SEPARATOR . 'Configs';
+    }
+
 
     /**
      * Get asset directory list, this is for registering bundle assets.
