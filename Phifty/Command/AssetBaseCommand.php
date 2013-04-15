@@ -34,6 +34,8 @@ class AssetBaseCommand extends Command
                     $this->logger->info( "Found asset {$asset->name}" ,1 );
                     $this->updateAssetResource($asset);
                 }
+            } else {
+                $this->logger->warn("$dir directory not found.", 1);
             }
         }
     }
