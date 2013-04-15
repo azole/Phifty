@@ -28,10 +28,12 @@ class Web
         // Instead of loading assets by triggering asset.load event
         // the flow (plugin service->init, appliation->init) can
         // not load the assets with the correct sequence.
+        /*
         foreach ($kernel->applications as $app) {
             // load application assets
             $app->loadAssets();
         }
+        */
         foreach ($kernel->plugins as $plugin) {
             $plugin->loadAssets();
         }
