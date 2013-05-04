@@ -125,7 +125,7 @@ class CurrentUser
     /**
      * Get user model class.
      */
-    public function getModelClass($class)
+    public function getModelClass()
     {
         return $this->userModelClass;
     }
