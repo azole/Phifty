@@ -121,6 +121,15 @@ class CurrentUser
         $this->userModelClass = $class;
     }
 
+
+    /**
+     * Get user model class.
+     */
+    public function getUserModelClass($class)
+    {
+        return $this->userModelClass;
+    }
+
     /**
      * Reload record and update session
      */
