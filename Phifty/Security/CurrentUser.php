@@ -116,7 +116,7 @@ class CurrentUser
      *
      * @param string $class user model class
      */
-    public function setUserModelClass($class)
+    public function setModelClass($class)
     {
         $this->userModelClass = $class;
     }
@@ -125,7 +125,7 @@ class CurrentUser
     /**
      * Get user model class.
      */
-    public function getUserModelClass($class)
+    public function getModelClass($class)
     {
         return $this->userModelClass;
     }
