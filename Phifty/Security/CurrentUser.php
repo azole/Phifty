@@ -142,6 +142,11 @@ class CurrentUser
         $this->updateSessionFromRecord($this->record);
     }
 
+    public function getSessionFields($record)
+    {
+        return $record->getColumnNames();
+    }
+
     /**
      * Update session data from record
      *
@@ -149,7 +154,8 @@ class CurrentUser
      */
     public function updateSessionFromRecord($record)
     {
-        foreach ( $record->getColumnNames() as $name ) {
+        // get column maes to register 
+        foreach ( $this->getSessionFields($record) as $name ) {
             $val = $record->$name;
             $this->session->set( $name, is_object($val) ? $val->__toString() : $val );
         }
@@ -174,9 +180,8 @@ class CurrentUser
     public function setRecord( $record )
     {
         if ($record && $record->id) {
-            $this->updateSessionFromRecord($record);
             $this->record = $record;
-
+            $this->updateSessionFromRecord($record);
             return true;
         }
 
