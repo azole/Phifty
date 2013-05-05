@@ -22,7 +22,6 @@ class KendoService
             foreach ($options['Rules'] as $ruleClass) {
                 $loader->load($ruleClass);
             }
-
             return Acl::getInstance($loader);
         };
     }
