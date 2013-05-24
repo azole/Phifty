@@ -49,7 +49,11 @@ class ViewService
         }
         if ( isset($options['TemplateDirs']) ) {
             $factory->templateDirs = $options['TemplateDirs'];
+        } else {
+            $factory->templateDirs = array();
         }
+        $factory->templateDirs[] = PH_APP_ROOT;
+        $factory->templateDirs[] = PH_ROOT;
         $kernel->registerFactory('view',$factory);
     }
 }

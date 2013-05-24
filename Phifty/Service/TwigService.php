@@ -37,6 +37,8 @@ class TwigService
             $templateDirs[] = $kernel->rootBundleDir;
             $templateDirs[] = $kernel->frameworkAppDir;
             $templateDirs[] = $kernel->frameworkBundleDir;
+            $templateDirs[] = PH_APP_ROOT;
+            $templateDirs[] = PH_ROOT;
 
             // create the filesystem loader
             $loader   = new Twig_Loader_Filesystem( $templateDirs );
