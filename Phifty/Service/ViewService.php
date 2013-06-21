@@ -12,7 +12,7 @@ class ViewFactory
 
     public $backend = 'twig';
     public $class = 'Phifty\\View';
-    public $templateDirs;
+    public $templateDirs = array();
 
     public function __construct()
     {
@@ -47,7 +47,7 @@ class ViewService
         if ( isset($options['Class']) ) {
             $factory->class = $options['Class'];
         }
-        if ( isset($options['TemplateDirs']) ) {
+        if ( isset($options['TemplateDirs']) && is_array($options['TemplateDirs']) ) {
             $factory->templateDirs = $options['TemplateDirs'];
         } else {
             $factory->templateDirs = array();
