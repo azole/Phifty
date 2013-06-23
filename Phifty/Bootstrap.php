@@ -146,14 +146,8 @@ namespace {
     require PH_ROOT . '/vendor/corneltek/universal/src/Universal/Container/ObjectContainer.php';
 
     // Load Kernel so we don't need to load by classloader.
-    if ( ! class_exists('ConfigKit\ConfigCompiler') ) {
-        require PH_ROOT . '/vendor/corneltek/configkit/src/ConfigKit/ConfigCompiler.php';
-        require PH_ROOT . '/vendor/corneltek/configkit/src/ConfigKit/Accessor.php';
-        require PH_ROOT . '/vendor/corneltek/configkit/src/ConfigKit/ConfigLoader.php';
-    }
     require PH_ROOT . '/src/Phifty/GlobalFuncs.php';
     require PH_ROOT . '/src/Phifty/Kernel.php';
-
 
     global $kernel;
 
