@@ -1,21 +1,10 @@
 <?php
 namespace Phifty\View;
-
 use Phifty\View\Engine;
 use Phifty\ClassUtils;
-
-use AssetToolkit\Extension\Twig\AssetExtension;
-
 use Twig_Environment;
-use Twig_Loader_Filesystem;
-use Twig_Function_Function;
-
-use Twig_Extension_Debug;
-use Twig_Extension_Optimizer;
 use Twig_Loader_String;
-
-use Twig_Extensions_Extension_Text;
-use Twig_Extensions_Extension_I18n;
+use AssetToolkit\Extension\Twig\AssetExtension;
 
 /**
  * Rewrite this as an extension.

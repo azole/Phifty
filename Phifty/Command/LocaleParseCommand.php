@@ -60,10 +60,26 @@ class LocaleParseCommand extends Command
             }
         }
 
-        // Compile templates from plugins
-        $this->logger->info("Compiling templates...");
         $engine = new Phifty\View\Twig;
         $twig = $engine->getRenderer();
+
+        $designTemplateDir = 'design/production';
+        if ( file_exists($designTemplateDir) ) {
+            $this->logger->info("Compiling design templates...");
+            foreach (new RecursiveIteratorIterator(
+                    new RecursiveDirectoryIterator($designTemplateDir),
+                    RecursiveIteratorIterator::LEAVES_ONLY) as $file) 
+            {
+                // force compilation
+                if( preg_match( '/\.(html?|twig)$/', $file ) ) {
+                    $this->logger->info( "Compiling " . $file->getPathname() ,1);
+                    $twig->loadTemplate( substr($file, strlen($designTemplateDir) + 1) );
+                }
+            }
+        }
+
+        // Compile templates from plugins
+        $this->logger->info("Compiling bundle templates...");
         foreach( $kernel->plugins as $plugin ) {
             $pluginDir = $plugin->locate();
             $templateDir = $plugin->getTemplateDir();
@@ -83,6 +99,7 @@ class LocaleParseCommand extends Command
         }
 
         $potFile = $localeDir . DIRECTORY_SEPARATOR . 'messages.pot';
+        $this->logger->info("Creating pot file: $potFile");
         touch($potFile);
 
         $scanDirs = func_get_args(); // get paths from command-line
@@ -102,14 +119,24 @@ class LocaleParseCommand extends Command
 
         foreach( $scanDirs as $scanDir ) {
             $this->logger->info("Parsing from $scanDir...");
-            $cmd = sprintf("xgettext -j -o %s --from-code=UTF-8 -n -L PHP "
-                . " \$(find %s -type f -iname '*.php')",
-                $potFile,
-                $scanDir);
+
+            $phpFinder = Finder::create()->files()->name('*.php')->in( $scanDir );
+            $phpFiles = array();
+            foreach( $phpFinder as $phpFile ) {
+                $phpFiles[] = $phpFile;
+            }
+
+            if ( empty($phpFiles) ) {
+                continue;
+            }
+
+            $cmd = sprintf("xgettext -j -o %s --from-code=UTF-8 -n -L PHP " . join(" ",$phpFiles)
+                ,$potFile);
             $this->logger->debug($cmd,1);
             system($cmd, $retval);
-            if ( $retval != 0 )
+            if ( $retval != 0 ) {
                 die('xgettext error');
+            }
         }
 
         $this->logger->info("Updating message catalog...");
