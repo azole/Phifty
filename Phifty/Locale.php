@@ -140,6 +140,10 @@ class Locale
         return $this;
     }
 
+    public function currentName() {
+        return $this->name( $this->current );
+    }
+
     // get language name from language hash
     public function name( $lang )
     {
