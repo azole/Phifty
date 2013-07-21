@@ -1,11 +1,8 @@
 <?php
 namespace Phifty\Excel;
+use PHPExcel_IOFactory;
 
-/** PHPExcel */
-require_once 'PHPExcel/PHPExcel.php';
-require_once 'PHPExcel/PHPExcel/IOFactory.php';
-
-/* need to redesign this */
+// need to redesign this
 
 class ExcelExporter
 {

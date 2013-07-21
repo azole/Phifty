@@ -1,9 +1,7 @@
 <?php
 namespace Phifty;
-
-/** PHPExcel */
-require_once 'PHPExcel/PHPExcel.php';
-require_once 'PHPExcel/PHPExcel/IOFactory.php';
+use PHPExcel;
+use PHPExcel_IOFactory;
 
 /*
  *
