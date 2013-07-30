@@ -12,7 +12,6 @@ class Column extends DeclareColumn
     {
         $this->widgetClass = $type;
         $this->widgetAttributes = $widgetAttributes;
-
         return $this;
     }
 }
