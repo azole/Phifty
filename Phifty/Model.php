@@ -45,7 +45,7 @@ class Model extends BaseModel
         return new $actionClass( $args , $this );
     }
 
-    public function getActionClass($type)
+    public function getRecordActionClass($type)
     {
         $class = get_class($this);
         return BaseRecordAction::createCRUDClass($class, $type);
