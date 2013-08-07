@@ -28,6 +28,8 @@ class ActionService
             }
 
             try {
+                $kernel->event->trigger('phifty.before_action');
+
                 $runner = $kernel->action; // get runner
                 $result = $runner->run( $_REQUEST['action'] );
                 if ( $result && $runner->isAjax() ) {

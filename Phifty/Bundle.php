@@ -296,7 +296,10 @@ class Bundle
         if ( empty($types) ) {
             $types = $this->defaultActionTypes;
         }
-        $this->kernel->action->registerCRUD( $this->getNamespace() , $model , (array) $types );
+        $self = $this;
+        $this->kernel->event->register('phifty.before_action', function() use ($self,$types, $model) {
+            $this->kernel->action->registerCRUD( $self->getNamespace() , $model , (array) $types );
+        });
     }
 
 
@@ -305,7 +308,10 @@ class Bundle
         if ( empty($types) ) {
             $types = $this->defaultActionTypes;
         }
-        $this->kernel->action->registerCRUD( $this->getNamespace() , $model , (array) $types );
+        $self = $this;
+        $this->kernel->event->register('phifty.before_action', function() use ($self,$types, $model) {
+            $this->kernel->action->registerCRUD( $self->getNamespace() , $model , (array) $types );
+        });
     }
 
     /**
