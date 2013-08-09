@@ -5,6 +5,7 @@
         "corneltek\/universal": "~1.3",
         "corneltek\/universal-cache": "~1.0",
         "corneltek\/fileutil": "~1",
+        "corneltek\/roller": "dev-master",
         "corneltek\/actionkit": "dev-master",
         "corneltek\/assettoolkit": "dev-master",
         "corneltek\/lazyrecord": "dev-master",
@@ -35,5 +36,6 @@
             "src\/Phifty\/Bootstrap.php"
         ]
     },
+    "minimum-stability": "dev",
     "version": "2.7.15"
 }
