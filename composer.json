@@ -29,9 +29,8 @@
         "corneltek\/kendo": "~1.0"
     },
     "autoload": {
-        "psr-0": {
-            "Phifty": "src"
-        }
+        "psr-0": { "Phifty": "src" },
+        "files": [ "src/Phifty/Bootstrap.php" ]
     },
     "version": "2.7.13"
 }
