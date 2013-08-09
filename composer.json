@@ -1,0 +1,11 @@
+{
+    "name": "corneltek\/phifty",
+    "require": {
+        "php": ">=5.3.0",
+        "corneltek\/phifty-core": "~2.7"
+    },
+    "suggest": {
+        "corneltek\/kendo": "~1.0"
+    },
+    "version": "2.7.11"
+}
