@@ -17,7 +17,6 @@
         "symfony\/process": "~2.2",
         "symfony\/yaml": "~2.2",
         "symfony\/css-selector": "~2.2",
-        "asm89\/twig-cache-extension": "@dev",
         "corneltek\/kendo": "~1"
     },
     "require-dev": {
@@ -36,5 +35,5 @@
             "src\/Phifty\/Bootstrap.php"
         ]
     },
-    "version": "2.7.20"
+    "version": "2.7.21"
 }
