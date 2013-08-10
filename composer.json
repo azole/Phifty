@@ -12,7 +12,6 @@
         "corneltek\/genphp": "~1.2",
         "corneltek\/sessionkit": "~1.0",
         "twig\/twig": "~1.12",
-        "asm89\/twig-cache-extension": "@dev",
         "twig\/extensions": "1.0.*@dev",
         "symfony\/finder": "~2.2",
         "symfony\/process": "~2.2",
