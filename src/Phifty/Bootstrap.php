@@ -146,8 +146,8 @@ namespace {
     require PH_ROOT . '/vendor/corneltek/universal/src/Universal/Container/ObjectContainer.php';
 
     // Load Kernel so we don't need to load by classloader.
-    require PH_ROOT . '/src/Phifty/GlobalFuncs.php';
-    require PH_ROOT . '/src/Phifty/Kernel.php';
+    require __DIR__ . '/GlobalFuncs.php';
+    require __DIR__ . '/Kernel.php';
 
     global $kernel;
 
