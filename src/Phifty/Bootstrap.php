@@ -1,8 +1,6 @@
 <?php
 namespace Phifty {
 use Phifty\Kernel;
-use ConfigKit\ConfigCompiler;
-use ConfigKit\ConfigLoader;
 
 /**
  * Script for phifty kernel bootstrap
@@ -12,6 +10,29 @@ use ConfigKit\ConfigLoader;
  *
  * @author c9s <cornelius.howl@gmail.com>
  */
+
+    /**
+     * Load important services by sequence:
+     *
+     * 1. ClassLoaderService
+     * 2. ConfigService
+     * 3. DatabaseService
+     *
+     * @param Phifty\Kernel $kernel      kernel object.
+     */
+    function bootKernel($kernel)
+    {
+    }
+}
+namespace {
+    use ConfigKit\ConfigCompiler;
+    use ConfigKit\ConfigLoader;
+
+    defined( 'PH_ROOT' )     || define( 'PH_ROOT' , dirname(dirname(__DIR__)) );
+    defined( 'PH_APP_ROOT' ) || define( 'PH_APP_ROOT' , getcwd() );
+    defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
+
+
     function initConfigLoader()
     {
         // We load other services from the definitions in config file
@@ -44,57 +65,6 @@ use ConfigKit\ConfigLoader;
 
         return $loader;
     }
-
-    /**
-     * Load important services by sequence:
-     *
-     * 1. ClassLoaderService
-     * 2. ConfigService
-     * 3. DatabaseService
-     *
-     * @param Phifty\Kernel $kernel      kernel object.
-     */
-    function bootKernel($kernel)
-    {
-        // load config service first.
-        $configLoader = initConfigLoader();
-        $kernel->registerService( new \Phifty\Service\ConfigService($configLoader));
-
-        // load a event service, so that we can bind events in Phifty
-        // currently we are working on a CTEvent extension, which provides a better
-        // performance than pure PHP class.
-        $kernel->registerService( new \Phifty\Service\EventService );
-
-        // if the framework config is defined.
-        if ( $configLoader->isLoaded('framework') ) {
-            // we should load database service before other services
-            // because other services might need database service
-            if ( $configLoader->isLoaded('database') ) {
-                $kernel->registerService( new \Phifty\Service\DatabaseService );
-            }
-
-            if ( $appconfigs = $kernel->config->get('framework','Applications') ) {
-                foreach ($appconfigs as $appname => $appconfig) {
-                    $kernel->classloader->addNamespace( array(
-                        $appname => array( PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' )
-                    ));
-                }
-            }
-
-            if ( $services = $kernel->config->get('framework','Services') ) {
-                foreach ($services as $name => $options) {
-                    // not full qualified classname
-                    $class = ( false === strpos($name,'\\') ) ? ('Phifty\\Service\\' . $name) : $name;
-                    $kernel->registerService( new $class , $options );
-                }
-            }
-        }
-    }
-}
-namespace {
-    defined( 'PH_ROOT' )     || define( 'PH_ROOT' , dirname(dirname(__DIR__)) );
-    defined( 'PH_APP_ROOT' ) || define( 'PH_APP_ROOT' , getcwd() );
-    defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
 
     function getSplClassLoader()
     {
@@ -129,7 +99,45 @@ namespace {
     // register default classloader service
     $kernel->registerService( new \Phifty\Service\ClassLoaderService(getSplClassLoader()) );
 
-    \Phifty\bootKernel($kernel);
+
+
+    /***********************************
+     * Load Core Services
+     ***********************************/
+
+    // load config service.
+    $configLoader = initConfigLoader();
+    $kernel->registerService( new \Phifty\Service\ConfigService($configLoader));
+
+    // load event service, so that we can bind events in Phifty
+    $kernel->registerService( new \Phifty\Service\EventService );
+
+
+    // if the framework config is defined.
+    if ( $configLoader->isLoaded('framework') ) {
+        // we should load database service before other services
+        // because other services might need database service
+        if ( $configLoader->isLoaded('database') ) {
+            $kernel->registerService( new \Phifty\Service\DatabaseService );
+        }
+
+        if ( $appconfigs = $kernel->config->get('framework','Applications') ) {
+            foreach ($appconfigs as $appname => $appconfig) {
+                $kernel->classloader->addNamespace( array(
+                    $appname => array( PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' )
+                ));
+            }
+        }
+
+        if ( $services = $kernel->config->get('framework','Services') ) {
+            foreach ($services as $name => $options) {
+                // not full qualified classname
+                $class = ( false === strpos($name,'\\') ) ? ('Phifty\\Service\\' . $name) : $name;
+                $kernel->registerService( new $class , $options );
+            }
+        }
+    }
+    
     $kernel->init();
 
     /**
