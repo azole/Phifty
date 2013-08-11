@@ -53,18 +53,12 @@ use ConfigKit\ConfigLoader;
      * 3. DatabaseService
      *
      * @param Phifty\Kernel $kernel      kernel object.
-     * @param ClassLoader   $classloader
      */
-    function bootKernel($kernel, $classloader)
+    function bootKernel($kernel)
     {
-        // register default classloader service
-        $kernel->registerService( new \Phifty\Service\ClassLoaderService($classloader) );
-
-        $configLoader = initConfigLoader();
-        $configService = new \Phifty\Service\ConfigService($configLoader);
-
         // load config service first.
-        $kernel->registerService( $configService );
+        $configLoader = initConfigLoader();
+        $kernel->registerService( new \Phifty\Service\ConfigService($configLoader));
 
         // load a event service, so that we can bind events in Phifty
         // currently we are working on a CTEvent extension, which provides a better
@@ -132,9 +126,10 @@ namespace {
     $kernel = new \Phifty\Kernel;
     $kernel->prepare(); // prepare constants
 
+    // register default classloader service
+    $kernel->registerService( new \Phifty\Service\ClassLoaderService(getSplClassLoader()) );
 
-    $classloader = getSplClassLoader();
-    \Phifty\bootKernel($kernel, $classloader);
+    \Phifty\bootKernel($kernel);
     $kernel->init();
 
     /**
