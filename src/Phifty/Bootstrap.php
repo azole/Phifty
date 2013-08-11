@@ -12,14 +12,7 @@ use ConfigKit\ConfigLoader;
  *
  * @author c9s <cornelius.howl@gmail.com>
  */
-class Bootstrap
-{
-
-    public static function initConstants()
-    {
-    }
-
-    public static function initClassLoader()
+    function initClassLoader()
     {
         $composerLoader = require PH_ROOT . '/vendor/autoload.php';
         $loader = null;
@@ -34,7 +27,7 @@ class Bootstrap
         return $loader;
     }
 
-    public static function initConfigLoader()
+    function initConfigLoader()
     {
         // We load other services from the definitions in config file
         // Simple load three config files (framework.yml, database.yml, application.yml)
@@ -77,12 +70,12 @@ class Bootstrap
      * @param Phifty\Kernel $kernel      kernel object.
      * @param ClassLoader   $classloader
      */
-    public static function bootKernel($kernel, $classloader)
+    function bootKernel($kernel, $classloader)
     {
         // register default classloader service
         $kernel->registerService( new \Phifty\Service\ClassLoaderService($classloader) );
 
-        $configLoader = self::initConfigLoader();
+        $configLoader = initConfigLoader();
         $configService = new \Phifty\Service\ConfigService($configLoader);
 
         // load config service first.
@@ -118,18 +111,6 @@ class Bootstrap
             }
         }
     }
-
-    /**
-     * Create Kernel object with environment type, production or development
-     *
-     * @param string $env Environment type
-     */
-    public static function createKernel($env = null)
-    {
-        return new Kernel( $env );
-    }
-}
-
 }
 namespace {
     defined( 'PH_ROOT' )     || define( 'PH_ROOT' , dirname(dirname(__DIR__)) );
@@ -146,6 +127,12 @@ namespace {
 
     global $kernel;
 
+    $kernel = new \Phifty\Kernel;
+    $kernel->prepare(); // prepare constants
+    $classloader = \Phifty\initClassLoader();
+    \Phifty\bootKernel($kernel, $classloader);
+    $kernel->init();
+
     /**
      * kernel() is a global shorter helper function to get Phifty\Kernel instance.
      *
@@ -159,12 +146,6 @@ namespace {
         if ( $kernel ) {
             return $kernel;
         }
-
-        $classloader = \Phifty\Bootstrap::initClassLoader();
-        $kernel      = \Phifty\Bootstrap::createKernel();
-        $kernel->prepare();
-        \Phifty\Bootstrap::bootKernel($kernel,$classloader);
-        $kernel->init();
         return $kernel;
     }
 
