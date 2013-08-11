@@ -96,14 +96,12 @@ namespace {
     $kernel = new \Phifty\Kernel;
     $kernel->prepare(); // prepare constants
 
-    // register default classloader service
-    $kernel->registerService( new \Phifty\Service\ClassLoaderService(getSplClassLoader()) );
-
-
 
     /***********************************
      * Load Core Services
      ***********************************/
+    // register default classloader service
+    $kernel->registerService( new \Phifty\Service\ClassLoaderService(getSplClassLoader()) );
 
     // load config service.
     $configLoader = initConfigLoader();
