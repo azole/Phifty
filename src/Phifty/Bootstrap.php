@@ -143,12 +143,6 @@ namespace {
     function kernel()
     {
         global $kernel;
-        if ( $kernel ) {
-            return $kernel;
-        }
         return $kernel;
     }
-
-    // bootstrap here
-    kernel();
 }
