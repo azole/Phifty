@@ -29,11 +29,6 @@ class Bootstrap
         } else {
             $loader = new \Universal\ClassLoader\SplClassLoader;
         }
-
-        // create spl classloader
-        $loader->addNamespace(array(
-            'I18NKit'        => PH_ROOT . '/src',
-        ));
         $loader->useIncludePath(false);
         $loader->register(false);
         return $loader;
@@ -142,8 +137,8 @@ namespace {
     defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
 
     // ObjectContainer is required by Kernel
-    require PH_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/SplClassLoader.php';
-    require PH_ROOT . '/vendor/corneltek/universal/src/Universal/Container/ObjectContainer.php';
+    # require PH_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/SplClassLoader.php';
+    # require PH_ROOT . '/vendor/corneltek/universal/src/Universal/Container/ObjectContainer.php';
 
     // Load Kernel so we don't need to load by classloader.
     require __DIR__ . '/GlobalFuncs.php';
@@ -161,12 +156,13 @@ namespace {
     function kernel()
     {
         global $kernel;
-        if ( $kernel )
-
+        if ( $kernel ) {
             return $kernel;
+        }
 
         $classloader = \Phifty\Bootstrap::initClassLoader();
         $kernel      = \Phifty\Bootstrap::createKernel();
+        $kernel->prepare();
         \Phifty\Bootstrap::bootKernel($kernel,$classloader);
         $kernel->init();
         return $kernel;
