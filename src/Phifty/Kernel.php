@@ -54,6 +54,11 @@ class Kernel extends ObjectContainer
         $this->isDev = $this->environment === 'development';
     }
 
+
+
+    /**
+     * To run prepare method, please define the PH_ROOT and PH_APP_ROOT first.
+     */
     public function prepare() 
     {
         // build path info
