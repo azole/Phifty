@@ -12,21 +12,6 @@ use ConfigKit\ConfigLoader;
  *
  * @author c9s <cornelius.howl@gmail.com>
  */
-    function initClassLoader()
-    {
-        $composerLoader = require PH_ROOT . '/vendor/autoload.php';
-        $loader = null;
-        if ( 0 && extension_loaded('apc') ) {
-            require PH_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/ApcClassLoader.php';
-            $loader = new \Universal\ClassLoader\ApcClassLoader( PH_ROOT );
-        } else {
-            $loader = new \Universal\ClassLoader\SplClassLoader;
-        }
-        $loader->useIncludePath(false);
-        $loader->register(false);
-        return $loader;
-    }
-
     function initConfigLoader()
     {
         // We load other services from the definitions in config file
@@ -117,6 +102,23 @@ namespace {
     defined( 'PH_APP_ROOT' ) || define( 'PH_APP_ROOT' , getcwd() );
     defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
 
+    function getSplClassLoader()
+    {
+        $composerLoader = require PH_ROOT . '/vendor/autoload.php';
+        $loader = null;
+        if ( 0 && extension_loaded('apc') ) {
+            require PH_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/ApcClassLoader.php';
+            $loader = new \Universal\ClassLoader\ApcClassLoader( PH_ROOT );
+        } else {
+            $loader = new \Universal\ClassLoader\SplClassLoader;
+        }
+        $loader->useIncludePath(false);
+        $loader->register(false);
+        return $loader;
+    }
+
+
+
     // ObjectContainer is required by Kernel
     # require PH_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/SplClassLoader.php';
     # require PH_ROOT . '/vendor/corneltek/universal/src/Universal/Container/ObjectContainer.php';
@@ -129,7 +131,9 @@ namespace {
 
     $kernel = new \Phifty\Kernel;
     $kernel->prepare(); // prepare constants
-    $classloader = \Phifty\initClassLoader();
+
+
+    $classloader = getSplClassLoader();
     \Phifty\bootKernel($kernel, $classloader);
     $kernel->init();
 
