@@ -30,10 +30,7 @@
     "autoload": {
         "psr-0": {
             "Phifty": "src"
-        },
-        "files": [
-            "src\/Phifty\/Bootstrap.php"
-        ]
+        }
     },
     "version": "2.7.25"
 }

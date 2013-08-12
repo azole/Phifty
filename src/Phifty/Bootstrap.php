@@ -3,12 +3,9 @@ use ConfigKit\ConfigCompiler;
 use ConfigKit\ConfigLoader;
 
 // get PH_ROOT from phifty-core
-defined( 'PH_ROOT' )     || 
-    define( 'PH_ROOT' , dirname(dirname(dirname(dirname(dirname(__DIR__)))))
-);
+defined( 'PH_ROOT' )     || define( 'PH_ROOT', getcwd() );
 defined( 'PH_APP_ROOT' ) || define( 'PH_APP_ROOT' , getcwd() );
 defined( 'DS' )          || define( 'DS' , DIRECTORY_SEPARATOR );
-
 
 function initConfigLoader()
 {
@@ -57,10 +54,6 @@ function getSplClassLoader()
     $loader->register(false);
     return $loader;
 }
-
-
-// ObjectContainer is required by Kernel
-require PH_ROOT . '/vendor/corneltek/universal/src/Universal/Container/ObjectContainer.php';
 
 // Load Kernel so we don't need to load by classloader.
 require __DIR__ . '/GlobalFuncs.php';
