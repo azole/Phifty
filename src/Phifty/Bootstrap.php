@@ -44,10 +44,10 @@ function getSplClassLoader()
 {
     $loader = null;
     if ( 0 && extension_loaded('apc') ) {
-        require PH_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/ApcClassLoader.php';
+        require PH_APP_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/ApcClassLoader.php';
         $loader = new \Universal\ClassLoader\ApcClassLoader( PH_ROOT );
     } else {
-        require PH_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/SplClassLoader.php';
+        require PH_APP_ROOT . '/vendor/corneltek/universal/src/Universal/ClassLoader/SplClassLoader.php';
         $loader = new \Universal\ClassLoader\SplClassLoader;
     }
     $loader->useIncludePath(false);
