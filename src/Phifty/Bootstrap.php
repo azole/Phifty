@@ -61,48 +61,52 @@ require __DIR__ . '/Kernel.php';
 
 global $kernel;
 
-$kernel = new \Phifty\Kernel;
-$kernel->prepare(); // prepare constants
+function create_kernel() {
+    $kernel = new \Phifty\Kernel;
+    $kernel->prepare(); // prepare constants
 
 
-/***********************************
-    * Load Core Services
-    ***********************************/
-// register default classloader service
-// $composerLoader = require PH_ROOT . '/vendor/autoload.php';
-$kernel->registerService( new \Phifty\Service\ClassLoaderService(getSplClassLoader()));
+    /***********************************
+        * Load Core Services
+        ***********************************/
+    // register default classloader service
+    // $composerLoader = require PH_ROOT . '/vendor/autoload.php';
+    $kernel->registerService( new \Phifty\Service\ClassLoaderService(getSplClassLoader()));
 
-// load config service.
-$configLoader = initConfigLoader();
-$kernel->registerService( new \Phifty\Service\ConfigService($configLoader));
+    // load config service.
+    $configLoader = initConfigLoader();
+    $kernel->registerService( new \Phifty\Service\ConfigService($configLoader));
 
-// load event service, so that we can bind events in Phifty
-$kernel->registerService( new \Phifty\Service\EventService );
+    // load event service, so that we can bind events in Phifty
+    $kernel->registerService( new \Phifty\Service\EventService );
 
 
-// if the framework config is defined.
-if ( $configLoader->isLoaded('framework') ) {
-    // we should load database service before other services
-    // because other services might need database service
-    if ( $configLoader->isLoaded('database') ) {
-        $kernel->registerService( new \Phifty\Service\DatabaseService );
-    }
+    // if the framework config is defined.
+    if ( $configLoader->isLoaded('framework') ) {
+        // we should load database service before other services
+        // because other services might need database service
+        if ( $configLoader->isLoaded('database') ) {
+            $kernel->registerService( new \Phifty\Service\DatabaseService );
+        }
 
-    if ( $appconfigs = $kernel->config->get('framework','Applications') ) {
-        foreach ($appconfigs as $appname => $appconfig) {
-            $kernel->classloader->addNamespace( array(
-                $appname => array( PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' )
-            ));
+        if ( $appconfigs = $kernel->config->get('framework','Applications') ) {
+            foreach ($appconfigs as $appname => $appconfig) {
+                $kernel->classloader->addNamespace( array(
+                    $appname => array( PH_APP_ROOT . '/applications' , PH_ROOT . '/applications' )
+                ));
+            }
+        }
+
+        if ( $services = $kernel->config->get('framework','Services') ) {
+            foreach ($services as $name => $options) {
+                // not full qualified classname
+                $class = ( false === strpos($name,'\\') ) ? ('Phifty\\Service\\' . $name) : $name;
+                $kernel->registerService( new $class , $options );
+            }
         }
     }
-
-    if ( $services = $kernel->config->get('framework','Services') ) {
-        foreach ($services as $name => $options) {
-            // not full qualified classname
-            $class = ( false === strpos($name,'\\') ) ? ('Phifty\\Service\\' . $name) : $name;
-            $kernel->registerService( new $class , $options );
-        }
-    }
+    $kernel->init();
+    return $kernel;
 }
 
 
@@ -119,6 +123,6 @@ function kernel()
     if ( $kernel ) {
         return $kernel;
     }
-    $kernel->init();
+    $kernel = create_kernel();
     return $kernel;
 }
