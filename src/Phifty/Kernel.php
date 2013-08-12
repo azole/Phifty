@@ -239,8 +239,6 @@ class Kernel extends ObjectContainer
         return $this->plugins->get($name);
     }
 
-
-
     /**
      * return framework id
      */
@@ -252,9 +250,9 @@ class Kernel extends ObjectContainer
     public static function getInstance()
     {
         static $one;
-        if ( $one )
-
+        if ( $one ) {
             return $one;
+        }
         return $one = new static;
     }
 }

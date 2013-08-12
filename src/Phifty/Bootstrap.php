@@ -62,6 +62,7 @@ require __DIR__ . '/Kernel.php';
 global $kernel;
 
 function create_kernel() {
+    global $kernel;
     $kernel = new \Phifty\Kernel;
     $kernel->prepare(); // prepare constants
 
@@ -123,6 +124,6 @@ function kernel()
     if ( $kernel ) {
         return $kernel;
     }
-    $kernel = create_kernel();
+    create_kernel();
     return $kernel;
 }
