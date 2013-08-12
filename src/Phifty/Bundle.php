@@ -310,7 +310,7 @@ class Bundle
         }
         $self = $this;
         $this->kernel->event->register('phifty.before_action', function() use ($self,$types, $model) {
-            $this->kernel->action->registerCRUD( $self->getNamespace() , $model , (array) $types );
+            $self->kernel->action->registerCRUD( $self->getNamespace() , $model , (array) $types );
         });
     }
 
