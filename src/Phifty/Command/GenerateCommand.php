@@ -13,7 +13,7 @@ class GenerateCommand extends Command
         $args = func_get_args();
         array_shift($args);
 
-        $loader = new FlavorLoader(array( PH_ROOT . '/src/Phifty/Flavors' ));
+        $loader = new FlavorLoader(array( dirname(__DIR__) . '/Flavors'));
         if ( $flavor = $loader->load($flavor) ) {
             $generator = $flavor->getGenerator();
             $generator->setLogger($this->logger);

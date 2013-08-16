@@ -31,8 +31,8 @@ class Console extends Application
         $this->registerCommand('server');
         $this->registerCommand('router');
         $this->registerCommand('asset');
-        $this->registerCommand('new','Phifty\Command\GenerateCommand');
-        $this->registerCommand('migration-check','Phifty\Command\MigrationCheckCommand');
+        $this->registerCommand('new','Phifty\\Command\\GenerateCommand');
+        $this->registerCommand('migration-check','Phifty\\Command\\MigrationCheckCommand');
         $this->registerCommand('check');
         $this->registerCommand('cache:clean','Phifty\\Command\\CacheCleanCommand');
 
